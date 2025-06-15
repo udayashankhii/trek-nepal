@@ -5,7 +5,11 @@ const treksByRegion = {
   Everest: [
     { name: "Everest Base Camp Trek", duration: "14 Days", popular: true },
     { name: "Sleep at Base Camp on Everest Trek", duration: "15 Days" },
-    { name: "EBC Trek via Gokyo with Helicopter Return", duration: "15 Days", popular: true },
+    {
+      name: "EBC Trek via Gokyo with Helicopter Return",
+      duration: "15 Days",
+      popular: true,
+    },
     { name: "EBC Trek Helicopter Return from Pheriche", duration: "11 Days" },
     { name: "Everest Three High Passes Trek", duration: "18 Days" },
     { name: "Budget Everest Base Camp Trek", duration: "12 Days" },
@@ -41,33 +45,39 @@ const treksByRegion = {
   ],
 };
 
-const Treks = ({ minimal = false }) => {
+export default function Treks({ minimal = false }) {
   const [activeRegion, setActiveRegion] = useState(null);
 
   if (minimal) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {Object.entries(treksByRegion)
           .slice(0, 2)
           .map(([region, list]) => (
-            <div key={region}>
-              <h3 className="text-base font-medium mb-2 text-gray-900">
+            <div key={region} className="space-y-4">
+              <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
                 {region} Region
               </h3>
-              <ul className="space-y-2.5">
-                {list
-                  .filter(trek => trek.popular)
-                  .slice(0, 3)
-                  .map((trek) => (
-                    <li key={trek.name}>
+              <ul className="space-y-3">
+                {list.map((trek) => {
+                  const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
+                  return (
+                    <li
+                      key={trek.name}
+                      className="flex items-center justify-between group"
+                    >
                       <Link
-                        to={`/tours/${trek.name.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="text-sm text-gray-700 hover:text-green-600 transition-colors"
+                        to={`/treks/${slug}`}
+                        className="text-slate-800 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3"
                       >
-                        {trek.name} - {trek.duration}
+                        {trek.name}
                       </Link>
+                      <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0">
+                        {trek.duration.toLowerCase()}
+                      </span>
                     </li>
-                  ))}
+                  );
+                })}
               </ul>
             </div>
           ))}
@@ -76,53 +86,77 @@ const Treks = ({ minimal = false }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
-      {Object.entries(treksByRegion).map(([region, list]) => (
-        <div key={region} className="min-w-[200px]">
-          <h3
-            onClick={() => setActiveRegion(prev => prev === region ? null : region)}
-            className={`cursor-pointer flex items-center gap-1.5 mb-3 font-semibold text-lg transition-colors ${
-              activeRegion === region ? "text-green-600" : "text-gray-800 hover:text-green-500"
-            }`}
-          >
-            {region} Region
-            <ChevronIcon isOpen={activeRegion === region} />
-          </h3>
-          <ul
-            className={`space-y-3 pl-1.5 transition-all duration-300 ${
-              activeRegion && activeRegion !== region ? "max-h-0 opacity-0 overflow-hidden" : "max-h-[1000px] opacity-100"
-            }`}
-          >
-            {list.map((trek) => (
-              <li key={trek.name} className="group">
+    <div className="w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        {Object.entries(treksByRegion).map(([region, list]) => {
+          // <-- declare regionSlug here
+          const regionSlug = region.toLowerCase();
+          return (
+            <div key={region} className="space-y-4">
+              <h3 className="flex items-center gap-2 border-b border-slate-200 pb-2">
+                {/* region name navigates */}
                 <Link
-                  to={`/tours/${trek.name.toLowerCase().replace(/\s+/g, "-")}`}
-                  className={`block leading-relaxed hover:text-green-600 transition-colors ${
-                    trek.popular ? "font-medium" : ""
-                  }`}
+                  to={`/treks/${regionSlug}`}
+                  className="flex-1 text-sm font-semibold text-slate-900 uppercase tracking-wider hover:text-emerald-600 transition-colors"
                 >
-                  {trek.name} 
-                  <span className="text-gray-500 group-hover:text-green-600 transition-colors"> - {trek.duration}</span>
+                  {region} Region
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+                {/* only this button toggles collapse */}
+                <button
+                  onClick={() =>
+                    setActiveRegion((prev) => (prev === region ? null : region))
+                  }
+                  className="p-1"
+                >
+                  <ChevronIcon isOpen={activeRegion === region} />
+                </button>
+              </h3>
+              <ul
+                className={`space-y-3 transition-all duration-300 ${
+                  activeRegion && activeRegion !== region
+                    ? "max-h-0 opacity-0 overflow-hidden"
+                    : "max-h-[1000px] opacity-100"
+                }`}
+              >
+                {list.map((trek) => {
+                  const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
+
+                  return (
+                    <li
+                      key={trek.name}
+                      className="flex items-start justify-between group py-1"
+                    >
+                      <Link
+                        to={`/treks/${regionSlug}/${slug}`}
+                        className="text-slate-700 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3 leading-relaxed"
+                      >
+                        {trek.name}
+                      </Link>
+                      <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0 mt-0.5">
+                        {trek.duration.toLowerCase()}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
-};
+}
 
 const ChevronIcon = ({ isOpen }) => (
-  <svg 
-    className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} 
+  <svg
+    className={`w-3 h-3 transition-transform duration-300 text-slate-400 ${
+      isOpen ? "rotate-180" : ""
+    }`}
     viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
   >
-    <path 
-      fill="currentColor" 
-      d="M7 10l5 5 5-5z"
-    />
+    <polyline points="6,9 12,15 18,9"></polyline>
   </svg>
 );
-
-export default Treks;

@@ -4,6 +4,25 @@
   padding: 2rem;
   text-align: center;
 }
+/* {Add to global CSS: */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.nav-link {
+  @apply relative text-gray-700 hover:text-green-600 transition;
+}
+.nav-link::after {
+  @apply absolute bottom-0 left-0 w-full h-0.5 bg-green-600 scale-x-0 origin-left transition-transform;
+  content: "";
+}
+.nav-link:hover::after {
+  @apply scale-x-100;
+}
 
 .logo {
   height: 6em;

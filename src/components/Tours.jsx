@@ -53,7 +53,7 @@ const ToursDropdown = ({ minimal = false }) => {
           >
             <span className="text-gray-800 group-hover:text-green-600 transition-colors">
               {tour.name}
-              <span className="text-gray-500 font-normal ml-1.5">
+              <span className="text-gray-500 font-normal ml-1">
                 - {tour.duration}
               </span>
             </span>

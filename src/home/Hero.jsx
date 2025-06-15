@@ -4,9 +4,9 @@ import { FiSearch } from "react-icons/fi";
 const Hero = ({ searchTerm, setSearchTerm }) => {
   return (
     <section
-      className="relative h-screen h-100% bg-cover bg-center bg-no-repeat flex items-center justify-center"
+      className="relative h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{
-        backgroundImage: "url('/trekking.png')",
+        backgroundImage: "url('/trekkinginnepal.jpg')",
       }}
     >
       {/* Optional Overlay (darken background for better text visibility) */}
@@ -17,7 +17,7 @@ const Hero = ({ searchTerm, setSearchTerm }) => {
           Discover Nepal’s{" "}
           <span className="text-yellow-400">Majestic Treks</span>
         </h1>
-        <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+        <p className="text-xl md:text-2xl mb-4 max-w-2xl mx-auto">
           Begin your once-in-a-lifetime Himalayan adventure with Nepal Nirvana
           Adventours.
         </p>

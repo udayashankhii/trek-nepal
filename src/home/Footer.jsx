@@ -71,30 +71,6 @@ const Footer = () => {
             <ContactItem icon={<FiClock />} text="Mon–Sat: 9:00 AM – 6:00 PM" />
           </ul>
         </div>
-
-        {/* Newsletter */}
-        <div>
-          <h3 className="text-lg font-semibold text-yellow-400 mb-4">
-            Newsletter
-          </h3>
-          <p className="mb-4">
-            Get updates & exclusive trekking deals in your inbox.
-          </p>
-          <form className="flex flex-col sm:flex-row items-stretch">
-            <input
-              type="email"
-              placeholder="Your email"
-              className="p-2 text-gray-900 rounded-l-md w-full sm:w-auto sm:flex-1 focus:outline-none"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-r-md mt-2 sm:mt-0 transition-all"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
       </div>
 
       {/* Footer Bottom */}
