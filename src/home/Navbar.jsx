@@ -227,13 +227,14 @@ export default function ImprovedNavbar() {
 
       {/* Main Navbar */}
       <nav className="bg-green-50 border-b border-gray-200">
-        <div className="flex items-center justify-start h-32">
+        <div className="flex items-center justify-start h-25">
+        
           {/* Logo */}
           <Link
             to="/"
             className="
         flex items-center
-        h-30     /* fill the 80px-high bar */
+        h-32     /* fill the 80px-high bar */
         pl-0              /* small inner padding from the screen edge */
       "
           >
@@ -241,7 +242,7 @@ export default function ImprovedNavbar() {
             <img
               src="/logo5.webp"
               alt="EverTrek Nepal Logo"
-              className="h-52 w-48 object-contain"
+              className="h-25 w-38 object-contain"
             />
             {/* <span className="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight">
               EverTrek <span className="text-blue-500">NEPAL</span> */}
@@ -542,193 +543,171 @@ export default function ImprovedNavbar() {
 
         {/* Mobile Menu - ENHANCED with premium travel section */}
         {/* Mobile Menu - Responsive Upgrade */}
-{mobileOpen && (
-  <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
-    <div className="px-4 pt-4 pb-6 space-y-3">
-
-      {/* Home */}
-      <Link
-        to="/"
-        onClick={() => setMobileOpen(false)}
-        className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-      >
-        Home
-      </Link>
-
-      {/* Trekking Dropdown */}
-      <div>
-        <button
-          className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() =>
-            setActiveDropdown(activeDropdown === "mob-trekking" ? null : "mob-trekking")
-          }
-        >
-          Trekking in Nepal
-          <ChevronDown
-            size={18}
-            className={`transition-transform duration-200 ${
-              activeDropdown === "mob-trekking" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {activeDropdown === "mob-trekking" && (
-          <div className="pl-4 pt-2">
-            <Treks />
-          </div>
-        )}
-      </div>
-
-      {/* Tours Dropdown */}
-      <div>
-        <button
-          className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() =>
-            setActiveDropdown(activeDropdown === "mob-tours" ? null : "mob-tours")
-          }
-        >
-          Tours in Nepal
-          <ChevronDown
-            size={18}
-            className={`transition-transform duration-200 ${
-              activeDropdown === "mob-tours" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {activeDropdown === "mob-tours" && (
-          <div className="pl-4 pt-2">
-            <ToursDropdown minimal />
-          </div>
-        )}
-      </div>
-
-      {/* Travel Info Dropdown */}
-      <div>
-        <button
-          className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() =>
-            setActiveDropdown(activeDropdown === "mob-travel" ? null : "mob-travel")
-          }
-        >
-          Travel Info
-          <ChevronDown
-            size={18}
-            className={`transition-transform duration-200 ${
-              activeDropdown === "mob-travel" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {activeDropdown === "mob-travel" && (
-          <div className="pl-4 pt-2 space-y-2">
-            {travelItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  to={item.route}
-                  key={item.name}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 text-sm"
-                >
-                  <Icon className={`w-5 h-5 ${item.color}`} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* About Us */}
-      <div>
-        <button
-          className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-          onClick={() =>
-            setActiveDropdown(activeDropdown === "mob-about" ? null : "mob-about")
-          }
-        >
-          About Us
-          <ChevronDown
-            size={18}
-            className={`transition-transform duration-200 ${
-              activeDropdown === "mob-about" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {activeDropdown === "mob-about" && (
-          <div className="pl-4 pt-2 space-y-1">
-            {aboutItems.map((item) => (
+        {mobileOpen && (
+          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+            <div className="px-4 pt-4 pb-6 space-y-3">
+              {/* Home */}
               <Link
-                key={item.path}
-                to={item.path}
+                to="/"
                 onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2 rounded-md hover:bg-gray-100 text-sm text-gray-700"
+                className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
               >
-                {item.label}
+                Home
               </Link>
-            ))}
+
+              {/* Trekking Dropdown */}
+              <div>
+                <button
+                  className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === "mob-trekking" ? null : "mob-trekking"
+                    )
+                  }
+                >
+                  Trekking in Nepal
+                  <ChevronDown
+                    size={18}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "mob-trekking" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {activeDropdown === "mob-trekking" && (
+                  <div className="pl-2 pr-2 pt-3 pb-3 bg-gray-50 rounded-md max-h-[70vh] overflow-y-auto">
+                    <Treks minimal />
+                  </div>
+                )}
+              </div>
+
+              {/* Tours Dropdown */}
+              <div>
+                <button
+                  className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === "mob-tours" ? null : "mob-tours"
+                    )
+                  }
+                >
+                  Tours in Nepal
+                  <ChevronDown
+                    size={18}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "mob-tours" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {activeDropdown === "mob-tours" && (
+                  <div className="pl-4 pt-2">
+                    <ToursDropdown minimal />
+                  </div>
+                )}
+              </div>
+
+              {/* Travel Info Dropdown */}
+              <div>
+                <button
+                  className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === "mob-travel" ? null : "mob-travel"
+                    )
+                  }
+                >
+                  Travel Info
+                  <ChevronDown
+                    size={18}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "mob-travel" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {activeDropdown === "mob-travel" && (
+                  <div className="pl-4 pt-2 space-y-2">
+                    {travelItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          to={item.route}
+                          key={item.name}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 text-sm"
+                        >
+                          <Icon className={`w-5 h-5 ${item.color}`} />
+                          <span>{item.name}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* About Us */}
+              <div>
+                <button
+                  className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === "mob-about" ? null : "mob-about"
+                    )
+                  }
+                >
+                  About Us
+                  <ChevronDown
+                    size={18}
+                    className={`transition-transform duration-200 ${
+                      activeDropdown === "mob-about" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {activeDropdown === "mob-about" && (
+                  <div className="pl-4 pt-2 space-y-1">
+                    {aboutItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setMobileOpen(false)}
+                        className="block px-3 py-2 rounded-md hover:bg-gray-100 text-sm text-gray-700"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Blog & Contact */}
+              <Link
+                to="/blog"
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              >
+                Blog
+              </Link>
+              <Link
+                to="/contact-us"
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              >
+                Contact Us
+              </Link>
+
+              {/* Plan Your Trip CTA */}
+              <Link
+                to="/plan"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full mt-4 bg-yellow-600 hover:bg-yellow-700 text-white text-center py-3 rounded-lg font-semibold shadow"
+              >
+                Plan Your Trip
+              </Link>
+            </div>
           </div>
         )}
-      </div>
-
-      {/* Blog & Contact */}
-      <Link
-        to="/blog"
-        onClick={() => setMobileOpen(false)}
-        className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-      >
-        Blog
-      </Link>
-      <Link
-        to="/contact-us"
-        onClick={() => setMobileOpen(false)}
-        className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-      >
-        Contact Us
-      </Link>
-
-      {/* Plan Your Trip CTA */}
-      <Link
-        to="/plan"
-        onClick={() => setMobileOpen(false)}
-        className="block w-full mt-4 bg-yellow-600 hover:bg-yellow-700 text-white text-center py-3 rounded-lg font-semibold shadow"
-      >
-        Plan Your Trip
-      </Link>
-    </div>
-  </div>
-)}
-
-        
       </nav>
     </header>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect, useRef } from "react";
 // import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -1281,8 +1260,8 @@ export default function ImprovedNavbar() {
 //         {/* Mobile Menu - Enhanced Responsive Design */}
 //         <div
 //           className={`lg:hidden transition-all duration-300 ease-in-out ${
-//             mobileOpen 
-//               ? "max-h-screen opacity-100 visible" 
+//             mobileOpen
+//               ? "max-h-screen opacity-100 visible"
 //               : "max-h-0 opacity-0 invisible overflow-hidden"
 //           }`}
 //         >
