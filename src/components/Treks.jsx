@@ -50,7 +50,7 @@ export default function Treks({ minimal = false }) {
 
   if (minimal) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.entries(treksByRegion)
           .slice(0, 2)
           .map(([region, list]) => (

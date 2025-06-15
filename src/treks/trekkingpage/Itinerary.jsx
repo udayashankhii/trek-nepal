@@ -22,7 +22,7 @@ export default function Itinerary({
   };
 
   const toggleDay = (index) => {
-    // when “all” is open, ignore individual toggles
+    // when "all" is open, ignore individual toggles
     if (openAll) return;
     setOpenDay(openDay === index ? null : index);
   };
@@ -68,15 +68,6 @@ export default function Itinerary({
               {/* expanded content */}
               {isOpen && (
                 <div className="p-6 space-y-4 text-gray-700">
-                  {/* optional image */}
-                  {dayData.image && (
-                    <img
-                      src={dayData.image}
-                      alt={`Day ${dayNumber} – ${dayData.title}`}
-                      className="w-full h-48 object-cover rounded-md"
-                    />
-                  )}
-
                   {/* description */}
                   {dayData.description && <p>{dayData.description}</p>}
 

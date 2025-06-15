@@ -1,11 +1,11 @@
 // src/treks/trekkingpage/TreksDetailPage.jsx
 import React, { useRef } from "react";
 import everestBaseCamp from "../../data/everestBaseCamp.jsx";
-
+import mockTrekHighlights from "../../data/highlights.js"; // Mock data for highlights
 // UI Components
 import HeroSection from "./Hero";
 // import TrekActions from "../../components/trek/TrekActions";
-import TrekSummary from "./TrekSummary";
+import TrekSummary from "./TrekOverview.jsx";
 import TrekHighlights from "./TrekHighlights";
 import TrekDescription from "./TrekDescription";
 import Itinerary from "./Itinerary";
@@ -13,7 +13,7 @@ import CostInclusions from "./CostInclusions";
 import FAQSection from "./FAQSection";
 import GallerySection from "./Gallery";
 import TestimonialsSection from "./Testimonials";
-import TrekMap from "./TrekMap";
+// import TrekMap from "./TrekMap";
 import ElevationChart from "./ElevationChart";
 import TrekContactCard from "./ContactForm";
 import BookingCard from "./BookingCard";
@@ -25,6 +25,8 @@ import TrekGallery from "./Gallery";
 import StickyBox from "react-sticky-box";
 import KeyInfo from "./Info.jsx";
 import ReviewSection from "./Reviews.jsx";
+import Overview from "./TrekHighlights";
+import TrekOverview from "./TrekOverview.jsx";
 
 export default function TrekDetailPage() {
   const {
@@ -128,11 +130,6 @@ export default function TrekDetailPage() {
     <div className="bg-gray-50">
       {/* Hero + Actions */}
       <HeroSection {...hero} />
-      <TrekActions
-        trekId={trekId}
-        pdfUrl={hero.pdfLink}
-        onViewMap={scrollToMap} // pass the scroll handler
-      />
 
       {/* Content */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4 py-10">
@@ -142,25 +139,26 @@ export default function TrekDetailPage() {
             rating={summary.rating}
             reviews={summary.reviews}
           />
-          <TrekSummary overview={summary.overview} />
-          <TrekHighlights highlights={highlights} />
-          <TrekDescription
+          {/* <Overview /> */}
+          <TrekOverview overview={summary.overview} />
+          <TrekHighlights highlights={mockTrekHighlights} />
+          {/* <TrekDescription
             overview={description.overview}
             sections={description.sections}
-          />
+          /> */}
           <CostInclusions inclusions={inclusions} exclusions={exclusions} />
           <Itinerary itinerary={itinerary} />
+
           <div></div>
           {/* <TestimonialsSection testimonials={testimonials} /> */}
           {/* Map Section */}
-          <div ref={mapRef}>
+          {/* <div ref={mapRef}>
             <TrekMap mapImage={mapImage} mapDescription={mapDescription} />
-          </div>
+          </div> */}
           {/* <FAQSection faqCategories={faqs} /> */}
           {/* <ElevationChart data={elevationData} />
           <TrekContactCard trekDetails={{ trekName, basePrice, discount }} /> */}
         </div>
-
         <aside className="w-full lg:w-96">
           <StickyBox offsetTop={200} offsetBottom={150}>
             <BookingCard
@@ -182,7 +180,18 @@ export default function TrekDetailPage() {
         dates={dateSlots}
         trekName="Everest Base Camp Trek"
       />
-      <ReviewSection/>
+      <TrekActions
+        trekId={trekId}
+        pdfUrl={hero.pdfLink}
+        onViewMap={scrollToMap} // pass the scroll handler
+      />
+      <ElevationChart
+        elevationData={elevationData}
+        trekName={trekName}
+        showFullscreen={true}
+      />
+
+      <ReviewSection />
       <SimilarItineraries treks={similarTreks} exploreLink="/treks" />
     </div>
   );

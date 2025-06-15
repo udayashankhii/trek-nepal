@@ -32,7 +32,7 @@ import AboutUsDropdown from "./About us/About-us";
 import BookingPage from "./Book/Customize-trip/TrekBooking";
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 import TrekActions from "./treks/trekkingpage/TrekAction.jsx";
-import TrekMap from "./treks/trekkingpage/TrekMap";
+// import TrekMap from "./treks/trekkingpage/TrekMap";
 import ElevationChart from "./treks/trekkingpage/ElevationChart";
 import TrekContactCard from "./treks/trekkingpage/ContactForm";
 import KeyInfo from "./treks/trekkingpage/Info.jsx";
@@ -49,6 +49,7 @@ import PrivacyPolicyPage from "./About us/Policy.jsx";
 import LegalDocumentsPage from "./About us/LegalDocument.jsx";
 import OurTeamPage from "./About us/Ourteam.jsx";
 import OverviewPage from "./pages/About-Us";
+import TrekOverview from "./treks/trekkingpage/TrekOverview.jsx";
 
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (
@@ -137,10 +138,11 @@ const App = () => (
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/customize-trip" element={<CustomizeTripPage />} />
         <Route path="/trip-booking" element={<BookingPage />} />
+        <Route path="/trekoverview" element={<TrekOverview />} />
 
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about-us" element={<OverviewPage />} />
-        <Route path="/about-us/our-team" element={<OurTeamPage/>} />
+        <Route path="/about-us/our-team" element={<OurTeamPage />} />
         <Route
           path="/about-us/how-to-make-a-payment"
           element={<PaymentGuide />}
