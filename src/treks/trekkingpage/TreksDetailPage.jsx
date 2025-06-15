@@ -24,6 +24,7 @@ import { MessageCircle } from "lucide-react";
 import TrekGallery from "./Gallery";
 import StickyBox from "react-sticky-box";
 import KeyInfo from "./Info.jsx";
+import ReviewSection from "./Reviews.jsx";
 
 export default function TrekDetailPage() {
   const {
@@ -181,6 +182,7 @@ export default function TrekDetailPage() {
         dates={dateSlots}
         trekName="Everest Base Camp Trek"
       />
+      <ReviewSection/>
       <SimilarItineraries treks={similarTreks} exploreLink="/treks" />
     </div>
   );

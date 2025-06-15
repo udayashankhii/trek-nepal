@@ -239,7 +239,7 @@ export default function ImprovedNavbar() {
           >
             {/* bumped logo height, auto width */}
             <img
-              src="/logo4.webp"
+              src="/logo5.webp"
               alt="EverTrek Nepal Logo"
               className="h-52 w-48 object-contain"
             />
