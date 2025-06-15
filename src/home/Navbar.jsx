@@ -546,23 +546,24 @@ export default function ImprovedNavbar() {
           <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 pt-4 pb-6 space-y-3">
               {/* Home */}
-              <Link
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className="block py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              >
-                Home
-              </Link>
 
               {/* Trekking Dropdown */}
               <div>
                 <button
                   className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  onClick={() =>
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
                     setActiveDropdown(
                       activeDropdown === "mob-trekking" ? null : "mob-trekking"
-                    )
-                  }
+                    );
+                  }}
+                  // Add touch-specific styles
+                  style={{
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
                 >
                   Trekking in Nepal
                   <ChevronDown
@@ -573,8 +574,8 @@ export default function ImprovedNavbar() {
                   />
                 </button>
                 {activeDropdown === "mob-trekking" && (
-                  <div className="pl-2 pr-2 pt-3 pb-3 bg-gray-50 rounded-md max-h-[70vh] overflow-y-auto">
-                    <Treks minimal />
+                  <div className="pl-2 pr-2 pt-3 pb-3 bg-gray-50 rounded-md max-h-[50vh] overflow-y-auto">
+                    <Treks minimal onNavigate={() => setMobileOpen(false)} />
                   </div>
                 )}
               </div>
@@ -583,11 +584,13 @@ export default function ImprovedNavbar() {
               <div>
                 <button
                   className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "mob-tours" ? null : "mob-tours"
-                    )
-                  }
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setActiveDropdown((prev) =>
+                      prev === "mob-tours" ? null : "mob-tours"
+                    );
+                  }}
                 >
                   Tours in Nepal
                   <ChevronDown
@@ -597,6 +600,7 @@ export default function ImprovedNavbar() {
                     }`}
                   />
                 </button>
+
                 {activeDropdown === "mob-tours" && (
                   <div className="pl-4 pt-2">
                     <ToursDropdown minimal />
@@ -608,11 +612,13 @@ export default function ImprovedNavbar() {
               <div>
                 <button
                   className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "mob-travel" ? null : "mob-travel"
-                    )
-                  }
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setActiveDropdown((prev) =>
+                      prev === "mob-travel" ? null : "mob-travel"
+                    );
+                  }}
                 >
                   Travel Info
                   <ChevronDown
@@ -622,6 +628,7 @@ export default function ImprovedNavbar() {
                     }`}
                   />
                 </button>
+
                 {activeDropdown === "mob-travel" && (
                   <div className="pl-4 pt-2 space-y-2">
                     {travelItems.map((item) => {
@@ -646,11 +653,13 @@ export default function ImprovedNavbar() {
               <div>
                 <button
                   className="w-full flex justify-between items-center py-2 px-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "mob-about" ? null : "mob-about"
-                    )
-                  }
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setActiveDropdown((prev) =>
+                      prev === "mob-about" ? null : "mob-about"
+                    );
+                  }}
                 >
                   About Us
                   <ChevronDown
@@ -660,6 +669,7 @@ export default function ImprovedNavbar() {
                     }`}
                   />
                 </button>
+
                 {activeDropdown === "mob-about" && (
                   <div className="pl-4 pt-2 space-y-1">
                     {aboutItems.map((item) => (
@@ -693,13 +703,6 @@ export default function ImprovedNavbar() {
               </Link>
 
               {/* Plan Your Trip CTA */}
-              <Link
-                to="/plan"
-                onClick={() => setMobileOpen(false)}
-                className="block w-full mt-4 bg-yellow-600 hover:bg-yellow-700 text-white text-center py-3 rounded-lg font-semibold shadow"
-              >
-                Plan Your Trip
-              </Link>
             </div>
           </div>
         )}

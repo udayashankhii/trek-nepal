@@ -49,36 +49,53 @@ export default function Treks({ minimal = false }) {
   const [activeRegion, setActiveRegion] = useState(null);
 
   if (minimal) {
+    const [openMobileRegion, setOpenMobileRegion] = useState(null);
+
+    const handleToggle = (region) => {
+      setOpenMobileRegion((prev) => (prev === region ? null : region));
+    };
+
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-4">
         {Object.entries(treksByRegion)
           .slice(0, 2)
           .map(([region, list]) => (
-            <div key={region} className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
-                {region} Region
-              </h3>
-              <ul className="space-y-3">
-                {list.map((trek) => {
-                  const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
-                  return (
-                    <li
-                      key={trek.name}
-                      className="flex items-center justify-between group"
-                    >
-                      <Link
-                        to={`/treks/${slug}`}
-                        className="text-slate-800 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3"
+            <div key={region} className="space-y-2">
+              <div
+                className="flex items-center justify-between cursor-pointer border-b border-slate-200 pb-2"
+                onClick={() => handleToggle(region)}
+              >
+                <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+                  {region} Region
+                </h3>
+                <ChevronIcon isOpen={openMobileRegion === region} />
+              </div>
+
+              {openMobileRegion === region && (
+                <ul className="space-y-3 pl-2 transition-all duration-300">
+                  {list.map((trek) => {
+                    const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
+                    return (
+                      <li
+                        key={trek.name}
+                        className="flex items-center justify-between group"
                       >
-                        {trek.name}
-                      </Link>
-                      <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0">
-                        {trek.duration.toLowerCase()}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
+                        <Link
+                          to={`/treks/${slug}`}
+                          onClick={onNavigate}
+                          className="text-slate-800 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3"
+                        >
+                          {trek.name}
+                        </Link>
+
+                        <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0">
+                          {trek.duration.toLowerCase()}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           ))}
       </div>
