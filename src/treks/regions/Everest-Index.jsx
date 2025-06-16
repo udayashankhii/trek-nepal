@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import TrekCard from "./TrekCard";
+import TrekCard from "../TrekCard";
 
 // Sample data for premium Everest treks
 const treks = [

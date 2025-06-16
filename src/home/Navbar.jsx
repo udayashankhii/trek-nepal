@@ -204,7 +204,7 @@ export default function ImprovedNavbar() {
       ref={containerRef}
     >
       {/* Top Bar */}
-      <div className="bg-green-500 text-white text-sm py-2 px-4 flex justify-between items-center">
+      <div className="bg-[#062c5b] text-white text-sm py-2 px-4 flex justify-between items-center">
         <span>
           Free Consultation:
           <a

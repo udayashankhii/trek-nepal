@@ -12,6 +12,9 @@ import PropTypes from "prop-types";
  *   - region: string (e.g. "everest")
  */
 export default function TrekCard({ trek, region }) {
+  const priceValue =
+    typeof trek.price === "object" ? trek.price?.base : trek.price;
+
   return (
     <Link to={`/treks/${region}/${trek.slug}`} className="block group">
       <div className="bg-white rounded-xl shadow-md overflow-hidden group-hover:shadow-xl transition-shadow duration-300">
@@ -36,7 +39,7 @@ export default function TrekCard({ trek, region }) {
           <div className="flex items-center text-sm text-gray-600 space-x-2">
             <span>{trek.days} days</span>
             <span>•</span>
-            <span>${trek.price}</span>
+            <span>${priceValue}</span>
           </div>
 
           <div className="flex items-center">
@@ -66,7 +69,13 @@ TrekCard.propTypes = {
     image: PropTypes.string.isRequired,
     badge: PropTypes.string,
     days: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    price: PropTypes.oneOfType([
+      PropTypes.shape({
+        base: PropTypes.number.isRequired,
+      }),
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     rating: PropTypes.number.isRequired,
     reviews: PropTypes.number.isRequired,
   }).isRequired,

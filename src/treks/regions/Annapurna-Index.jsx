@@ -1,11 +1,10 @@
-
 // src/pages/treks/AnnapurnaLuxuryPage.jsx
 import React, { useState } from "react";
 import { Sparkles, UserCheck, Thermometer } from "lucide-react";
 import { FaHelicopter } from "react-icons/fa";
 import { motion } from "framer-motion";
 import ExperienceSelector from "./ExperienceSelector";
-import TrekCard from "./TrekCard";
+import TrekCard from "../TrekCard";
 
 const AnnapurnaLuxuryPage = () => {
   const [selectedExperience, setSelectedExperience] = useState("all");

@@ -13,7 +13,7 @@ import TourCard from "./tours/TourCard";
 import TourIndexPage from "./tours/TourPage";
 import Navbar from "./home/Navbar";
 import Footer from "./home/Footer";
-import TrekCard from "./treks/regions/TrekCard";
+import TrekCard from "./treks/TrekCard.jsx";
 import TrekDetailPage from "./treks/trekkingpage/TreksDetailPage";
 // import EverestTrekIndex from "./treks/regions/everest";
 import AnnapurnaLuxuryPage from "./treks/regions/Annapurna-Index";
@@ -34,7 +34,6 @@ import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 import TrekActions from "./treks/trekkingpage/TrekAction.jsx";
 // import TrekMap from "./treks/trekkingpage/TrekMap";
 import ElevationChart from "./treks/trekkingpage/ElevationChart";
-import TrekContactCard from "./treks/trekkingpage/ContactForm";
 import KeyInfo from "./treks/trekkingpage/Info.jsx";
 import TravelIndex from "./travel-info/Travel-items.jsx";
 import VisaInformationPage from "./travel-info/Visa-Info.jsx";
@@ -43,7 +42,6 @@ import PackingInformationPage from "./travel-info/Packing-List.jsx";
 import TransportationPage from "./travel-info/Trasnportation.jsx";
 import FAQPage from "./travel-info/FAQs.jsx";
 import BlogPage from "./blog/Blogs.jsx";
-import TrekDescription from "./treks/trekkingpage/TrekDescription.jsx";
 import PaymentGuide from "./About us/How-to-make-a-payment.jsx";
 import PrivacyPolicyPage from "./About us/Policy.jsx";
 import LegalDocumentsPage from "./About us/LegalDocument.jsx";
@@ -128,10 +126,11 @@ const App = () => (
           path="/everest-base-camp"
           element={<Itinerary days={everestBaseCamp.itinerary} />}
         />
-        <Route path="/trekdetailpage" element={<TrekDescription />} />
+        {/* <Route path="/trekdetailpage" element={<TrekDescription />} /> */}
         <Route path="/trekdetailpage" element={<CostAndDate />} />
+        <Route path="/treks/:slug" element={<TrekDetailPage />} />
 
-        {/* catch-all: any /tours/:slug → /trekdetailpage */}
+        {/* catch-all: any /tours/:slug →  */}
         <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
         <Route path="/everest/:trekId" element={<TrekDetailPage />} />
         <Route path="/about-us/*" element={<AboutUsPage />} />
