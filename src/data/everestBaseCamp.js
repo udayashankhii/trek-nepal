@@ -519,22 +519,22 @@ const everestBaseCamp = {
         "Single room supplements available on request (subject to availability)",
       ],
     },
-    {
-      id: 3,
-      heading: "Health & Safety",
-      articles: [
-        "Altitude sickness is the primary concern on this trek, with proper acclimatization being crucial.",
-        "Our guides are trained in first aid and carry comprehensive medical kits.",
-        "Emergency helicopter evacuation can be arranged if needed (insurance required).",
-      ],
-      bullets: [
-        "Two acclimatization days built into the itinerary",
-        "Experienced guides trained in altitude sickness recognition",
-        "Comprehensive first aid kit carried by guide",
-        "Emergency communication devices available",
-        "Travel insurance with high-altitude coverage mandatory",
-      ],
-    },
+    // {
+    //   id: 3,
+    //   heading: "Health & Safety",
+    //   articles: [
+    //     "Altitude sickness is the primary concern on this trek, with proper acclimatization being crucial.",
+    //     "Our guides are trained in first aid and carry comprehensive medical kits.",
+    //     "Emergency helicopter evacuation can be arranged if needed (insurance required).",
+    //   ],
+    //   bullets: [
+    //     "Two acclimatization days built into the itinerary",
+    //     "Experienced guides trained in altitude sickness recognition",
+    //     "Comprehensive first aid kit carried by guide",
+    //     "Emergency communication devices available",
+    //     "Travel insurance with high-altitude coverage mandatory",
+    //   ],
+    // },
   ],
 
   // ==================== HEALTH & SAFETY ====================

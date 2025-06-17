@@ -5,7 +5,8 @@ import { fetchTrek, fetchSimilarTreks } from "../../api/trekService";
 import mockTrekHighlights from "../../data/highlights.js";
 import everestBaseCamp from "../../data/everestBaseCamp.js";
 // UI Components
-import { TrekAddInfo } from "./AdditionalInfo.jsx";
+import TrekAddInfo from "./AdditionalInfo.jsx";
+
 import {
   MapPinIcon,
   CalendarIcon,
@@ -381,12 +382,8 @@ export default function TrekDetailPage() {
           </StickyBox>
         </aside>
       </div>
-      <TrekAddInfo
-        trek={{
-          additionalInfo: trek.additionalInfo,
-          healthSafety: trek.healthSafety,
-        }}
-      />
+      <TrekAddInfo trek={{ additionalInfo: trek.additionalInfo }} />
+
 
       {/* Full Width Gallery */}
       {images.length > 0 && (
