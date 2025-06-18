@@ -10,7 +10,6 @@ import {
   Calendar,
   Users,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import toursData from "../data/toursdata.js";
 
 function TourIndexPage() {

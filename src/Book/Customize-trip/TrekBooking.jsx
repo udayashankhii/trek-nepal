@@ -699,22 +699,14 @@ export default function SinglePageBookingForm() {
                     We Accept
                   </h4>
                   <div className="flex items-center space-x-3">
-                    <img src="/images/visa.png" alt="Visa" className="h-8" />
+                    <img src="/visa.png" alt="Visa" className="h-8" />
                     <img
-                      src="/images/mastercard.png"
+                      src="/mastercard.png"
                       alt="Mastercard"
                       className="h-8"
                     />
-                    <img
-                      src="/images/stripe.png"
-                      alt="Stripe"
-                      className="h-8"
-                    />
-                    <img
-                      src="/images/paypal.png"
-                      alt="PayPal"
-                      className="h-8"
-                    />
+                    <img src="/stipe.png" alt="Stripe" className="h-8" />
+                    <img src="/paypal.png" alt="PayPal" className="h-8" />
                   </div>
                 </div>
 

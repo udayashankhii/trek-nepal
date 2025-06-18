@@ -11,7 +11,6 @@ import {
 import Home from "./home/Home";
 import TourCard from "./tours/TourCard";
 import TourIndexPage from "./tours/TourPage";
-import Navbar from "./home/Navbar";
 import Footer from "./home/Footer";
 import TrekCard from "./treks/TrekCard.jsx";
 import TrekDetailPage from "./treks/trekkingpage/TreksDetailPage";
@@ -28,7 +27,6 @@ import everestBaseCamp from "./data/everestBaseCamp";
 import Itinerary from "./treks/trekkingpage/Itinerary";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
-import AboutUsDropdown from "./About us/About-us";
 import BookingPage from "./Book/Customize-trip/TrekBooking";
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 import TrekActions from "./treks/trekkingpage/TrekAction.jsx";
@@ -48,11 +46,12 @@ import LegalDocumentsPage from "./About us/LegalDocument.jsx";
 import OurTeamPage from "./About us/Ourteam.jsx";
 import OverviewPage from "./pages/About-Us";
 import TrekOverview from "./treks/trekkingpage/TrekOverview.jsx";
+import ImprovedNavbar from "./navbarEssentials/Navbar.jsx";
 
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (
   <>
-    <Navbar />
+    <ImprovedNavbar />
     <main className="min-h-[calc(100vh-8rem)]">
       {/* Outlet renders the matching child route */}
       <Outlet />

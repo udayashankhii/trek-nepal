@@ -1,48 +1,144 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const Hero = ({ searchTerm, setSearchTerm }) => {
+const heroSlides = [
+  {
+    id: 1,
+    title: "Everest Base Camp",
+    subtitle: "The Ultimate Himalayan Adventure",
+    description:
+      "Journey to the base of the world's highest peak through stunning Sherpa villages and ancient monasteries.",
+    image: "/everest.jpeg",
+  },
+  {
+    id: 2,
+    title: "Annapurna Circuit",
+    subtitle: "Classic Mountain Loop Trek",
+    description:
+      "Experience diverse landscapes from subtropical forests to high mountain deserts in this legendary circuit.",
+    image: "/annapurna.jpeg",
+  },
+  {
+    id: 3,
+    title: "Manaslu Circuit",
+    subtitle: "Off the Beaten Path",
+    description:
+      "Discover untouched mountain wilderness and authentic Tibetan culture in this remote Himalayan region.",
+    image: "/annapurna.jpeg",
+  },
+  {
+    id: 4,
+    title: "Langtang Valley",
+    subtitle: "Valley of Glaciers",
+    description:
+      "Trek through pristine forests and traditional Tamang villages beneath towering Himalayan peaks.",
+    image: "/moutainimage.avif",
+  },
+];
+
+export default function HeroSection({
+  searchTerm = "",
+  setSearchTerm = () => {},
+}) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section
-      className="relative h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-      style={{
-        backgroundImage: "url('/trekkinginnepal.jpg')",
-      }}
-    >
-      {/* Optional Overlay (darken background for better text visibility) */}
-      <div className="absolute inset-0 bg-black opacity-30 z-0" />
-
-      <div className="text-white text-center px-4 z-10">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
-          Discover Nepal’s{" "}
-          <span className="text-yellow-400">Majestic Treks</span>
-        </h1>
-        <p className="text-xl md:text-2xl mb-4 max-w-2xl mx-auto">
-          Begin your once-in-a-lifetime Himalayan adventure with Nepal Nirvana
-          Adventours.
-        </p>
-
-        {/* Search Box */}
-        <div className="max-w-xl mx-auto bg-white rounded-full shadow-lg overflow-hidden">
-          <div className="flex items-center">
-            <span className="px-4 text-gray-500">
-              <FiSearch size={22} />
-            </span>
-            <input
-              type="text"
-              placeholder="Search trek or region..."
-              className="w-full py-3 px-2 text-gray-700 focus:outline-none"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+    <>
+      <style>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+      `}</style>
+      <section className="relative w-full h-full min-h-[400px] flex items-center overflow-hidden bg-gray-900">
+        {/* Crossfade Images */}
+        <div className="absolute inset-0 z-0 w-full h-full">
+          {heroSlides.map((slide, idx) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-[2500ms] ease-in-out ${
+                idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+              style={{
+                backgroundImage: `url(${slide.image})`,
+              }}
             />
-            <button className="bg-yellow-800 hover:bg-yellow-600 text-white px-6 py-3 transition-all">
-              Search
-            </button>
-          </div>
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
         </div>
-      </div>
-    </section>
+        {/* Main Content */}
+        <div className="relative z-10 w-full flex flex-col justify-center items-start h-full px-6 max-w-3xl mx-auto">
+          <h1
+            className="text-white text-5xl md:text-7xl font-extrabold mb-4 leading-tight"
+            style={{
+              animation: "fadeInUp 0.8s ease-out forwards",
+              animationDelay: "0.1s",
+            }}
+          >
+            {heroSlides[currentSlide].title}
+          </h1>
+          <h2
+            className="text-amber-400 text-2xl md:text-3xl font-light mb-2"
+            style={{
+              animation: "fadeInUp 0.8s ease-out forwards",
+              animationDelay: "0.2s",
+            }}
+          >
+            {heroSlides[currentSlide].subtitle}
+          </h2>
+          <p
+            className="text-white/90 text-xl md:text-2xl mb-8 max-w-2xl"
+            style={{
+              animation: "fadeInUp 0.8s ease-out forwards",
+              animationDelay: "0.3s",
+            }}
+          >
+            {heroSlides[currentSlide].description}
+          </p>
+          <form
+            className="w-full max-w-xl"
+            style={{
+              animation: "fadeInUp 0.8s ease-out forwards",
+              animationDelay: "0.5s",
+            }}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div className="flex items-center bg-white/80 backdrop-blur-md rounded-full shadow-lg px-4 py-2 border border-white/30">
+              <FiSearch className="text-gray-500 mr-2" size={22} />
+              <input
+                type="text"
+                placeholder="Search trek, region, or adventure..."
+                className="flex-1 bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-lg"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Search treks"
+              />
+              <button
+                type="submit"
+                className="ml-4 px-6 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full transition"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+          <button
+            className="mt-8 px-8 py-4 bg-white text-gray-900 font-bold rounded-full shadow-lg hover:bg-gray-100 transition"
+            style={{
+              animation: "fadeInUp 0.8s ease-out forwards",
+              animationDelay: "0.7s",
+            }}
+          >
+            Explore Treks
+          </button>
+        </div>
+      </section>
+    </>
   );
-};
-
-export default Hero;
+}

@@ -7,8 +7,8 @@ import PropTypes from "prop-types";
 export default function RegionCard({
   name,
   image,
-  description,
-  itinerariesCount,
+  description = "",
+  itinerariesCount = 0,
   link,
 }) {
   return (
@@ -72,7 +72,4 @@ RegionCard.propTypes = {
   description: PropTypes.string,
 };
 
-RegionCard.defaultProps = {
-  itinerariesCount: 0,
-  description: "",
-};
+// Remove the defaultProps completely - no longer needed

@@ -13,6 +13,7 @@ const AnnapurnaLuxuryPage = () => {
     {
       id: 1,
       title: "Annapurna Sanctuary Luxury Heli-Trek",
+      slug: "annapurna-sanctuary-luxury-heli-trek", // Add this
       price: 7500,
       duration: "9 Days",
       highlights: [
@@ -34,6 +35,7 @@ const AnnapurnaLuxuryPage = () => {
     {
       id: 2,
       title: "Poon Hill & Ghorepani Premium Trek",
+      slug: "poon-hill-ghorepani-premium-trek", // Add this
       price: 5200,
       duration: "7 Days",
       highlights: [

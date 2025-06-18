@@ -1,17 +1,18 @@
 // src/pages/Home.jsx
 import React from "react";
-import Navbar from "./Navbar";
+import Navbar from "../navbarEssentials/Navbar";
 import Hero from "./Hero";
 import Footer from "./Footer";
 import FeaturedTrek from "./FeaturedTreks";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Box, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Home() {
   return (
     <>
-      <Hero />
+      <section className="relative h-[70vh] ">
+        <Hero />
+      </section>
 
-      {/* ===== Best Treks Section ===== */}
       <section className="py-12 px-6 bg-gray-50">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -41,9 +42,7 @@ export default function Home() {
         {/* your 3-col Featured Trek grid */}
         <FeaturedTrek />
       </section>
-
       {/* …other sections like Testimonials, etc. */}
-
     </>
   );
 }

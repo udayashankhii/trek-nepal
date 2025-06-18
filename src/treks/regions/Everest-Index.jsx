@@ -11,6 +11,7 @@ const treks = [
     id: 1,
     image: "/annapurna.jpeg",
     title: "Luxury Everest Base Camp Trek & Heli Return",
+    slug: "luxury-everest-base-camp-trek-heli-return", // Add this
     days: 10,
     price: 6999,
     reviews: 38,
@@ -22,6 +23,7 @@ const treks = [
     id: 2,
     image: "/everest.jpeg",
     title: "Gokyo Lakes & Renjo La Pass Premium Trek",
+    slug: "gokyo-lakes-renjo-la-pass-premium-trek", // Add this
     days: 14,
     price: 6290,
     reviews: 25,
@@ -33,6 +35,7 @@ const treks = [
     id: 3,
     image: "/trekkinginnepal.jpg",
     title: "Everest Panorama Luxury Lodge Trek",
+    slug: "everest-panorama-luxury-lodge-trek", // Add this
     days: 8,
     price: 5190,
     reviews: 19,
@@ -44,6 +47,7 @@ const treks = [
     id: 4,
     image: "/images/everest-classic.jpg",
     title: "Classic Everest Base Camp Trek",
+    slug: "classic-everest-base-camp-trek", // Add this
     days: 14,
     price: 3999,
     reviews: 52,
@@ -52,6 +56,7 @@ const treks = [
     location: "Everest Base Camp",
   },
 ];
+
 
 // Sample highlights
 const highlights = [

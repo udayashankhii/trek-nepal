@@ -3,49 +3,45 @@ import { Link } from "react-router-dom";
 
 const treksByRegion = {
   Everest: [
-    { name: "Everest Base Camp Trek", duration: "14 Days", popular: true },
-    { name: "Sleep at Base Camp on Everest Trek", duration: "15 Days" },
-    {
-      name: "EBC Trek via Gokyo with Helicopter Return",
-      duration: "15 Days",
-      popular: true,
-    },
-    { name: "EBC Trek Helicopter Return from Pheriche", duration: "11 Days" },
-    { name: "Everest Three High Passes Trek", duration: "18 Days" },
-    { name: "Budget Everest Base Camp Trek", duration: "12 Days" },
-    { name: "Gokyo Valley Circuit Trek", duration: "13 Days" },
+    { name: "Everest Base Camp Trek", duration: "14 days", popular: true },
+    { name: "Sleep at Base Camp on Everest Trek", duration: "15 days" },
+    { name: "EBC Trek via Gokyo with Helicopter Return", duration: "15 days", popular: true },
+    { name: "EBC Trek Helicopter Return from Pheriche", duration: "11 days" },
+    { name: "Everest Three High Passes Trek", duration: "18 days" },
+    { name: "Budget Everest Base Camp Trek", duration: "12 days" },
+    { name: "Gokyo Valley Circuit Trek", duration: "13 days" },
   ],
   Annapurna: [
-    { name: "Annapurna Base Camp Trek", duration: "14 Days", popular: true },
-    { name: "Annapurna North Base Camp Trek", duration: "12 Days" },
-    { name: "Annapurna Circuit Trek", duration: "12 Days", popular: true },
-    { name: "Full Annapurna Circuit Trek", duration: "17 Days" },
-    { name: "Ghorepani Poonhill Trek", duration: "8 Days" },
-    { name: "Mardi Himal Trek", duration: "9 Days", popular: true },
-    { name: "Poon Hill Trek", duration: "2 Days" },
+    { name: "Annapurna Base Camp Trek", duration: "14 days", popular: true },
+    { name: "Annapurna North Base Camp Trek", duration: "12 days" },
+    { name: "Annapurna Circuit Trek", duration: "12 days", popular: true },
+    { name: "Full Annapurna Circuit Trek", duration: "17 days" },
+    { name: "Ghorepani Poonhill Trek", duration: "8 days" },
+    { name: "Mardi Himal Trek", duration: "9 days", popular: true },
+    { name: "Poon Hill Trek", duration: "2 days" },
   ],
   Langtang: [
-    { name: "Langtang Valley Trek", duration: "10 Days", popular: true },
-    { name: "Langtang Gosainkunda Lake Trek", duration: "15 Days" },
-    { name: "Helambu Circuit Trek", duration: "8 Days" },
-    { name: "Tamang Heritage Trail Trek", duration: "10 Days" },
-    { name: "Langtang Ganja La Pass Trek", duration: "14 Days" },
+    { name: "Langtang Valley Trek", duration: "10 days", popular: true },
+    { name: "Langtang Gosainkunda Lake Trek", duration: "15 days" },
+    { name: "Helambu Circuit Trek", duration: "8 days" },
+    { name: "Tamang Heritage Trail Trek", duration: "10 days" },
+    { name: "Langtang Ganja La Pass Trek", duration: "14 days" },
   ],
   Manaslu: [
-    { name: "Manaslu Circuit Trek", duration: "14 Days", popular: true },
-    { name: "Short Manaslu Trek", duration: "11 Days" },
-    { name: "Manaslu Tsum Valley Trek", duration: "18 Days" },
-    { name: "Manaslu Annapurna Circuit Trek", duration: "23 Days" },
-    { name: "Tsum Valley Trek", duration: "15 Days" },
+    { name: "Manaslu Circuit Trek", duration: "14 days", popular: true },
+    { name: "Short Manaslu Trek", duration: "11 days" },
+    { name: "Manaslu Tsum Valley Trek", duration: "18 days" },
+    { name: "Manaslu Annapurna Circuit Trek", duration: "23 days" },
+    { name: "Tsum Valley Trek", duration: "15 days" },
   ],
   Mustang: [
-    { name: "Upper Mustang Trek", duration: "16 Days", popular: true },
-    { name: "Upper Mustang Overland Tour", duration: "8 Days" },
-    { name: "Upper Mustang Tiji Festival Tour", duration: "12 Days" },
+    { name: "Upper Mustang Trek", duration: "16 days", popular: true },
+    { name: "Upper Mustang Overland Tour", duration: "8 days" },
+    { name: "Upper Mustang Tiji Festival Tour", duration: "12 days" },
   ],
 };
 
-export default function Treks({ minimal = false }) {
+export default function Treks({ minimal = false, onNavigate }) {
   const [activeRegion, setActiveRegion] = useState(null);
 
   if (minimal) {
@@ -102,23 +98,21 @@ export default function Treks({ minimal = false }) {
     );
   }
 
+  // Full desktop version with collapsible regions
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
         {Object.entries(treksByRegion).map(([region, list]) => {
-          // <-- declare regionSlug here
           const regionSlug = region.toLowerCase();
           return (
             <div key={region} className="space-y-4">
               <h3 className="flex items-center gap-2 border-b border-slate-200 pb-2">
-                {/* region name navigates */}
                 <Link
                   to={`/treks/${regionSlug}`}
                   className="flex-1 text-sm font-semibold text-slate-900 uppercase tracking-wider hover:text-emerald-600 transition-colors"
                 >
                   {region} Region
                 </Link>
-                {/* only this button toggles collapse */}
                 <button
                   onClick={() =>
                     setActiveRegion((prev) => (prev === region ? null : region))
@@ -128,6 +122,7 @@ export default function Treks({ minimal = false }) {
                   <ChevronIcon isOpen={activeRegion === region} />
                 </button>
               </h3>
+              
               <ul
                 className={`space-y-3 transition-all duration-300 ${
                   activeRegion && activeRegion !== region
