@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const heroSlides = [
   {
@@ -41,6 +42,7 @@ export default function HeroSection({
   setSearchTerm = () => {},
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,6 +50,20 @@ export default function HeroSection({
     }, 6000);
     return () => clearInterval(interval);
   }, []);
+
+
+const handleSearch = (e) => {
+  e.preventDefault();
+  if (searchTerm.trim()) {
+    // Navigate to search results page with search query
+    navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);  // Changed this line
+  }
+};
+
+
+  const handleExploreClick = () => {
+    navigate("/trekking-in-nepal");
+  };
 
   return (
     <>
@@ -108,7 +124,7 @@ export default function HeroSection({
               animation: "fadeInUp 0.8s ease-out forwards",
               animationDelay: "0.5s",
             }}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSearch}
           >
             <div className="flex items-center bg-white/80 backdrop-blur-md rounded-full shadow-lg px-4 py-2 border border-white/30">
               <FiSearch className="text-gray-500 mr-2" size={22} />
@@ -119,17 +135,20 @@ export default function HeroSection({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 aria-label="Search treks"
+                autoComplete="off"
               />
+
               <button
                 type="submit"
-                className="ml-4 px-6 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full transition"
+                className="ml-4 px-6 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full transition duration-200"
               >
                 Search
               </button>
             </div>
           </form>
           <button
-            className="mt-8 px-8 py-4 bg-white text-gray-900 font-bold rounded-full shadow-lg hover:bg-gray-100 transition"
+            onClick={handleExploreClick}
+            className="mt-8 px-8 py-4 bg-white text-gray-900 font-bold rounded-full shadow-lg hover:bg-gray-100 transition duration-200"
             style={{
               animation: "fadeInUp 0.8s ease-out forwards",
               animationDelay: "0.7s",

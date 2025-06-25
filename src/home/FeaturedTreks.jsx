@@ -11,7 +11,7 @@ const featuredTreks = [
     reviews: 261,
     price: 1525,
     badge: "BEST SELLER",
-    link: "/treks/everest-base-camp",
+    link: "/treks/everest-base-camp-trek",
   },
   {
     id: 2,

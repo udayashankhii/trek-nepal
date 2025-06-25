@@ -1,16 +1,18 @@
 // src/pages/Home.jsx
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../navbarEssentials/Navbar";
 import Hero from "./Hero";
 import Footer from "./Footer";
 import FeaturedTrek from "./FeaturedTreks";
 import { Box, ChevronLeft, ChevronRight } from "lucide-react";
+import HeroSection from "./Hero";
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <>
       <section className="relative h-[70vh] ">
-        <Hero />
+        <HeroSection searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </section>
 
       <section className="py-12 px-6 bg-gray-50">
