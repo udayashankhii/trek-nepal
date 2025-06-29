@@ -1,1033 +1,1165 @@
-// import React, { useState, useEffect } from "react";
+// import React, {
+//   useState,
+//   useEffect,
+//   useCallback,
+//   useMemo,
+//   useRef,
+// } from "react";
+// import { Helmet } from "react-helmet-async";
+
+// import { useParams, useNavigate } from "react-router-dom";
 // import { ChevronDownIcon } from "@heroicons/react/24/outline";
-// import AOS from "aos";
-// import "aos/dist/aos.css";
 // import BlogGrid from "./BlogGrid";
-// import BlogCard from "./BlogCard";
+// import BlogDetail from "./BlogDetails";
+// import mockBlogPosts from "./mockPost";
 
-// const BlogPage = () => {
-//   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [visiblePosts, setVisiblePosts] = useState(6);
-//   const [selectedCategory, setSelectedCategory] = useState("all");
+// // Error Boundary Component - FIXED: Complete class definition
+// class BlogDetailErrorBoundary extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { hasError: false, error: null };
+//   }
 
+//   static getDerivedStateFromError(error) {
+//     return { hasError: true, error };
+//   }
+
+//   componentDidCatch(error, errorInfo) {
+//     console.error("BlogDetail Error:", error, errorInfo);
+//   }
+
+//   render() {
+//     if (this.state.hasError) {
+//       return (
+//         <div className="min-h-screen flex items-center justify-center bg-gray-50">
+//           <div className="text-center p-8 max-w-md mx-auto">
+//             <div className="text-6xl mb-4">⚠️</div>
+//             <h2 className="text-2xl font-bold text-gray-900 mb-4">
+//               Something went wrong
+//             </h2>
+//             <p className="text-gray-600 mb-6">
+//               Unable to load the blog content. Please try again.
+//             </p>
+//             <button
+//               onClick={() => window.location.reload()}
+//               className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+//             >
+//               Reload Page
+//             </button>
+//           </div>
+//         </div>
+//       );
+//     }
+
+//     return this.props.children;
+//   }
+// }
+
+// // FIXED: Removed unused imports and components
+// const BlogPage = ({ currentUser }) => {
+//   const { slug } = useParams();
+//   const navigate = useNavigate();
+
+//   // Single state object for all stateful data
+//   const [state, setState] = useState({
+//     posts: [],
+//     selectedCategory: "all",
+//     selectedPost: null,
+//     showDetail: false,
+//     loading: false,
+//     error: null,
+//     visiblePosts: 6,
+//     hasMore: false,
+//     totalPages: 1,
+//     initialized: false,
+//     heroImageLoaded: false,
+//     contentLoading: false,
+//   });
 //   useEffect(() => {
-//     AOS.init({
-//       duration: 800,
-//       easing: "ease-in-out",
-//       once: true,
-//       offset: 100,
-//     });
+//     console.log("🚩 URL slug is:", slug);
+//   }, [slug]);
 
-//     // Simulate loading blog posts
-//     setPosts(mockBlogPosts);
+//   // Refs for memory leak prevention
+//   const isMountedRef = useRef(true);
+//   const abortControllerRef = useRef(null);
+//   const loadingRef = useRef(false);
+
+//   // CRITICAL FIX: Define safeSetState function
+//   const safeSetState = useCallback((updater) => {
+//     if (isMountedRef.current) {
+//       setState(updater);
+//     }
 //   }, []);
+//   useEffect(() => {
+//     console.log("🚩 URL slug is:", slug);
+//   }, [slug]);
 
-//   const loadMorePosts = () => {
-//     setLoading(true);
-//     setTimeout(() => {
-//       setVisiblePosts((prev) => prev + 6);
-//       setLoading(false);
-//     }, 1000);
+//   // Cleanup on unmount - FIXED: Added proper cleanup
+//   useEffect(() => {
+//     console.log(
+//       "Looking for slug…",
+//       slug,
+//       "among posts:",
+//       state.posts.map((p) => p.slug)
+//     );
+//     if (!state.initialized || !slug || !state.posts.length) return;
+
+//     if (!Array.isArray(mockBlogPosts) || mockBlogPosts.length === 0) {
+//       setState((prev) => ({
+//         ...prev,
+//         error: "No posts available",
+//         initialized: true,
+//       }));
+//       return;
+//     }
+
+//     setState((prev) => ({
+//       ...prev,
+//       posts: mockBlogPosts,
+//       hasMore: mockBlogPosts.length > 6,
+//       totalPages: Math.ceil(mockBlogPosts.length / 6),
+//       initialized: true,
+//     }));
+//   }, [state.initialized]);
+
+//   // 2) When posts are loaded _and_ there's a slug param, find & show that post
+//   // FIXED: Remove navigate from dependencies to prevent infinite re-renders
+//   // FIXED - Remove navigate from dependencies
+//   // load posts
+//   setState((prev) => ({
+//     ...prev,
+//     posts: mockBlogPosts,
+//     hasMore: mockBlogPosts.length > 6,
+//     totalPages: Math.ceil(mockBlogPosts.length / 6),
+//   }));
+
+//   if (slug) {
+//     const match = mockBlogPosts.find((p) => p.slug === slug);
+//     if (match) {
+//       setState((prev) => ({
+//         ...prev,
+//         selectedPost: match,
+//         showDetail: true,
+//       }));
+//     } else {
+//       navigate("/blog", { replace: true });
+//     }
+//   }
+//   // Memoized filtered posts
+//   const filteredPosts = useMemo(() => {
+//     if (!Array.isArray(state.posts) || !state.posts.length) return [];
+//     return state.selectedCategory === "all"
+//       ? state.posts
+//       : state.posts.filter((post) => post?.category === state.selectedCategory);
+//   }, [state.posts, state.selectedCategory]);
+
+//   // Memoized visible posts
+//   const visiblePosts = useMemo(() => {
+//     return filteredPosts.slice(0, state.visiblePosts);
+//   }, [filteredPosts, state.visiblePosts]);
+
+//   // Enhanced load more posts
+//   const loadMorePosts = useCallback(async () => {
+//     if (
+//       loadingRef.current ||
+//       state.loading ||
+//       state.visiblePosts >= filteredPosts.length
+//     )
+//       return;
+
+//     loadingRef.current = true;
+//     safeSetState((prev) => ({ ...prev, loading: true }));
+
+//     try {
+//       await new Promise((resolve) => setTimeout(resolve, 500));
+//       safeSetState((prev) => ({
+//         ...prev,
+//         visiblePosts: Math.min(prev.visiblePosts + 6, filteredPosts.length),
+//         loading: false,
+//       }));
+//     } catch (error) {
+//       console.error("Failed to load more posts:", error);
+//       safeSetState((prev) => ({
+//         ...prev,
+//         error: "Failed to load more posts",
+//         loading: false,
+//       }));
+//     } finally {
+//       loadingRef.current = false;
+//     }
+//   }, [state.loading, state.visiblePosts, filteredPosts.length, safeSetState]);
+
+//   // Handle category change
+//   const handleCategoryChange = useCallback(
+//     (categoryId) => {
+//       if (typeof categoryId !== "string" || state.loading) return;
+
+//       safeSetState((prev) => ({
+//         ...prev,
+//         selectedCategory: categoryId,
+//         visiblePosts: 6,
+//         error: null,
+//       }));
+//     },
+//     [state.loading, safeSetState]
+//   );
+
+//   // Handle post click with URL navigation
+//   const handlePostClick = useCallback(
+//     async (post) => {
+//       if (!post || !post.id || !post.slug) {
+//         console.error("Invalid post data:", post);
+//         return;
+//       }
+
+//       // Navigate to the blog post URL
+//       navigate(`/blog/${post.slug}`);
+
+//       // Ensure proper data structure
+//       const enrichedPost = {
+//         ...post,
+//         content: post.content || {
+//           introduction:
+//             post.metaDescription ||
+//             post.description ||
+//             "Welcome to this adventure story.",
+//           sections: post.content?.sections || [],
+//         },
+//         featuredImage: post.featuredImage || {
+//           url: post.image,
+//           alt: post.title,
+//           caption: null,
+//         },
+//       };
+
+//       safeSetState((prev) => ({
+//         ...prev,
+//         selectedPost: enrichedPost,
+//         showDetail: true,
+//         contentLoading: false,
+//       }));
+//     },
+//     [safeSetState, navigate]
+//   );
+
+//   // Handle back to blog
+//   const handleBackToBlog = useCallback(() => {
+//     navigate("/blog");
+//     safeSetState((prev) => ({
+//       ...prev,
+//       selectedPost: null,
+//       showDetail: false,
+//     }));
+//   }, [safeSetState, navigate]);
+
+//   // Handle like with optimistic updates
+//   const handleLike = useCallback(
+//     async (postId, isLiked) => {
+//       if (!postId) {
+//         throw new Error("Post ID is required");
+//       }
+
+//       safeSetState((prev) => ({
+//         ...prev,
+//         posts: prev.posts.map((post) =>
+//           post.id === postId
+//             ? {
+//                 ...post,
+//                 isLiked,
+//                 likes: isLiked
+//                   ? (post.likes || 0) + 1
+//                   : Math.max((post.likes || 0) - 1, 0),
+//               }
+//             : post
+//         ),
+//       }));
+//     },
+//     [safeSetState]
+//   );
+
+//   // Handle bookmark with optimistic updates
+//   const handleBookmark = useCallback(
+//     async (postId, isBookmarked) => {
+//       if (!postId) {
+//         throw new Error("Post ID is required");
+//       }
+
+//       safeSetState((prev) => ({
+//         ...prev,
+//         posts: prev.posts.map((post) =>
+//           post.id === postId ? { ...post, isBookmarked } : post
+//         ),
+//       }));
+//     },
+//     [safeSetState]
+//   );
+
+//   // Handle retry
+//   const handleRetry = useCallback(() => {
+//     safeSetState((prev) => ({ ...prev, error: null, initialized: false }));
+//   }, [safeSetState]);
+
+//   // Loading state for content
+//   if (state.contentLoading) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+//         <div className="text-center">
+//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+//           <p className="text-gray-600">Loading blog content...</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // Show blog detail if a post is selected
+//   if (state.showDetail && state.selectedPost) {
+//     return (
+//       <div className="min-h-screen bg-gray-50">
+//         <Helmet>
+//           <title>Blog - Trek Nepal</title>
+//           <meta
+//             name="description"
+//             content="Discover amazing trekking stories and guides from Nepal's most experienced guides."
+//           />
+//         </Helmet>
+
+//         {/* Blog List View */}
+//         {!state.showDetail && (
+//           <>
+//             {/* Your existing header, search, filters, and blog grid */}
+//             <BlogHeader />
+//             <BlogFilters />
+//             <BlogGrid
+//               posts={state.filteredPosts}
+//               onPostClick={handlePostClick}
+//             />
+//           </>
+//         )}
+
+//         {/* Blog Detail View - FIXED VERSION */}
+//         {state.showDetail && state.selectedPost && state.selectedPost.id && (
+//           <BlogDetailErrorBoundary>
+//             <BlogDetail
+//               blog={state.selectedPost}
+//               onBack={handleBackToBlog}
+//               relatedBlogs={state.posts.filter(
+//                 (p) => p.id !== state.selectedPost.id
+//               )}
+//               onBookmarkToggle={(isBookmarked) => {
+//                 handleBookmark(state.selectedPost.id, isBookmarked);
+//               }}
+//               onShareClick={() => console.log("Share clicked")}
+//             />
+//           </BlogDetailErrorBoundary>
+//         )}
+//       </div>
+//     );
+//   }
+
+//   // Render main content
+//   const renderMainContent = () => {
+//     if (state.error && !state.posts.length) {
+//       return <ErrorMessage error={state.error} onRetry={handleRetry} />;
+//     }
+
+//     if (!state.posts.length && state.loading && !state.error) {
+//       return <LoadingSpinner message="Loading amazing adventures..." />;
+//     }
+
+//     if (!state.posts.length && !state.loading && !state.error) {
+//       return <EmptyState />;
+//     }
+
+//     if (!filteredPosts.length && state.posts.length > 0) {
+//       return (
+//         <NoResultsState
+//           category={state.selectedCategory}
+//           onReset={() => handleCategoryChange("all")}
+//         />
+//       );
+//     }
+
+//     return (
+//       <BlogGrid
+//         posts={visiblePosts}
+//         loading={state.loading}
+//         loadMore={loadMorePosts}
+//         hasMore={state.visiblePosts < filteredPosts.length}
+//         onPostClick={handlePostClick}
+//         onLike={handleLike}
+//         onBookmark={handleBookmark}
+//         currentUser={currentUser}
+//         error={state.error}
+//         onRetry={handleRetry}
+//       />
+//     );
 //   };
-
-//   const filteredPosts =
-//     selectedCategory === "all"
-//       ? posts
-//       : posts.filter((post) => post.category === selectedCategory);
 
 //   return (
 //     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-//       {/* Hero Section with Parallax */}
-//       <HeroSection />
+//       <HeroSection
+//         onImageLoad={() =>
+//           safeSetState((prev) => ({ ...prev, heroImageLoaded: true }))
+//         }
+//       />
 
-//       {/* Navigation Filters */}
 //       <CategoryFilter
-//         selectedCategory={selectedCategory}
-//         setSelectedCategory={setSelectedCategory}
+//         selectedCategory={state.selectedCategory}
+//         onCategoryChange={handleCategoryChange}
+//         disabled={state.loading}
+//         postsCount={filteredPosts.length}
 //       />
 
-//       {/* Blog Grid */}
-//       <BlogGrid
-//         posts={filteredPosts.slice(0, visiblePosts)}
-//         loading={loading}
-//         loadMore={loadMorePosts}
-//         hasMore={visiblePosts < filteredPosts.length}
-//       />
+//       {renderMainContent()}
 //     </div>
 //   );
 // };
 
-// // Hero Section Component (unchanged)
-// const HeroSection = () => {
+// // Hero Section Component - FIXED: Added display name
+// const HeroSection = React.memo(({ onImageLoad }) => {
+//   const [imageState, setImageState] = useState({
+//     loaded: false,
+//     error: false,
+//   });
+
+//   const handleImageLoad = useCallback(() => {
+//     setImageState((prev) => ({ ...prev, loaded: true }));
+//     onImageLoad?.();
+//   }, [onImageLoad]);
+
+//   const handleImageError = useCallback(() => {
+//     setImageState((prev) => ({ ...prev, error: true, loaded: true }));
+//   }, []);
+
 //   return (
 //     <section className="relative min-h-[60vh] md:h-screen flex items-center justify-center overflow-hidden">
-//       {/* Parallax Background */}
 //       <div className="absolute inset-0 z-0">
-//         <div
-//           className="absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110"
-//           style={{
-//             backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
-//           }}
-//         />
+//         {!imageState.error ? (
+//           <div
+//             className={`absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110 transition-opacity duration-700 ${
+//               imageState.loaded ? "opacity-100" : "opacity-0"
+//             }`}
+//             style={{
+//               backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
+//             }}
+//           />
+//         ) : (
+//           <div className="absolute inset-0 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-900" />
+//         )}
 
-//         {/* Floating Elements */}
-//         <div className="absolute top-20 left-10 w-20 h-20 bg-orange-400 rounded-full opacity-20 animate-float" />
-//         <div className="absolute top-40 right-20 w-16 h-16 bg-blue-400 rounded-full opacity-30 animate-float-delayed" />
-//         <div className="absolute bottom-32 left-1/4 w-12 h-12 bg-green-400 rounded-full opacity-25 animate-float-slow" />
+//         {!imageState.loaded && !imageState.error && (
+//           <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+//         )}
+
+//         <img
+//           src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+//           alt="Hero background"
+//           className="hidden"
+//           onLoad={handleImageLoad}
+//           onError={handleImageError}
+//         />
 //       </div>
 
-//       {/* Hero Content */}
 //       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-//         <h1
-//           className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 neon-text"
-//           data-aos="fade-up"
-//           data-aos-delay="200"
-//         >
-//           EverTrek Nepal
+//         <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 drop-shadow-2xl">
+//           ETrek Nepal
 //         </h1>
-//         <p
-//           className="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed"
-//           data-aos="fade-up"
-//           data-aos-delay="400"
-//         >
+//         <p className="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
 //           Discover the majestic Himalayas through our adventure stories, expert
 //           guides, and breathtaking journey chronicles
 //         </p>
-//         <div
-//           className="flex flex-col sm:flex-row gap-4 justify-center"
-//           data-aos="fade-up"
-//           data-aos-delay="600"
-//         >
-//           <button className="glass-button px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold">
+
+//         <div className="flex flex-col sm:flex-row gap-4 justify-center">
+//           <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
 //             Explore Stories
 //           </button>
-//           <button className="outline-button px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold">
+//           <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-orange-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
 //             Plan Your Trek
 //           </button>
 //         </div>
 //       </div>
 
-//       {/* Scroll Indicator */}
 //       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-//         <ChevronDownIcon className="w-8 h-8 text-white" />
+//         <ChevronDownIcon className="w-8 h-8 text-white opacity-80" />
 //       </div>
 //     </section>
 //   );
-// };
+// });
 
-// // Category Filter Component (unchanged)
-// const CategoryFilter = ({ selectedCategory, setSelectedCategory }) => {
-//   const categories = [
-//     { id: "all", name: "All Stories", icon: "" },
-//     { id: "trekking", name: "Trekking", icon: "" },
-//     { id: "culture", name: "Culture", icon: "" },
-//     { id: "wildlife", name: "Wildlife", icon: "" },
-//     { id: "gear", name: "Gear Guide", icon: "" },
-//     { id: "tips", name: "Travel Tips", icon: "" },
-//   ];
+// HeroSection.displayName = "HeroSection";
 
-//   return (
-//     <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 py-4">
-//       <div className="max-w-7xl mx-auto px-4">
-//         <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-//           {categories.map((category) => (
-//             <button
-//               key={category.id}
-//               onClick={() => setSelectedCategory(category.id)}
-//               className={`category-filter-btn ${
-//                 selectedCategory === category.id
-//                   ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-//                   : "bg-white text-gray-700 hover:bg-gray-50"
-//               }`}
-//               data-aos="fade-down"
-//               data-aos-delay={categories.indexOf(category) * 100}
-//             >
-//               <span className="text-base md:text-lg mr-2">{category.icon}</span>
-//               <span className="text-sm md:text-base">{category.name}</span>
-//             </button>
-//           ))}
+// // Category Filter Component - FIXED: Added display name
+// const CategoryFilter = React.memo(
+//   ({ selectedCategory, onCategoryChange, disabled, postsCount }) => {
+//     const categories = useMemo(
+//       () => [
+//         { id: "all", name: "All Stories", icon: "📚" },
+//         { id: "Trekking", name: "Trekking", icon: "🏔️" },
+//         { id: "Culture", name: "Culture", icon: "🏛️" },
+//         { id: "Wildlife", name: "Wildlife", icon: "🦌" },
+//         { id: "Gear", name: "Gear Guide", icon: "🎒" },
+//         { id: "Tips", name: "Travel Tips", icon: "💡" },
+//       ],
+//       []
+//     );
+
+//     return (
+//       <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 py-4">
+//         <div className="max-w-7xl mx-auto px-4">
+//           <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-2">
+//             {categories.map((category) => (
+//               <button
+//                 key={category.id}
+//                 onClick={() => onCategoryChange(category.id)}
+//                 disabled={disabled}
+//                 className={`px-3 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-300 flex items-center gap-2 font-medium text-sm md:text-base ${
+//                   selectedCategory === category.id
+//                     ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105 border-transparent"
+//                     : "bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 border-gray-200 hover:border-orange-300"
+//                 } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+//                 aria-pressed={selectedCategory === category.id}
+//               >
+//                 <span className="text-base md:text-lg" aria-hidden="true">
+//                   {category.icon}
+//                 </span>
+//                 <span>{category.name}</span>
+//               </button>
+//             ))}
+//           </div>
+
+//           {postsCount > 0 && (
+//             <div className="text-center text-sm text-gray-600 mt-2">
+//               {postsCount} {postsCount === 1 ? "story" : "stories"} found
+//             </div>
+//           )}
 //         </div>
+//       </div>
+//     );
+//   }
+// );
+
+// CategoryFilter.displayName = "CategoryFilter";
+
+// // Error and Loading Components - FIXED: Added display names
+// const ErrorMessage = React.memo(({ error, onRetry }) => {
+//   return (
+//     <div className="text-center py-16 px-4">
+//       <div className="max-w-md mx-auto">
+//         <div className="text-red-500 text-6xl mb-4">⚠️</div>
+//         <h3 className="text-xl font-semibold text-gray-800 mb-2">
+//           Oops! Something went wrong
+//         </h3>
+//         <p className="text-gray-600 mb-6">{error}</p>
+//         <button
+//           onClick={onRetry}
+//           className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+//         >
+//           Try Again
+//         </button>
 //       </div>
 //     </div>
 //   );
-// };
+// });
 
-// // Mock Data (unchanged)
-// const mockBlogPosts = [
-//   {
-//     id: 1,
-//     title: "Conquering Everest Base Camp: A Journey of a Lifetime",
-//     excerpt:
-//       "Experience the ultimate adventure as we trek through the heart of the Himalayas, sharing stories of triumph, challenge, and breathtaking beauty along the way to the world's most famous base camp.",
-//     image:
-//       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-//     category: "trekking",
-//     date: "March 15, 2025",
-//     location: "Everest Region",
-//     readTime: 8,
-//     views: "2.3k",
-//     author: {
-//       name: "Pemba Sherpa",
-//       role: "Mountain Guide",
-//       avatar:
-//         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-//     },
-//   },
-//   {
-//     id: 2,
-//     title: "Hidden Gems of Annapurna Circuit",
-//     excerpt:
-//       "Discover secret viewpoints and untouched villages along the classic Annapurna Circuit trek.",
-//     image:
-//       "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-//     category: "trekking",
-//     date: "March 12, 2025",
-//     location: "Annapurna Region",
-//     readTime: 6,
-//     views: "1.8k",
-//     author: {
-//       name: "Sarah Johnson",
-//       role: "Travel Writer",
-//       avatar:
-//         "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-//     },
-//   },
-//   {
-//     id: 3,
-//     title: "Cultural Immersion in Kathmandu Valley",
-//     excerpt:
-//       "Explore ancient temples, vibrant markets, and living traditions in Nepal's cultural heart.",
-//     image:
-//       "https://images.unsplash.com/photo-1605640840605-14ac1855827b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-//     category: "culture",
-//     date: "March 10, 2025",
-//     location: "Kathmandu",
-//     readTime: 5,
-//     views: "1.2k",
-//     author: {
-//       name: "Raj Tamang",
-//       role: "Cultural Guide",
-//       avatar:
-//         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-//     },
-//   },
-// ];
+// ErrorMessage.displayName = "ErrorMessage";
 
-// // Custom CSS Styles (unchanged - keep all your existing styles)
-// const customStyles = `
-//   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+// const LoadingSpinner = React.memo(({ message = "Loading..." }) => {
+//   return (
+//     <div className="text-center py-16">
+//       <div className="inline-block w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+//       <p className="text-gray-600">{message}</p>
+//     </div>
+//   );
+// });
 
-//   * {
-//     font-family: 'Inter', sans-serif;
-//   }
+// LoadingSpinner.displayName = "LoadingSpinner";
 
-//   .neon-text {
-//     text-shadow:
-//       0 0 5px rgba(255, 107, 107, 0.5),
-//       0 0 10px rgba(255, 107, 107, 0.5),
-//       0 0 15px rgba(255, 107, 107, 0.5),
-//       0 0 20px rgba(255, 107, 107, 0.5);
-//   }
+// const EmptyState = React.memo(() => {
+//   return (
+//     <div className="text-center py-16 px-4">
+//       <div className="text-gray-400 text-6xl mb-4">📝</div>
+//       <h3 className="text-xl font-semibold text-gray-800 mb-2">
+//         No stories available
+//       </h3>
+//       <p className="text-gray-600">
+//         Check back soon for exciting new adventure stories!
+//       </p>
+//     </div>
+//   );
+// });
 
-//   .glass-button {
-//     background: rgba(255, 255, 255, 0.1);
-//     backdrop-filter: blur(10px);
-//     border: 1px solid rgba(255, 255, 255, 0.2);
-//     border-radius: 50px;
-//     color: white;
-//     transition: all 0.3s ease;
-//   }
+// EmptyState.displayName = "EmptyState";
 
-//   .glass-button:hover {
-//     background: rgba(255, 255, 255, 0.2);
-//     transform: translateY(-2px);
-//     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-//   }
+// const NoResultsState = React.memo(({ category, onReset }) => {
+//   return (
+//     <div className="text-center py-16 px-4">
+//       <div className="text-gray-400 text-6xl mb-4">🔍</div>
+//       <h3 className="text-xl font-semibold text-gray-800 mb-2">
+//         No stories found in "{category}"
+//       </h3>
+//       <p className="text-gray-600 mb-6">
+//         Try selecting a different category or view all stories.
+//       </p>
+//       <button
+//         onClick={onReset}
+//         className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+//       >
+//         View All Stories
+//       </button>
+//     </div>
+//   );
+// });
 
-//   .outline-button {
-//     border: 2px solid white;
-//     border-radius: 50px;
-//     color: white;
-//     background: transparent;
-//     transition: all 0.3s ease;
-//   }
-
-//   .outline-button:hover {
-//     background: white;
-//     color: #f97316;
-//     transform: translateY(-2px);
-//   }
-
-//   .category-filter-btn {
-//     padding: 8px 16px;
-//     border-radius: 50px;
-//     border: 1px solid #e5e7eb;
-//     transition: all 0.3s ease;
-//     font-weight: 500;
-//     display: flex;
-//     align-items: center;
-//     white-space: nowrap;
-//   }
-
-//   @media (min-width: 768px) {
-//     .category-filter-btn {
-//       padding: 12px 24px;
-//     }
-//   }
-
-//   .category-filter-btn:hover {
-//     transform: translateY(-2px);
-//     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-//   }
-
-//   .featured-post-card {
-//     background: white;
-//     border-radius: 24px;
-//     padding: 20px;
-//     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-//     transition: all 0.3s ease;
-//   }
-
-//   @media (min-width: 768px) {
-//     .featured-post-card {
-//       padding: 32px;
-//     }
-//   }
-
-//   .featured-post-card:hover {
-//     transform: translateY(-8px);
-//     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-//   }
-
-//   .blog-card {
-//     background: white;
-//     border-radius: 16px;
-//     padding: 20px;
-//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-//     transition: all 0.3s ease;
-//     border: 1px solid #f3f4f6;
-//   }
-
-//   .blog-card:hover {
-//     transform: translateY(-4px);
-//     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-//     border-color: #e5e7eb;
-//   }
-
-//   .category-badge {
-//     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//     color: white;
-//     padding: 4px 12px;
-//     border-radius: 20px;
-//     font-size: 12px;
-//     font-weight: 600;
-//     text-transform: uppercase;
-//     letter-spacing: 0.5px;
-//   }
-
-//   .category-badge.featured {
-//     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-//   }
-
-//   .read-more-btn {
-//     color: #f97316;
-//     font-weight: 600;
-//     transition: all 0.3s ease;
-//   }
-
-//   .read-more-btn:hover {
-//     color: #ea580c;
-//     transform: translateX(4px);
-//   }
-
-//   .load-more-btn {
-//     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//     color: white;
-//     padding: 16px 32px;
-//     border-radius: 50px;
-//     font-weight: 600;
-//     transition: all 0.3s ease;
-//     border: none;
-//     cursor: pointer;
-//   }
-
-//   .load-more-btn:hover:not(:disabled) {
-//     transform: translateY(-2px);
-//     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-//   }
-
-//   .load-more-btn:disabled {
-//     opacity: 0.7;
-//     cursor: not-allowed;
-//   }
-
-//   .loading-spinner {
-//     width: 16px;
-//     height: 16px;
-//     border: 2px solid transparent;
-//     border-top: 2px solid currentColor;
-//     border-radius: 50%;
-//     animation: spin 1s linear infinite;
-//   }
-
-//   .line-clamp-2 {
-//     display: -webkit-box;
-//     -webkit-line-clamp: 2;
-//     -webkit-box-orient: vertical;
-//     overflow: hidden;
-//   }
-
-//   .line-clamp-3 {
-//     display: -webkit-box;
-//     -webkit-line-clamp: 3;
-//     -webkit-box-orient: vertical;
-//     overflow: hidden;
-//   }
-
-//   @keyframes spin {
-//     to { transform: rotate(360deg); }
-//   }
-
-//   @keyframes float {
-//     0%, 100% { transform: translateY(0px); }
-//     50% { transform: translateY(-20px); }
-//   }
-
-//   @keyframes float-delayed {
-//     0%, 100% { transform: translateY(0px); }
-//     50% { transform: translateY(-15px); }
-//   }
-
-//   @keyframes float-slow {
-//     0%, 100% { transform: translateY(0px); }
-//     50% { transform: translateY(-10px); }
-//   }
-
-//   .animate-float {
-//     animation: float 6s ease-in-out infinite;
-//   }
-
-//   .animate-float-delayed {
-//     animation: float-delayed 8s ease-in-out infinite;
-//   }
-
-//   .animate-float-slow {
-//     animation: float-slow 10s ease-in-out infinite;
-//   }
-
-//   /* Mobile optimizations */
-//   @media (max-width: 768px) {
-//     .bg-fixed {
-//       background-attachment: scroll !important;
-//     }
-//   }
-// `;
-
-// // Add custom styles to document
-// const styleSheet = document.createElement("style");
-// styleSheet.innerText = customStyles;
-// document.head.appendChild(styleSheet);
+// NoResultsState.displayName = "NoResultsState";
 
 // export default BlogPage;
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+import { Helmet } from "react-helmet-async";
+import { useParams, useNavigate } from "react-router-dom";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import BlogGrid from "./BlogGrid";
+import BlogDetail from "./BlogDetails";
+import mockBlogPosts from "./mockPost";
 
-import React, { useState, useEffect } from "react";
-import {
-  ChevronDownIcon,
-  MapPinIcon,
-  CalendarIcon,
-  UserIcon,
-  EyeIcon,
-} from "@heroicons/react/24/outline";
-import AOS from "aos";
-import "aos/dist/aos.css";
+// Move all components outside BlogPage to prevent re-definition
+const HeroSection = React.memo(({ onImageLoad }) => {
+  const [imageState, setImageState] = useState({
+    loaded: false,
+    error: false,
+  });
 
-const BlogPage = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [visiblePosts, setVisiblePosts] = useState(6);
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const handleImageLoad = useCallback(() => {
+    setImageState((prev) => ({ ...prev, loaded: true }));
+    onImageLoad?.();
+  }, [onImageLoad]);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: "ease-in-out",
-      once: true,
-      offset: 100,
-    });
-
-    // Simulate loading blog posts
-    setPosts(mockBlogPosts);
+  const handleImageError = useCallback(() => {
+    setImageState((prev) => ({ ...prev, error: true, loaded: true }));
   }, []);
 
-  const loadMorePosts = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setVisiblePosts((prev) => prev + 6);
-      setLoading(false);
-    }, 1000);
-  };
-
-  const filteredPosts =
-    selectedCategory === "all"
-      ? posts
-      : posts.filter((post) => post.category === selectedCategory);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Hero Section with Parallax */}
-      <HeroSection />
-
-      {/* Navigation Filters */}
-      <CategoryFilter
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
-
-      {/* Blog Grid */}
-      <BlogGrid
-        posts={filteredPosts.slice(0, visiblePosts)}
-        loading={loading}
-        loadMore={loadMorePosts}
-        hasMore={visiblePosts < filteredPosts.length}
-      />
-    </div>
-  );
-};
-
-// Hero Section Component
-const HeroSection = () => {
   return (
     <section className="relative min-h-[60vh] md:h-screen flex items-center justify-center overflow-hidden">
-      {/* Parallax Background */}
       <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
-          }}
-        />
+        {!imageState.error ? (
+          <div
+            className={`absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110 transition-opacity duration-700 ${
+              imageState.loaded ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
+            }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-900" />
+        )}
 
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-orange-400 rounded-full opacity-20 animate-float" />
-        <div className="absolute top-40 right-20 w-16 h-16 bg-blue-400 rounded-full opacity-30 animate-float-delayed" />
-        <div className="absolute bottom-32 left-1/4 w-12 h-12 bg-green-400 rounded-full opacity-25 animate-float-slow" />
+        {!imageState.loaded && !imageState.error && (
+          <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+        )}
+
+        <img
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Hero background"
+          className="hidden"
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
       </div>
 
-      {/* Hero Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-        <h1
-          className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 neon-text"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          EverTrek Nepal
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 drop-shadow-2xl">
+          ETrek Nepal
         </h1>
-        <p
-          className="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed"
-          data-aos="fade-up"
-          data-aos-delay="400"
-        >
+        <p className="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
           Discover the majestic Himalayas through our adventure stories, expert
           guides, and breathtaking journey chronicles
         </p>
-        <div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-          data-aos="fade-up"
-          data-aos-delay="600"
-        >
-          <button className="glass-button px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold">
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
             Explore Stories
           </button>
-          <button className="outline-button px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold">
+          <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-orange-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
             Plan Your Trek
           </button>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ChevronDownIcon className="w-8 h-8 text-white" />
+        <ChevronDownIcon className="w-8 h-8 text-white opacity-80" />
       </div>
     </section>
   );
-};
+});
 
-// Category Filter Component
-const CategoryFilter = ({ selectedCategory, setSelectedCategory }) => {
-  const categories = [
-    { id: "all", name: "All Stories", icon: "" },
-    { id: "trekking", name: "Trekking", icon: "" },
-    { id: "culture", name: "Culture", icon: "" },
-    { id: "wildlife", name: "Wildlife", icon: "" },
-    { id: "gear", name: "Gear Guide", icon: "" },
-    { id: "tips", name: "Travel Tips", icon: "" },
-  ];
+HeroSection.displayName = "HeroSection";
 
-  return (
-    <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 py-4">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`category-filter-btn ${
-                selectedCategory === category.id
-                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-              data-aos="fade-down"
-              data-aos-delay={categories.indexOf(category) * 100}
-            >
-              <span className="text-base md:text-lg mr-2">{category.icon}</span>
-              <span className="text-sm md:text-base">{category.name}</span>
-            </button>
-          ))}
+const CategoryFilter = React.memo(
+  ({ selectedCategory, onCategoryChange, disabled, postsCount }) => {
+    const categories = useMemo(
+      () => [
+        { id: "all", name: "All Stories", icon: "📚" },
+        { id: "Trekking", name: "Trekking", icon: "🏔️" },
+        { id: "Culture", name: "Culture", icon: "🏛️" },
+        { id: "Wildlife", name: "Wildlife", icon: "🦌" },
+        { id: "Gear", name: "Gear Guide", icon: "🎒" },
+        { id: "Tips", name: "Travel Tips", icon: "💡" },
+      ],
+      []
+    );
+
+    return (
+      <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-2">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => onCategoryChange(category.id)}
+                disabled={disabled}
+                className={`px-3 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-300 flex items-center gap-2 font-medium text-sm md:text-base ${
+                  selectedCategory === category.id
+                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105 border-transparent"
+                    : "bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 border-gray-200 hover:border-orange-300"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                aria-pressed={selectedCategory === category.id}
+              >
+                <span className="text-base md:text-lg" aria-hidden="true">
+                  {category.icon}
+                </span>
+                <span>{category.name}</span>
+              </button>
+            ))}
+          </div>
+
+          {postsCount > 0 && (
+            <div className="text-center text-sm text-gray-600 mt-2">
+              {postsCount} {postsCount === 1 ? "story" : "stories"} found
+            </div>
+          )}
         </div>
       </div>
+    );
+  }
+);
+
+CategoryFilter.displayName = "CategoryFilter";
+
+// Utility components
+const ErrorMessage = React.memo(({ error, onRetry }) => (
+  <div className="text-center py-16 px-4">
+    <div className="max-w-md mx-auto">
+      <div className="text-red-500 text-6xl mb-4">⚠️</div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+        Oops! Something went wrong
+      </h3>
+      <p className="text-gray-600 mb-6">{error}</p>
+      <button
+        onClick={onRetry}
+        className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+));
+
+ErrorMessage.displayName = "ErrorMessage";
+
+const LoadingSpinner = React.memo(({ message = "Loading..." }) => (
+  <div className="text-center py-16">
+    <div className="inline-block w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+    <p className="text-gray-600">{message}</p>
+  </div>
+));
+
+LoadingSpinner.displayName = "LoadingSpinner";
+
+const EmptyState = React.memo(() => (
+  <div className="text-center py-16 px-4">
+    <div className="text-gray-400 text-6xl mb-4">📝</div>
+    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+      No stories available
+    </h3>
+    <p className="text-gray-600">
+      Check back soon for exciting new adventure stories!
+    </p>
+  </div>
+));
+
+EmptyState.displayName = "EmptyState";
+
+const NoResultsState = React.memo(({ category, onReset }) => (
+  <div className="text-center py-16 px-4">
+    <div className="text-gray-400 text-6xl mb-4">🔍</div>
+    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+      No stories found in "{category}"
+    </h3>
+    <p className="text-gray-600 mb-6">
+      Try selecting a different category or view all stories.
+    </p>
+    <button
+      onClick={onReset}
+      className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+    >
+      View All Stories
+    </button>
+  </div>
+));
+
+NoResultsState.displayName = "NoResultsState";
+
+// FIXED: Main BlogPage component
+const BlogPage = ({ currentUser }) => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
+  const [state, setState] = useState({
+    posts: mockBlogPosts, // FIXED: Initialize directly with mockBlogPosts
+    selectedCategory: "all",
+    selectedPost: null,
+    showDetail: false,
+    loading: false,
+    error: null,
+    visiblePosts: 6,
+    hasMore: mockBlogPosts.length > 6,
+    totalPages: Math.ceil(mockBlogPosts.length / 6),
+    initialized: true, // FIXED: Set to true since we have posts
+    heroImageLoaded: false,
+    contentLoading: false,
+  });
+
+  const isMountedRef = useRef(true);
+  const loadingRef = useRef(false);
+
+  const safeSetState = useCallback((updater) => {
+    if (isMountedRef.current) {
+      setState(updater);
+    }
+  }, []);
+
+  // FIXED: Handle slug changes with direct mockBlogPosts lookup
+  useEffect(() => {
+    console.log("🚩 URL slug changed:", slug);
+    
+    if (!slug) {
+      console.log("📋 No slug, showing blog list");
+      safeSetState((prev) => ({
+        ...prev,
+        selectedPost: null,
+        showDetail: false,
+      }));
+      return;
+    }
+
+    console.log("🔍 Looking for post with slug:", slug);
+    console.log("📚 Available posts:", mockBlogPosts.map(p => ({ 
+      id: p.id, 
+      slug: p.slug, 
+      title: p.title 
+    })));
+    
+    // FIXED: Always search in mockBlogPosts directly
+    const match = mockBlogPosts.find((p) => p.slug === slug);
+    
+    if (match) {
+      console.log("✅ Found matching post:", match.title);
+      
+      // Create enriched blog data for BlogDetail
+      const enrichedBlog = {
+        ...match,
+        // Ensure proper content structure
+        content: match.content || {
+          introduction: match.metaDescription || match.description || "Welcome to this adventure story.",
+          sections: match.content?.sections || [
+            {
+              id: "main-content",
+              title: "Story",
+              content: match.description || "This is the main content of the story.",
+              subsections: [],
+            },
+          ],
+        },
+        // Ensure proper featured image structure
+        featuredImage: match.featuredImage || {
+          url: match.image,
+          alt: match.title,
+          caption: null,
+        },
+        // Add any missing fields
+        author: match.author || "ETrek Nepal Team",
+        publishedAt: match.publishedAt || match.date || new Date().toISOString(),
+        readTime: match.readTime || "5 min read",
+        tags: match.tags || [],
+        likes: match.likes || 0,
+        isLiked: match.isLiked || false,
+        isBookmarked: match.isBookmarked || false,
+      };
+
+      console.log("📝 Enriched blog data:", enrichedBlog);
+
+      safeSetState((prev) => ({
+        ...prev,
+        selectedPost: enrichedBlog,
+        showDetail: true,
+      }));
+    } else {
+      console.log("❌ No matching post found, redirecting to blog list");
+      navigate("/blog", { replace: true });
+    }
+  }, [slug, navigate, safeSetState]); // FIXED: Removed state.posts dependency
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Memoized filtered posts
+  const filteredPosts = useMemo(() => {
+    if (!Array.isArray(state.posts) || !state.posts.length) return [];
+    return state.selectedCategory === "all"
+      ? state.posts
+      : state.posts.filter((post) => post?.category === state.selectedCategory);
+  }, [state.posts, state.selectedCategory]);
+
+  // Memoized visible posts
+  const visiblePosts = useMemo(() => {
+    return filteredPosts.slice(0, state.visiblePosts);
+  }, [filteredPosts, state.visiblePosts]);
+
+  // Enhanced load more posts
+  const loadMorePosts = useCallback(async () => {
+    if (
+      loadingRef.current ||
+      state.loading ||
+      state.visiblePosts >= filteredPosts.length
+    )
+      return;
+
+    loadingRef.current = true;
+    safeSetState((prev) => ({ ...prev, loading: true }));
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      safeSetState((prev) => ({
+        ...prev,
+        visiblePosts: Math.min(prev.visiblePosts + 6, filteredPosts.length),
+        loading: false,
+      }));
+    } catch (error) {
+      console.error("Failed to load more posts:", error);
+      safeSetState((prev) => ({
+        ...prev,
+        error: "Failed to load more posts",
+        loading: false,
+      }));
+    } finally {
+      loadingRef.current = false;
+    }
+  }, [state.loading, state.visiblePosts, filteredPosts.length, safeSetState]);
+
+  // Handle category change
+  const handleCategoryChange = useCallback(
+    (categoryId) => {
+      if (typeof categoryId !== "string" || state.loading) return;
+
+      safeSetState((prev) => ({
+        ...prev,
+        selectedCategory: categoryId,
+        visiblePosts: 6,
+        error: null,
+      }));
+    },
+    [state.loading, safeSetState]
+  );
+
+  // Handle post click with URL navigation
+  const handlePostClick = useCallback(
+    (post) => {
+      if (!post || !post.id || !post.slug) {
+        console.error("Invalid post data:", post);
+        return;
+      }
+
+      console.log("🔗 Navigating to post:", post.slug);
+      navigate(`/blog/${post.slug}`);
+    },
+    [navigate]
+  );
+
+  // Handle back to blog
+  // const handleBackToBlog = useCallback(() => {
+  //   console.log("⬅️ Going back to blog list");
+  //   navigate("/blog");
+  // }, [navigate]);
+
+  // Handle like and bookmark functions
+  const handleLike = useCallback(
+    async (postId, isLiked) => {
+      if (!postId) {
+        throw new Error("Post ID is required");
+      }
+
+      safeSetState((prev) => ({
+        ...prev,
+        posts: prev.posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                isLiked,
+                likes: isLiked
+                  ? (post.likes || 0) + 1
+                  : Math.max((post.likes || 0) - 1, 0),
+              }
+            : post
+        ),
+      }));
+    },
+    [safeSetState]
+  );
+
+  const handleBookmark = useCallback(
+    async (postId, isBookmarked) => {
+      if (!postId) {
+        throw new Error("Post ID is required");
+      }
+
+      safeSetState((prev) => ({
+        ...prev,
+        posts: prev.posts.map((post) =>
+          post.id === postId ? { ...post, isBookmarked } : post
+        ),
+      }));
+    },
+    [safeSetState]
+  );
+
+  const handleRetry = useCallback(() => {
+    safeSetState((prev) => ({ 
+      ...prev, 
+      error: null, 
+      selectedPost: null,
+      showDetail: false 
+    }));
+  }, [safeSetState]);
+
+  // Loading state for content
+  if (state.contentLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading blog content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // FIXED: Show blog detail with proper validation
+  if (state.showDetail && state.selectedPost) {
+    console.log("🎯 Rendering BlogDetail with:", {
+      id: state.selectedPost.id,
+      title: state.selectedPost.title,
+      slug: state.selectedPost.slug
+    });
+    
+    return (
+      <div>
+        <Helmet>
+          <title>{state.selectedPost.title} - ETrek Nepal</title>
+          <meta name="description" content={state.selectedPost.metaDescription || state.selectedPost.description} />
+        </Helmet>
+        <BlogDetail
+          blog={state.selectedPost}
+          // onBack={handleBackToBlog}
+          relatedBlogs={mockBlogPosts.filter(p => p.id !== state.selectedPost.id).slice(0, 3)}
+        />
+      </div>
+    );
+  }
+
+  // Show loading if we have a slug but no selected post yet
+  if (slug && !state.showDetail && !state.error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading blog post...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render main content
+  const renderMainContent = () => {
+    if (state.error && !state.posts.length) {
+      return <ErrorMessage error={state.error} onRetry={handleRetry} />;
+    }
+
+    if (!state.posts.length && state.loading && !state.error) {
+      return <LoadingSpinner message="Loading amazing adventures..." />;
+    }
+
+    if (!state.posts.length && !state.loading && !state.error) {
+      return <EmptyState />;
+    }
+
+    if (!filteredPosts.length && state.posts.length > 0) {
+      return (
+        <NoResultsState
+          category={state.selectedCategory}
+          onReset={() => handleCategoryChange("all")}
+        />
+      );
+    }
+
+    return (
+      <BlogGrid
+        posts={visiblePosts}
+        loading={state.loading}
+        loadMore={loadMorePosts}
+        hasMore={state.visiblePosts < filteredPosts.length}
+        onPostClick={handlePostClick}
+        onLike={handleLike}
+        onBookmark={handleBookmark}
+        currentUser={currentUser}
+        error={state.error}
+        onRetry={handleRetry}
+      />
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <Helmet>
+        <title>Blog - ETrek Nepal</title>
+        <meta name="description" content="Discover amazing trekking stories and adventures in Nepal" />
+      </Helmet>
+      
+      <HeroSection
+        onImageLoad={() =>
+          safeSetState((prev) => ({ ...prev, heroImageLoaded: true }))
+        }
+      />
+
+      <CategoryFilter
+        selectedCategory={state.selectedCategory}
+        onCategoryChange={handleCategoryChange}
+        disabled={state.loading}
+        postsCount={filteredPosts.length}
+      />
+
+      {renderMainContent()}
     </div>
   );
 };
-
-// Blog Grid Component
-const BlogGrid = ({ posts, loading, loadMore, hasMore }) => {
-  return (
-    <section className="py-8 md:py-16 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Featured Post */}
-        {posts.length > 0 && <FeaturedPost post={posts[0]} />}
-
-        {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-16">
-          {posts.slice(1).map((post, index) => (
-            <BlogCard key={post.id} post={post} index={index} />
-          ))}
-        </div>
-
-        {/* Load More Button */}
-        {hasMore && (
-          <div className="text-center mt-8 md:mt-12">
-            <button
-              onClick={loadMore}
-              disabled={loading}
-              className="load-more-btn"
-              data-aos="fade-up"
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="loading-spinner" />
-                  Loading more stories...
-                </div>
-              ) : (
-                "Load More Adventures"
-              )}
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-};
-
-// Featured Post Component
-const FeaturedPost = ({ post }) => {
-  return (
-    <article
-      className="featured-post-card group cursor-pointer"
-      data-aos="fade-up"
-    >
-      <div className="grid lg:grid-cols-2 gap-6 md:gap-8 items-center">
-        <div className="relative overflow-hidden rounded-2xl">
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-64 md:h-80 lg:h-96 object-cover transform group-hover:scale-110 transition-transform duration-700"
-          />
-          <div className="absolute top-4 left-4">
-            <span className="category-badge featured">Featured</span>
-          </div>
-        </div>
-
-        <div className="space-y-4 md:space-y-6">
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-gray-600">
-            <span className="category-badge">{post.category}</span>
-            <div className="flex items-center gap-1">
-              <CalendarIcon className="w-4 h-4" />
-              {post.date}
-            </div>
-            <div className="flex items-center gap-1">
-              <EyeIcon className="w-4 h-4" />
-              {post.views}
-            </div>
-          </div>
-
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
-            {post.title}
-          </h2>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-            {post.excerpt}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={post.author.avatar}
-                alt={post.author.name}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <p className="font-semibold text-gray-900">
-                  {post.author.name}
-                </p>
-                <p className="text-sm text-gray-600">{post.author.role}</p>
-              </div>
-            </div>
-
-            <button className="read-more-btn">Read Full Story </button>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-};
-
-// Blog Card Component
-const BlogCard = ({ post, index }) => {
-  return (
-    <article
-      className="blog-card group cursor-pointer"
-      data-aos="fade-up"
-      data-aos-delay={index * 100}
-    >
-      <div className="relative overflow-hidden rounded-xl mb-4">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500"
-        />
-        <div className="absolute top-3 left-3">
-          <span className="category-badge">{post.category}</span>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
-
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs text-gray-500">
-          <div className="flex items-center gap-1">
-            <CalendarIcon className="w-3 h-3" />
-            {post.date}
-          </div>
-          <div className="flex items-center gap-1">
-            <MapPinIcon className="w-3 h-3" />
-            {post.location}
-          </div>
-        </div>
-
-        <h3 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2">
-          {post.title}
-        </h3>
-
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-          {post.excerpt}
-        </p>
-
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2">
-            <img
-              src={post.author.avatar}
-              alt={post.author.name}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-            <span className="text-sm font-medium text-gray-700">
-              {post.author.name}
-            </span>
-          </div>
-
-          <span className="text-xs text-gray-500">
-            {post.readTime} min read
-          </span>
-        </div>
-      </div>
-    </article>
-  );
-};
-
-// Mock Data
-const mockBlogPosts = [
-  {
-    id: 1,
-    title: "Conquering Everest Base Camp: A Journey of a Lifetime",
-    excerpt:
-      "Experience the ultimate adventure as we trek through the heart of the Himalayas, sharing stories of triumph, challenge, and breathtaking beauty along the way to the world's most famous base camp.",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    category: "trekking",
-    date: "March 15, 2025",
-    location: "Everest Region",
-    readTime: 8,
-    views: "2.3k",
-    author: {
-      name: "Pemba Sherpa",
-      role: "Mountain Guide",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-    },
-  },
-  {
-    id: 2,
-    title: "Hidden Gems of Annapurna Circuit",
-    excerpt:
-      "Discover secret viewpoints and untouched villages along the classic Annapurna Circuit trek.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    category: "trekking",
-    date: "March 12, 2025",
-    location: "Annapurna Region",
-    readTime: 6,
-    views: "1.8k",
-    author: {
-      name: "Sarah Johnson",
-      role: "Travel Writer",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-    },
-  },
-  {
-    id: 3,
-    title: "Cultural Immersion in Kathmandu Valley",
-    excerpt:
-      "Explore ancient temples, vibrant markets, and living traditions in Nepal's cultural heart.",
-    image:
-      "https://images.unsplash.com/photo-1605640840605-14ac1855827b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    category: "culture",
-    date: "March 10, 2025",
-    location: "Kathmandu",
-    readTime: 5,
-    views: "1.2k",
-    author: {
-      name: "Raj Tamang",
-      role: "Cultural Guide",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-    },
-  },
-];
-
-// Custom CSS Styles
-const customStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-  
-  * {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .neon-text {
-    text-shadow: 
-      0 0 5px rgba(255, 107, 107, 0.5),
-      0 0 10px rgba(255, 107, 107, 0.5),
-      0 0 15px rgba(255, 107, 107, 0.5),
-      0 0 20px rgba(255, 107, 107, 0.5);
-  }
-  
-  .glass-button {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    color: white;
-    transition: all 0.3s ease;
-  }
-  
-  .glass-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  }
-  
-  .outline-button {
-    border: 2px solid white;
-    border-radius: 50px;
-    color: white;
-    background: transparent;
-    transition: all 0.3s ease;
-  }
-  
-  .outline-button:hover {
-    background: white;
-    color: #f97316;
-    transform: translateY(-2px);
-  }
-  
-  .category-filter-btn {
-    padding: 8px 16px;
-    border-radius: 50px;
-    border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-  }
-  
-  @media (min-width: 768px) {
-    .category-filter-btn {
-      padding: 12px 24px;
-    }
-  }
-  
-  .category-filter-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .featured-post-card {
-    background: white;
-    border-radius: 24px;
-    padding: 20px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  @media (min-width: 768px) {
-    .featured-post-card {
-      padding: 32px;
-    }
-  }
-  
-  .featured-post-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  }
-  
-  .blog-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border: 1px solid #f3f4f6;
-  }
-  
-  .blog-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    border-color: #e5e7eb;
-  }
-  
-  .category-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .category-badge.featured {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  }
-  
-  .read-more-btn {
-    color: #f97316;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .read-more-btn:hover {
-    color: #ea580c;
-    transform: translateX(4px);
-  }
-  
-  .load-more-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 16px 32px;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .load-more-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-  }
-  
-  .load-more-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
-  .loading-spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-  
-  @keyframes float-delayed {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-  }
-  
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  .animate-float-delayed {
-    animation: float-delayed 8s ease-in-out infinite;
-  }
-  
-  .animate-float-slow {
-    animation: float-slow 10s ease-in-out infinite;
-  }
-  
-  /* Mobile optimizations */
-  @media (max-width: 768px) {
-    .bg-fixed {
-      background-attachment: scroll !important;
-    }
-  }
-`;
-
-// Add custom styles to document
-const styleSheet = document.createElement("style");
-styleSheet.innerText = customStyles;
-document.head.appendChild(styleSheet);
 
 export default BlogPage;

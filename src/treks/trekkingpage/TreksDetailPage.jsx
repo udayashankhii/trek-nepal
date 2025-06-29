@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchTrek, fetchSimilarTreks } from "../../api/trekService";
 import mockTrekHighlights from "../../data/highlights.js";
+import Reviews from "../../data/reviews.js";
 import everestBaseCamp from "../../data/everestBaseCamp.js";
 // UI Components
 import TrekAddInfo from "./AdditionalInfo.jsx";
@@ -34,6 +35,8 @@ import { Helmet } from "react-helmet";
 // Utilities
 import StickyBox from "react-sticky-box";
 import { MessageCircle, AlertCircle, Loader2 } from "lucide-react";
+import Overview from "./TrekOverview.jsx";
+import ReviewsSlider from "./ReviewSlider.jsx";
 
 export default function TrekDetailPage() {
   const { slug } = useParams();
@@ -331,9 +334,15 @@ export default function TrekDetailPage() {
           />
 
           {/* Trek Overview */}
-          {(summary.overview || trek.overview) && (
-            <TrekOverview overview={summary.overview || trek.overview} />
-          )}
+          <section className="py-16 bg-white">
+            <div className="max-w-3xl mx-auto px-6">
+              <Overview
+                heading={everestBaseCamp.overview.heading}
+                articles={everestBaseCamp.overview.articles}
+                bullets={everestBaseCamp.overview.bullets}
+              />
+            </div>
+          </section>
 
           {/* Trek Highlights */}
           {highlights.length > 0 && (
@@ -384,7 +393,6 @@ export default function TrekDetailPage() {
       </div>
       <TrekAddInfo trek={{ additionalInfo: trek.additionalInfo }} />
 
-
       {/* Full Width Gallery */}
       {images.length > 0 && (
         <div className="py-8">
@@ -424,13 +432,13 @@ export default function TrekDetailPage() {
       </div>
 
       {/* Reviews Section */}
-      <div ref={reviewsRef} className="py-8 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <ReviewSection
+      <div ref={reviewsRef} className="py-4 bg-gray-100">
+        <div className="max-w-20xl mx-auto px-2">
+          <ReviewsSlider
             reviews={reviewsList}
-            trekName={trekName}
-            averageRating={trek.averageRating || trek.rating}
-            totalReviews={trek.reviewsCount || reviewsList.length}
+            trekName="Everest Base Camp Trek"
+            averageRating={4.8}
+            totalReviews={156}
           />
         </div>
       </div>

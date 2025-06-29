@@ -537,6 +537,8 @@ const everestBaseCamp = {
     // },
   ],
 
+
+  
   // ==================== HEALTH & SAFETY ====================
   healthSafety: {
     heading: "Trek Health & Safety",

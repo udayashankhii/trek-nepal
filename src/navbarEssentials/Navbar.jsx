@@ -737,8 +737,8 @@ export default function ImprovedNavbar() {
   const isTravelStylesSection =
     location.pathname.startsWith("/travel-styles") ||
     location.pathname.startsWith("/tourindex");
-  const isInfoSection = location.pathname.startsWith("/travel-info/");
 
+  const isInfoSection = location.pathname.startsWith("/travel-info/");
   const getDropdownVisibility = (dropdownName) => {
     const isActive = activeDropdown === dropdownName;
     const shouldRender = isActive || isTransitioning;
@@ -873,7 +873,6 @@ export default function ImprovedNavbar() {
             </div>
 
             {/* TOURS IN NEPAL */}
-            {/* TRAVEL STYLES - Updated Section */}
             <div
               className="relative dropdown-container"
               onMouseEnter={() => handleMouseEnter("travelstyles")}
@@ -899,14 +898,14 @@ export default function ImprovedNavbar() {
 
               {getDropdownVisibility("travelstyles").shouldRender && (
                 <div
-                  className={`absolute left-0 bg-white shadow-lg border border-gray-200 rounded-md z-50
-      transform-gpu will-change-transform transition-all duration-300 ease-in-out ${
-        getDropdownVisibility("travelstyles").isActive
-          ? "opacity-100 visible translate-y-0"
-          : "opacity-0 invisible translate-y-2"
-      }`}
+                  className={`absolute left-0 bg-white shadow-xl border border-gray-200 rounded-lg z-50
+        transform-gpu will-change-transform transition-all duration-300 ease-in-out ${
+          getDropdownVisibility("travelstyles").isActive
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible translate-y-2"
+        }`}
                   style={{
-                    width: "180px", // Narrower width like Nepal Nirvana Trails
+                    width: "320px", // Increased width to accommodate descriptions
                     marginTop: "0.5rem",
                     pointerEvents: getDropdownVisibility("travelstyles")
                       .isActive
@@ -914,8 +913,14 @@ export default function ImprovedNavbar() {
                       : "none",
                   }}
                 >
-                  <div className="px-4 py-2">
-                    <TravelStylesDropdown />
+                  <div className="p-4">
+                    <TravelStylesDropdown
+                      onNavigate={() => {
+                        setActiveDropdown(null);
+                        setStickyDropdown(null);
+                        setIsTransitioning(false);
+                      }}
+                    />
                   </div>
                 </div>
               )}
