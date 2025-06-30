@@ -845,7 +845,7 @@ const BlogPage = ({ currentUser }) => {
   // FIXED: Handle slug changes with direct mockBlogPosts lookup
   useEffect(() => {
     console.log("🚩 URL slug changed:", slug);
-    
+
     if (!slug) {
       console.log("📋 No slug, showing blog list");
       safeSetState((prev) => ({
@@ -857,29 +857,36 @@ const BlogPage = ({ currentUser }) => {
     }
 
     console.log("🔍 Looking for post with slug:", slug);
-    console.log("📚 Available posts:", mockBlogPosts.map(p => ({ 
-      id: p.id, 
-      slug: p.slug, 
-      title: p.title 
-    })));
-    
+    console.log(
+      "📚 Available posts:",
+      mockBlogPosts.map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        title: p.title,
+      }))
+    );
+
     // FIXED: Always search in mockBlogPosts directly
     const match = mockBlogPosts.find((p) => p.slug === slug);
-    
+
     if (match) {
       console.log("✅ Found matching post:", match.title);
-      
+
       // Create enriched blog data for BlogDetail
       const enrichedBlog = {
         ...match,
         // Ensure proper content structure
         content: match.content || {
-          introduction: match.metaDescription || match.description || "Welcome to this adventure story.",
+          introduction:
+            match.metaDescription ||
+            match.description ||
+            "Welcome to this adventure story.",
           sections: match.content?.sections || [
             {
               id: "main-content",
               title: "Story",
-              content: match.description || "This is the main content of the story.",
+              content:
+                match.description || "This is the main content of the story.",
               subsections: [],
             },
           ],
@@ -892,7 +899,8 @@ const BlogPage = ({ currentUser }) => {
         },
         // Add any missing fields
         author: match.author || "ETrek Nepal Team",
-        publishedAt: match.publishedAt || match.date || new Date().toISOString(),
+        publishedAt:
+          match.publishedAt || match.date || new Date().toISOString(),
         readTime: match.readTime || "5 min read",
         tags: match.tags || [],
         likes: match.likes || 0,
@@ -1041,11 +1049,11 @@ const BlogPage = ({ currentUser }) => {
   );
 
   const handleRetry = useCallback(() => {
-    safeSetState((prev) => ({ 
-      ...prev, 
-      error: null, 
+    safeSetState((prev) => ({
+      ...prev,
+      error: null,
       selectedPost: null,
-      showDetail: false 
+      showDetail: false,
     }));
   }, [safeSetState]);
 
@@ -1066,19 +1074,25 @@ const BlogPage = ({ currentUser }) => {
     console.log("🎯 Rendering BlogDetail with:", {
       id: state.selectedPost.id,
       title: state.selectedPost.title,
-      slug: state.selectedPost.slug
+      slug: state.selectedPost.slug,
     });
-    
+
     return (
       <div>
-        <Helmet>
-          <title>{state.selectedPost.title} - ETrek Nepal</title>
-          <meta name="description" content={state.selectedPost.metaDescription || state.selectedPost.description} />
-        </Helmet>
+        {/* React 19 Native Metadata - No more Helmet needed */}
+        <title>{state.selectedPost.title} - ETrek Nepal</title>
+        <meta
+          name="description"
+          content={
+            state.selectedPost.metaDescription || state.selectedPost.description
+          }
+        />
+
         <BlogDetail
           blog={state.selectedPost}
-          // onBack={handleBackToBlog}
-          relatedBlogs={mockBlogPosts.filter(p => p.id !== state.selectedPost.id).slice(0, 3)}
+          relatedBlogs={mockBlogPosts
+            .filter((p) => p.id !== state.selectedPost.id)
+            .slice(0, 3)}
         />
       </div>
     );
@@ -1137,11 +1151,13 @@ const BlogPage = ({ currentUser }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <Helmet>
-        <title>Blog - ETrek Nepal</title>
-        <meta name="description" content="Discover amazing trekking stories and adventures in Nepal" />
-      </Helmet>
-      
+      {/* React 19 Native Metadata */}
+      <title>Blog - ETrek Nepal</title>
+      <meta
+        name="description"
+        content="Discover amazing trekking stories and adventures in Nepal"
+      />
+
       <HeroSection
         onImageLoad={() =>
           safeSetState((prev) => ({ ...prev, heroImageLoaded: true }))
