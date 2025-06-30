@@ -65,7 +65,6 @@ const Layout = () => (
 
 const App = () => (
   <Router>
-    <HelmetProvider>
       <ScrollToTop />
       {/* Wrap everything in a Router to enable routing */}
       <Routes>
@@ -172,7 +171,6 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPage />} />
         </Route>
       </Routes>
-    </HelmetProvider>
   </Router>
 );
 
