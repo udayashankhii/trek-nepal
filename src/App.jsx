@@ -7,7 +7,6 @@ import {
   Outlet,
   Navigate, // ← added
 } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import Home from "./home/Home";
 import TourCard from "./tours/TourCard";
 import TourIndexPage from "./tours/TourPage";
@@ -51,6 +50,7 @@ import BlogDetails from "./blog/BlogDetails.jsx";
 import JungleSafariPage from "./JungleSafarii/Jungle.jsx";
 import BikeRentalPage from "./BikeRetal/Biker.jsx";
 import "./index.css";
+import Meta from "./components/MetaData.jsx";
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (
   <>
@@ -66,6 +66,7 @@ const Layout = () => (
 const App = () => (
   <Router>
       <ScrollToTop />
+     
       {/* Wrap everything in a Router to enable routing */}
       <Routes>
         {/* All routes under “/” will render inside Layout */}
@@ -169,6 +170,14 @@ const App = () => (
 
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
+          <Route path="/blog/:slug/details" element={<BlogDetails />} />
+          <Route path="/jungle-safari" element={<JungleSafariPage />} />
+          <Route path="/bike-rental" element={<BikeRentalPage />} />
+          <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
+          <Route path="/trekking-in-nepal/:slug" element={<TrekDetailPage />} />
+          <Route path="/trekking-in-nepal/:region/:slug" element={<TrekDetailPage />} />
+          <Route path="/trekking-in-nepal/:region/:slug/:trekId" element={<TrekDetailPage />} />
+        
         </Route>
       </Routes>
   </Router>

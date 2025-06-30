@@ -30,7 +30,6 @@ import TrekGallery from "./Gallery";
 import KeyInfo from "./Info.jsx";
 import ReviewSection from "./Reviews.jsx";
 import TrekOverview from "./TrekOverview.jsx";
-import { Helmet } from "react-helmet";
 
 // Utilities
 import StickyBox from "react-sticky-box";
