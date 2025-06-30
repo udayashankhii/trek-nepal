@@ -35,7 +35,7 @@ export default function HeroSection({
     <section className="relative min-h-[60vh] flex items-center justify-center bg-gray-900 overflow-hidden">
       {/* Background Image */}
       <img
-        src={imageUrl}
+        src={"/everest.jpeg"}
         alt={title}
         className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
         loading="eager"
@@ -90,7 +90,7 @@ export default function HeroSection({
         {/* CTA Button */}
         {ctaLabel && (
           <a
-            href={ctaLink}
+            href={"book"}
             className="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold text-lg shadow-lg hover:scale-105 transition-transform"
           >
             {ctaLabel}
