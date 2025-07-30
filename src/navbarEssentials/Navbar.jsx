@@ -834,7 +834,7 @@ export default function ImprovedNavbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img
-              src="/logooo.webp"
+              src="/evertreknepallogo.webp"
               alt="EverTrek Nepal Logo"
               className="h-20 object-contain"
             />
