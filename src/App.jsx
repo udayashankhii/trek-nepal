@@ -49,11 +49,10 @@ import "./index.css";
 // import TourDetailCard from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
 
 import ToursPage from "./Travel-Activities/Tour-Activities/Tours.jsx";
-import JungleSafariPage from "./Travel-Activities/JungleSafarii/Jungle.jsx";
-import BikeRentalPage from "./Travel-Activities/BikeRetal/Biker.jsx";
+import JungleSafariPage from "./Travel-Activities/JungleSafari/Jungle.jsx";
+import BikeRentalPage from "./Travel-Activities/BikeRental/Biker.jsx";
 import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
-import JungleSafariHero from "./Travel-Activities/JungleSafarii/JungleHero.jsx";
 
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (
