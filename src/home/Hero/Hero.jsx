@@ -330,15 +330,8 @@ export default function EnhancedHeroSection(
         </div>
       </div>
 
-      {/* Enhanced Scroll Indicator - Responsive */}
-      <div className="absolute bottom-4 sm:bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="animate-bounce">
-          <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/50 rounded-full p-1 bg-white/10 backdrop-blur-sm">
-            <div className="w-1 h-2 sm:h-3 bg-gradient-to-b from-white to-amber-400 rounded-full mx-auto animate-pulse"></div>
-          </div>
-          <div className="text-white/60 text-xs mt-1 sm:mt-2 text-center font-medium">Scroll</div>
-        </div>
-      </div>
+      {/* Scroll Down Indicator */}
+ 
     </section>
   );
 }

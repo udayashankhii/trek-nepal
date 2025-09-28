@@ -881,11 +881,8 @@ export default function ImprovedNavbar() {
               <button
                 type="button"
                 className={navItemStyles(isTravelStylesSection)}
-                onClick={() => {
-                  handleDropdownClick("travelstyles");
-                  navigate("/travel-styles");
-                }}
-              >
+                onClick={() => handleDropdownClick("travelstyles")}
+                >
                 <span className="bg-gradient-to-r from-yellow-600 to-amber-500 absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
                 TRAVEL STYLES
                 <ChevronDown
