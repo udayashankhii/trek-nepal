@@ -46,7 +46,6 @@ import BlogDetails from "./blog/BlogDetails.jsx";
 import "./index.css";
 
 // TOurs events
-// import TourDetailCard from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
 
 import ToursPage from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import JungleSafariPage from "./Travel-Activities/JungleSafari/Jungle.jsx";
