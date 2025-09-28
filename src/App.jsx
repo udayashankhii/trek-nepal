@@ -53,7 +53,8 @@ import JungleSafariPage from "./Travel-Activities/JungleSafarii/Jungle.jsx";
 import BikeRentalPage from "./Travel-Activities/BikeRetal/Biker.jsx";
 import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
-import JungleSafariHero from "./Travel-Activities/JungleSafarii/JUngleHero.jsx";
+import JungleSafariHero from "./Travel-Activities/JungleSafarii/JungleHero.jsx";
+
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (
   <>
@@ -129,10 +130,13 @@ const App = () => (
         <Route path="/" element={<CostAndDate />} />
         {/* <Route path="/booking" element={<BookingPage />} /> */}
         {/* <Route path="/customize-trip" element={<CustomizeTripPage />} /> */}
+        
         <Route
           path="/travel-activities/jungle-safari"
-          element={<JungleSafariHero />}
+          element={<JungleSafariPage />}
         />
+        <Route path="/travel-activities/tours" element={<ToursPage />} />
+        <Route path="/travel-activities/tours/:slug" element={<TourDetail />} />
         <Route path="/travel-styles/bike-rental" element={<BikeRentalPage />} />
         {/* <Route
           path="/everest-base-camp"
