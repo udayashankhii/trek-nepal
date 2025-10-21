@@ -11,8 +11,8 @@ const ICONS = {
   general: GlobeAltIcon
 };
 
-const FAQSection = ({ faqCategories }) => {
-  const [activeCategory, setActiveCategory] = useState(faqCategories[0].id);
+const FAQSection = ({ faqCategories = [] }) => {
+  const [activeCategory, setActiveCategory] = useState(faqCategories.length > 0 ? faqCategories[0].id : null)
   const [openQuestionIndex, setOpenQuestionIndex] = useState(null);
 
   const handleToggle = (index) => {

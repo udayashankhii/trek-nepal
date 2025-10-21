@@ -1,78 +1,61 @@
 // src/api/trekService.js
+import axiosInstance from "./axiosInstance";
 
-// ==================== MOCK MODE ENABLED ====================
-import {
-  fetchTrek as getMockTrek,
-  fetchAllTreks as getAllMockTreks,
-} from "./mockData.js";
-
-// ==================== MOCKED API HELPERS ====================
-
-// Fetch single trek by slug (mock only)
-export const fetchTrek = async (slug) => {
-  try {
-    return await getMockTrek(slug);
-  } catch (err) {
-    console.error("Mock error in fetchTrek:", err);
-    throw new Error("Failed to load trek. Please try again.");
-  }
-};
-
-// Fetch all treks (mock only)
+// Fetch all treks
 export const fetchAllTreks = async () => {
   try {
-    return await getAllMockTreks();
-  } catch (err) {
-    console.error("Mock error in fetchAllTreks:", err);
-    throw new Error("Unable to fetch treks.");
-  }
-};
+    const response = await axiosInstance.get("treks/");
+    const data = response.data;
+    // Normalize the response into an array
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data.results)) return data.results;
+    if (Array.isArray(data.data)) return data.data;
 
-// ==================== Derived APIs (Still Using Mock) ====================
-
-// Fetch similar treks from same region
-export const fetchSimilarTreks = async (slug, limit = 3) => {
-  try {
-    const currentTrek = await fetchTrek(slug);
-    const allTreks = await fetchAllTreks();
-
-    return allTreks
-      .filter(
-        (trek) =>
-          trek.slug !== slug &&
-          trek.region?.toLowerCase() === currentTrek.region?.toLowerCase()
-      )
-      .slice(0, limit);
-  } catch (err) {
-    console.error("Error fetching similar treks:", err);
+    console.warn("Unexpected trek API response format:", data);
+    return [];
+  } catch (error) {
+    console.error("Error fetching all treks:", error);
     return [];
   }
 };
 
-// Search treks with optional filters
+
+
+
+// Fetch single trek by slug
+export const fetchTrek = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${slug}/detail/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching trek ${slug}:`, error);
+    throw new Error("Failed to fetch trek details");
+  }
+};
+
+// Fetch similar treks
+export const fetchSimilarTreks = async (slug, limit = 3) => {
+  try {
+    const response = await axiosInstance.get(`treks/${slug}/similar/?limit=${limit}`);
+    const data = response.data;
+    return Array.isArray(data) ? data : data.results || [];
+  } catch (error) {
+    console.error("Error fetching similar treks:", error);
+    return [];
+  }
+};
+
+// Search treks (optional)
 export const searchTreks = async (query = "", filters = {}) => {
   try {
-    const allTreks = await fetchAllTreks();
-    let results = allTreks;
-
-    if (query) {
-      const lowerQuery = query.toLowerCase();
-      results = results.filter(
-        (trek) =>
-          trek.name?.toLowerCase().includes(lowerQuery) ||
-          trek.region?.toLowerCase().includes(lowerQuery)
-      );
-    }
-
-    if (filters.region) {
-      results = results.filter(
-        (trek) => trek.region?.toLowerCase() === filters.region.toLowerCase()
-      );
-    }
-
-    return results;
+    const params = { q: query, ...filters };
+    const response = await axiosInstance.get("treks/search/", { params });
+    const data = response.data;
+    return Array.isArray(data) ? data : data.results || [];
   } catch (err) {
     console.error("Error searching treks:", err);
     return [];
   }
 };
+
+

@@ -45,9 +45,9 @@ const treks = [
   },
   {
     id: 4,
-    image: "/images/everest-classic.jpg",
-    title: "Classic Everest Base Camp Trek",
-    slug: "classic-everest-base-camp-trek", // Add this
+    image: "/abcd.png",
+    title: "Everest Base Camp Trek",
+    slug: "everest-base-camp-trek", // Add this
     days: 14,
     price: 3999,
     reviews: 52,

@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { MapPin, Users, Clock } from "lucide-react";
 
 export default function RegionCard({
   name,
@@ -16,48 +17,68 @@ export default function RegionCard({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.04 }}
+        whileHover={{ scale: 1.03 }}
         transition={{ duration: 0.4 }}
-        className="relative overflow-hidden rounded-3xl shadow-2xl bg-white"
+        className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
       >
-        <div className="w-full h-64 overflow-hidden">
+        {/* Image */}
+        <div className="relative h-48 w-full overflow-hidden">
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 w-full p-6 text-white">
-          <h3 className="text-xl md:text-2xl font-bold mb-1 drop-shadow-lg">
+        {/* Content */}
+        <div className="p-4 space-y-3">
+          {/* Name */}
+          <h3 className="text-lg md:text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
             {name}
           </h3>
-          <p className="text-sm md:text-base mb-2 line-clamp-2">
-            {description}
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">
-              {itinerariesCount} Itineraries
-            </span>
-            <motion.span whileHover={{ x: 4 }} className="inline-block">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </motion.span>
+
+          {/* Description */}
+          {description && (
+            <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
+          )}
+
+          {/* Itineraries / Meta */}
+          <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-gray-500" />
+              <span>{itinerariesCount} Itineraries</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-gray-500" />
+              <span className="capitalize">{name.split(" ")[0]}</span>
+            </div>
           </div>
+
+          {/* Call-to-action */}
+          <motion.div
+            whileHover={{ x: 4 }}
+            className="mt-2 inline-block text-indigo-600 font-semibold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="inline h-5 w-5 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+            Explore
+          </motion.div>
         </div>
       </motion.div>
     </Link>
@@ -71,5 +92,3 @@ RegionCard.propTypes = {
   itinerariesCount: PropTypes.number,
   description: PropTypes.string,
 };
-
-// Remove the defaultProps completely - no longer needed

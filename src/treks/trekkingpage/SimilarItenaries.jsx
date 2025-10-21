@@ -74,7 +74,7 @@ function SimilarTrekCard({ trek }) {
         <div className="text-sky-600 text-xl font-semibold">${trek.price}</div>
 
         <Link
-          to={trek.link}
+          to={trek.link || `/treks/${trek.slug}`}  // fallback to frontend routing if backend's link missing
           className="text-green-600 text-sm font-medium inline-flex items-center hover:underline"
         >
           View Details <ArrowRight size={16} className="ml-1" />
@@ -83,37 +83,12 @@ function SimilarTrekCard({ trek }) {
     </article>
   );
 }
-
-// ✅ Main Dynamic Component with Static Fallback
-export default function SimilarItineraries({ treks = [] }) {
-  const data = treks.length ? treks : fallbackTreks;
-
+export default function SimilarItineraries({ treks = fallbackTreks }) {
   return (
-    <section className="my-12 px-4 md:px-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-        <div>
-          <p className="text-sm text-green-600 font-medium uppercase">
-            You May Also Like
-          </p>
-          <h2 className="text-3xl font-bold text-gray-900 mt-1">
-            Similar Itineraries
-          </h2>
-        </div>
-        <Link
-          to="/treks"
-          className="mt-4 md:mt-0 inline-flex items-center bg-green-600 text-white font-medium px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
-        >
-          Explore More <ArrowRight className="ml-2" size={20} />
-        </Link>
-      </div>
-
-      {/* Trek Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.map((trek) => (
-          <SimilarTrekCard key={trek.id || trek.slug} trek={trek} />
-        ))}
-      </div>
+    <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {treks.map((trek) => (
+        <SimilarTrekCard key={trek.id} trek={trek} />
+      ))}
     </section>
   );
 }

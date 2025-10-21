@@ -1,155 +1,102 @@
-import React, { useState } from "react";
+
+
+// Treks.jsx
+import React, { useEffect, useState } from "react";
+import { fetchAllTreks } from "../api/regionService";
 import { Link } from "react-router-dom";
 
-const treksByRegion = {
-  Everest: [
-    { name: "Everest Base Camp Trek", duration: "14 days", popular: true },
-    { name: "Sleep at Base Camp on Everest Trek", duration: "15 days" },
-    { name: "EBC Trek via Gokyo with Helicopter Return", duration: "15 days", popular: true },
-    { name: "EBC Trek Helicopter Return from Pheriche", duration: "11 days" },
-    { name: "Everest Three High Passes Trek", duration: "18 days" },
-    { name: "Budget Everest Base Camp Trek", duration: "12 days" },
-    { name: "Gokyo Valley Circuit Trek", duration: "13 days" },
-  ],
-  Annapurna: [
-    { name: "Annapurna Base Camp Trek", duration: "14 days", popular: true },
-    { name: "Annapurna North Base Camp Trek", duration: "12 days" },
-    { name: "Annapurna Circuit Trek", duration: "12 days", popular: true },
-    { name: "Full Annapurna Circuit Trek", duration: "17 days" },
-    { name: "Ghorepani Poonhill Trek", duration: "8 days" },
-    { name: "Mardi Himal Trek", duration: "9 days", popular: true },
-    { name: "Poon Hill Trek", duration: "2 days" },
-  ],
-  Langtang: [
-    { name: "Langtang Valley Trek", duration: "10 days", popular: true },
-    { name: "Langtang Gosainkunda Lake Trek", duration: "15 days" },
-    { name: "Helambu Circuit Trek", duration: "8 days" },
-    { name: "Tamang Heritage Trail Trek", duration: "10 days" },
-    { name: "Langtang Ganja La Pass Trek", duration: "14 days" },
-  ],
-  Manaslu: [
-    { name: "Manaslu Circuit Trek", duration: "14 days", popular: true },
-    { name: "Short Manaslu Trek", duration: "11 days" },
-    { name: "Manaslu Tsum Valley Trek", duration: "18 days" },
-    { name: "Manaslu Annapurna Circuit Trek", duration: "23 days" },
-    { name: "Tsum Valley Trek", duration: "15 days" },
-  ],
-  Mustang: [
-    { name: "Upper Mustang Trek", duration: "16 days", popular: true },
-    { name: "Upper Mustang Overland Tour", duration: "8 days" },
-    { name: "Upper Mustang Tiji Festival Tour", duration: "12 days" },
-  ],
-};
+const STATIC_REGIONS = [
+  { name: "Everest", slug: "everest" },
+  { name: "Annapurna", slug: "annapurna" },
+  { name: "Langtang", slug: "langtang" },
+  { name: "Manaslu", slug: "manaslu" },
+  { name: "Mustang", slug: "mustang" },
+];
 
-export default function Treks({ minimal = false, onNavigate }) {
+export default function Treks({ onNavigate }) {
+  const [treksByRegion, setTreksByRegion] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeRegion, setActiveRegion] = useState(null);
 
-  if (minimal) {
-    const [openMobileRegion, setOpenMobileRegion] = useState(null);
-
-    const handleToggle = (region) => {
-      setOpenMobileRegion((prev) => (prev === region ? null : region));
+  useEffect(() => {
+    const loadTreks = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const allTreks = await fetchAllTreks();
+        // Robust region matching
+        const grouped = STATIC_REGIONS.reduce((acc, region) => {
+          const staticNormalized = region.name.toLowerCase().replace(/[\s-]/g, "");
+          acc[region.name] = allTreks.filter(trek => {
+            const trekRegion =
+              (trek.region_name || trek.region || "").toLowerCase().replace(/[\s-]/g, "");
+            return trekRegion.includes(staticNormalized);
+          });
+          return acc;
+        }, {});
+        setTreksByRegion(grouped);
+      } catch (err) {
+        setError("Failed to load treks.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
+    loadTreks();
+  }, []);
 
-    return (
-      <div className="space-y-4">
-        {Object.entries(treksByRegion)
-          .slice(0, 2)
-          .map(([region, list]) => (
-            <div key={region} className="space-y-2">
-              <div
-                className="flex items-center justify-between cursor-pointer border-b border-slate-200 pb-2"
-                onClick={() => handleToggle(region)}
-              >
-                <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                  {region} Region
-                </h3>
-                <ChevronIcon isOpen={openMobileRegion === region} />
-              </div>
+  if (loading) return <div className="p-4 text-gray-500">Loading treks...</div>;
+  if (error) return <div className="p-4 text-red-600">{error}</div>;
 
-              {openMobileRegion === region && (
-                <ul className="space-y-3 pl-2 transition-all duration-300">
-                  {list.map((trek) => {
-                    const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
-                    return (
-                      <li
-                        key={trek.name}
-                        className="flex items-center justify-between group"
-                      >
-                        <Link
-                          to={`/treks/${slug}`}
-                          onClick={onNavigate}
-                          className="text-slate-800 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3"
-                        >
-                          {trek.name}
-                        </Link>
-
-                        <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0">
-                          {trek.duration.toLowerCase()}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          ))}
-      </div>
-    );
-  }
-
-  // Full desktop version with collapsible regions
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
-        {Object.entries(treksByRegion).map(([region, list]) => {
-          const regionSlug = region.toLowerCase();
+        {STATIC_REGIONS.map(region => {
+          const list = treksByRegion[region.name] || [];
           return (
-            <div key={region} className="space-y-4">
+            <div key={region.slug} className="space-y-4">
               <h3 className="flex items-center gap-2 border-b border-slate-200 pb-2">
                 <Link
-                  to={`/treks/${regionSlug}`}
+                  to={`/treks/${region.slug}`}
                   className="flex-1 text-sm font-semibold text-slate-900 uppercase tracking-wider hover:text-emerald-600 transition-colors"
                 >
-                  {region} Region
+                  {region.name} Region
                 </Link>
                 <button
                   onClick={() =>
-                    setActiveRegion((prev) => (prev === region ? null : region))
+                    setActiveRegion(prev => (prev === region.name ? null : region.name))
                   }
                   className="p-1"
                 >
-                  <ChevronIcon isOpen={activeRegion === region} />
+                  <ChevronIcon isOpen={activeRegion === region.name} />
                 </button>
               </h3>
-              
               <ul
                 className={`space-y-3 transition-all duration-300 ${
-                  activeRegion && activeRegion !== region
+                  activeRegion && activeRegion !== region.name
                     ? "max-h-0 opacity-0 overflow-hidden"
                     : "max-h-[1000px] opacity-100"
                 }`}
               >
-                {list.map((trek) => {
-                  const slug = trek.name.toLowerCase().replace(/\s+/g, "-");
-
-                  return (
-                    <li
-                      key={trek.name}
-                      className="flex items-start justify-between group py-1"
-                    >
+                {list.length === 0 ? (
+                  <li className="text-slate-400 text-xs italic">No treks available.</li>
+                ) : (
+                  list.map(trek => (
+                    <li key={trek.id || trek.slug} className="flex items-start justify-between group py-1">
                       <Link
-                        to={`/treks/${regionSlug}/${slug}`}
+                        to={`/treks/${region.slug}/${trek.slug || trek.title.toLowerCase().replace(/\s+/g, "-")}`}
+                        onClick={onNavigate}
                         className="text-slate-700 font-medium text-sm hover:text-emerald-600 transition-colors duration-200 flex-1 mr-3 leading-relaxed"
                       >
-                        {trek.name}
+                        {trek.title}
                       </Link>
                       <span className="bg-slate-50 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-md border border-slate-200 shrink-0 mt-0.5">
-                        {trek.duration.toLowerCase()}
+                        {trek.duration?.toLowerCase() || ""}
                       </span>
                     </li>
-                  );
-                })}
+                  ))
+                )}
               </ul>
             </div>
           );
@@ -161,9 +108,7 @@ export default function Treks({ minimal = false, onNavigate }) {
 
 const ChevronIcon = ({ isOpen }) => (
   <svg
-    className={`w-3 h-3 transition-transform duration-300 text-slate-400 ${
-      isOpen ? "rotate-180" : ""
-    }`}
+    className={`w-3 h-3 transition-transform duration-300 text-slate-400 ${isOpen ? "rotate-180" : ""}`}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

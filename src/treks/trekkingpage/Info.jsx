@@ -17,9 +17,11 @@ export default function KeyInfo({
   reviewText, // optional short text shown instead of "(n reviews)"
   showStars = true,
 }) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating - fullStars >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+const safeRating = typeof rating === "number" && rating >= 0 && rating <= 5 ? rating : 0;
+
+const fullStars = Math.floor(safeRating);
+const hasHalfStar = safeRating - fullStars >= 0.5;
+const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   const stats = [
     { Icon: Calendar, label: "Duration", value: data.duration },

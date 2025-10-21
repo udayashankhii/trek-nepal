@@ -1,3 +1,4 @@
+// src/navbarEssentials/TrekkingDropdown.jsx
 import React from "react";
 import Treks from "../Treks";
 

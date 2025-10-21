@@ -7,6 +7,7 @@ import FeaturedTreksGrid from "./FeaturedTreks";
 // Import our advanced components
 import AdvancedMountainHomePage from "./Hero/AdvancedMountainHomePage";
 import ImprovedNavbar from "../navbarEssentials/Navbar";
+import HomeFeaturedTreks from "./FeaturedTreks";
 
 export default function Home() {
   return (
@@ -61,7 +62,7 @@ export default function Home() {
 
           {/* Enhanced Featured Trek Grid */}
           <div className="relative">
-            <FeaturedTreksGrid />
+            <HomeFeaturedTreks/>
           </div>
         </div>
       </section>

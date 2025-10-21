@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMouseTracking, useIntersectionObserver } from "./animationUtils";
 import { Mountain } from "lucide-react";
 
+
+
 const heroSlides = [
   {
     id: 1,
@@ -19,6 +21,17 @@ const heroSlides = [
     },
     particles: 150,
     bgGradient: "from-blue-900 to-indigo-900",
+    // New weather/conditions field
+    weather: {
+      temperature: "-5°C",
+      location: "Base Camp",
+      condition: "Clear Sky",
+      remark: "Perfect for trekking",
+      visibility: "10km",
+      wind: "15 km/h",
+      isVisible: true,
+      animationDelay: "1.2s",
+    }
   },
   {
     id: 2,
@@ -30,6 +43,16 @@ const heroSlides = [
     stats: { elevation: "5,416m", duration: "16 days", difficulty: "Moderate" },
     particles: 120,
     bgGradient: "from-purple-900 to-pink-900",
+    weather: {
+      temperature: "2°C",
+      location: "Thorong La",
+      condition: "Partly Cloudy",
+      remark: "Carry layers",
+      visibility: "8km",
+      wind: "10 km/h",
+      isVisible: true,
+      animationDelay: "1.2s",
+    }
   },
   {
     id: 3,
@@ -45,6 +68,16 @@ const heroSlides = [
     },
     particles: 180,
     bgGradient: "from-emerald-900 to-teal-900",
+    weather: {
+      temperature: "-3°C",
+      location: "Larke Pass",
+      condition: "Snow Showers",
+      remark: "Crampons advised",
+      visibility: "5km",
+      wind: "20 km/h",
+      isVisible: true,
+      animationDelay: "1.2s",
+    }
   },
   {
     id: 4,
@@ -56,6 +89,16 @@ const heroSlides = [
     stats: { elevation: "4,984m", duration: "8 days", difficulty: "Easy" },
     particles: 100,
     bgGradient: "from-orange-900 to-red-900",
+    weather: {
+      temperature: "4°C",
+      location: "Kyanjin Gompa",
+      condition: "Sunny",
+      remark: "Excellent views",
+      visibility: "12km",
+      wind: "8 km/h",
+      isVisible: true,
+      animationDelay: "1.2s",
+    }
   },
 ];
 
@@ -80,19 +123,31 @@ const StatCard = ({ icon: Icon, label, value, delay, isVisible }) => (
                 ${isVisible ? "animate-[slideInUp_0.6s_ease-out_forwards]" : "opacity-0"}`}
     style={{ animationDelay: `${delay}s` }}
   >
-    <Icon className="text-amber-400 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />
+    {Icon && <Icon className="text-amber-400 mb-1 sm:mb-2 w-4 h-4 sm:w-5 sm:h-5" />}
     <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">{label}</div>
     <div className="text-white text-sm sm:text-lg font-bold">{value}</div>
   </div>
 );
 
-const WeatherWidget = ({ isVisible }) => (
+
+
+// Professional, dynamic WeatherWidget
+const WeatherWidget = ({
+  isVisible,
+  temperature,
+  location,
+  condition,
+  remark,
+  visibility,
+  wind,
+  animationDelay = "1.2s", // Default value
+}) => (
   <div
     className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
                 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
                 transition-all duration-700
                 ${isVisible ? "animate-[slideInRight_0.8s_ease-out_forwards]" : "opacity-0"}`}
-    style={{ animationDelay: "1.2s" }}
+    style={{ animationDelay }}
   >
     <h4 className="text-white font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
       <FiCalendar className="mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
@@ -100,20 +155,52 @@ const WeatherWidget = ({ isVisible }) => (
     </h4>
     <div className="flex items-center justify-between">
       <div>
-        <div className="text-white text-2xl sm:text-3xl font-bold">-5°C</div>
-        <div className="text-white/70 text-xs sm:text-sm">Base Camp</div>
+        <div className="text-white text-2xl sm:text-3xl font-bold">{temperature}</div>
+        <div className="text-white/70 text-xs sm:text-sm">{location}</div>
       </div>
       <div className="text-right">
-        <div className="text-white/90 text-xs sm:text-sm font-medium">Clear Sky</div>
-        <div className="text-emerald-400 text-xs sm:text-sm">Perfect for trekking</div>
+        <div className="text-white/90 text-xs sm:text-sm font-medium">{condition}</div>
+        <div className="text-emerald-400 text-xs sm:text-sm">{remark}</div>
       </div>
     </div>
     <div className="mt-3 sm:mt-4 flex items-center justify-between text-xs text-white/60">
-      <span>Visibility: 10km</span>
-      <span>Wind: 15 km/h</span>
+      <span>Visibility: {visibility}</span>
+      <span>Wind: {wind}</span>
     </div>
   </div>
 );
+
+// const WeatherWidget = ({ isVisible }) => (
+//  <div
+//   className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
+//  rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
+//  transition-all duration-700
+//  ${isVisible ? "animate-[slideInRight_0.8s_ease-out_forwards]" : "opacity-0"}`}
+// style={{ animationDelay: "1.2s" }}
+// >
+//  <h4 className="text-white font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+// <FiCalendar className="mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
+//  Current Conditions
+//  </h4>
+//  <div className="flex items-center justify-between">
+//  <div>
+// <div className="text-white text-2xl sm:text-3xl font-bold">-5°C</div>
+//  <div className="text-white/70 text-xs sm:text-sm">Base Camp</div>
+//  </div>
+//  <div className="text-right">
+//  <div className="text-white/90 text-xs sm:text-sm font-medium">Clear Sky</div>
+//  <div className="text-emerald-400 text-xs sm:text-sm">Perfect for trekking</div>
+//  </div>
+//  </div>
+// <div className="mt-3 sm:mt-4 flex items-center justify-between text-xs text-white/60">
+// <span>Visibility: 10km</span>
+//  <span>Wind: 15 km/h</span>
+//  </div>
+// </div>
+// );
+
+
+
 
 export default function EnhancedHeroSection(
  
