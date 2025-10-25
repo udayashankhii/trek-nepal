@@ -170,34 +170,6 @@ const WeatherWidget = ({
   </div>
 );
 
-// const WeatherWidget = ({ isVisible }) => (
-//  <div
-//   className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
-//  rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
-//  transition-all duration-700
-//  ${isVisible ? "animate-[slideInRight_0.8s_ease-out_forwards]" : "opacity-0"}`}
-// style={{ animationDelay: "1.2s" }}
-// >
-//  <h4 className="text-white font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
-// <FiCalendar className="mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
-//  Current Conditions
-//  </h4>
-//  <div className="flex items-center justify-between">
-//  <div>
-// <div className="text-white text-2xl sm:text-3xl font-bold">-5°C</div>
-//  <div className="text-white/70 text-xs sm:text-sm">Base Camp</div>
-//  </div>
-//  <div className="text-right">
-//  <div className="text-white/90 text-xs sm:text-sm font-medium">Clear Sky</div>
-//  <div className="text-emerald-400 text-xs sm:text-sm">Perfect for trekking</div>
-//  </div>
-//  </div>
-// <div className="mt-3 sm:mt-4 flex items-center justify-between text-xs text-white/60">
-// <span>Visibility: 10km</span>
-//  <span>Wind: 15 km/h</span>
-//  </div>
-// </div>
-// );
 
 
 
@@ -242,6 +214,16 @@ export default function EnhancedHeroSection(
 
 
   const currentSlideData = heroSlides[currentSlide];
+
+
+
+
+
+
+
+
+
+
 
   return (
     <section
@@ -422,3 +404,128 @@ export default function EnhancedHeroSection(
     </section>
   );
 }
+
+
+// import React, { useState, useEffect } from "react";
+// import {  FiMapPin, FiStar, FiCalendar } from "react-icons/fi";
+// import { useNavigate } from "react-router-dom";
+// import { useMouseTracking, useIntersectionObserver } from "./animationUtils";
+// import { Mountain } from "lucide-react";
+
+
+
+// import { fetchAllTreks}  from "../../api/trekService";
+
+// export default function EnhancedHeroSection() {
+//   const [heroSlides, setHeroSlides] = useState([]);
+//   const [currentSlide, setCurrentSlide] = useState(0);
+//   const [isLoaded, setIsLoaded] = useState(false);
+//   const [particles, setParticles] = useState([]);
+//   const [mouseRef, mousePosition] = useMouseTracking();
+//   const [heroRef, isVisible] = useIntersectionObserver();
+//   const navigate = useNavigate();
+
+//   // Fetch treks dynamically
+//   useEffect(() => {
+//     const loadTreks = async () => {
+//       try {
+//         const treks = await fetchAllTreks();
+
+//         const formatted = treks.slice(0, 4).map((trek, i) => ({
+//           id: trek.id,
+//           title: trek.name || `Trek ${i + 1}`,
+//           subtitle: trek.region?.name || "Explore Nepal’s Mountains",
+//           description:
+//             trek.short_description ||
+//             trek.description ||
+//             "Experience breathtaking adventures.",
+//           image: trek.image || "/fallback-image.jpg",
+//           stats: {
+//             elevation: trek.max_altitude ? `${trek.max_altitude}m` : "N/A",
+//             duration: trek.duration || "N/A",
+//             difficulty: trek.difficulty || "Moderate",
+//           },
+//           particles: 120 + Math.floor(Math.random() * 50),
+//           bgGradient:
+//             i % 2 === 0
+//               ? "from-blue-900 to-indigo-900"
+//               : "from-purple-900 to-pink-900",
+//           weather: {
+//             temperature: `${Math.floor(Math.random() * 10) - 5}°C`,
+//             location: trek.region?.name || "Nepal",
+//             condition: "Clear Sky",
+//             remark: "Perfect for trekking",
+//             visibility: "10km",
+//             wind: "12 km/h",
+//             isVisible: true,
+//             animationDelay: "1.2s",
+//           },
+//         }));
+
+//         setHeroSlides(formatted);
+//       } catch (error) {
+//         console.error("Failed to load treks:", error);
+//       }
+//     };
+
+//     loadTreks();
+//   }, []);
+
+//   // ✅ Proper fallback slides
+//   const slides = heroSlides.length
+//     ? heroSlides
+//     : [
+//         {
+//           id: 1,
+//           title: "Loading Treks...",
+//           subtitle: "Please wait",
+//           description: "Fetching the best Himalayan adventures.",
+//           image: "/everest.jpeg",
+//           stats: { elevation: "-", duration: "-", difficulty: "-" },
+//           bgGradient: "from-slate-800 to-gray-900",
+//           particles: 100,
+//           weather: { isVisible: false },
+//         },
+//       ];
+
+//   // Auto-slide logic
+//   useEffect(() => {
+//     if (!slides.length) return;
+//     setIsLoaded(true);
+//     const interval = setInterval(() => {
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     }, 8000);
+//     return () => clearInterval(interval);
+//   }, [slides]);
+
+//   // Generate particles
+//   useEffect(() => {
+//     if (!slides.length) return;
+//     const slide = slides[currentSlide];
+//     const newParticles = Array.from({ length: slide.particles }).map((_, i) => ({
+//       id: `${currentSlide}-${i}`,
+//       delay: Math.random() * 5,
+//       duration: 3 + Math.random() * 4,
+//       size: 2 + Math.random() * 8,
+//       opacity: 0.1 + Math.random() * 0.3,
+//       left: Math.random() * 100,
+//       top: Math.random() * 100,
+//     }));
+//     setParticles(newParticles);
+//   }, [currentSlide, slides]);
+
+//   const currentSlideData = slides[currentSlide];
+
+//   return (
+//     <section
+//       ref={(el) => {
+//         mouseRef.current = el;
+//         heroRef.current = el;
+//       }}
+//       className={`relative w-full min-h-screen h-screen flex items-center overflow-hidden 
+//                  bg-gradient-to-br ${currentSlideData.bgGradient} transition-all duration-1000`}
+//     >
+//       {/* Everything below remains unchanged (background, content, buttons, etc.) */}
+//     </section>
+//   );
+// }

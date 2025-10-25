@@ -1,3 +1,4 @@
+// src/trekkingpage/BookingCard.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -8,29 +9,48 @@ import {
   CreditCard,
   ThumbsUp,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // Correct import
+import { useNavigate } from "react-router-dom";
 
 function BookingCard({
-  basePrice,
-  original,
-  groups,
+  trekId,
+  trekName = "Trek",
+  basePrice = 0,
+  original = 0,
+  groups = [],
   mapLink,
   onCheckAvailability,
-  trekId, // Ensure prop is received
+  onBookNow,
 }) {
   const [showPrices, setShowPrices] = useState(false);
-  const navigate = useNavigate(); // Initialize hook
+  const navigate = useNavigate();
+  
+  // Calculate savings percentage
   const savings =
     original > basePrice
       ? Math.round(((original - basePrice) / original) * 100)
       : 0;
 
-  const handleClick = () => {
-    navigate(`/customize-trip?trip_id=${trekId}`); // Correct navigation
+  // Navigation handlers
+  const handleCustomizeTrip = () => {
+    if (trekId) {
+      navigate(`/customize-trip?trip_id=${trekId}`);
+    }
   };
-  const handleBookNow = () => {
-    navigate(`/trip-booking?trip_id=${trekId}`);
+
+  const handleBookNowClick = () => {
+    if (onBookNow) {
+      onBookNow();
+    } else if (trekId) {
+      navigate(`/trip-booking?trip_id=${trekId}`);
+    }
   };
+
+  const handleCheckAvailability = () => {
+    if (onCheckAvailability) {
+      onCheckAvailability();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -44,7 +64,7 @@ function BookingCard({
           <p className="text-xs text-slate-500 uppercase">From</p>
           <div className="flex items-end space-x-1">
             <span className="text-xl font-bold text-slate-900">
-              ${basePrice}
+              ${basePrice || 0}
             </span>
             {original > basePrice && (
               <span className="text-xs line-through text-slate-400">
@@ -57,70 +77,84 @@ function BookingCard({
           )}
         </div>
         <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-semibold uppercase">
-          Explorer’s Pick
+          Explorer's Pick
         </span>
       </div>
 
       {/* Group Price Dropdown */}
-      <div>
-        <button
-          onClick={() => setShowPrices(!showPrices)}
-          className="w-full flex justify-between items-center bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm"
-        >
-          <span>Group Price Available</span>
-          <ChevronDown
-            className={`w-4 h-4 text-slate-500 transform transition-transform ${
-              showPrices ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {showPrices && (
-          <div className="mt-2 max-h-40 overflow-y-auto border border-slate-200 rounded">
-            <table className="w-full text-xs">
-              <thead className="bg-slate-100">
-                <tr>
-                  <th className="px-3 py-2 text-left text-slate-600">People</th>
-                  <th className="px-3 py-2 text-left text-slate-600">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {groups.map((g, idx) => (
-                  <tr
-                    key={idx}
-                    className="border-t border-slate-200 last:border-none"
-                  >
-                    <td className="px-3 py-1">{g.size} pax</td>
-                    <td className="px-3 py-1">${g.price}</td>
+      {groups && groups.length > 0 && (
+        <div>
+          <button
+            onClick={() => setShowPrices(!showPrices)}
+            className="w-full flex justify-between items-center bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm hover:bg-slate-100 transition-colors"
+            aria-expanded={showPrices}
+          >
+            <span>Group Price Available</span>
+            <ChevronDown
+              className={`w-4 h-4 text-slate-500 transform transition-transform ${
+                showPrices ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {showPrices && (
+            <div className="mt-2 max-h-40 overflow-y-auto border border-slate-200 rounded">
+              <table className="w-full text-xs">
+                <thead className="bg-slate-100">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-slate-600">People</th>
+                    <th className="px-3 py-2 text-left text-slate-600">Price</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                </thead>
+                <tbody>
+                  {groups.map((g, idx) => (
+                    <tr
+                      key={`group-${idx}-${g.size || idx}`}
+                      className="border-t border-slate-200 last:border-none"
+                    >
+                      <td className="px-3 py-1">
+                        {g.size || g.label || `${idx + 1}`} pax
+                      </td>
+                      <td className="px-3 py-1">
+                        ${g.price || 0}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Actions */}
       <motion.button
         whileHover={{ scale: 1.02 }}
-        onClick={onCheckAvailability}
-        className="w-full bg-slate-800 text-white py-2 rounded text-sm font-medium"
+        whileTap={{ scale: 0.98 }}
+        onClick={handleCheckAvailability}
+        disabled={!onCheckAvailability}
+        className="w-full bg-slate-800 text-white py-2 rounded text-sm font-medium hover:bg-slate-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Check Availability
       </motion.button>
+
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={handleBookNow}
-        className="w-full bg-slate-600 text-white py-2 rounded text-sm font-medium hover:bg-slate-700 transition-colors"
+        onClick={handleBookNowClick}
+        disabled={!trekId && !onBookNow}
+        className="w-full bg-slate-600 text-white py-2 rounded text-sm font-medium hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Book Now
       </motion.button>
+
       <button
-        className="w-full text-slate-600 py-2 rounded text-sm font-medium hover:text-slate-800"
-        onClick={handleClick}
+        onClick={handleCustomizeTrip}
+        disabled={!trekId}
+        className="w-full text-slate-600 py-2 rounded text-sm font-medium hover:text-slate-800 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Customize Trip
       </button>
+
       {/* Trust Indicators */}
       <div className="grid grid-cols-2 gap-2 pt-4 border-t border-slate-100 text-xs">
         <div className="flex items-center space-x-1">
@@ -147,4 +181,5 @@ function BookingCard({
     </motion.div>
   );
 }
+
 export default BookingCard;

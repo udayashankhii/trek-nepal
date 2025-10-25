@@ -1,44 +1,33 @@
 // src/trekkingpage/HeroSection.jsx
 import React from "react";
-import {
-  MapPinIcon,
-  CalendarIcon,
-  FireIcon,
-} from "@heroicons/react/24/outline";
-
-// src/data/mockHeroData.js
-
-export const staticHeroFallback = {
-  title: "Everest Base Camp Trek",
-  subtitle:
-    "Follow in the footsteps of legends through Sherpa villages & Himalayan panoramas.",
-  imageUrl: "/assets/treks/everest.jpg",
-  season: "Spring & Autumn",
-  duration: "15 Days",
-  difficulty: "Strenuous",
-  location: "Everest Region",
-};
+import { MapPinIcon, CalendarIcon, FireIcon } from "@heroicons/react/24/outline";
 
 export default function HeroSection({
-  title,
-  subtitle,
-
-  imageUrl = "/default-hero.jpg",
+  title = "Everest Base Camp Trek",
+  subtitle = "Follow in the footsteps of legends through Sherpa villages & Himalayan panoramas.",
+  imageUrl,
   ctaLabel = "Book This Trek",
-  ctaLink = "#",
   season,
   duration,
   difficulty,
   location,
+  onBookNow,
+  onInquiry
 }) {
+  // Fallback image if none provided
+  const displayImage = imageUrl || "/everest.jpeg";
+
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center bg-gray-900 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - Dynamic from API */}
       <img
-        src={"/everest.jpeg"}
+        src={displayImage}
         alt={title}
         className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
         loading="eager"
+        onError={(e) => {
+          e.target.src = "/everest.jpeg"; // Fallback on error
+        }}
       />
 
       {/* Dark Overlay */}
@@ -53,19 +42,19 @@ export default function HeroSection({
           </span>
         )}
 
-        {/* Title */}
-        {title && (
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg mb-4">
-            {title}
-          </h1>
-        )}
+        {/* Title - Dynamic */}
+        <h1 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg mb-4">
+          {title}
+        </h1>
 
-        {/* Subtitle */}
+        {/* Subtitle - Dynamic */}
         {subtitle && (
           <p className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
             {subtitle}
           </p>
         )}
+
+        {/* Trek Info Badges - Dynamic */}
         <div className="flex flex-wrap justify-center gap-4 text-white mb-6">
           {duration && (
             <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/10 backdrop-blur text-sm">
@@ -79,23 +68,33 @@ export default function HeroSection({
               {difficulty}
             </span>
           )}
-          {season && (
+          {location && (
             <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/10 backdrop-blur text-sm">
               <MapPinIcon className="h-5 w-5" />
-              {season}
+              {location}
             </span>
           )}
         </div>
 
-        {/* CTA Button */}
-        {ctaLabel && (
-          <a
-            href={"book"}
-            className="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold text-lg shadow-lg hover:scale-105 transition-transform"
-          >
-            {ctaLabel}
-          </a>
-        )}
+        {/* CTA Buttons - Dynamic actions */}
+        <div className="flex gap-4">
+          {onBookNow && (
+            <button
+              onClick={onBookNow}
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold text-lg shadow-lg hover:scale-105 transition-transform"
+            >
+              {ctaLabel}
+            </button>
+          )}
+          {onInquiry && (
+            <button
+              onClick={onInquiry}
+              className="px-8 py-3 rounded-full bg-white/10 backdrop-blur text-white font-bold text-lg shadow-lg hover:bg-white/20 transition-all"
+            >
+              Inquire Now
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );

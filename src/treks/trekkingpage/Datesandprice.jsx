@@ -1,3 +1,4 @@
+// src/trekkingpage/DatesAndPrice.jsx
 import React, { useState, useMemo, forwardRef } from "react";
 import dayjs from "dayjs";
 import { ChevronLeft, ChevronRight, User, Users } from "lucide-react";
@@ -6,25 +7,15 @@ import PropTypes from "prop-types";
 
 // Constants
 const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
 const DEFAULT_GROUP_PRICES = [
-  { label: "1 Person", price: 1190 },
-  { label: "2 - 4 Person", price: 1090 },
-  { label: "5 - 7 Person", price: 1020 },
-  { label: "8 - 12 Person", price: 990 },
+  { label: "1 Person", price: 1190, size: 1 },
+  { label: "2 - 4 Person", price: 1090, size: 4 },
+  { label: "5 - 7 Person", price: 1020, size: 7 },
+  { label: "8 - 12 Person", price: 990, size: 12 },
 ];
 
 const DEFAULT_HIGHLIGHTS = [
@@ -33,46 +24,28 @@ const DEFAULT_HIGHLIGHTS = [
   "Serving Adventure Seekers Since 2009",
 ];
 
-const DEFAULT_DEPARTURES = [
-  {
-    start: "2025-05-24",
-    end: "2025-06-06",
-    status: "Guaranteed",
-    price: 1090,
-  },
-  {
-    start: "2025-05-27",
-    end: "2025-06-09",
-    status: "Guaranteed",
-    price: 1090,
-  },
-  {
-    start: "2025-05-30",
-    end: "2025-06-12",
-    status: "Guaranteed",
-    price: 1090,
-  },
-];
-
 /**
- * CostAndDate Component - Displays trek departure dates, pricing, and booking options
+ * DatesAndPrice Component - Displays trek departure dates, pricing, and booking options
  * @param {Object} props - Component props
- * @param {Array} props.dates - Array of departure date objects
- * @param {Array} props.groupPrices - Array of group pricing information
+ * @param {Array} props.dates - Array of departure date objects from API
+ * @param {Array} props.groupPrices - Array of group pricing information from API
  * @param {Array} props.highlights - Array of highlight strings
- * @param {string} props.trekName - Name of the trek for customization
+ * @param {string} props.trekName - Name of the trek
+ * @param {string} props.trekId - Trek ID for booking
+ * @param {Function} props.onBookDate - Callback when date is booked
  * @param {React.Ref} ref - Forwarded ref for scroll functionality
  */
-const CostAndDate = forwardRef(
+const DatesAndPrice = forwardRef(
   (
     {
-      dates = DEFAULT_DEPARTURES,
-      groupPrices = DEFAULT_GROUP_PRICES,
+      dates = [],
+      groupPrices = [],
       highlights = DEFAULT_HIGHLIGHTS,
-      trekName = "Annapurna Base Camp Trek",
+      trekName = "Trek",
+      trekId,
       className = "",
-      onBookDate, // ✅ explicitly extract
-      ...restProps // ✅ only spread safe props
+      onBookDate,
+      ...restProps
     },
     ref
   ) => {
@@ -83,16 +56,74 @@ const CostAndDate = forwardRef(
     // Navigation hook
     const navigate = useNavigate();
 
-    // Memoized calculations for performance
-    const availableMonths = useMemo(() => {
-      const monthsSet = new Set(dates.map((d) => dayjs(d.start).month()));
-      return Array.from(monthsSet).sort();
+    // Normalize and validate dates from API
+    const normalizedDates = useMemo(() => {
+      if (!Array.isArray(dates) || dates.length === 0) {
+        return [];
+      }
+
+      return dates
+        .map((date) => {
+          // Handle different API response formats
+          const startDate = date.start || date.startDate || date.start_date;
+          const endDate = date.end || date.endDate || date.end_date;
+          const status = date.status || date.availability || "Available";
+          const price = date.price || date.basePrice || date.cost || 0;
+
+          // Validate required fields
+          if (!startDate || !endDate) {
+            console.warn("Invalid date object:", date);
+            return null;
+          }
+
+          return {
+            start: startDate,
+            end: endDate,
+            status: status,
+            price: Number(price),
+            id: date.id || `${startDate}-${endDate}`,
+          };
+        })
+        .filter(Boolean); // Remove null entries
     }, [dates]);
 
-    const filteredDepartures = useMemo(
-      () => dates.filter((d) => dayjs(d.start).month() === selectedMonth),
-      [dates, selectedMonth]
-    );
+    // Normalize group prices from API
+    const normalizedGroupPrices = useMemo(() => {
+      if (!Array.isArray(groupPrices) || groupPrices.length === 0) {
+        return DEFAULT_GROUP_PRICES;
+      }
+
+      return groupPrices
+        .map((group) => {
+          // Handle different API response formats
+          const label = group.label || group.name || `${group.size} Person${group.size > 1 ? 's' : ''}`;
+          const price = group.price || group.cost || 0;
+          const size = group.size || group.groupSize || 1;
+
+          return {
+            label: label,
+            price: Number(price),
+            size: Number(size),
+          };
+        })
+        .sort((a, b) => a.size - b.size); // Sort by group size
+    }, [groupPrices]);
+
+    // Memoized calculations for performance
+    const availableMonths = useMemo(() => {
+      if (normalizedDates.length === 0) return [dayjs().month()];
+      
+      const monthsSet = new Set(
+        normalizedDates.map((d) => dayjs(d.start).month())
+      );
+      return Array.from(monthsSet).sort((a, b) => a - b);
+    }, [normalizedDates]);
+
+    const filteredDepartures = useMemo(() => {
+      return normalizedDates.filter(
+        (d) => dayjs(d.start).month() === selectedMonth
+      );
+    }, [normalizedDates, selectedMonth]);
 
     const canGoPrevMonth = availableMonths.indexOf(selectedMonth) > 0;
     const canGoNextMonth =
@@ -120,35 +151,74 @@ const CostAndDate = forwardRef(
     };
 
     const handleBooking = (departure) => {
-      navigate("/trip-booking", {
-        state: {
-          date: departure.start,
-          endDate: departure.end,
-          price: departure.price,
-          status: departure.status,
-          tripType: selectedTab,
-          trekName: trekName,
-        },
-      });
+      // Call parent callback if provided
+      if (onBookDate) {
+        onBookDate(departure);
+        return;
+      }
+
+      // Default navigation behavior
+      const bookingData = {
+        date: departure.start,
+        endDate: departure.end,
+        price: departure.price,
+        status: departure.status,
+        tripType: selectedTab,
+        trekName: trekName,
+        trekId: trekId,
+      };
+
+      if (trekId) {
+        navigate(`/trip-booking?trip_id=${trekId}`, { state: bookingData });
+      } else {
+        navigate("/trip-booking", { state: bookingData });
+      }
     };
 
     const handleCustomizeTrip = () => {
-      navigate("/customize-trip", {
-        state: {
-          trekName: trekName,
-          preferredDates: filteredDepartures.map((d) => ({
-            start: d.start,
-            end: d.end,
-          })),
-        },
-      });
+      const customizeData = {
+        trekName: trekName,
+        trekId: trekId,
+        preferredDates: filteredDepartures.map((d) => ({
+          start: d.start,
+          end: d.end,
+        })),
+      };
+
+      if (trekId) {
+        navigate(`/customize-trip?trip_id=${trekId}`, { state: customizeData });
+      } else {
+        navigate("/customize-trip", { state: customizeData });
+      }
     };
+
+    // Don't render if no dates available
+    if (normalizedDates.length === 0) {
+      return (
+        <section ref={ref} className={`bg-blue-50 py-10 px-4 lg:px-0 ${className}`}>
+          <div className="max-w-6xl mx-auto text-center">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Cost and Date</h2>
+            <div className="bg-white rounded-lg shadow p-8">
+              <p className="text-gray-600 mb-4">
+                No departure dates are currently available for this trek.
+              </p>
+              <button
+                onClick={handleCustomizeTrip}
+                className="bg-blue-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
+              >
+                Plan Your Custom Trip →
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
 
     return (
       <section
         ref={ref}
         className={`bg-blue-50 py-10 px-4 lg:px-0 ${className}`}
-        {...restProps} // ✅ `onBookDate` no longer included
+        {...restProps}
       >
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
@@ -208,9 +278,8 @@ const CostAndDate = forwardRef(
             <div className="mb-6 text-gray-700">
               <p>
                 The {trekName} set departure dates are tailored for the group
-                joining option. If the 14 days {trekName}
-                departure dates don't fit your schedule, we can include
-                alternative dates that better suit your needs.
+                joining option. If the departure dates don't fit your schedule,
+                we can arrange alternative dates that better suit your needs.
               </p>
             </div>
 
@@ -275,14 +344,13 @@ const CostAndDate = forwardRef(
                 <div className="bg-white rounded-lg shadow p-6 text-center text-gray-600">
                   <p>No departures available for {MONTHS[selectedMonth]}.</p>
                   <p className="text-sm mt-2">
-                    Please select a different month or contact us for custom
-                    dates.
+                    Please select a different month or contact us for custom dates.
                   </p>
                 </div>
               ) : (
-                filteredDepartures.map((departure, index) => (
+                filteredDepartures.map((departure) => (
                   <div
-                    key={`${departure.start}-${index}`}
+                    key={departure.id}
                     className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4"
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -307,8 +375,10 @@ const CostAndDate = forwardRef(
                         <div>
                           <span
                             className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
-                              departure.status === "Guaranteed"
+                              departure.status.toLowerCase() === "guaranteed"
                                 ? "bg-green-100 text-green-700"
+                                : departure.status.toLowerCase() === "limited"
+                                ? "bg-yellow-100 text-yellow-700"
                                 : "bg-blue-100 text-blue-700"
                             }`}
                           >
@@ -326,9 +396,7 @@ const CostAndDate = forwardRef(
                               US${departure.price.toLocaleString()}
                             </span>
                           </div>
-                          <div className="text-sm text-gray-600">
-                            per person
-                          </div>
+                          <div className="text-sm text-gray-600">per person</div>
                         </div>
                         <button
                           onClick={() => handleBooking(departure)}
@@ -347,48 +415,52 @@ const CostAndDate = forwardRef(
           {/* Sidebar */}
           <aside className="w-full lg:w-80 flex flex-col gap-6">
             {/* Group Pricing */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h3 className="font-bold mb-4 text-lg border-l-4 border-blue-600 pl-3">
-                Group size and price
-              </h3>
-              <ul className="space-y-3">
-                {groupPrices.map((groupPrice, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center text-gray-700 py-2 border-b border-gray-100 last:border-b-0"
-                  >
-                    <span className="font-medium">{groupPrice.label}</span>
-                    <span className="text-blue-700 font-bold text-lg">
-                      US${groupPrice.price.toLocaleString()}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {normalizedGroupPrices.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border p-6">
+                <h3 className="font-bold mb-4 text-lg border-l-4 border-blue-600 pl-3">
+                  Group size and price
+                </h3>
+                <ul className="space-y-3">
+                  {normalizedGroupPrices.map((groupPrice, index) => (
+                    <li
+                      key={`${groupPrice.size}-${index}`}
+                      className="flex justify-between items-center text-gray-700 py-2 border-b border-gray-100 last:border-b-0"
+                    >
+                      <span className="font-medium">{groupPrice.label}</span>
+                      <span className="text-blue-700 font-bold text-lg">
+                        US${groupPrice.price.toLocaleString()}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Company Highlights */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <div className="font-bold text-lg mb-1 text-gray-900">
-                27,000+ Happy Travelers
+            {highlights.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border p-6">
+                <div className="font-bold text-lg mb-1 text-gray-900">
+                  27,000+ Happy Travelers
+                </div>
+                <div className="text-blue-700 font-bold mb-4 text-sm">
+                  52% plus repeated travelers
+                </div>
+                <ul className="space-y-2">
+                  {highlights.map((highlight, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start gap-2 text-gray-700 text-sm"
+                    >
+                      <span
+                        className="text-blue-600 mt-1.5 block w-1.5 h-1.5 rounded-full bg-blue-600 flex-shrink-0"
+                        aria-hidden="true"
+                      ></span>
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="text-blue-700 font-bold mb-4 text-sm">
-                52% plus repeated travelers
-              </div>
-              <ul className="space-y-2">
-                {highlights.map((highlight, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start gap-2 text-gray-700 text-sm"
-                  >
-                    <span
-                      className="text-blue-600 mt-1.5 block w-1.5 h-1.5 rounded-full bg-blue-600 flex-shrink-0"
-                      aria-hidden="true"
-                    ></span>
-                    {highlight}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
 
             {/* Custom Trip Button */}
             <button
@@ -405,27 +477,30 @@ const CostAndDate = forwardRef(
 );
 
 // Set display name for debugging
-CostAndDate.displayName = "CostAndDate";
+DatesAndPrice.displayName = "DatesAndPrice";
 
 // PropTypes for type checking
-CostAndDate.propTypes = {
+DatesAndPrice.propTypes = {
   dates: PropTypes.arrayOf(
     PropTypes.shape({
-      start: PropTypes.string.isRequired,
-      end: PropTypes.string.isRequired,
-      status: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
+      start: PropTypes.string,
+      end: PropTypes.string,
+      status: PropTypes.string,
+      price: PropTypes.number,
     })
   ),
   groupPrices: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
+      label: PropTypes.string,
+      price: PropTypes.number,
+      size: PropTypes.number,
     })
   ),
   highlights: PropTypes.arrayOf(PropTypes.string),
   trekName: PropTypes.string,
+  trekId: PropTypes.string,
   className: PropTypes.string,
+  onBookDate: PropTypes.func,
 };
 
-export default CostAndDate;
+export default DatesAndPrice;

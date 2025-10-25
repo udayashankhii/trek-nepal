@@ -10,7 +10,6 @@ import {
 import Home from "./home/Home";
 
 import Footer from "./home/Footer";
-import TrekDetailPage from "./treks/trekkingpage/TreksDetailPage";
 // import EverestTrekIndex from "./treks/regions/everest";
 import AnnapurnaLuxuryPage from "./treks/regions/Annapurna-Index";
 import TrekkingInNepalPage from "./pages/Trekking-in-Nepal";
@@ -20,7 +19,6 @@ import ContactUsPage from "./pages/Contact-Us";
 // import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 // import BookingPage from "./Book/TripsBook/TrekBooking";
 import CostAndDate from "./treks/trekkingpage/Datesandprice";
-import everestBaseCamp from "./data/everestBaseCamp";
 import Itinerary from "./treks/trekkingpage/Itinerary";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
@@ -52,6 +50,7 @@ import JungleSafariPage from "./Travel-Activities/JungleSafari/Jungle.jsx";
 import BikeRentalPage from "./Travel-Activities/BikeRental/Biker.jsx";
 import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
+import TrekDetailPage from "./treks/TreksDetailPage.jsx";
 
 // Layout component that shows Navbar/Footer on every page
 const Layout = () => (

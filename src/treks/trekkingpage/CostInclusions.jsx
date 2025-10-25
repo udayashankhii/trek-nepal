@@ -1,9 +1,9 @@
+// src/trekkingpage/CostInclusions.jsx
 import { useState } from "react";
 import { motion } from "framer-motion";
-
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
-const TrekCostDetails = ({
+const CostInclusions = ({
   inclusions = [],
   exclusions = [],
   title = "Trip Cost Details",
@@ -13,25 +13,53 @@ const TrekCostDetails = ({
 }) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-  const renderList = (items, Icon, iconColor, textColor) => (
-    <ul className="divide-y divide-gray-100 p-6">
-      {items.map((item, idx) => (
-        <motion.li
-          key={`${textColor}-${idx}`} // Improve with unique IDs if available
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: idx * 0.05, duration: 0.4 }}
-          className="py-3 flex gap-4 group"
-        >
-          <div className={`${iconColor} flex-shrink-0 mt-0.5`}>
-            <Icon className="h-5 w-5 transition duration-300 group-hover:scale-110" />
-          </div>
-          {/* <p className={`leading-relaxed ${textColor}`}>{item}</p> */}
-        </motion.li>
-      ))}
-    </ul>
-  );
+  // Safe rendering with proper error handling
+  const renderList = (items, Icon, iconColor, textColor) => {
+    if (!Array.isArray(items) || items.length === 0) {
+      return (
+        <div className="p-6 text-center text-gray-500">
+          <p>No items available</p>
+        </div>
+      );
+    }
+
+    return (
+      <ul className="divide-y divide-gray-100 p-6">
+        {items.map((item, idx) => {
+          // Handle both string and object formats from API
+          const itemText = typeof item === 'string' ? item : item?.text || item?.title || item?.description || '';
+          
+          if (!itemText) return null;
+
+          return (
+            <motion.li
+              key={`${textColor}-${idx}-${itemText.substring(0, 20)}`}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05, duration: 0.4 }}
+              className="py-3 flex gap-4 group"
+            >
+              <div className={`${iconColor} flex-shrink-0 mt-0.5`}>
+                <Icon className="h-5 w-5 transition duration-300 group-hover:scale-110" />
+              </div>
+              <p className={`leading-relaxed ${textColor}`}>{itemText}</p>
+            </motion.li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  // Check if we have any data to display
+  const hasInclusions = Array.isArray(inclusions) && inclusions.length > 0;
+  const hasExclusions = Array.isArray(exclusions) && exclusions.length > 0;
+  const hasAnyData = hasInclusions || hasExclusions;
+
+  // Don't render section if no data
+  if (!hasAnyData) {
+    return null;
+  }
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -54,43 +82,47 @@ const TrekCostDetails = ({
         </motion.div>
 
         {/* Tab Navigation (Mobile-optimized with accessibility) */}
-        <div
-          className="md:hidden flex rounded-lg overflow-hidden border border-gray-200 mb-8"
-          role="tablist"
-          aria-label="Cost details tabs"
-        >
-          <button
-            onClick={() => setActiveTab("inclusions")}
-            className={`flex-1 py-3 font-medium text-sm ${activeTab === "inclusions"
-              ? "bg-teal-500 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            role="tab"
-            aria-selected={activeTab === "inclusions"}
-            aria-controls="cost-inclusions-panel"
-            id="cost-inclusions-tab"
+        {hasInclusions && hasExclusions && (
+          <div
+            className="md:hidden flex rounded-lg overflow-hidden border border-gray-200 mb-8"
+            role="tablist"
+            aria-label="Cost details tabs"
           >
-            {inclusionsTitle}
-          </button>
-          <button
-            onClick={() => setActiveTab("exclusions")}
-            className={`flex-1 py-3 font-medium text-sm ${activeTab === "exclusions"
-              ? "bg-red-500 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-50"
+            <button
+              onClick={() => setActiveTab("inclusions")}
+              className={`flex-1 py-3 font-medium text-sm transition-colors ${
+                activeTab === "inclusions"
+                  ? "bg-teal-500 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
-            role="tab"
-            aria-selected={activeTab === "exclusions"}
-            aria-controls="cost-exclusions-panel"
-            id="cost-exclusions-tab"
-          >
-            {exclusionsTitle}
-          </button>
-        </div>
+              role="tab"
+              aria-selected={activeTab === "inclusions"}
+              aria-controls="cost-inclusions-panel"
+              id="cost-inclusions-tab"
+            >
+              {inclusionsTitle}
+            </button>
+            <button
+              onClick={() => setActiveTab("exclusions")}
+              className={`flex-1 py-3 font-medium text-sm transition-colors ${
+                activeTab === "exclusions"
+                  ? "bg-red-500 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+              role="tab"
+              aria-selected={activeTab === "exclusions"}
+              aria-controls="cost-exclusions-panel"
+              id="cost-exclusions-tab"
+            >
+              {exclusionsTitle}
+            </button>
+          </div>
+        )}
 
         {/* Desktop & Tablet View */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Inclusions */}
-          {(activeTab === "inclusions" || activeTab === "both") && inclusions.length > 0 && (
+          {hasInclusions && (activeTab === "inclusions" || window.innerWidth >= 768) && (
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -112,7 +144,7 @@ const TrekCostDetails = ({
           )}
 
           {/* Exclusions */}
-          {(activeTab === "exclusions" || activeTab === "both") && exclusions.length > 0 && (
+          {hasExclusions && (activeTab === "exclusions" || window.innerWidth >= 768) && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -134,6 +166,43 @@ const TrekCostDetails = ({
           )}
         </div>
 
+        {/* Full Width Grid if only one section has data */}
+        {hasInclusions && !hasExclusions && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-3xl mx-auto"
+          >
+            <div className="bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-4">
+              <h3 className="text-xl font-bold text-white flex items-center">
+                <CheckCircleIcon className="h-6 w-6 mr-2" />
+                {inclusionsTitle}
+              </h3>
+            </div>
+            {renderList(inclusions, CheckCircleIcon, "text-teal-500", "text-gray-700")}
+          </motion.div>
+        )}
+
+        {!hasInclusions && hasExclusions && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-3xl mx-auto"
+          >
+            <div className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
+              <h3 className="text-xl font-bold text-white flex items-center">
+                <XCircleIcon className="h-6 w-6 mr-2" />
+                {exclusionsTitle}
+              </h3>
+            </div>
+            {renderList(exclusions, XCircleIcon, "text-red-500", "text-gray-700")}
+          </motion.div>
+        )}
+
         {/* Notes Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -154,4 +223,4 @@ const TrekCostDetails = ({
   );
 };
 
-export default TrekCostDetails;
+export default CostInclusions;
