@@ -2,7 +2,7 @@
 import React from "react";
 
 const TrekAddInfo = ({ trek }) => {
-  const infoList = trek.additionalInfo || [];
+  const infoList = trek?.additionalInfo || [];
 
   if (!infoList.length) return null;
 
