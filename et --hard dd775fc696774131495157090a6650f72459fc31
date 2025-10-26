@@ -1,0 +1,143 @@
+[33mcommit 0a1aa1808143a88f4f02fd319e2f331fb4279262[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/backend[m[33m, [m[1;32mbackend[m[33m)[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Sat Oct 25 20:15:48 2025 +0545
+
+    integration optimization trekdetailpage
+
+[33mcommit dd775fc696774131495157090a6650f72459fc31[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Tue Oct 21 22:11:19 2025 +0545
+
+    navbar treks dynamically added
+
+[33mcommit 623c280ae87b2e882bd15c322265bf8b2463b0c9[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Sun Sep 28 19:43:01 2025 +0545
+
+    routes another fixed
+
+[33mcommit ee1aeaa973c4984ebe0415458b3fee27a02c6dc4[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Sun Sep 28 19:40:25 2025 +0545
+
+    routes another fixed
+
+[33mcommit 012faf47f6f68db738f4ed6c5d5b8c63eafd4860[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Sun Sep 28 19:18:21 2025 +0545
+
+    routes fixed
+
+[33mcommit 1d3b0ec7988bd7bbad27f933b40404a0d23bd3e1[m
+Author: udaya <udayashankhi123@gmail.com>
+Date:   Sun Sep 28 18:40:37 2025 +0545
+
+    routes fixed for tour activities
+
+[33mcommit 2f0026d46f0c94a104d9f8d8e371f2ee88ce6f24[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Wed Jul 30 13:41:24 2025 +0545
+
+    logo
+
+[33mcommit 7570488e4d88abcb6bc15ea8824201519008709f[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 30 19:34:00 2025 +0545
+
+    hero trek
+
+[33mcommit 64209d823d20dd5eaeb3740591e59b393b5a0c2a[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 30 19:29:44 2025 +0545
+
+    git helmet reoslved
+
+[33mcommit eb365bf656ae4f1bae71d5b3c5c708c873cceb9a[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 30 19:11:51 2025 +0545
+
+    removed helmet
+
+[33mcommit 9f484287b6c229bb723abe04c152799ecf70bda6[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 30 18:55:51 2025 +0545
+
+    helmet removed
+
+[33mcommit 141a497a63b8311bac845689fe6ab37f3160eb8c[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 30 00:27:04 2025 +0545
+
+    updated home page
+
+[33mcommit 0ea38956bc4e30fabae27122e3e8c40f8e4d6381[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Wed Jun 25 11:52:25 2025 +0545
+
+    detail added
+
+[33mcommit 9a02458f0d355a4084bdd6ffeeb8e16201d6ae74[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Wed Jun 18 16:12:34 2025 +0545
+
+    update components
+
+[33mcommit e3d7ae8cb250c85c991c0b38a6921117dd5ca7c9[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Tue Jun 17 20:13:09 2025 +0545
+
+    trekbooking
+
+[33mcommit ddf8e70b4e4100e310da71786b8b669c41c18616[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Tue Jun 17 16:28:40 2025 +0545
+
+    health and safety removed
+
+[33mcommit a1d01f5224efcf1cc4bbd7bc050292a1fb8db333[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 16 19:06:11 2025 +0545
+
+    trekdetailpage almost done
+
+[33mcommit 0bfcb7e101b975dc71907812763842787f8e536b[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 16 01:16:50 2025 +0545
+
+    mobile responsive
+
+[33mcommit d856ffc16555af2bd4e3fc12f40529ccb4fcee67[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon Jun 16 00:35:46 2025 +0545
+
+    updated
+
+[33mcommit ad1e20c09a264755a1ec9983e2b8ad8cf0fff2eb[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Sun Jun 15 22:40:47 2025 +0545
+
+    mbl responsive
+
+[33mcommit b8a2b13a43213accfc2e4b29725c45e60c9ad85f[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Sun Jun 15 22:32:00 2025 +0545
+
+    mbl responsive
+
+[33mcommit f8f83aa139528c0efdb3a2c29fede9df8935965d[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Sun Jun 15 21:13:45 2025 +0545
+
+    reviews
+
+[33mcommit 99a2161220d3db50c6bfd05a683b63c5945fb66c[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Sun Jun 15 20:03:59 2025 +0545
+
+    first version
+
+[33mcommit c046429d9ebe89fba7679ef28b0aaa672090c016[m
+Author: udayashank <udayashankhi123@gmail.com>
+Date:   Mon May 5 23:30:56 2025 +0545
+
+    first commit

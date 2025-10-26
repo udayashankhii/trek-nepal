@@ -9,7 +9,7 @@ const BookingSuccess = () => {
         🎉 Booking Confirmed!
       </h1>
       <p className="text-lg text-gray-700 mb-10">
-        Thank you for choosing Nepal Nirvana Adventures. We'll send you a
+        Thank you for choosing EverTrekNepal. We'll send you a
         detailed confirmation email shortly!
       </p>
 

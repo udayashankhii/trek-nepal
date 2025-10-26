@@ -16,7 +16,7 @@ const AboutUsPage = () => {
             Find Your Nirvana in the Himalayas
           </h1>
           <p className="text-lg md:text-2xl mb-8">
-            Embark on a journey of a lifetime with Nepal Nirvana Adventours
+            Embark on a journey of a lifetime with EverTrekNepal 
           </p>
           <a
             href="/trekdetailpage"
@@ -34,7 +34,7 @@ const AboutUsPage = () => {
           <div className="md:w-1/2 md:pr-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Nepal Nirvana Adventours began with a simple idea between two
+              EverTrekNepal began with a simple idea between two
               friends, <strong>Rajib Adhikari</strong> and{" "}
               <strong>Udaya Shankhi</strong>. Both were successful tech
               developers in Kathmandu, but every chance they got, they escaped
@@ -51,7 +51,7 @@ const AboutUsPage = () => {
               travelers. Their mission from day one was clear: to offer
               **authentic, life-changing experiences** in Nepal and the greater
               Himalayan region, with a focus on innovation, safety, and
-              sustainability. Today, Nepal Nirvana Adventours has guided
+              sustainability. Today, EverTrekNepal has guided
               thousands of trekkers to their dreams, all while staying true to
               the founders’ original vision of adventure, community, and
               integrity.
@@ -186,7 +186,7 @@ const AboutUsPage = () => {
             Meet Our Team
           </h2>
           <p className="text-gray-700 text-center max-w-2xl mx-auto mb-12">
-            The passionate people behind Nepal Nirvana Adventours are our
+            The passionate people behind EverTrekNepal are our
             greatest asset. Our team of local experts, seasoned guides, and
             dedicated support staff is here to make your journey **unforgettable
             and safe** every step of the way.

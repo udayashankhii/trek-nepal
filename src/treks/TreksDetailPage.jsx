@@ -3,24 +3,14 @@
 // import React, { useState, useEffect, useRef } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { fetchTrek, fetchSimilarTreks } from "../api/trekService.js";
-// import mockTrekHighlights from "../data/highlights.js";
-// import Reviews from "../data/reviews.js";
 
 // // UI Components
 // import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
-// import {
-//   MapPinIcon,
-//   CalendarIcon,
-//   FireIcon,
-//   SunIcon,
-// } from "@heroicons/react/24/outline";
 // import HeroSection from "./trekkingpage/Hero.jsx";
-// import TrekSummary from "./trekkingpage/TrekOverview.jsx";
 // import TrekHighlights from "./trekkingpage/TrekHighlights.jsx";
 // import Itinerary from "./trekkingpage/Itinerary.jsx";
 // import CostInclusions from "./trekkingpage/CostInclusions.jsx";
 // import FAQSection from "./trekkingpage/FAQSection.jsx";
-// import GallerySection from "./trekkingpage/Gallery.jsx";
 // import ElevationChart from "./trekkingpage/ElevationChart.jsx";
 // import BookingCard from "./trekkingpage/BookingCard.jsx";
 // import DatesAndPrice from "./trekkingpage/Datesandprice.jsx";
@@ -28,14 +18,12 @@
 // import TrekActions from "./trekkingpage/TrekAction.jsx";
 // import TrekGallery from "./trekkingpage/Gallery.jsx";
 // import KeyInfo from "./trekkingpage/Info.jsx";
-// import ReviewSection from "./trekkingpage/Reviews.jsx";
 // import TrekOverview from "./trekkingpage/TrekOverview.jsx";
+// import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
 
 // // Utilities
 // import StickyBox from "react-sticky-box";
-// import { MessageCircle, AlertCircle, Loader2 } from "lucide-react";
-// import Overview from "./trekkingpage/TrekOverview.jsx";
-// import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
+// import { AlertCircle, Loader2 } from "lucide-react";
 
 // export default function TrekDetailPage() {
 //   const { slug } = useParams();
@@ -46,13 +34,11 @@
 //   const [similarTreks, setSimilarTreks] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
-//   const [imageError, setImageError] = useState(false);
 
 //   // Refs for scrolling
 //   const datesRef = useRef(null);
 //   const mapRef = useRef(null);
 //   const reviewsRef = useRef(null);
-
 
 //   // Fetch trek data
 //   useEffect(() => {
@@ -60,12 +46,8 @@
 //       try {
 //         setLoading(true);
 //         setError(null);
-
-//         // Fetch main trek data
-//         const trekData = await fetchTrek(slug);
-//         setTrek(trekData);
-
-//         // After fetching trek data and setting state
+// const trekData = await fetchTrek(slug);
+// setTrek(trekData);              // <-- Store the whole response: GOOD!
 
 //         // Fetch similar treks
 //         try {
@@ -93,7 +75,6 @@
 
 //   // Scroll functions
 //   const scrollToDates = () => {
-//     console.log("Scrolling to dates section");
 //     if (datesRef.current) {
 //       datesRef.current.scrollIntoView({
 //         behavior: "smooth",
@@ -126,7 +107,7 @@
 //   };
 
 //   const handleBookNow = () => {
-//     navigate(`/book/${slug}`);
+//     navigate(`/trip-booking?trip_id=${trek?.id || slug}`);
 //   };
 
 //   const handleInquiry = () => {
@@ -200,14 +181,12 @@
 //     );
 //   }
 
-//   // Safely destructure trek data with fallbacks
-//  // Safe destructure with fallbacks
+//  // Safe destructure with fallbacks and key mapping from backend response (snake_case) to frontend keys (camelCase)
 // const {
 //   id: trekId = "",
 //   name: trekName = "Unknown Trek",
 //   subtitle = "",
 //   hero = {},
-//   summary = {},
 //   highlights = [],
 //   description = {},
 //   itinerary = [],
@@ -220,26 +199,53 @@
 //   booking = {},
 //   price = {},
 //   similar_treks = [],
+//   activity = "",
+//   group_size: groupSize = "",
+//   max_altitude: maxAltitude = "",
 //   pdfUrl = "",
 //   mapImage = "",
+//   seo = {},
+//   tags = [],
+//   season = "",
+//   duration = "",
+//   trip_grade: tripGrade = "",     // map backend's trip_grade to tripGrade
+//   start_point: startPoint = "",   // map backend's start_point to startPoint
+//   difficulty = "",
+//   location = "",
+//   rating = 0,
+//   reviews: reviewsCount = 0,
+//   additionalInfo = null,
+//   availableDates = [],
+//   overview = null,
 // } = trek || {};
 
+// // Compose keyInfoData exactly as KeyInfo component expects
+// const keyInfoData = {
+//   duration,
+//   tripGrade,
+//   startPoint,
+//   groupSize,
+//   maxAltitude,
+//   activity,
+// };
+
+
 //   // Extract booking and pricing data
-//   const {
-//     basePrice = price.base || 0,
-//     discount = 0,
-//     groups = price.groups || [],
-//     mapLink = "",
-//   } = booking;
+//   const basePrice = price?.base || booking?.basePrice || 1200; // Fallback price
+//   const discount = booking?.discount || 0;
+//   const originalPrice = discount > 0 ? basePrice + discount : price?.original || basePrice + 300;
+//   const groups = price?.groups || booking?.groups || [
+//     { size: 1, price: 1190 },
+//     { size: 4, price: 1090 },
+//     { size: 7, price: 1020 },
+//     { size: 12, price: 990 },
+//   ];
 
-//   const originalPrice =
-//     discount > 0 ? basePrice + discount : price.original || basePrice;
-
-//   // Prepare gallery images
+//   // Prepare gallery images with fallback
 //   const images =
-//     galleryImages.length > 0
+//     galleryImages?.length >= 5
 //       ? galleryImages
-//       : gallery.length > 0
+//       : gallery?.length >= 5
 //       ? gallery
 //       : [
 //           "/trekking.png",
@@ -249,169 +255,118 @@
 //           "/everest.jpeg",
 //         ];
 
-//   // Generate dynamic date slots
-//   const dateSlots = trek.availableDates || [
-//     {
-//       start: "2025-05-16",
-//       end: "2025-05-29",
-//       status: "Available",
-//       price: basePrice,
-//     },
-//     {
-//       start: "2025-05-23",
-//       end: "2025-06-05",
-//       status: "Available",
-//       price: basePrice,
-//     },
-//     {
-//       start: "2025-05-30",
-//       end: "2025-06-12",
-//       status: "Available",
-//       price: basePrice,
-//     },
-//     {
-//       start: "2025-06-06",
-//       end: "2025-09-19",
-//       status: "Limited",
-//       price: basePrice + 100,
-//     },
-//   ];
+//   // Generate date slots with fallbacks
+//   const dateSlots = availableDates?.length > 0 
+//     ? availableDates 
+//     : [
+//         { start: "2025-05-16", end: "2025-05-29", status: "Available", price: basePrice },
+//         { start: "2025-05-23", end: "2025-06-05", status: "Available", price: basePrice },
+//         { start: "2025-05-30", end: "2025-06-12", status: "Available", price: basePrice },
+//         { start: "2025-06-06", end: "2025-09-19", status: "Limited", price: basePrice + 100 },
+//       ];
 
-// const displayTitle = hero?.title || trekName || "Untitled Trek";
+//   const displayTitle = hero?.title || trekName || "Untitled Trek";
 
 //   // Use similar treks from API or fallback to trek data
 //   const displaySimilarTreks =
-//     similarTreks.length > 0 ? similarTreks : similar_treks.slice(0, 3);
+//     similarTreks?.length > 0 
+//       ? similarTreks 
+//       : similar_treks?.length > 0 
+//       ? similar_treks.slice(0, 3) 
+//       : [];
 
-// // ...existing code...
-
-//   // Prepare safe meta description (never pass an object into meta/content)
+//   // Safe meta description
 //   const metaDescription =
-//     typeof trek?.seo?.description === "string"
-//       ? trek.seo.description
-//       : typeof description?.overview === "string"
-//       ? description.overview
-//       : description?.overview?.text ||
-//         description?.overview?.summary ||
-//         (description?.overview ? JSON.stringify(description.overview) : "") ||
-//         "";
+//     seo?.description || 
+//     subtitle || 
+//     (typeof description?.overview === "string" ? description.overview : "") ||
+//     "";
 
-//   // Safely parse/normalize overview so children are strings/arrays, not raw objects
-//   const overviewData = trek?.overview;
-//   let overview = null;
-//   try {
-//     overview =
-//       typeof overviewData === "string" && overviewData.trim().length
-//         ? JSON.parse(overviewData)
-//         : overviewData || null;
-//   } catch (e) {
-//     console.warn("Failed to parse trek.overview, using raw value:", e);
-//     overview = overviewData || null;
-//   }
+//   // DEBUG: Log what's rendering
+//   // console.log("Rendering sections:", {
+//   //  hasOverview: overview != null,
+//   //    hasHighlights: highlights?.length > 0,
+//   //    hasCostInclusions: true, // Always show
+//   //   hasDescription: description != null,
+//   //   hasHero: true, // Always show
+//   //   hasItinerary: itinerary?.length > 0,
+//   //   hasFAQs: faqs?.length > 0,
+//   //   hasGallery: images?.length >= 5,
+//   //   hasElevation: elevationData?.length > 0,
+//   //   hasDates: dateSlots?.length > 0,
+//   //   hasReviews: reviewsList?.length > 0,
+//   //   hasSimilar: displaySimilarTreks?.length > 0,
+//   // });
+//       // console.log("Summary data:", summary);
 
-//   // Accept either overview.sections (array) or overview.section (single) and normalize
-//   const rawOverviewSection =
-//     (overview &&
-//       (Array.isArray(overview.sections)
-//         ? overview.sections[0]
-//         : overview.section || overview.sections)) ||
-//     {};
-//   const overviewSection = {
-//     heading: rawOverviewSection?.heading ? String(rawOverviewSection.heading) : "",
-//     articles: Array.isArray(rawOverviewSection?.articles)
-//       ? rawOverviewSection.articles.map((a) =>
-//           typeof a === "string"
-//             ? a
-//             : a && typeof a === "object"
-//             ? a.text || a.title || JSON.stringify(a)
-//             : String(a)
-//         )
-//       : [],
-//     bullets: Array.isArray(rawOverviewSection?.bullets)
-//       ? rawOverviewSection.bullets.map((b) =>
-//           typeof b === "string"
-//             ? b
-//             : b && typeof b === "object"
-//             ? b.text || b.label || JSON.stringify(b)
-//             : String(b)
-//         )
-//       : [],
-//   };
+
+
 
 //   return (
 //     <div className="bg-gray-50 min-h-screen">
-//       {/* SEO Meta Tags - React 19 Native Support */}
-//       <title>{trek.seo?.title || `${trekName} | Nepal Trekking`}</title>
-//       <meta
-//         name="description"
-//         content={trek.seo?.description || description.overview}
-//       />
-//       <meta
-//         name="keywords"
-//         content={trek.seo?.keywords?.join(", ") || trek.tags?.join(", ")}
-//       />
-//       <link
-//         rel="canonical"
-//         href={trek.seo?.canonicalUrl || `/treks/${slug}`}
+//       {/* SEO Meta Tags */}
+//       <title>{seo?.title || `${trekName} | Nepal Trekking`}</title>
+//       <meta name="description" content={metaDescription} />
+//       <meta name="keywords" content={seo?.keywords?.join(", ") || tags?.join(", ") || ""} />
+//       <link rel="canonical" href={seo?.canonicalUrl || `/treks/${slug}`} />
+
+//       {/* Hero Section */}
+//       <HeroSection
+//         title={displayTitle}
+//         subtitle={hero?.subtitle || subtitle || ""}
+//         imageUrl={hero?.image || trek?.image || "/fallback.jpg"}
+//         season={season}
+//         duration={duration}
+//         difficulty={difficulty}
+//         location={location}
+//         onBookNow={handleBookNow}
+//         onInquiry={handleInquiry}
 //       />
 
-//     <HeroSection
-//     title={displayTitle}
-//   subtitle={hero?.subtitle || subtitle || ""}
-//   imageUrl={hero?.image || trek?.image || "/fallback.jpg"}
-//   ctaLabel="Book This Trek"
-//   ctaLink={`/book/${slug}`}
-//   season={trek?.season}
-//   duration={trek?.duration}
-//   difficulty={trek?.difficulty}
-//   location={trek?.location}
-//   onBookNow={handleBookNow}
-//   onInquiry={handleInquiry}
-// />
+
 //       {/* Main Content */}
 //       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4 py-10">
 //         {/* Left Column - Main Content */}
 //         <div className="flex-1 space-y-8">
 //           {/* Key Information */}
-//           <KeyInfo
-//             data={summary}
-//             rating={summary.rating || trek.rating}
-//             reviews={summary.reviews || `based on ${trek.reviewsCount || 0}`}
-//           />
+//  {trek && (
+//   <KeyInfo
+//     data={keyInfoData}
+//     rating={rating}
+//     reviews={reviewsCount}
+//   />
+// )}
 
 
 
 //           {/* Trek Overview */}
-//        <section className="py-16 bg-white">
-//   <div className="max-w-3xl mx-auto px-6">
-// <TrekOverview overview={trek.overview} />
-
-//   </div>
-// </section>
-
-
-//           {/* Trek Highlights */}
-//           {highlights.length > 0 && (
-//             <TrekHighlights
-//               highlights={
-//                 highlights.length > 0 ? highlights : mockTrekHighlights
-//               }
-//             />
+//           {overview && (
+//             <section className="py-16 bg-white rounded-lg shadow-sm">
+//               <div className="max-w-3xl mx-auto px-6">
+//                 <TrekOverview overview={overview} />
+//               </div>
+//             </section>
 //           )}
 
-//           {/* Cost Inclusions */}
+//           {/* Trek Highlights */}
+//           {highlights?.length > 0 && (
+//             <TrekHighlights highlights={highlights} />
+//           )}
 
+//           {/* Cost Inclusions - ALWAYS SHOW */}
 //           <CostInclusions
-//             inclusions={cost.inclusions}
-//             exclusions={cost.exclusions}
+//             inclusions={cost?.inclusions || []}
+//             exclusions={cost?.exclusions || []}
 //           />
 
 //           {/* Itinerary */}
-//           {itinerary.length > 0 && <Itinerary itinerary={itinerary} />}
+//           {itinerary?.length > 0 && (
+//             <Itinerary itinerary={itinerary} />
+//           )}
 
-//           {/* FAQ Section */}
+//           {/* FAQ Section - ALWAYS SHOW */}
 //           <section id="faqs" className="scroll-mt-32">
-//             <FAQSection faqCategories={faqs} />
+//             <FAQSection faqCategories={faqs || []} />
 //           </section>
 //         </div>
 
@@ -424,7 +379,6 @@
 //               basePrice={basePrice}
 //               original={originalPrice}
 //               groups={groups}
-//               mapLink={mapLink}
 //               onCheckAvailability={scrollToDates}
 //               onBookNow={handleBookNow}
 //             />
@@ -432,17 +386,21 @@
 //         </aside>
 //       </div>
 
-//       <TrekAddInfo trek={{ additionalInfo: trek.additionalInfo }} />
+//       {/* Additional Info - ALWAYS SHOW */}
+//       <TrekAddInfo trek={{ additionalInfo: Array.isArray(additionalInfo) ? additionalInfo : [] }} />
 
-//       {/* Full Width Gallery */}
-//       {images.length > 0 && (
-//         <div className="py-8">
-//           <TrekGallery images={images} trekName={trekName} />
-//         </div>
-//       )}
+
+//       {/* Full Width Gallery - ALWAYS SHOW */}
+//       <div className="py-8">
+//         <TrekGallery 
+//           images={images} 
+//           trekName={trekName}
+//           showTitle={true}
+//         />
+//       </div>
 
 //       {/* Elevation Chart */}
-//       {elevationData.length > 0 && (
+//       {elevationData?.length > 0 && (
 //         <div className="py-8 bg-white">
 //           <div className="max-w-7xl mx-auto px-4">
 //             <ElevationChart
@@ -454,73 +412,66 @@
 //         </div>
 //       )}
 
-//       {/* Dates & Pricing */}
-//       <div className="py-8">
+//       {/* Dates & Pricing - ALWAYS SHOW */}
+//       <div className="py-8" ref={datesRef}>
 //         <DatesAndPrice
-//           ref={datesRef}
 //           dates={dateSlots}
+//           groupPrices={groups}
 //           trekName={trekName}
-//           onBookDate={(date) => navigate(`/book/${slug}?date=${date.start}`)}
+//           trekId={trekId}
+//           onBookDate={(date) => navigate(`/trip-booking?trip_id=${trekId}&date=${date.start}`)}
 //         />
+//       </div>
+
+//       {/* Trek Actions - ALWAYS SHOW */}
+//       <div className="py-4" ref={mapRef}>
 //         <TrekActions
 //           trekId={trekId}
-//           pdfUrl={pdfUrl}
+//           pdfUrl={pdfUrl || ""}
+//           mapImage={mapImage || ""}
 //           onViewMap={handleViewMap}
 //         />
 //       </div>
 
-//       {/* Reviews Section */}
-//       <div ref={reviewsRef} className="py-4 bg-gray-100">
-//         <div className="max-w-20xl mx-auto px-2">
+//       {/* Reviews Section - ALWAYS SHOW */}
+//       <div ref={reviewsRef} className="py-8 bg-gray-100">
+//         <div className="max-w-7xl mx-auto px-4">
 //           <ReviewsSlider
-//             reviews={reviewsList}
-//             trekName="Everest Base Camp Trek"
-//             averageRating={4.8}
-//             totalReviews={156}
+//             reviews={reviewsList?.length > 0 ? reviewsList : []}
+//             trekName={trekName}
+//             averageRating={rating || 4.8}
+//             totalReviews={reviewsCount || 0}
+//             autoPlay={true}
+//             showStats={true}
 //           />
 //         </div>
 //       </div>
 
-//       {/* Similar Itineraries */}
-//       {displaySimilarTreks.length > 0 && (
-//         <div className="py-8">
-//           <SimilarItineraries
-//             treks={displaySimilarTreks.map((trek) => ({
-//               id: trek.id,
-//               title: trek.name || trek.title,
-//               image: trek.bannerImage || trek.image || "/fallback.jpg",
-//               price: trek.price?.base || 0,
-//               rating: trek.rating || 5,
-//               reviews: trek.reviewsCount || 0,
-//               duration: trek.duration || trek.summary?.duration || "N/A",
-//               slug: trek.slug,
-//               region: trek.region || "everest",
-//             }))}
-//             exploreLink="/treks"
-//             currentTrekId={trekId}
-//           />
-//         </div>
-//       )}
+//       {/* Similar Itineraries - ALWAYS SHOW */}
+//       <div className="py-8">
+//         <SimilarItineraries
+//           treks={displaySimilarTreks}
+//           title="Similar Treks You Might Like"
+//           subtitle={`Discover more amazing treks in ${trek.region || 'Nepal'}`}
+//           exploreLink="/treks"
+//           currentTrekId={trekId}
+//           maxItems={3}
+//           showHeader={true}
+//         />
+//       </div>
 
 //       {/* Back to Top Button */}
-//       <button
-//         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-//         className="fixed bottom-6 left-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
-//         aria-label="Back to top"
-//       >
-//         ↑
-//       </button>
+//     
 //     </div>
 //   );
 // }
 
 
-// src/treks/trekkingpage/TreksDetailPage.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchTrek, fetchSimilarTreks } from "../api/trekService.js";
 
-// UI Components
+// UI Components (as before)
 import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
 import HeroSection from "./trekkingpage/Hero.jsx";
 import TrekHighlights from "./trekkingpage/TrekHighlights.jsx";
@@ -537,7 +488,6 @@ import KeyInfo from "./trekkingpage/Info.jsx";
 import TrekOverview from "./trekkingpage/TrekOverview.jsx";
 import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
 
-// Utilities
 import StickyBox from "react-sticky-box";
 import { AlertCircle, Loader2 } from "lucide-react";
 
@@ -591,47 +541,6 @@ export default function TrekDetailPage() {
     }
   }, [slug]);
 
-  // Scroll functions
-  const scrollToDates = () => {
-    if (datesRef.current) {
-      datesRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
-  };
-
-  const scrollToMap = () => {
-    if (mapRef.current) {
-      mapRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  };
-
-  const scrollToReviews = () => {
-    if (reviewsRef.current) {
-      reviewsRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-  const handleViewMap = () => {
-    scrollToMap();
-  };
-
-  const handleBookNow = () => {
-    navigate(`/trip-booking?trip_id=${trek?.id || slug}`);
-  };
-
-  const handleInquiry = () => {
-    navigate(`/inquiry?trek=${slug}`);
-  };
-
   // Loading state
   if (loading) {
     return (
@@ -649,7 +558,6 @@ export default function TrekDetailPage() {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -678,7 +586,6 @@ export default function TrekDetailPage() {
     );
   }
 
-  // Not found state
   if (!trek) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -699,138 +606,97 @@ export default function TrekDetailPage() {
     );
   }
 
-  // Safe destructure with fallbacks
+  // Destructure correct fields from backend:
   const {
-    id: trekId = "",
-    name: trekName = "Unknown Trek",
-    subtitle = "",
+    trek: trekInfo = {},
     hero = {},
-    summary = {},
-    highlights = [],
-    description = {},
-    itinerary = [],
-    cost = { inclusions: [], exclusions: [] },
-    faqs = [],
-    gallery = [],
-    galleryImages = [],
-    reviewsList = [],
-    elevationData = [],
-    booking = {},
-    price = {},
-    similar_treks = [],
-    pdfUrl = "",
-    mapImage = "",
-    seo = {},
-    tags = [],
-    season = "",
-    duration = "",
-    difficulty = "",
-    location = "",
-    rating = 0,
-    reviewsCount = 0,
-    additionalInfo = null,
-    availableDates = [],
     overview = null,
+    itinerary = [],
+    highlights = [],
+    cost = { inclusions: [], exclusions: [] },
+    faq_categories: faqs = [],
+    gallery = [],
+    elevation_chart: elevationData = [],
+    booking_card: booking = {},
+    additional_info: additionalInfo = [],
+    similar = [],
+    // Optional: cost_dates, actions, etc.
   } = trek || {};
 
-  // Extract booking and pricing data
-  const basePrice = price?.base || booking?.basePrice || 1200; // Fallback price
-  const discount = booking?.discount || 0;
-  const originalPrice = discount > 0 ? basePrice + discount : price?.original || basePrice + 300;
-  const groups = price?.groups || booking?.groups || [
-    { size: 1, price: 1190 },
-    { size: 4, price: 1090 },
-    { size: 7, price: 1020 },
-    { size: 12, price: 990 },
-  ];
+  // For Key Info
+  const {
+    public_id: trekId = "",
+    title: trekName = "",
+    duration = "",
+    trip_grade: tripGrade = "",
+    start_point: startPoint = "",
+    group_size: groupSize = "",
+    max_altitude: maxAltitude = "",
+    activity = "",
+    rating = 0,
+    reviews: reviewsCount = 0,
+  } = trekInfo || {};
 
-  // Prepare gallery images with fallback
-  const images =
-    galleryImages?.length >= 5
-      ? galleryImages
-      : gallery?.length >= 5
-      ? gallery
-      : [
-          "/trekking.png",
-          "/trekkinginnepal.jpg",
-          "/Namche-Approach-From-North.webp",
-          "/moutainimage.avif",
-          "/everest.jpeg",
-        ];
+  const keyInfoData = {
+    duration,
+    tripGrade,
+    startPoint,
+    groupSize,
+    maxAltitude,
+    activity,
+  };
 
-  // Generate date slots with fallbacks
-  const dateSlots = availableDates?.length > 0 
-    ? availableDates 
-    : [
-        { start: "2025-05-16", end: "2025-05-29", status: "Available", price: basePrice },
-        { start: "2025-05-23", end: "2025-06-05", status: "Available", price: basePrice },
-        { start: "2025-05-30", end: "2025-06-12", status: "Available", price: basePrice },
-        { start: "2025-06-06", end: "2025-09-19", status: "Limited", price: basePrice + 100 },
-      ];
+  // Gallery images
+  const images = gallery;
 
-  const displayTitle = hero?.title || trekName || "Untitled Trek";
+  // Booking/pricing
+  const basePrice = booking?.base_price ? parseFloat(booking.base_price) : 1200;
+  const originalPrice = booking?.original_price
+    ? parseFloat(booking.original_price)
+    : basePrice + 300;
+  const groups = (booking?.group_prices || []).map(gp => ({
+    size: gp.max_size || 1,
+    price: gp.price,
+  }));
 
-  // Use similar treks from API or fallback to trek data
-  const displaySimilarTreks =
-    similarTreks?.length > 0 
-      ? similarTreks 
-      : similar_treks?.length > 0 
-      ? similar_treks.slice(0, 3) 
-      : [];
+  // Similar treks (API or fallback)
+  const displaySimilarTreks = similarTreks.length > 0 ? similarTreks : similar.slice(0, 3);
 
-  // Safe meta description
+  // Meta/SEO
+  const displayTitle = hero?.title || trekName;
   const metaDescription =
-    seo?.description || 
-    subtitle || 
-    (typeof description?.overview === "string" ? description.overview : "") ||
-    "";
+    hero?.subtitle || overview?.sections?.[0]?.articles?.description || "";
 
-  // DEBUG: Log what's rendering
-  // console.log("Rendering sections:", {
-  //   hasItinerary: itinerary?.length > 0,
-  //   hasFAQs: faqs?.length > 0,
-  //   hasGallery: images?.length >= 5,
-  //   hasElevation: elevationData?.length > 0,
-  //   hasDates: dateSlots?.length > 0,
-  //   hasReviews: reviewsList?.length > 0,
-  //   hasSimilar: displaySimilarTreks?.length > 0,
-  // });
-
+  // Main render
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* SEO Meta Tags */}
-      <title>{seo?.title || `${trekName} | Nepal Trekking`}</title>
+      <title>{displayTitle}</title>
       <meta name="description" content={metaDescription} />
-      <meta name="keywords" content={seo?.keywords?.join(", ") || tags?.join(", ") || ""} />
-      <link rel="canonical" href={seo?.canonicalUrl || `/treks/${slug}`} />
 
       {/* Hero Section */}
       <HeroSection
         title={displayTitle}
-        subtitle={hero?.subtitle || subtitle || ""}
-        imageUrl={hero?.image || trek?.image || "/fallback.jpg"}
-        season={season}
-        duration={duration}
-        difficulty={difficulty}
-        location={location}
-        onBookNow={handleBookNow}
-        onInquiry={handleInquiry}
+        subtitle={hero?.subtitle}
+        imageUrl={hero?.imageUrl}
+        season={hero?.season}
+        duration={hero?.duration}
+        difficulty={hero?.difficulty}
+        location={hero?.location}
+        onBookNow={() => navigate(`/trip-booking?trip_id=${trekId || slug}`)}
+        onInquiry={() => navigate(`/inquiry?trek=${slug}`)}
       />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4 py-10">
         {/* Left Column - Main Content */}
         <div className="flex-1 space-y-8">
-          {/* Key Information */}
-          {summary && (
-            <KeyInfo
-              data={summary}
-              rating={rating}
-              reviews={reviewsCount}
-            />
-          )}
+          <KeyInfo
+            data={keyInfoData}
+            rating={rating}
+            reviews={reviewsCount}
+          />
 
-          {/* Trek Overview */}
           {overview && (
             <section className="py-16 bg-white rounded-lg shadow-sm">
               <div className="max-w-3xl mx-auto px-6">
@@ -839,25 +705,21 @@ export default function TrekDetailPage() {
             </section>
           )}
 
-          {/* Trek Highlights */}
-          {highlights?.length > 0 && (
+          {highlights.length > 0 && (
             <TrekHighlights highlights={highlights} />
           )}
 
-          {/* Cost Inclusions - ALWAYS SHOW */}
           <CostInclusions
             inclusions={cost?.inclusions || []}
             exclusions={cost?.exclusions || []}
           />
 
-          {/* Itinerary */}
-          {itinerary?.length > 0 && (
+          {itinerary.length > 0 && (
             <Itinerary itinerary={itinerary} />
           )}
 
-          {/* FAQ Section - ALWAYS SHOW */}
           <section id="faqs" className="scroll-mt-32">
-            <FAQSection faqCategories={faqs || []} />
+            <FAQSection faqCategories={faqs} />
           </section>
         </div>
 
@@ -870,27 +732,31 @@ export default function TrekDetailPage() {
               basePrice={basePrice}
               original={originalPrice}
               groups={groups}
-              onCheckAvailability={scrollToDates}
-              onBookNow={handleBookNow}
+              onCheckAvailability={() =>
+                datesRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
+              onBookNow={() =>
+                navigate(`/trip-booking?trip_id=${trekId || slug}`)
+              }
             />
           </StickyBox>
         </aside>
       </div>
 
-      {/* Additional Info - ALWAYS SHOW */}
-      <TrekAddInfo trek={{ additionalInfo: additionalInfo || {} }} />
+      {/* Additional Info */}
+      <TrekAddInfo trek={{ additionalInfo: Array.isArray(additionalInfo) ? additionalInfo : [] }} />
 
-      {/* Full Width Gallery - ALWAYS SHOW */}
+      {/* Full Width Gallery */}
       <div className="py-8">
-        <TrekGallery 
-          images={images} 
+        <TrekGallery
+          images={images}
           trekName={trekName}
           showTitle={true}
         />
       </div>
 
       {/* Elevation Chart */}
-      {elevationData?.length > 0 && (
+      {Array.isArray(elevationData) && elevationData.length > 0 && (
         <div className="py-8 bg-white">
           <div className="max-w-7xl mx-auto px-4">
             <ElevationChart
@@ -902,47 +768,12 @@ export default function TrekDetailPage() {
         </div>
       )}
 
-      {/* Dates & Pricing - ALWAYS SHOW */}
-      <div className="py-8" ref={datesRef}>
-        <DatesAndPrice
-          dates={dateSlots}
-          groupPrices={groups}
-          trekName={trekName}
-          trekId={trekId}
-          onBookDate={(date) => navigate(`/trip-booking?trip_id=${trekId}&date=${date.start}`)}
-        />
-      </div>
-
-      {/* Trek Actions - ALWAYS SHOW */}
-      <div className="py-4" ref={mapRef}>
-        <TrekActions
-          trekId={trekId}
-          pdfUrl={pdfUrl || ""}
-          mapImage={mapImage || ""}
-          onViewMap={handleViewMap}
-        />
-      </div>
-
-      {/* Reviews Section - ALWAYS SHOW */}
-      <div ref={reviewsRef} className="py-8 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <ReviewsSlider
-            reviews={reviewsList?.length > 0 ? reviewsList : []}
-            trekName={trekName}
-            averageRating={rating || 4.8}
-            totalReviews={reviewsCount || 0}
-            autoPlay={true}
-            showStats={true}
-          />
-        </div>
-      </div>
-
-      {/* Similar Itineraries - ALWAYS SHOW */}
+      {/* Similar Itineraries */}
       <div className="py-8">
         <SimilarItineraries
           treks={displaySimilarTreks}
           title="Similar Treks You Might Like"
-          subtitle={`Discover more amazing treks in ${trek.region || 'Nepal'}`}
+          subtitle={`Discover more amazing treks in ${trekInfo?.region_name || 'Nepal'}`}
           exploreLink="/treks"
           currentTrekId={trekId}
           maxItems={3}
@@ -951,13 +782,7 @@ export default function TrekDetailPage() {
       </div>
 
       {/* Back to Top Button */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
-        aria-label="Back to top"
-      >
-        ↑
-      </button>
+     
     </div>
   );
 }

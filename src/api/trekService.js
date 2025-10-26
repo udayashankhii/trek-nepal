@@ -32,6 +32,7 @@ export const fetchTrek = async (slug) => {
   }
 };
 
+
 // ============================================
 // SECTION-SPECIFIC FETCHERS
 // ============================================

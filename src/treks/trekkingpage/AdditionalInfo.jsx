@@ -40,35 +40,24 @@ const TrekAddInfo = ({ trek }) => {
                   {info.heading}
                 </h3>
               )}
+{Array.isArray(info.articles) && info.articles.map((article, i) => (
+  <p key={i} className="text-gray-700 mb-2 leading-relaxed">
+    {typeof article === "object" && article !== null ? article.text : article}
+  </p>
+))}
 
-              {info.articles?.map((text, i) => (
-                <p key={i} className="text-gray-700 mb-2 leading-relaxed">
-                  {text}
-                </p>
-              ))}
 
-              {info.bullets?.length > 0 && (
-                <ul className="list-none space-y-2 mt-3">
-                  {info.bullets.map((bullet, i) => (
-                    <li key={i} className="flex items-start text-gray-700">
-                      <svg
-                        className="w-4 h-4 text-blue-500 mt-1 mr-2 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              )}
+          
+              {info.bullets.map((bullet, i) => (
+  <li key={i} className="flex items-start text-gray-700">
+    <svg>...</svg>
+    {typeof bullet === "object" && bullet !== null ? bullet.text : bullet}
+  </li>
+))}
+
+              )
             </div>
-          ))}
+          ))} 
         </div>
       </div>
     </section>

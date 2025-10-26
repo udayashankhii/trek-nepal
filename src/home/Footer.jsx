@@ -15,7 +15,7 @@ const Footer = () => {
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-extrabold text-yellow-400 mb-4">
-            Nepal Nirvana <span className="text-white">Adventours</span>
+            EverTrek <span className="text-white">Nepal</span>
           </h2>
           <p>
             Trusted by thousands of trekkers since 2010 for immersive Himalayan
@@ -67,7 +67,7 @@ const Footer = () => {
           <ul className="space-y-3">
             <ContactItem icon={<FiMapPin />} text="Thamel, Kathmandu, Nepal" />
             <ContactItem icon={<FiPhone />} text="+977 1-1234567" />
-            <ContactItem icon={<FiMail />} text="info@nepalnirvana.com" />
+            <ContactItem icon={<FiMail />} text="info@evertreknepal.com" />
             <ContactItem icon={<FiClock />} text="Mon–Sat: 9:00 AM – 6:00 PM" />
           </ul>
         </div>
@@ -76,7 +76,7 @@ const Footer = () => {
       {/* Footer Bottom */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-400 text-xs">
         <p>
-          &copy; {new Date().getFullYear()} Nepal Nirvana Adventours. All rights
+          &copy; {new Date().getFullYear()} EverTrekNepal. All rights
           reserved.
         </p>
         <div className="mt-2 flex justify-center gap-6">
