@@ -163,19 +163,19 @@ const DatesAndPrice = forwardRef(
         endDate: departure.end,
         price: departure.price,
         status: departure.status,
-        tripType: selectedTab,
+        trekType: selectedTab,
         trekName: trekName,
         trekId: trekId,
       };
 
       if (trekId) {
-        navigate(`/trip-booking?trip_id=${trekId}`, { state: bookingData });
+        navigate(`/trek-booking?trek_id=${trekId}`, { state: bookingData });
       } else {
-        navigate("/trip-booking", { state: bookingData });
+        navigate("/trek-booking", { state: bookingData });
       }
     };
 
-    const handleCustomizeTrip = () => {
+    const handleCustomizeTrek = () => {
       const customizeData = {
         trekName: trekName,
         trekId: trekId,
@@ -186,9 +186,9 @@ const DatesAndPrice = forwardRef(
       };
 
       if (trekId) {
-        navigate(`/customize-trip?trip_id=${trekId}`, { state: customizeData });
+        navigate(`/customize-trek?trek_id=${trekId}`, { state: customizeData });
       } else {
-        navigate("/customize-trip", { state: customizeData });
+        navigate("/customize-trek", { state: customizeData });
       }
     };
 
@@ -203,10 +203,10 @@ const DatesAndPrice = forwardRef(
                 No departure dates are currently available for this trek.
               </p>
               <button
-                onClick={handleCustomizeTrip}
+                onClick={handleCustomizeTrek}
                 className="bg-blue-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
               >
-                Plan Your Custom Trip →
+                Plan Your Custom Trek →
               </button>
             </div>
           </div>
@@ -232,7 +232,7 @@ const DatesAndPrice = forwardRef(
               <div
                 className="flex gap-2 mb-6"
                 role="tablist"
-                aria-label="Trip type selection"
+                aria-label="Trek type selection"
               >
                 <button
                   role="tab"
@@ -464,7 +464,7 @@ const DatesAndPrice = forwardRef(
 
             {/* Custom Trip Button */}
             <button
-              onClick={handleCustomizeTrip}
+              onClick={handleCustomizeTrek}
               className="w-full bg-blue-900 text-white py-4 rounded-lg font-semibold shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-lg"
             >
               Plan your own Trip to Nepal →

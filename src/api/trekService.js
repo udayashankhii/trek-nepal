@@ -151,6 +151,7 @@ export const fetchCompleteTrekData = async (slug) => {
       fetchTrekDepartures(slug),
       fetchSimilarTreks(slug, 3)
     ]);
+    
 
     return {
       main: mainData.status === 'fulfilled' ? mainData.value : null,
@@ -167,3 +168,51 @@ export const fetchCompleteTrekData = async (slug) => {
     throw error;
   }
 };
+
+
+export const fetchTrekHero = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`http://localhost:5173/trek-booking?trek_id=everest-base-camp-trek
+/${slug}/hero/`);
+    const data = response.data || {};
+
+    const heroData = data.hero || {};
+    const trekData = data.trek || {};
+
+    return {
+      hero: {
+        title: heroData.title || trekData.title || "Unknown Trek",
+        subtitle: heroData.subtitle || "",
+        imageUrl:
+          heroData.imageUrl ||
+          trekData.card_image_url ||
+          "/images/default-hero.jpg",
+        duration: heroData.duration || trekData.duration || "N/A",
+        difficulty: heroData.difficulty || trekData.trip_grade || "N/A",
+        location: heroData.location || trekData.region_name || "",
+      },
+      trek: {
+        rating: trekData.rating || 0,
+        reviews: trekData.reviews || 0,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching trek hero:", error);
+    // Return a default structure to avoid breaking frontend
+    return {
+      hero: {
+        title: "Unknown Trek",
+        subtitle: "",
+        imageUrl: "/images/default-hero.jpg",
+        duration: "N/A",
+        difficulty: "N/A",
+        location: "",
+      },
+      trek: {
+        rating: 0,
+        reviews: 0,
+      },
+    };
+  }
+};
+

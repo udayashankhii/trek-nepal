@@ -1,3 +1,7 @@
+
+
+
+
 // src/trekkingpage/BookingCard.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -17,39 +21,20 @@ function BookingCard({
   basePrice = 0,
   original = 0,
   groups = [],
-  mapLink,
   onCheckAvailability,
-  onBookNow,
 }) {
   const [showPrices, setShowPrices] = useState(false);
   const navigate = useNavigate();
-  
-  // Calculate savings percentage
+
   const savings =
-    original > basePrice
-      ? Math.round(((original - basePrice) / original) * 100)
-      : 0;
+    original > basePrice ? Math.round(((original - basePrice) / original) * 100) : 0;
 
-  // Navigation handlers
-  const handleCustomizeTrip = () => {
-    if (trekId) {
-      navigate(`/customize-trip?trip_id=${trekId}`);
-    }
-  };
+const handleBookNowClick = () => {
+  if (trekId) {
+    navigate(`/trek-booking?trek_id=${trekId}&price=${basePrice}`);
+  }
+};
 
-  const handleBookNowClick = () => {
-    if (onBookNow) {
-      onBookNow();
-    } else if (trekId) {
-      navigate(`/trip-booking?trip_id=${trekId}`);
-    }
-  };
-
-  const handleCheckAvailability = () => {
-    if (onCheckAvailability) {
-      onCheckAvailability();
-    }
-  };
 
   return (
     <motion.div
@@ -58,36 +43,27 @@ function BookingCard({
       transition={{ duration: 0.3 }}
       className="bg-white rounded-xl shadow-lg p-4 space-y-4 text-slate-800"
     >
-      {/* Price Header */}
       <div className="flex justify-between items-baseline">
         <div>
           <p className="text-xs text-slate-500 uppercase">From</p>
           <div className="flex items-end space-x-1">
-            <span className="text-xl font-bold text-slate-900">
-              ${basePrice || 0}
-            </span>
+            <span className="text-xl font-bold text-slate-900">${basePrice}</span>
             {original > basePrice && (
-              <span className="text-xs line-through text-slate-400">
-                ${original}
-              </span>
+              <span className="text-xs line-through text-slate-400">${original}</span>
             )}
           </div>
-          {savings > 0 && (
-            <p className="text-xs text-slate-600">Save {savings}%</p>
-          )}
+          {savings > 0 && <p className="text-xs text-slate-600">Save {savings}%</p>}
         </div>
         <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-semibold uppercase">
           Explorer's Pick
         </span>
       </div>
 
-      {/* Group Price Dropdown */}
-      {groups && groups.length > 0 && (
+      {groups.length > 0 && (
         <div>
           <button
             onClick={() => setShowPrices(!showPrices)}
             className="w-full flex justify-between items-center bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm hover:bg-slate-100 transition-colors"
-            aria-expanded={showPrices}
           >
             <span>Group Price Available</span>
             <ChevronDown
@@ -107,16 +83,9 @@ function BookingCard({
                 </thead>
                 <tbody>
                   {groups.map((g, idx) => (
-                    <tr
-                      key={`group-${idx}-${g.size || idx}`}
-                      className="border-t border-slate-200 last:border-none"
-                    >
-                      <td className="px-3 py-1">
-                        {g.size || g.label || `${idx + 1}`} pax
-                      </td>
-                      <td className="px-3 py-1">
-                        ${g.price || 0}
-                      </td>
+                    <tr key={idx} className="border-t border-slate-200 last:border-none">
+                      <td className="px-3 py-1">{g.size || g.label || `${idx + 1}`} pax</td>
+                      <td className="px-3 py-1">${g.price || 0}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -126,11 +95,10 @@ function BookingCard({
         </div>
       )}
 
-      {/* Actions */}
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={handleCheckAvailability}
+        onClick={onCheckAvailability}
         disabled={!onCheckAvailability}
         className="w-full bg-slate-800 text-white py-2 rounded text-sm font-medium hover:bg-slate-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
@@ -141,21 +109,12 @@ function BookingCard({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={handleBookNowClick}
-        disabled={!trekId && !onBookNow}
+        disabled={!trekId}
         className="w-full bg-slate-600 text-white py-2 rounded text-sm font-medium hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Book Now
       </motion.button>
 
-      <button
-        onClick={handleCustomizeTrip}
-        disabled={!trekId}
-        className="w-full text-slate-600 py-2 rounded text-sm font-medium hover:text-slate-800 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Customize Trip
-      </button>
-
-      {/* Trust Indicators */}
       <div className="grid grid-cols-2 gap-2 pt-4 border-t border-slate-100 text-xs">
         <div className="flex items-center space-x-1">
           <ShieldCheck className="w-4 h-4 text-slate-600" />

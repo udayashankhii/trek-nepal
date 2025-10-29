@@ -40,6 +40,19 @@ export default function TrekDetailPage() {
   const mapRef = useRef(null);
   const reviewsRef = useRef(null);
 
+
+
+const trekName =
+  trek?.hero?.title ||
+  trek?.trek?.title ||
+  trek?.title ;
+
+  useEffect(() => {
+  if (trekName && trekName !== "Trek Detail") {
+    document.title = `${trekName} | Nepal Trekking`;
+  } 
+}, [trekName]);
+
   useEffect(() => {
     const loadTrekData = async () => {
       try {
@@ -109,7 +122,7 @@ export default function TrekDetailPage() {
     activity = "",
     group_size: groupSize = "",
     duration = "",
-    trip_grade: tripGrade = "",
+    trek_grade: trekGrade = "",
     start_point: startPoint = "",
     max_altitude: maxAltitude = "",
     rating = 4.8,
@@ -126,10 +139,9 @@ export default function TrekDetailPage() {
     similar
   } = flat;
 
-  const trekName = trek.hero?.title || trek.trek?.title || trek.title || "Trek Detail";
 
   // Key info for summary component
-  const keyInfoData = { duration, tripGrade, startPoint, groupSize, maxAltitude, activity };
+  const keyInfoData = { duration, trekGrade, startPoint, groupSize, maxAltitude, activity };
 
   // Prepare group pricing from API booking_card, fallback if missing
   const groups =
@@ -150,7 +162,7 @@ export default function TrekDetailPage() {
       ? trek.cost_dates
       : [
           {
-            start: "2025-11-16",
+            start: "2025-10-16",
             end: "2026-05-29",
             status: "Available",
             price: parseFloat(bookingCard.base_price) || 1600,
@@ -158,14 +170,13 @@ export default function TrekDetailPage() {
         ];
 
   // Handlers for navigation and scroll
-  const handleBookNow = () => navigate(`/trip-booking?trip_id=${flat.public_id}`);
+  const handleBookNow = () => navigate(`/trek-booking?trek_id=${flat.public_id}`);
   const scrollToDates = () => datesRef.current?.scrollIntoView({ behavior: "smooth" });
   const scrollToMap = () => mapRef.current?.scrollIntoView({ behavior: "smooth" });
   const scrollToReviews = () => reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <title>{trekName} | Nepal Trekking</title>
 
       {/* Hero Section */}
       <HeroSection
@@ -202,30 +213,35 @@ export default function TrekDetailPage() {
         </div>
 
         {/* Right Column */}
-        <aside className="w-full lg:w-96">
-          <StickyBox offsetTop={200} offsetBottom={20}>
-            <BookingCard
-              trekId={flat.public_id}
-              trekName={trekName}
-              basePrice={parseFloat(bookingCard.base_price) || 1600}
-              original={parseFloat(bookingCard.original_price) || 1400}
-              groups={groups}
-              onCheckAvailability={scrollToDates}
-              onBookNow={handleBookNow}
-            />
-          </StickyBox>
-        </aside>
+   <aside className="w-full lg:w-96">
+  <StickyBox offsetTop={200} offsetBottom={20}>
+  <BookingCard
+    trekId={flat.public_id}
+  trekName={trekName}
+  basePrice={parseFloat(bookingCard.base_price) || 1600}
+  original={parseFloat(bookingCard.original_price) || 1400}
+  groups={groups}
+  onCheckAvailability={scrollToDates}
+  onBookNow={() => navigate(`/trek-booking?trek_id=${flat.public_id}`)} // Dynamic navigation here
+/>
+
+  </StickyBox>
+</aside>
+
       </div>
 
       {/* Additional Info Section */}
       <TrekAddInfo articles={additional_info_articles} bullets={additional_info_bullets} />
 
       {/* Gallery */}
-      {gallery.length > 0 && (
-        <div className="py-8">
-          <TrekGallery images={gallery} trekName={trekName} showTitle />
-        </div>
-      )}
+      {/* {gallery.length > 0 && ( */}
+         <div className="py-8"> 
+        {/* //   <TrekGallery images={gallery} trekName={trekName} showTitle /> */}
+         <TrekGallery images={gallery} trekName={trekName} showTitle minImages={1} />
+         </div> 
+
+{/* <TrekGallery gallery={gallery} trekName={trekName} showTitle minImages={1} /> */}
+
 
       {/* Elevation Chart */}
       {trek.elevation_chart && (
@@ -241,7 +257,7 @@ export default function TrekDetailPage() {
           groupPrices={groups}
           trekName={trekName}
           trekId={flat.public_id}
-          onBookDate={(date) => navigate(`/trip-booking?trip_id=${flat.public_id}&date=${date.start}`)}
+          onBookDate={(date) => navigate(`/trek-booking?trek_id=${flat.public_id}&date=${date.start}`)}
         />
       </div>
 

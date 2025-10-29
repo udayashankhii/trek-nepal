@@ -1,10 +1,8 @@
 // src/treks/trekkingpage/AdditionalInfo.jsx
 import React from "react";
 
-const TrekAddInfo = ({ trek }) => {
-  const infoList = trek?.additionalInfo || [];
-
-  if (!infoList.length) return null;
+const TrekAddInfo = ({ articles = [], bullets = [] }) => {
+  if (!articles.length && !bullets.length) return null;
 
   return (
     <section className="bg-white py-12">
@@ -29,35 +27,30 @@ const TrekAddInfo = ({ trek }) => {
         </div>
 
         <div className="bg-blue-50 border border-blue-100 rounded-b-xl p-6 space-y-6">
-          {infoList.map((info, index) => (
-            <div
-              key={index}
-              className="bg-white p-5 rounded-lg shadow border border-gray-100"
-            >
-              {info.heading && (
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2" />
-                  {info.heading}
-                </h3>
-              )}
-{Array.isArray(info.articles) && info.articles.map((article, i) => (
-  <p key={i} className="text-gray-700 mb-2 leading-relaxed">
-    {typeof article === "object" && article !== null ? article.text : article}
-  </p>
-))}
-
-
-          
-              {info.bullets.map((bullet, i) => (
-  <li key={i} className="flex items-start text-gray-700">
-    <svg>...</svg>
-    {typeof bullet === "object" && bullet !== null ? bullet.text : bullet}
-  </li>
-))}
-
-              )
+          {articles.length > 0 && (
+            <div className="bg-white p-5 rounded-lg shadow border border-gray-100">
+              {articles.map((article, i) => (
+                <p key={i} className="text-gray-700 mb-2 leading-relaxed">
+                  {typeof article === "object" && article !== null
+                    ? article.text
+                    : article}
+                </p>
+              ))}
             </div>
-          ))} 
+          )}
+
+          {bullets.length > 0 && (
+            <ul className="list-disc list-inside space-y-1">
+              {bullets.map((bullet, i) => (
+                <li key={i} className="flex items-start text-gray-700">
+                  <svg /* your bullet icon SVG here */></svg>
+                  {typeof bullet === "object" && bullet !== null
+                    ? bullet.text
+                    : bullet}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>

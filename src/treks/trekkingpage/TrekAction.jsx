@@ -23,7 +23,7 @@ export default function TrekActions({
 
       {/* Customize Trip */}
       <Link
-        to={`/customize-trip?trip_id=${trekId}`}
+        to={`/customize-trek?trek_id=${trekId}`}
         className="flex items-center space-x-2 bg-blue-800 hover:bg-blue-900 text-white font-medium px-6 py-3 rounded-full shadow-lg transition"
       >
         <Edit3 size={18} />

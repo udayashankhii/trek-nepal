@@ -28,7 +28,7 @@ countries.registerLocale(enLocale);
 export default function SinglePageBookingForm() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const tripId = searchParams.get("trip_id") || "";
+  const trekId = searchParams.get("trek_id") || "";
   const basePrice = Number(searchParams.get("price")) || 1525;
 
   // Enhanced country list
@@ -107,7 +107,7 @@ export default function SinglePageBookingForm() {
     },
   };
 
-  const currentTrek = trekData[tripId] || trekData["everest-base-camp"];
+  const currentTrek = trekData[trekId] || trekData["everest-base-camp"];
 
   // Validation
   const emailValid = /^\S+@\S+\.\S+$/.test(lead.email);
@@ -132,7 +132,7 @@ export default function SinglePageBookingForm() {
     if (!formValid) return;
     navigate("/payment", {
       state: {
-        tripId,
+        trekId,
         startDate,
         endDate,
         travellers,
@@ -214,12 +214,12 @@ export default function SinglePageBookingForm() {
                   </p>
                 </div>
 
-                {/* Trip Details Section */}
+                {/* Trek Details Section */}
                 <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6">
                   <div className="flex items-center space-x-3 mb-6">
                     <Calendar className="w-6 h-6 text-indigo-600" />
                     <h3 className="text-xl font-bold text-gray-900">
-                      Trip Details
+                      Trek Details
                     </h3>
                   </div>
 
@@ -517,7 +517,7 @@ export default function SinglePageBookingForm() {
                         }))
                       }
                       rows={4}
-                      placeholder="Any comments or questions you have about your trip..."
+                      placeholder="Any comments or questions you have about your trek..."
                       className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 resize-none"
                     />
                   </div>

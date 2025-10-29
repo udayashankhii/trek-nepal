@@ -16,13 +16,12 @@ import TrekkingInNepalPage from "./pages/Trekking-in-Nepal";
 import RegionCard from "./treks/regions/Regions-Card";
 import EverestTrekIndex from "./treks/regions/Everest-Index";
 import ContactUsPage from "./pages/Contact-Us";
-// import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
-// import BookingPage from "./Book/TripsBook/TrekBooking";
 import CostAndDate from "./treks/trekkingpage/Datesandprice";
 import Itinerary from "./treks/trekkingpage/Itinerary";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
-import BookingPage from "./Book/Customize-trip/TrekBooking";
+import SinglePageBookingForm from "./Book/TrekBooking/BookingForm.jsx";
+//
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 // import TrekMap from "./treks/trekkingpage/TrekMap";
 
@@ -91,7 +90,7 @@ const App = () => (
         {/* <Route path="regions-card" element={<RegionCard />} /> */}
         {/* <Route path="customize-trip" element={<CustomizeTripPage />} /> */}
         <Route path="/trek/:id" element={<TrekDetailPage />} />
-        {/* <Route path="/trip-booking" element={<BookingPage />} /> */}
+        {/* <Route path="/trek-booking" element={<BookingPage />} /> */}
         <Route path="/about-us" element={<AboutUsPage />} />
 
         {/* ADD THESE TRAVEL INFO ROUTES */}
@@ -149,7 +148,7 @@ const App = () => (
         <Route path="/about-us/*" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/customize-trip" element={<CustomizeTripPage />} />
-        <Route path="/trip-booking" element={<BookingPage />} />
+        <Route path="/trek-booking" element={< SinglePageBookingForm/>} />
         <Route path="/trek-overview" element={<TrekOverview />} />
 
         <Route path="/blog" element={<BlogPage />} />

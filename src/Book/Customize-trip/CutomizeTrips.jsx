@@ -213,14 +213,14 @@ const countries = [
   "Zimbabwe",
 ];
 
-export default function CustomizeTripPage() {
+export default function CustomizeTrekPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const tripId = searchParams.get("trip_id");
+  const trekId = searchParams.get("trek_id");
 
-  // Add error handling for missing trip_id
-  if (!tripId) {
-    console.error('Trip ID not found in URL parameters');
+  // Add error handling for missing trek_id
+  if (!trekId) {
+    console.error('Trek ID not found in URL parameters');
     // You might want to redirect or show an error message
   }
 
@@ -247,7 +247,7 @@ export default function CustomizeTripPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: send booking request
-    navigate(`/booking-confirmation?trip_id=${tripId}`);
+    navigate(`/booking-confirmation?trek_id=${trekId}`);
   };
 
   return (
