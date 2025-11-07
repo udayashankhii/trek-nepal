@@ -1,8 +1,3 @@
-
-
-
-
-// src/trekkingpage/BookingCard.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -21,6 +16,12 @@ function BookingCard({
   basePrice = 0,
   original = 0,
   groups = [],
+  badgeLabel = "Explorer's Pick",
+  securePayment = false,
+  noHiddenFees = false,
+  freeCancellation = false,
+  support247 = false,
+  trustedReviews = false,
   onCheckAvailability,
 }) {
   const [showPrices, setShowPrices] = useState(false);
@@ -29,12 +30,12 @@ function BookingCard({
   const savings =
     original > basePrice ? Math.round(((original - basePrice) / original) * 100) : 0;
 
-const handleBookNowClick = () => {
-  if (trekId) {
-    navigate(`/trek-booking?trek_id=${trekId}&price=${basePrice}`);
-  }
-};
-
+  // Handler for booking
+  const handleBookNowClick = () => {
+    if (trekId) {
+      navigate(`/trek-booking?trek_id=${trekId}&price=${basePrice}`);
+    }
+  };
 
   return (
     <motion.div
@@ -55,7 +56,7 @@ const handleBookNowClick = () => {
           {savings > 0 && <p className="text-xs text-slate-600">Save {savings}%</p>}
         </div>
         <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-semibold uppercase">
-          Explorer's Pick
+          {badgeLabel}
         </span>
       </div>
 
@@ -84,7 +85,11 @@ const handleBookNowClick = () => {
                 <tbody>
                   {groups.map((g, idx) => (
                     <tr key={idx} className="border-t border-slate-200 last:border-none">
-                      <td className="px-3 py-1">{g.size || g.label || `${idx + 1}`} pax</td>
+                      <td className="px-3 py-1">
+                        {g.min_size && g.max_size
+                          ? `${g.min_size}–${g.max_size} pax`
+                          : g.size || g.label || `${idx + 1} pax`}
+                      </td>
                       <td className="px-3 py-1">${g.price || 0}</td>
                     </tr>
                   ))}
@@ -116,26 +121,36 @@ const handleBookNowClick = () => {
       </motion.button>
 
       <div className="grid grid-cols-2 gap-2 pt-4 border-t border-slate-100 text-xs">
-        <div className="flex items-center space-x-1">
-          <ShieldCheck className="w-4 h-4 text-slate-600" />
-          <span>Secure Payment</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <CreditCard className="w-4 h-4 text-slate-600" />
-          <span>No Hidden Fees</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <Clock className="w-4 h-4 text-slate-600" />
-          <span>Free Cancellation</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <Headset className="w-4 h-4 text-slate-600" />
-          <span>24/7 Support</span>
-        </div>
-        <div className="flex items-center space-x-1 col-span-2">
-          <ThumbsUp className="w-4 h-4 text-slate-600" />
-          <span>Trusted Reviews</span>
-        </div>
+        {securePayment && (
+          <div className="flex items-center space-x-1">
+            <ShieldCheck className="w-4 h-4 text-slate-600" />
+            <span>Secure Payment</span>
+          </div>
+        )}
+        {noHiddenFees && (
+          <div className="flex items-center space-x-1">
+            <CreditCard className="w-4 h-4 text-slate-600" />
+            <span>No Hidden Fees</span>
+          </div>
+        )}
+        {freeCancellation && (
+          <div className="flex items-center space-x-1">
+            <Clock className="w-4 h-4 text-slate-600" />
+            <span>Free Cancellation</span>
+          </div>
+        )}
+        {support247 && (
+          <div className="flex items-center space-x-1">
+            <Headset className="w-4 h-4 text-slate-600" />
+            <span>24/7 Support</span>
+          </div>
+        )}
+        {trustedReviews && (
+          <div className="flex items-center space-x-1 col-span-2">
+            <ThumbsUp className="w-4 h-4 text-slate-600" />
+            <span>Trusted Reviews</span>
+          </div>
+        )}
       </div>
     </motion.div>
   );

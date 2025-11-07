@@ -1,6 +1,7 @@
 
 
 
+import { fetchTrekElevationChart } from "../api/trekService.js";
 
 
 import React, { useState, useEffect, useRef } from "react";
@@ -19,7 +20,7 @@ import DatesAndPrice from "./trekkingpage/Datesandprice.jsx";
 import SimilarItineraries from "./trekkingpage/SimilarItenaries.jsx";
 import TrekActions from "./trekkingpage/TrekAction.jsx";
 import TrekGallery from "./trekkingpage/Gallery.jsx";
-import KeyInfo from "./trekkingpage/Info.jsx";
+import KeyInfo from "./trekkingpage/KeyInfo.jsx";
 import TrekOverview from "./trekkingpage/TrekOverview.jsx";
 import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
 
@@ -35,6 +36,8 @@ export default function TrekDetailPage() {
   const [similarTreks, setSimilarTreks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showMap, setShowMap] = useState(false);
+
 
   const datesRef = useRef(null);
   const mapRef = useRef(null);
@@ -53,24 +56,49 @@ const trekName =
   } 
 }, [trekName]);
 
-  useEffect(() => {
-    const loadTrekData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await fetchTrek(slug);
-        setTrek(data);
-        const similar = await fetchSimilarTreks(slug, 3);
-        setSimilarTreks(similar);
-      } catch (err) {
-        console.error(err);
-        setError(err.message || "Failed to load trek details");
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (slug) loadTrekData();
-  }, [slug]);
+// Map image viewable
+const toggleMapView = () => setShowMap((prev) => !prev);
+
+
+  // useEffect(() => {
+  //   const loadTrekData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
+  //       const data = await fetchTrek(slug);
+  //       setTrek(data);
+  //       const similar = await fetchSimilarTreks(slug, 3);
+  //       setSimilarTreks(similar);
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError(err.message || "Failed to load trek details");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   if (slug) loadTrekData();
+  // }, [slug]);
+
+useEffect(() => {
+  const loadTrekData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const trekData = await fetchTrek(slug);
+      const elevationChartData = await fetchTrekElevationChart(slug);
+      const similar = await fetchSimilarTreks(slug, 3);
+
+      setTrek({ ...trekData, elevation_chart: elevationChartData });
+      setSimilarTreks(similar);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to load trek details");
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (slug) loadTrekData();
+}, [slug]);
 
 
   if (loading) {
@@ -130,7 +158,7 @@ const trekName =
     hero,
     overview_sections,
     itinerary,
-    highlights,
+    
     cost,
     booking_card: bookingCard,
     gallery,
@@ -140,74 +168,137 @@ const trekName =
   } = flat;
 
 
+
+
+
+
+
+
+
+  
   // Key info for summary component
   const keyInfoData = { duration, trekGrade, startPoint, groupSize, maxAltitude, activity };
 
   // Prepare group pricing from API booking_card, fallback if missing
-  const groups =
-    bookingCard.group_prices && bookingCard.group_prices.length > 0
-      ? bookingCard.group_prices.map((g) => ({
-          min_size: g.min_size,
-          max_size: g.max_size,
-          price: parseFloat(g.price),
-        }))
-      : [
-          { min_size: 1, max_size: 3, price: parseFloat(bookingCard.base_price)  },
-          { min_size: 4, max_size: 25, price: parseFloat(bookingCard.base_price)  },
-        ];
+  // const groups =
+  //   bookingCard.group_prices && bookingCard.group_prices.length > 0
+  //     ? bookingCard.group_prices.map((g) => ({
+  //         min_size: g.min_size,
+  //         max_size: g.max_size,
+  //         price: parseFloat(g.price),
+  //       }))
+  //     : [
+  //         { min_size: 1, max_size: 3, price: parseFloat(bookingCard.base_price)  },
+  //         { min_size: 4, max_size: 25, price: parseFloat(bookingCard.base_price)  },
+  //       ];
 
-  // Generate date slots fallback
-  const dateSlots =
-    trek.cost_dates?.length > 0
-      ? trek.cost_dates
-      : [
-          {
-            start: "2025-10-16",
-            end: "2026-05-29",
-            status: "Available",
-            price: parseFloat(bookingCard.base_price) || 1600,
-          },
-        ];
+  // // Generate date slots fallback
+  // const dateSlots =
+  //   trek.cost_dates?.length > 0
+  //     ? trek.cost_dates
+  //     : [
+  //         {
+  //           start: "2025-10-16",
+  //           end: "2026-05-29",
+  //           status: "Available",
+  //           price: parseFloat(bookingCard.base_price) || 1600,
+  //         },
+  //       ];
+const costDateApi = trek.cost_date_api_response || {};
+
+const departures = (costDateApi.departures_by_month || []).flatMap(month =>
+  (month.departures || []).map(dep => ({
+    ...dep,
+    start: dep.start,
+    end: dep.end,
+    status: dep.status,
+    price: Number(dep.price),
+    id: dep.id,
+    seats_left: dep.seats_left
+  }))
+);
+
+const groupPrices = (costDateApi.groupPrices || bookingCard.group_prices || []).map(gp => ({
+  ...gp,
+  label: gp.label || (gp.min_size && gp.max_size
+    ? `${gp.min_size}–${gp.max_size} pax`
+    : `${gp.size || 1} Person`),
+  price: Number(gp.price),
+  size: gp.max_size || gp.size || 1
+}));
+
+const highlights = (costDateApi.highlights || []).map(h => h.highlight).filter(Boolean);
+
+
+const infoSections = trek.additional_info || [];
+
+
+
+
 
   // Handlers for navigation and scroll
   const handleBookNow = () => navigate(`/trek-booking?trek_id=${flat.public_id}`);
   const scrollToDates = () => datesRef.current?.scrollIntoView({ behavior: "smooth" });
   const scrollToMap = () => mapRef.current?.scrollIntoView({ behavior: "smooth" });
   const scrollToReviews = () => reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
+const fallbackElevationData = [
+  { day: 1, title: "Sample Start", elevation: 1000, description: "Start point of the trek" },
+  { day: 2, title: "Sample Mid", elevation: 2000, description: "Mid point" },
+  { day: 3, title: "Sample End", elevation: 1500, description: "End point" },
+];
+
+const hasElevationData = trek.elevation_chart && Array.isArray(trek.elevation_chart.points) && trek.elevation_chart.points.length > 0;
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
 
       {/* Hero Section */}
-      <HeroSection
-        title={hero.title || trekName}
-        subtitle={hero.subtitle}
-        imageUrl={hero.imageUrl || flat.card_image_url || "/fallback.jpg"}
-        season={hero.season}
-        duration={duration}
-        difficulty={hero.difficulty}
-        location={hero.location}
-        onBookNow={handleBookNow}
-        onInquiry={() => navigate(`/inquiry?trek=${slug}`)}
-      />
+ <HeroSection
+  title={hero.title || trekName}
+  subtitle={hero.subtitle}
+  imageUrl={hero.imageUrl || flat.card_image_url || "/fallback.jpg"}
+  season={hero.season}
+  duration={hero.duration || duration}
+  difficulty={hero.difficulty}
+  location={hero.location}
+  ctaLabel={hero.cta_label}
+onBookNow={hero.cta_link ? () => navigate(hero.cta_link) : handleBookNow}
+
+  onInquiry={() => navigate(`/inquiry?trek=${slug}`)}
+/>
+
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4 py-10">
         {/* Left Column */}
         <div className="flex-1 space-y-8">
-          <KeyInfo data={keyInfoData} rating={rating} reviews={reviews.length} />
+         <KeyInfo
+  data={keyInfoData}
+  rating={rating}
+  reviews={reviews}
+  reviewText={flat.review_text}
+/>
 
-          {flat.overview && (
-            <section className="py-10 bg-white rounded-lg shadow-sm">
-              <TrekOverview overview={flat.overview} />
-            </section>
-          )}
+
+       {flat.overview && (
+  <section className="py-10 bg-white rounded-lg shadow-sm">
+    <TrekOverview overview={flat.overview} />
+  </section>
+)}
 
           {highlights.length > 0 && <TrekHighlights highlights={highlights} />}
 
-          <CostInclusions inclusions={cost.inclusions || []} exclusions={cost.exclusions || []} />
+         <CostInclusions
+  inclusions={cost.inclusions}
+  exclusions={cost.exclusions}
+  title="Trip Cost Details"
+  inclusionsTitle="Cost Includes"
+  exclusionsTitle="Cost Excludes"
+/>
 
-          {itinerary.length > 0 && <Itinerary itinerary={itinerary} />}
+          <Itinerary itinerary={flat.itinerary} />
+
 
           <FAQSection faqCategories={trek.faq_categories || []} />
         </div>
@@ -215,15 +306,22 @@ const trekName =
         {/* Right Column */}
    <aside className="w-full lg:w-96">
   <StickyBox offsetTop={200} offsetBottom={20}>
-  <BookingCard
-    trekId={flat.public_id}
+<BookingCard
+  trekId={flat.public_id}
   trekName={trekName}
-  basePrice={parseFloat(bookingCard.base_price) || 1600}
-  original={parseFloat(bookingCard.original_price) || 1400}
-  groups={groups}
+  basePrice={parseFloat(bookingCard.base_price) || 0}
+  original={parseFloat(bookingCard.original_price) || 0}
+  groups={groupPrices}
+  badgeLabel={bookingCard.badge_label}
+  securePayment={bookingCard.secure_payment}
+  noHiddenFees={bookingCard.no_hidden_fees}
+  freeCancellation={bookingCard.free_cancellation}
+  support247={bookingCard.support_24_7}
+  trustedReviews={bookingCard.trusted_reviews}
   onCheckAvailability={scrollToDates}
-  onBookNow={() => navigate(`/trek-booking?trek_id=${flat.public_id}`)} // Dynamic navigation here
+  onBookNow={() => navigate(`/trek-booking?trek_id=${flat.public_id}`)}
 />
+
 
   </StickyBox>
 </aside>
@@ -231,7 +329,8 @@ const trekName =
       </div>
 
       {/* Additional Info Section */}
-      <TrekAddInfo articles={additional_info_articles} bullets={additional_info_bullets} />
+      {/* <TrekAddInfo articles={additional_info_articles} bullets={additional_info_bullets} /> */}
+<TrekAddInfo sections={infoSections} />
 
       {/* Gallery */}
       {/* {gallery.length > 0 && ( */}
@@ -244,31 +343,59 @@ const trekName =
 
 
       {/* Elevation Chart */}
-      {trek.elevation_chart && (
-        <div className="py-8 bg-white">
-          <ElevationChart elevationData={trek.elevation_chart} trekName={trekName} showFullscreen />
-        </div>
-      )}
+    {/* {trek.elevation_chart && (
+  <div className="py-8 bg-white">
+    <ElevationChart
+      elevationData={trek.elevation_chart.points} // the points array from API response
+      title={trek.elevation_chart.title}
+      subtitle={trek.elevation_chart.subtitle}
+      trekName={trekName}
+      showFullscreen
+    />
+  </div>
+)}
+ */}
+
+
+<ElevationChart
+  elevationData={hasElevationData ? trek.elevation_chart.points : fallbackElevationData}
+  title={hasElevationData ? trek.elevation_chart.title : "Elevation Chart Sample"}
+  subtitle={hasElevationData ? trek.elevation_chart.subtitle : "Sample chart in absence of real data"}
+  trekName={trekName}
+  showFullscreen
+/>
+
 
       {/* Dates & Pricing */}
-      <div className="py-8" ref={datesRef}>
-        <DatesAndPrice
-          dates={dateSlots}
-          groupPrices={groups}
-          trekName={trekName}
-          trekId={flat.public_id}
-          onBookDate={(date) => navigate(`/trek-booking?trek_id=${flat.public_id}&date=${date.start}`)}
-        />
-      </div>
+   <div className="py-8" ref={datesRef}>
+  <DatesAndPrice
+    dates={departures}
+    groupPrices={groupPrices}
+    highlights={highlights}
+    trekName={trekName}
+    trekId={flat.public_id}
+    onBookDate={date => navigate(`/trek-booking?trek_id=${flat.public_id}&date=${date.start}`)}
+  />
+</div>
+
 
       {/* Trek Actions (Map / PDF) */}
       <div className="py-4" ref={mapRef}>
-        <TrekActions
-          trekId={flat.public_id}
-          pdfUrl={trek.pdfUrl}
-          mapImage={trek.mapImage}
-          onViewMap={scrollToMap}
-        />
+<TrekActions
+  trekId={flat.public_id}
+  pdfUrl={trek.pdfUrl}
+  onViewMap={toggleMapView}
+/>
+
+{showMap && (
+  <div className="py-4 flex justify-center">
+    <img
+      src={trek.mapImage}
+      alt={`Map for ${trekName}`}
+      className="max-w-full rounded-lg shadow-md"
+      />
+</div>
+)}
       </div>
 
       {/* Reviews */}

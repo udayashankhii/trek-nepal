@@ -170,6 +170,18 @@ export const fetchCompleteTrekData = async (slug) => {
 };
 
 
+
+export const fetchTrekElevationChart = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${slug}/elevation-chart/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek elevation chart:", error);
+    return null;
+  }
+};
+
+
 export const fetchTrekHero = async (slug) => {
   try {
     const response = await axiosInstance.get(`http://localhost:5173/trek-booking?trek_id=everest-base-camp-trek

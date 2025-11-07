@@ -1,8 +1,7 @@
-// src/treks/trekkingpage/AdditionalInfo.jsx
 import React from "react";
 
-const TrekAddInfo = ({ articles = [], bullets = [] }) => {
-  if (!articles.length && !bullets.length) return null;
+const TrekAddInfo = ({ sections = [] }) => {
+  if (!Array.isArray(sections) || sections.length === 0) return null;
 
   return (
     <section className="bg-white py-12">
@@ -26,31 +25,37 @@ const TrekAddInfo = ({ articles = [], bullets = [] }) => {
           </h2>
         </div>
 
-        <div className="bg-blue-50 border border-blue-100 rounded-b-xl p-6 space-y-6">
-          {articles.length > 0 && (
-            <div className="bg-white p-5 rounded-lg shadow border border-gray-100">
-              {articles.map((article, i) => (
-                <p key={i} className="text-gray-700 mb-2 leading-relaxed">
-                  {typeof article === "object" && article !== null
-                    ? article.text
-                    : article}
-                </p>
-              ))}
+        <div className="bg-blue-50 border border-blue-100 rounded-b-xl p-6 space-y-10">
+          {sections.map((section, i) => (
+            <div key={i} className="space-y-4">
+              {section.heading && (
+                <h3 className="text-lg font-bold text-blue-900 mb-2">{section.heading}</h3>
+              )}
+              {section.articles && section.articles.length > 0 && (
+                <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
+                  {section.articles.map((article, j) => (
+                    <p key={j} className="text-gray-700 mb-2 leading-relaxed">
+                      {typeof article === "object" && article !== null
+                        ? article.text
+                        : article}
+                    </p>
+                  ))}
+                </div>
+              )}
+              {section.bullets && section.bullets.length > 0 && (
+                <ul className="list-disc list-inside space-y-1">
+                  {section.bullets.map((bullet, k) => (
+                    <li key={k} className="flex items-start text-gray-700">
+                      <span className="mr-2 mt-1 text-blue-500">•</span>
+                      {typeof bullet === "object" && bullet !== null
+                        ? bullet.text
+                        : bullet}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          )}
-
-          {bullets.length > 0 && (
-            <ul className="list-disc list-inside space-y-1">
-              {bullets.map((bullet, i) => (
-                <li key={i} className="flex items-start text-gray-700">
-                  <svg /* your bullet icon SVG here */></svg>
-                  {typeof bullet === "object" && bullet !== null
-                    ? bullet.text
-                    : bullet}
-                </li>
-              ))}
-            </ul>
-          )}
+          ))}
         </div>
       </div>
     </section>

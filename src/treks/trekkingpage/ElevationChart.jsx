@@ -123,12 +123,7 @@ export default function ElevationChart({
     <motion.section
       ref={chartRef}
       className="relative bg-white rounded-3xl shadow-xl overflow-hidden my-12 mx-auto w-full max-w-5xl"
-      style={{
-        backgroundImage: 'url("/elevationchart.png")', // ✅ path to your image
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
+      
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { Mountain } from "lucide-react";
 
-
 const iconComponents = {
   culture: GlobeAltIcon,
   scenery: Mountain,
@@ -43,8 +42,7 @@ export default function TrekHighlights({ highlights = [] }) {
             Trek Highlights
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover the unforgettable experiences that make this journey
-            extraordinary
+            Discover the unforgettable experiences that make this journey extraordinary
           </p>
         </motion.div>
 
@@ -58,7 +56,6 @@ export default function TrekHighlights({ highlights = [] }) {
           {Array.isArray(highlights) && highlights.length > 0 ? (
             highlights.map((highlight, idx) => {
               const Icon = iconComponents[highlight.icon];
-
               return (
                 <motion.div
                   key={idx}
@@ -82,7 +79,9 @@ export default function TrekHighlights({ highlights = [] }) {
                         {highlight.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        {highlight.description}
+                        {highlight.description.split(',').map((desc, i) => (
+                          <span key={i}>{desc.trim()}<br /></span>
+                        ))}
                       </p>
                     </div>
                     <div className="absolute bottom-6 left-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -102,5 +101,3 @@ export default function TrekHighlights({ highlights = [] }) {
     </section>
   );
 }
-
-// ✅ Prevents runtime crash if props are missing

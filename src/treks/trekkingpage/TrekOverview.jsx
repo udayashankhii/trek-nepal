@@ -4,15 +4,15 @@ import PropTypes from "prop-types";
 /**
  * Normalize overview data:
  *  - Accepts JSON string or object
- *  - Handles sections array or single section
- *  - Ensures heading is string, articles and bullets are string arrays
+ *  - Handles sections array or single section object
+ *  - Ensures heading, articles, and bullets are strings
  */
 function normalizeOverview(rawOverview) {
   if (!rawOverview) return { heading: "", articles: [], bullets: [] };
 
   let overview = null;
 
-  // Try parse if string
+  // Parse if string
   if (typeof rawOverview === "string" && rawOverview.trim().length) {
     try {
       overview = JSON.parse(rawOverview);
@@ -32,23 +32,24 @@ function normalizeOverview(rawOverview) {
       ? overview.sections[0]
       : overview.section || {};
 
-  // Helper to normalize items to strings
+  // Normalize arrays to plain strings
   const normalizeItems = (items, fields = ["text", "title", "label"]) => {
     if (!Array.isArray(items)) return [];
     return items.map((item) => {
-      if (typeof item === "string") return item;
+      if (typeof item === "string") return item.trim();
       if (item && typeof item === "object") {
         for (const field of fields) {
-          if (item[field]) return String(item[field]);
+          if (item[field]) return String(item[field]).trim();
         }
-        return JSON.stringify(item);
+        // Skip object without expected field
+        return null;
       }
-      return String(item);
-    });
+      return null; // Skip non-string, non-object
+    }).filter(Boolean);
   };
 
   return {
-    heading: section?.heading ? String(section.heading) : "",
+    heading: section?.heading ? String(section.heading).trim() : "",
     articles: normalizeItems(section?.articles, ["text", "title"]),
     bullets: normalizeItems(section?.bullets, ["text", "label"]),
   };
@@ -104,6 +105,11 @@ export default function TrekOverview({ overview }) {
             ))}
           </ul>
         </div>
+      )}
+
+      {/* Fallback UI if nothing valid */}
+      {!hasArticles && !hasBullets && (
+        <div className="py-8 text-center text-gray-400">No summary available for this trek.</div>
       )}
     </section>
   );

@@ -24,17 +24,6 @@ const DEFAULT_HIGHLIGHTS = [
   "Serving Adventure Seekers Since 2009",
 ];
 
-/**
- * DatesAndPrice Component - Displays trek departure dates, pricing, and booking options
- * @param {Object} props - Component props
- * @param {Array} props.dates - Array of departure date objects from API
- * @param {Array} props.groupPrices - Array of group pricing information from API
- * @param {Array} props.highlights - Array of highlight strings
- * @param {string} props.trekName - Name of the trek
- * @param {string} props.trekId - Trek ID for booking
- * @param {Function} props.onBookDate - Callback when date is booked
- * @param {React.Ref} ref - Forwarded ref for scroll functionality
- */
 const DatesAndPrice = forwardRef(
   (
     {
@@ -49,33 +38,22 @@ const DatesAndPrice = forwardRef(
     },
     ref
   ) => {
-    // State management
     const [selectedMonth, setSelectedMonth] = useState(dayjs().month());
     const [selectedTab, setSelectedTab] = useState("group"); // "group" or "private"
-
-    // Navigation hook
     const navigate = useNavigate();
 
-    // Normalize and validate dates from API
+    // Memoized normalized dates from API
     const normalizedDates = useMemo(() => {
       if (!Array.isArray(dates) || dates.length === 0) {
         return [];
       }
-
       return dates
         .map((date) => {
-          // Handle different API response formats
           const startDate = date.start || date.startDate || date.start_date;
           const endDate = date.end || date.endDate || date.end_date;
           const status = date.status || date.availability || "Available";
           const price = date.price || date.basePrice || date.cost || 0;
-
-          // Validate required fields
-          if (!startDate || !endDate) {
-            console.warn("Invalid date object:", date);
-            return null;
-          }
-
+          if (!startDate || !endDate) return null;
           return {
             start: startDate,
             end: endDate,
@@ -84,35 +62,31 @@ const DatesAndPrice = forwardRef(
             id: date.id || `${startDate}-${endDate}`,
           };
         })
-        .filter(Boolean); // Remove null entries
+        .filter(Boolean);
     }, [dates]);
 
-    // Normalize group prices from API
+    // Normalized group prices
     const normalizedGroupPrices = useMemo(() => {
       if (!Array.isArray(groupPrices) || groupPrices.length === 0) {
         return DEFAULT_GROUP_PRICES;
       }
-
       return groupPrices
         .map((group) => {
-          // Handle different API response formats
           const label = group.label || group.name || `${group.size} Person${group.size > 1 ? 's' : ''}`;
           const price = group.price || group.cost || 0;
           const size = group.size || group.groupSize || 1;
-
           return {
             label: label,
             price: Number(price),
             size: Number(size),
           };
         })
-        .sort((a, b) => a.size - b.size); // Sort by group size
+        .sort((a, b) => a.size - b.size);
     }, [groupPrices]);
 
-    // Memoized calculations for performance
+    // Memoized months dropdown
     const availableMonths = useMemo(() => {
       if (normalizedDates.length === 0) return [dayjs().month()];
-      
       const monthsSet = new Set(
         normalizedDates.map((d) => dayjs(d.start).month())
       );
@@ -132,9 +106,7 @@ const DatesAndPrice = forwardRef(
     // Event handlers
     const handlePrevMonth = () => {
       const currentIndex = availableMonths.indexOf(selectedMonth);
-      if (currentIndex > 0) {
-        setSelectedMonth(availableMonths[currentIndex - 1]);
-      }
+      if (currentIndex > 0) setSelectedMonth(availableMonths[currentIndex - 1]);
     };
 
     const handleNextMonth = () => {
@@ -151,13 +123,10 @@ const DatesAndPrice = forwardRef(
     };
 
     const handleBooking = (departure) => {
-      // Call parent callback if provided
       if (onBookDate) {
         onBookDate(departure);
         return;
       }
-
-      // Default navigation behavior
       const bookingData = {
         date: departure.start,
         endDate: departure.end,
@@ -167,7 +136,6 @@ const DatesAndPrice = forwardRef(
         trekName: trekName,
         trekId: trekId,
       };
-
       if (trekId) {
         navigate(`/trek-booking?trek_id=${trekId}`, { state: bookingData });
       } else {
@@ -184,7 +152,6 @@ const DatesAndPrice = forwardRef(
           end: d.end,
         })),
       };
-
       if (trekId) {
         navigate(`/customize-trek?trek_id=${trekId}`, { state: customizeData });
       } else {
@@ -192,28 +159,7 @@ const DatesAndPrice = forwardRef(
       }
     };
 
-    // Don't render if no dates available
-    if (normalizedDates.length === 0) {
-      return (
-        <section ref={ref} className={`bg-blue-50 py-10 px-4 lg:px-0 ${className}`}>
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Cost and Date</h2>
-            <div className="bg-white rounded-lg shadow p-8">
-              <p className="text-gray-600 mb-4">
-                No departure dates are currently available for this trek.
-              </p>
-              <button
-                onClick={handleCustomizeTrek}
-                className="bg-blue-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
-              >
-                Plan Your Custom Trek →
-              </button>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
+    // -- MAIN RENDER, always layout, sidebar and action visible! --
     return (
       <section
         ref={ref}
@@ -227,7 +173,6 @@ const DatesAndPrice = forwardRef(
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 Cost and Date
               </h2>
-
               {/* Trip Type Tabs */}
               <div
                 className="flex gap-2 mb-6"
@@ -264,8 +209,6 @@ const DatesAndPrice = forwardRef(
                 </button>
               </div>
             </header>
-
-            {/* Information Text */}
             <div className="mb-4 text-gray-700">
               <p className="mb-2">
                 <span className="font-semibold">Start Dates</span> refer to your
@@ -274,7 +217,6 @@ const DatesAndPrice = forwardRef(
                 your return date from Nepal.
               </p>
             </div>
-
             <div className="mb-6 text-gray-700">
               <p>
                 The {trekName} set departure dates are tailored for the group
@@ -282,7 +224,6 @@ const DatesAndPrice = forwardRef(
                 we can arrange alternative dates that better suit your needs.
               </p>
             </div>
-
             {/* Month Navigation */}
             <div
               className="flex items-center gap-2 mb-6"
@@ -296,7 +237,6 @@ const DatesAndPrice = forwardRef(
               >
                 <ChevronLeft className="w-5 h-5" aria-hidden="true" />
               </button>
-
               <div
                 className="flex gap-1 flex-wrap"
                 role="group"
@@ -305,7 +245,6 @@ const DatesAndPrice = forwardRef(
                 {MONTHS.map((month, index) => {
                   const isAvailable = availableMonths.includes(index);
                   const isSelected = selectedMonth === index;
-
                   return (
                     <button
                       key={month}
@@ -323,7 +262,6 @@ const DatesAndPrice = forwardRef(
                   );
                 })}
               </div>
-
               <button
                 onClick={handleNextMonth}
                 disabled={!canGoNextMonth}
@@ -333,8 +271,7 @@ const DatesAndPrice = forwardRef(
                 <ChevronRight className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-
-            {/* Departure Cards */}
+            {/* Departure Cards OR Fallback */}
             <div
               className="space-y-4"
               role="region"
@@ -342,10 +279,13 @@ const DatesAndPrice = forwardRef(
             >
               {filteredDepartures.length === 0 ? (
                 <div className="bg-white rounded-lg shadow p-6 text-center text-gray-600">
-                  <p>No departures available for {MONTHS[selectedMonth]}.</p>
-                  <p className="text-sm mt-2">
-                    Please select a different month or contact us for custom dates.
-                  </p>
+                  <p>No departure dates are currently available for this trek.</p>
+                  <button
+                    onClick={handleCustomizeTrek}
+                    className="bg-blue-900 text-white px-8 py-3 mt-4 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
+                  >
+                    Plan Your Custom Trek →
+                  </button>
                 </div>
               ) : (
                 filteredDepartures.map((departure) => (
@@ -386,7 +326,6 @@ const DatesAndPrice = forwardRef(
                           </span>
                         </div>
                       </div>
-
                       {/* Pricing and Booking */}
                       <div className="flex flex-col md:flex-row md:items-center gap-4">
                         <div className="text-right">
@@ -411,8 +350,7 @@ const DatesAndPrice = forwardRef(
               )}
             </div>
           </div>
-
-          {/* Sidebar */}
+          {/* Sidebar is always visible */}
           <aside className="w-full lg:w-80 flex flex-col gap-6">
             {/* Group Pricing */}
             {normalizedGroupPrices.length > 0 && (
@@ -435,7 +373,6 @@ const DatesAndPrice = forwardRef(
                 </ul>
               </div>
             )}
-
             {/* Company Highlights */}
             {highlights.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
@@ -461,7 +398,6 @@ const DatesAndPrice = forwardRef(
                 </ul>
               </div>
             )}
-
             {/* Custom Trip Button */}
             <button
               onClick={handleCustomizeTrek}
@@ -476,10 +412,8 @@ const DatesAndPrice = forwardRef(
   }
 );
 
-// Set display name for debugging
 DatesAndPrice.displayName = "DatesAndPrice";
 
-// PropTypes for type checking
 DatesAndPrice.propTypes = {
   dates: PropTypes.arrayOf(
     PropTypes.shape({
