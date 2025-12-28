@@ -13,7 +13,7 @@ function SimilarTrekCard({ trek }) {
   // Badge color logic
   const getBadgeStyles = (badge) => {
     const lowerBadge = badge?.toLowerCase() || "";
-    
+
     if (lowerBadge.includes("best") || lowerBadge.includes("seller")) {
       return "bg-green-600 text-white";
     }
@@ -40,7 +40,7 @@ function SimilarTrekCard({ trek }) {
           loading="lazy"
           onError={handleImageError}
         />
-        
+
         {/* Badge */}
         {trek.badge && (
           <span className={`absolute top-3 left-3 ${getBadgeStyles(trek.badge)} text-xs px-3 py-1 rounded-full font-semibold shadow-lg`}>
@@ -62,7 +62,7 @@ function SimilarTrekCard({ trek }) {
               {trek.duration}
             </span>
           )}
-          
+
           {trek.rating > 0 && (
             <>
               <span className="flex items-center gap-1 text-yellow-500">
@@ -101,7 +101,7 @@ function SimilarTrekCard({ trek }) {
           to={trek.link || `/treks/${trek.slug}`}
           className="inline-flex items-center gap-1 text-green-600 text-sm font-semibold hover:gap-2 transition-all group/link"
         >
-          View Details 
+          View Details
           <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
         </Link>
       </div>
@@ -110,7 +110,7 @@ function SimilarTrekCard({ trek }) {
 }
 
 // Main Component
-export default function SimilarItineraries({ 
+export default function SimilarTreks({
   treks = [],
   title = "Similar Treks You Might Like",
   subtitle = "Explore more amazing trekking adventures",
@@ -139,7 +139,8 @@ export default function SimilarItineraries({
         const id = trek.id || trek._id || `trek-${index}`;
         const title = trek.title || trek.name || 'Untitled Trek';
         const image = trek.image || trek.bannerImage || trek.thumbnail || trek.photo || '/trekking.png';
-        const duration = trek.duration || trek.days || (trek.durationDays ? `${trek.durationDays} Days` : null);
+        const daysValue = trek.days || trek.durationDays;
+        const duration = trek.duration || (daysValue ? `${daysValue} Days` : null);
         const rating = Number(trek.rating || trek.stars || trek.averageRating || 0);
         const reviews = Number(trek.reviews || trek.reviewCount || trek.reviewsCount || 0);
         const price = Number(trek.price || trek.basePrice || trek.cost || 0);

@@ -1,62 +1,10 @@
 // src/pages/everest/EverestTrekIndex.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import TrekCard from "../TrekCard";
-
-// Sample data for premium Everest treks
-const treks = [
-  {
-    id: 1,
-    image: "/annapurna.jpeg",
-    title: "Luxury Everest Base Camp Trek & Heli Return",
-    slug: "luxury-everest-base-camp-trek-heli-return", // Add this
-    days: 10,
-    price: 6999,
-    reviews: 38,
-    rating: 5,
-    badge: "LUXURY",
-    location: "Everest Base Camp",
-  },
-  {
-    id: 2,
-    image: "/everest.jpeg",
-    title: "Gokyo Lakes & Renjo La Pass Premium Trek",
-    slug: "gokyo-lakes-renjo-la-pass-premium-trek", // Add this
-    days: 14,
-    price: 6290,
-    reviews: 25,
-    rating: 5,
-    badge: "PREMIUM",
-    location: "Gokyo Valley",
-  },
-  {
-    id: 3,
-    image: "/trekkinginnepal.jpg",
-    title: "Everest Panorama Luxury Lodge Trek",
-    slug: "everest-panorama-luxury-lodge-trek", // Add this
-    days: 8,
-    price: 5190,
-    reviews: 19,
-    rating: 4,
-    badge: "LUXURY",
-    location: "Namche & Tengboche",
-  },
-  {
-    id: 4,
-    image: "/abcd.png",
-    title: "Everest Base Camp Trek",
-    slug: "everest-base-camp-trek", // Add this
-    days: 14,
-    price: 3999,
-    reviews: 52,
-    rating: 4,
-    badge: "HELI RETURN",
-    location: "Everest Base Camp",
-  },
-];
-
+import { fetchTreksByRegion } from "../../api/regionService";
 
 // Sample highlights
 const highlights = [
@@ -94,12 +42,38 @@ const faqs = [
 ];
 
 export default function EverestTrekIndex() {
-  const [search, setSearch] = useState("");
+  const [treks, setTreks] = useState([]);
   const [activeFAQ, setActiveFAQ] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filtered = treks.filter((t) =>
-    t.title.toLowerCase().includes(search.toLowerCase())
-  );
+  // Load only Everest-region treks from API
+  useEffect(() => {
+    const loadEverestTreks = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Adjust "everest" if your backend uses another region slug
+        const everestTreks = await fetchTreksByRegion("everest");
+
+        // If you want to guarantee only Everest Base Camp Trek:
+        // const filtered = everestTreks.filter(
+        //   (t) => t.slug === "everest-base-camp-trek"
+        // );
+        // setTreks(filtered);
+
+        setTreks(everestTreks);
+      } catch (err) {
+        console.error("Error loading Everest treks:", err);
+        setError(err.message || "Failed to load Everest treks");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEverestTreks();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 font-sans">
@@ -132,34 +106,64 @@ export default function EverestTrekIndex() {
         </div>
       </section>
 
-      {/* Search & Trek Cards */}
+      {/* Everest Trek Cards (API-backed) */}
       <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+        <div className="mb-8">
           <h2 className="text-3xl font-semibold text-gray-900">
-            Explore Our Treks
+            Explore Our Everest Treks
           </h2>
-          <div className="relative w-full md:w-96">
-            <input
-              type="text"
-              placeholder="Search treks..."
-              className="w-full py-2 pl-4 pr-10 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-yellow-500" />
-          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filtered.map((trek) => (
-            <TrekCard
-              key={trek.id}
-              trek={trek}
-              region="everest"
-              whileHover={{ scale: 1.02 }} // you can still pass motion props if you wrap TrekCard in motion()
-            />
-          ))}
-        </div>
+        {/* Loading state */}
+        {loading && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <div className="text-center">
+              <Loader2 className="h-10 w-10 animate-spin text-yellow-500 mx-auto mb-3" />
+              <p className="text-gray-600">Loading Everest treks...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Error state */}
+        {!loading && error && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <div className="text-center max-w-md">
+              <AlertCircle className="h-10 w-10 text-red-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Unable to load treks
+              </h3>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2.5 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors"
+              >
+                Try again
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Empty state */}
+        {!loading && !error && treks.length === 0 && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <p className="text-gray-600">
+              No Everest treks found. Please check back later.
+            </p>
+          </div>
+        )}
+
+        {/* Success state: Trek cards */}
+        {!loading && !error && treks.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {treks.map((trek) => (
+              <TrekCard
+                key={trek.slug || trek.id || trek.public_id}
+                trek={trek}
+                region="everest"
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Highlights */}
@@ -256,7 +260,9 @@ export default function EverestTrekIndex() {
                   {idx === activeFAQ ? "−" : "+"}
                 </span>
               </button>
-              {idx === activeFAQ && <p className="pb-4 text-gray-600">{f.a}</p>}
+              {idx === activeFAQ && (
+                <p className="pb-4 text-gray-600">{f.a}</p>
+              )}
             </div>
           ))}
         </div>

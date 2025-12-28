@@ -1,6 +1,6 @@
 @import "tailwindcss";
 /* Smooth scrolling */
-html {
+/* html {
   scroll-behavior: smooth;
 }
 
@@ -194,4 +194,4 @@ html {
 
 .animation-delay-2000 {
   animation-delay: 2s;
-}
+} */

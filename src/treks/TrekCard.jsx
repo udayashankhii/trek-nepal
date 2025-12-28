@@ -1,87 +1,103 @@
-// src/components/TrekCard.jsx
+
+// src/components/treks/TrekCard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { Star, MapPin, Clock, Users, Mountain } from "lucide-react";
 import PropTypes from "prop-types";
 
-/**
- * TrekCard
- * Displays summary info for a single trek, clickable to its detail page.
- * Enhanced with search functionality while maintaining existing compatibility.
- * Props:
- *   - trek: { slug, title, image, badge?, days, price, rating, reviews, ... }
- *   - region: string (e.g. "everest") - optional, can be derived from trek data
- *   - variant: "compact" | "detailed" (default: "compact")
- *   - showDetails: boolean (default: false) - shows additional trek info
- */
 export default function TrekCard({ 
   trek, 
   region, 
   variant = "compact", 
   showDetails = false 
 }) {
-  // Handle different price formats
-  const priceValue = typeof trek.price === "object" ? trek.price?.base : trek.price;
-  const originalPrice = typeof trek.price === "object" ? trek.price?.original : null;
-  
-  // Derive region from trek data if not provided
-  const trekRegion = region || trek.region || "everest";
-  
-  // Handle different title/name formats
+  // Extract data EXACTLY like TrekDetailPage does
+  const trekSlug = trek.slug;
   const trekTitle = trek.title || trek.name;
   
-  // Handle different duration formats
-  const trekDays = trek.days || trek.duration;
+  // Image handling - match TrekDetailPage: hero.imageUrl OR card_image_url
+  const trekImage = trek.hero?.imageUrl || trek.card_image_url || trek.image || "/fallback.jpg";
   
-  // Handle different review formats
-  const reviewCount = trek.reviews || trek.reviewCount || 0;
+  // Region handling - match TrekDetailPage
+  const trekRegion = region || trek.region || "everest";
+  
+  // Rating and reviews
+  const trekRating = Number(trek.rating) || 0;
+  const reviewCount = Number(trek.reviews) || trek.reviewCount || 0;
+  
+  // Price handling - match TrekDetailPage's booking_card structure
+  const bookingCard = trek.booking_card || {};
+  const basePrice = bookingCard.base_price || trek.base_price || trek.price || 0;
+  const originalPrice = bookingCard.original_price || trek.original_price || null;
+  
+  // Duration handling - match TrekDetailPage
+  const duration = trek.duration || trek.days;
+  const parseDuration = (durationStr) => {
+    if (!durationStr) return null;
+    const match = String(durationStr).match(/(\d+)/);
+    return match ? match[1] : durationStr;
+  };
+  const trekDays = parseDuration(duration);
+  
+  // Additional details - match TrekDetailPage's field names
+  const trekGrade = trek.trek_grade || trek.trip_grade || trek.difficulty;
+  const maxAltitude = trek.max_altitude || trek.maxAltitude;
+  const groupSize = trek.group_size || trek.groupSize;
+  const badge = trek.badge || bookingCard.badge_label;
+  const featured = trek.featured;
 
   // Get difficulty color styling
   const getDifficultyColor = (difficulty) => {
     if (!difficulty) return "bg-gray-100 text-gray-800";
     
-    switch (difficulty.toLowerCase()) {
-      case 'easy':
-        return "bg-green-100 text-green-800";
-      case 'moderate':
-        return "bg-blue-100 text-blue-800";
-      case 'strenuous':
-      case 'challenging':
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+    const diffLower = String(difficulty).toLowerCase();
+    
+    if (diffLower === 'easy' || diffLower === 'a') {
+      return "bg-green-100 text-green-800";
     }
+    if (diffLower === 'moderate' || diffLower === 'b') {
+      return "bg-blue-100 text-blue-800";
+    }
+    if (diffLower.includes('strenuous') || diffLower.includes('challenging') || 
+        diffLower === 'hard' || diffLower === 'c') {
+      return "bg-red-100 text-red-800";
+    }
+    
+    return "bg-gray-100 text-gray-800";
   };
 
   return (
-    <Link to={`/treks/${trekRegion}/${trek.slug}`} className="block group">
+    <Link to={`/treks/${trekRegion}/${trekSlug}`} className="block group">
       <div className="bg-white rounded-xl shadow-md overflow-hidden group-hover:shadow-xl transition-shadow duration-300">
         <div className="relative h-48 w-full">
           <img
-            src={trek.image}
+            src={trekImage}
             alt={trekTitle}
             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
+            onError={(e) => {
+              e.target.src = "/fallback.jpg";
+            }}
           />
           
           {/* Badge */}
-          {trek.badge && (
+          {badge && (
             <span className="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
-              {trek.badge}
+              {badge}
             </span>
           )}
           
           {/* Featured badge */}
-          {trek.featured && !trek.badge && (
+          {featured && !badge && (
             <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
               Featured
             </span>
           )}
           
           {/* Discount badge */}
-          {originalPrice && originalPrice > priceValue && (
+          {originalPrice && Number(originalPrice) > Number(basePrice) && (
             <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-              Save ${originalPrice - priceValue}
+              Save ${(Number(originalPrice) - Number(basePrice)).toFixed(0)}
             </span>
           )}
         </div>
@@ -97,10 +113,10 @@ export default function TrekCard({
             <Clock className="w-4 h-4" />
             <span>{trekDays} days</span>
             <span>•</span>
-            <span className="font-semibold text-indigo-600">${priceValue}</span>
-            {originalPrice && originalPrice > priceValue && (
+            <span className="font-semibold text-indigo-600">${Number(basePrice).toFixed(0)}</span>
+            {originalPrice && Number(originalPrice) > Number(basePrice) && (
               <span className="text-gray-400 line-through text-xs">
-                ${originalPrice}
+                ${Number(originalPrice).toFixed(0)}
               </span>
             )}
           </div>
@@ -117,31 +133,31 @@ export default function TrekCard({
               
               {/* Additional Trek Info */}
               <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                {trek.maxAltitude && (
+                {maxAltitude && (
                   <div className="flex items-center">
                     <Mountain className="w-3 h-3 mr-1" />
-                    <span>{trek.maxAltitude}m</span>
+                    <span>{maxAltitude}m</span>
                   </div>
                 )}
-                {trek.groupSize && (
+                {groupSize && (
                   <div className="flex items-center">
                     <Users className="w-3 h-3 mr-1" />
-                    <span>{trek.groupSize}</span>
+                    <span>Up to {groupSize}</span>
                   </div>
                 )}
-                {trek.region && (
+                {trekRegion && (
                   <div className="flex items-center">
                     <MapPin className="w-3 h-3 mr-1" />
-                    <span className="capitalize">{trek.region}</span>
+                    <span className="capitalize">{trekRegion}</span>
                   </div>
                 )}
               </div>
 
               {/* Difficulty Badge */}
-              {trek.difficulty && (
+              {trekGrade && (
                 <div className="flex flex-wrap gap-1">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(trek.difficulty)}`}>
-                    {trek.difficulty}
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(trekGrade)}`}>
+                    Grade {trekGrade}
                   </span>
                 </div>
               )}
@@ -156,7 +172,7 @@ export default function TrekCard({
                   <Star
                     key={i}
                     className={`w-4 h-4 ${
-                      i < Math.round(trek.rating)
+                      i < Math.round(trekRating)
                         ? "text-yellow-400 fill-current"
                         : "text-gray-300"
                     }`}
@@ -164,7 +180,7 @@ export default function TrekCard({
                 ))}
               </div>
               <span className="ml-2 text-sm text-gray-600">
-                {trek.rating} ({reviewCount})
+                {trekRating.toFixed(1)} ({reviewCount})
               </span>
             </div>
             
@@ -186,30 +202,40 @@ TrekCard.propTypes = {
   variant: PropTypes.oneOf(["compact", "detailed"]),
   showDetails: PropTypes.bool,
   trek: PropTypes.shape({
+    public_id: PropTypes.string,
     slug: PropTypes.string.isRequired,
     title: PropTypes.string,
     name: PropTypes.string,
-    image: PropTypes.string.isRequired,
+    card_image_url: PropTypes.string,
+    image: PropTypes.string,
+    hero: PropTypes.shape({
+      imageUrl: PropTypes.string,
+    }),
     badge: PropTypes.string,
     featured: PropTypes.bool,
     days: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    price: PropTypes.oneOfType([
-      PropTypes.shape({
-        base: PropTypes.number.isRequired,
-        original: PropTypes.number,
-      }),
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
-    rating: PropTypes.number.isRequired,
-    reviews: PropTypes.number,
+    rating: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    reviews: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     reviewCount: PropTypes.number,
     description: PropTypes.string,
     difficulty: PropTypes.string,
+    trip_grade: PropTypes.string,
+    trek_grade: PropTypes.string,
     region: PropTypes.string,
+    region_name: PropTypes.string,
+    max_altitude: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     maxAltitude: PropTypes.number,
+    group_size: PropTypes.string,
     groupSize: PropTypes.string,
     availability: PropTypes.bool,
+    booking_card: PropTypes.shape({
+      base_price: PropTypes.string,
+      original_price: PropTypes.string,
+      badge_label: PropTypes.string,
+    }),
+    base_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    original_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
 };

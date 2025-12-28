@@ -1,4 +1,4 @@
-// src/treks/regions/ExperienceSelector.jsx
+// ExperienceSelector.jsx
 import React from "react";
 
 export default function ExperienceSelector({ selected, onChange, options }) {

@@ -27,7 +27,6 @@ export const fetchTrek = async (slug) => {
     const response = await axiosInstance.get(`treks/${slug}/detail/`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching trek ${slug}:`, error);
     throw new Error("Failed to fetch trek details");
   }
 };
@@ -97,6 +96,28 @@ export const fetchTrekDepartures = async (slug) => {
   }
 };
 
+// Fetch trek reviews
+export const fetchTrekReviews = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${slug}/reviews/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek reviews:", error);
+    return { trek: null, count: 0, results: [] };
+  }
+};
+
+// Fetch trek booking card data
+export const fetchTrekBookingCard = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${slug}/booking-card/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek booking card:", error);
+    return null;
+  }
+};
+
 // ============================================
 // RELATED DATA FETCHERS
 // ============================================
@@ -151,7 +172,7 @@ export const fetchCompleteTrekData = async (slug) => {
       fetchTrekDepartures(slug),
       fetchSimilarTreks(slug, 3)
     ]);
-    
+
 
     return {
       main: mainData.status === 'fulfilled' ? mainData.value : null,

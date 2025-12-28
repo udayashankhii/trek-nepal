@@ -55,7 +55,7 @@ const ScrollDrivenSections = () => {
 
   return (
     <>
-      <style>{`
+      {/* <style>{`
         @keyframes slideInFromLeft {
           from { opacity: 0; transform: translateX(-60px); }
           to { opacity: 1; transform: translateX(0); }
@@ -91,7 +91,7 @@ const ScrollDrivenSections = () => {
         .slide-bottom.visible { animation: slideInFromBottom 0.8s ease-out forwards; }
         .scale-in.visible { animation: scaleIn 0.6s ease-out forwards; }
         .fade-in.visible { animation: fadeIn 1s ease-out forwards; }
-      `}</style>
+      `}</style> */}
 
       <div className="scroll-driven-sections">
         {/* Featured Destinations Section */}
@@ -189,36 +189,7 @@ const ScrollDrivenSections = () => {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section
-          ref={setSectionRef(3)}
-          data-section="cta"
-          className="relative py-20 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900"
-        >
-          <div className="container mx-auto px-6 text-center">
-            <div
-              className={`scroll-reveal fade-in ${
-                isVisible("cta") ? "visible" : ""
-              }`}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Ready for Your Next Adventure?
-              </h2>
-              <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Join thousands of adventurers who have experienced the magic of
-                the Himalayas
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-amber-500/30">
-                  Book Your Trek
-                </button>
-                <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+    
       </div>
     </>
   );

@@ -6,11 +6,31 @@ import { fetchAllTreks } from "../api/regionService";
 import { Link } from "react-router-dom";
 
 const STATIC_REGIONS = [
-  { name: "Everest", slug: "everest" },
-  { name: "Annapurna", slug: "annapurna" },
-  { name: "Langtang", slug: "langtang" },
-  { name: "Manaslu", slug: "manaslu" },
-  { name: "Mustang", slug: "mustang" },
+  {
+    name: "Everest",
+    slug: "everest",
+    link: "/treks/everest",
+  },
+  {
+    name: "Annapurna",
+    slug: "annapurna",
+    link: "/treks/annapurna",
+  },
+  { 
+    name: "Langtang",
+    slug: "langtang",
+    link: "/treks/langtang"
+  },
+  { 
+    name: "Manaslu",
+    slug: "manaslu",
+    link: "/treks/manaslu"
+  },
+  { 
+    name: "Mustang",
+    slug: "mustang",
+    link: "/treks/mustang"
+  }
 ];
 
 export default function Treks({ onNavigate }) {
@@ -117,3 +137,13 @@ const ChevronIcon = ({ isOpen }) => (
     <polyline points="6,9 12,15 18,9"></polyline>
   </svg>
 );
+
+
+
+
+
+
+
+
+
+

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Sparkles, UserCheck, Thermometer } from "lucide-react";
 import { FaHelicopter } from "react-icons/fa";
 import { motion } from "framer-motion";
-import ExperienceSelector from "./ExperienceSelector";
 import TrekCard from "../TrekCard";
+import ExperienceSelector from "../../components/ExperienceSelector";
 
 const AnnapurnaLuxuryPage = () => {
   const [selectedExperience, setSelectedExperience] = useState("all");
@@ -13,7 +13,7 @@ const AnnapurnaLuxuryPage = () => {
     {
       id: 1,
       title: "Annapurna Sanctuary Luxury Heli-Trek",
-      slug: "annapurna-sanctuary-luxury-heli-trek", // Add this
+      slug: "annapurna-region", // Add this
       price: 7500,
       duration: "9 Days",
       highlights: [

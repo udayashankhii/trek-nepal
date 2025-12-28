@@ -1,16 +1,16 @@
 
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import TrekkingDropdown from "./Dropdown/TrekkingDropdown";
 import TravelStylesDropdown from "./Dropdown/TravelStylesDropdown";
-
 import TravelInfoDropdown from "./Dropdown/TravelInfoDropdown";
-
 import AboutUsDropdown from "./Dropdown/AboutUsDropdown";
 import Treks from "./Treks";
+import LoginNavbar from "../Profile/Login.Navbar";
 
-export default function ImprovedNavbar() {
+export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [stickyDropdown, setStickyDropdown] = useState(null);
@@ -29,6 +29,7 @@ export default function ImprovedNavbar() {
     location.pathname.startsWith("/tourindex");
 
   const isInfoSection = location.pathname.startsWith("/travel-info/");
+  
   const getDropdownVisibility = (dropdownName) => {
     const isActive = activeDropdown === dropdownName;
     const shouldRender = isActive || isTransitioning;
@@ -100,7 +101,7 @@ export default function ImprovedNavbar() {
       <div className="bg-[#062c5b] text-white text-sm py-2 px-4 flex justify-between items-center">
         <span>
           Free Consultation:
-          <a
+             <a
             href="tel:+9779801000000"
             className="underline hover:text-yellow-100 ml-1"
           >
@@ -110,7 +111,7 @@ export default function ImprovedNavbar() {
         <div className="flex items-center gap-2">
           <span>Best Treks for 2025!</span>
           <Link
-            to="/tourindex"
+            to="/blog"
             className="text-sm bg-white text-yellow-600 px-3 py-1 rounded-full hover:bg-yellow-100 transition font-medium"
           >
             Read More
@@ -131,7 +132,7 @@ export default function ImprovedNavbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex space-x-5 items-center">
+          <div className="hidden lg:flex space-x-3 items-center">
             {/* TREKKING IN NEPAL */}
             <div
               className="relative dropdown-container"
@@ -172,7 +173,7 @@ export default function ImprovedNavbar() {
                 type="button"
                 className={navItemStyles(isTravelStylesSection)}
                 onClick={() => handleDropdownClick("travelstyles")}
-                >
+              >
                 <span className="bg-gradient-to-r from-yellow-600 to-amber-500 absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
                 TRAVEL STYLES
                 <ChevronDown
@@ -192,7 +193,7 @@ export default function ImprovedNavbar() {
             : "opacity-0 invisible translate-y-2"
         }`}
                   style={{
-                    width: "320px", // Increased width to accommodate descriptions
+                    width: "320px",
                     marginTop: "0.5rem",
                     pointerEvents: getDropdownVisibility("travelstyles")
                       .isActive
@@ -284,6 +285,9 @@ export default function ImprovedNavbar() {
                 />
               )}
             </div>
+
+            {/* LOGIN BUTTON - Added here at the rightmost position */}
+            <LoginNavbar />
           </div>
 
           {/* Mobile Toggle */}
@@ -341,6 +345,10 @@ export default function ImprovedNavbar() {
               >
                 About Us
               </Link>
+              {/* LOGIN BUTTON - Mobile version */}
+              <div className="pt-2 border-t border-gray-200">
+                <LoginNavbar />
+              </div>
             </div>
           </div>
         )}

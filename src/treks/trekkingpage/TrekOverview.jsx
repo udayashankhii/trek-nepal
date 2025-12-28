@@ -12,7 +12,6 @@ function normalizeOverview(rawOverview) {
 
   let overview = null;
 
-  // Parse if string
   if (typeof rawOverview === "string" && rawOverview.trim().length) {
     try {
       overview = JSON.parse(rawOverview);
@@ -26,26 +25,24 @@ function normalizeOverview(rawOverview) {
 
   if (!overview) return { heading: "", articles: [], bullets: [] };
 
-  // Get first section
   const section =
     Array.isArray(overview.sections) && overview.sections.length
       ? overview.sections[0]
       : overview.section || {};
 
-  // Normalize arrays to plain strings
   const normalizeItems = (items, fields = ["text", "title", "label"]) => {
     if (!Array.isArray(items)) return [];
-    return items.map((item) => {
-      if (typeof item === "string") return item.trim();
-      if (item && typeof item === "object") {
-        for (const field of fields) {
-          if (item[field]) return String(item[field]).trim();
+    return items
+      .map((item) => {
+        if (typeof item === "string") return item.trim();
+        if (item && typeof item === "object") {
+          for (const field of fields) {
+            if (item[field]) return String(item[field]).trim();
+          }
         }
-        // Skip object without expected field
         return null;
-      }
-      return null; // Skip non-string, non-object
-    }).filter(Boolean);
+      })
+      .filter(Boolean);
   };
 
   return {
@@ -65,41 +62,33 @@ export default function TrekOverview({ overview }) {
   return (
     <section
       id="overview"
-      className="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-lg space-y-8 border border-gray-100"
+      className="bg-white rounded-2xl border border-emerald-100 shadow-sm px-6 sm:px-8 md:px-10 py-8 md:py-10"
     >
       {hasHeading && (
-        <header className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 tracking-tight">
+        <header className="mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 tracking-tight">
             {heading}
           </h2>
-          <div className="w-24 h-1 bg-yellow-600 mx-auto mt-4 rounded"></div>
         </header>
       )}
 
       {hasArticles && (
-        <div className="space-y-6 text-gray-700 text-base sm:text-lg leading-relaxed">
+        <div className="space-y-4 text-[15px] md:text-base leading-relaxed text-slate-800">
           {articles.map((para, idx) => (
-            <p
-              key={idx}
-              className={`text-justify ${
-                idx === articles.length - 1 ? "italic font-medium text-yellow-800" : ""
-              }`}
-            >
-              {para}
-            </p>
+            <p key={idx}>{para}</p>
           ))}
         </div>
       )}
 
       {hasBullets && (
-        <div className="pt-8 border-t border-gray-200">
-          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-            Trek Summary
+        <div className="mt-8 pt-6 border-t border-emerald-100">
+          <h3 className="text-lg md:text-xl font-semibold text-slate-900 mb-3">
+            Trek Highlights
           </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-800 text-sm sm:text-base">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[15px] text-slate-800">
             {bullets.map((bullet, idx) => (
-              <li key={idx} className="flex items-start space-x-3">
-                <span className="flex-shrink-0 w-2 h-2 bg-yellow-600 rounded-full mt-2"></span>
+              <li key={idx} className="flex items-start gap-2">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 <span>{bullet}</span>
               </li>
             ))}
@@ -107,9 +96,10 @@ export default function TrekOverview({ overview }) {
         </div>
       )}
 
-      {/* Fallback UI if nothing valid */}
       {!hasArticles && !hasBullets && (
-        <div className="py-8 text-center text-gray-400">No summary available for this trek.</div>
+        <div className="pt-2 text-sm text-slate-400">
+          No summary available for this trek.
+        </div>
       )}
     </section>
   );

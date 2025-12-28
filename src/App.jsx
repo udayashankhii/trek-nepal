@@ -17,11 +17,11 @@ import RegionCard from "./treks/regions/Regions-Card";
 import EverestTrekIndex from "./treks/regions/Everest-Index";
 import ContactUsPage from "./pages/Contact-Us";
 import CostAndDate from "./treks/trekkingpage/Datesandprice";
-import Itinerary from "./treks/trekkingpage/Itinerary";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
 import SinglePageBookingForm from "./Book/TrekBooking/BookingForm.jsx";
 //
+
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 // import TrekMap from "./treks/trekkingpage/TrekMap";
 
@@ -42,8 +42,9 @@ import BlogPage from "./blog/Blogs.jsx";
 import BlogDetails from "./blog/BlogDetails.jsx";
 import "./index.css";
 
-// TOurs events
+// NEW IMPORTS - Chatbot
 
+// TOurs events
 import ToursPage from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import JungleSafariPage from "./Travel-Activities/JungleSafari/Jungle.jsx";
 import BikeRentalPage from "./Travel-Activities/BikeRental/Biker.jsx";
@@ -51,38 +52,54 @@ import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
 import TrekDetailPage from "./treks/TreksDetailPage.jsx";
 
-// Layout component that shows Navbar/Footer on every page
+import LangtangTrek from "./treks/regions/Lantang-Index.jsx"; 
+import ManasluTrek from "./treks/regions/Manaslu-Index.jsx";
+import MustangTrek from "./treks/regions/Mustang-Index.jsx";
+import Navbar from "./navbarEssentials/Navbar.jsx";
+import EverTrekChatbot from "./AI chatbot/EverTrek.Chatbot.jsx";
+import LoginForm from "./Profile/Login/LoginForm.jsx";
+import RegisterForm from "./Profile/Login/RegisterForm.jsx";
+import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
+import DataPreloader from "./PreLoader/Loader.jsx";
+
+// Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
   <>
-    <ImprovedNavbar />
+    <Navbar />
     <main className="min-h-[calc(100vh-8rem)]">
       {/* Outlet renders the matching child route */}
       <Outlet />
     </main>
     <Footer />
+    {/* CHATBOT - Visible on ALL pages */}
+    <EverTrekChatbot />
   </>
 );
 
 const App = () => (
   <Router>
     <ScrollToTop />
+      <DataPreloader />
 
     {/* Wrap everything in a Router to enable routing */}
     <Routes>
-      {/* All routes under “/” will render inside Layout */}
+      {/* All routes under "/" will render inside Layout */}
       <Route path="/" element={<Layout />}>
-        {/* index → renders at “/” */}
+        {/* index → renders at "/" */}
         <Route index element={<Home />} />
         <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
         {/* <Route path="trekcard" element={<TrekCard />} /> */}
- <Route path="/travel-styles" element={<Tours />} />
+        <Route path="/travel-styles" element={<Tours />} />
         
 
         <Route path="/treks/everest-treks" element={<EverestTrekIndex />} />
         <Route path="annapurna-treks" element={<AnnapurnaLuxuryPage />} />
+        <Route path="langtang" element={<LangtangTrek />} />
+
+
 
         {/* your existing trek detail route */}
-        {/* “/treks” → overview with your RegionsIndex */}
+        {/* "/treks" → overview with your RegionsIndex */}
         {/* <Route path="treks" element={<TrekkingInNepalPage />} /> */}
         <Route path="trekdetailpage" element={<TrekDetailPage />} />
         <Route path="trekdetailpage/:id" element={<TrekDetailPage />} />
@@ -92,6 +109,7 @@ const App = () => (
         <Route path="/trek/:id" element={<TrekDetailPage />} />
         {/* <Route path="/trek-booking" element={<BookingPage />} /> */}
         <Route path="/about-us" element={<AboutUsPage />} />
+
 
         {/* ADD THESE TRAVEL INFO ROUTES */}
         <Route path="/travel-info" element={<TravelIndex />} />
@@ -113,17 +131,19 @@ const App = () => (
         />
         <Route path="/travel-info/faqs" element={<FAQPage />} />
 
+
         {/* region-specific */}
         <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
         <Route path="treks/everest" element={<EverestTrekIndex />} />
         <Route path="/everest/:slug" element={<TrekDetailPage />} />
         <Route path="/treks/annapurna" element={<AnnapurnaLuxuryPage />} />
-        <Route path="/annapurna/:trekId" element={<TrekDetailPage />} />
-        <Route path="/treks/manaslu" element={<EverestTrekIndex />} />
-        <Route path="/manaslu/:trekId" element={<TrekDetailPage />} />
-        <Route path="/treks/mustang" element={<EverestTrekIndex />} />
-        <Route path="/mustang/:trekId" element={<TrekDetailPage />} />
-        <Route path="/" element={<CostAndDate />} />
+        <Route path="/annapurna/:slug" element={<TrekDetailPage />} />
+        <Route path="/treks/manaslu" element={<ManasluTrek />} />
+        <Route path="/manaslu/:slug" element={<TrekDetailPage />} />
+        <Route path="/treks/mustang" element={<MustangTrek />} />
+        <Route path="/mustang/:slug" element={<TrekDetailPage />} />
+        <Route path="/treks/langtang" element={<LangtangTrek />} />
+        <Route path="/langtang/:slug" element={<TrekDetailPage />} />
         {/* <Route path="/booking" element={<BookingPage />} /> */}
         {/* <Route path="/customize-trip" element={<CustomizeTripPage />} /> */}
         
@@ -142,14 +162,16 @@ const App = () => (
         <Route path="/trekdetailpage" element={<CostAndDate />} />
         <Route path="/treks/:slug" element={<TrekDetailPage />} />
 
+
         {/* catch-all: any /tours/:slug →  */}
         <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
         <Route path="/everest/:trekId" element={<TrekDetailPage />} />
         <Route path="/about-us/*" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/customize-trip" element={<CustomizeTripPage />} />
-        <Route path="/trek-booking" element={< SinglePageBookingForm/>} />
+        <Route path="/trek-booking" element={<SinglePageBookingForm/>} />
         <Route path="/trek-overview" element={<TrekOverview />} />
+
 
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about-us" element={<OverviewPage />} />
@@ -169,6 +191,7 @@ const App = () => (
         {/* optional: global 404 → home */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
+
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPage />} />
         <Route path="/blog/:slug/details" element={<BlogDetails />} />
@@ -184,6 +207,16 @@ const App = () => (
           path="/trekking-in-nepal/:region/:slug/:trekId"
           element={<TrekDetailPage />}
         />
+
+        {/* Data Loader */}
+
+
+        {/* Login */}
+      <Route path="/login" element={<LoginForm modal />} />
+        <Route path="/register" element={<RegisterForm modal />} />
+         <Route path="/verify-otp" element={<VerifyOtp />} />
+
+
       </Route>
     </Routes>
   </Router>

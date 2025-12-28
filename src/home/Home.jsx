@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FeaturedTreksGrid from "./FeaturedTreks";
 // Import our advanced components
-import AdvancedMountainHomePage from "./Hero/AdvancedMountainHomePage";
+import MountainHomePage from "./Hero/AdvancedMountainHomePage";
 import ImprovedNavbar from "../navbarEssentials/Navbar";
 import HomeFeaturedTreks from "./FeaturedTreks";
 
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       {/* Advanced Mountain Home Page without search props */}
-      <AdvancedMountainHomePage />
+      <MountainHomePage />
 
       {/* Featured Treks Section - Enhanced */}
       {/* Featured Treks Section - Enhanced */}
@@ -130,9 +130,9 @@ const WhyChooseUsSection = () => {
               className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 hover:border-transparent"
             >
               {/* Gradient background on hover */}
-              <div
+              {/* <div
                 className={`absolute inset-0 bg-gradient-to-br ${feature.color} rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              ></div>
+              ></div> */}
 
               <div className="relative z-10">
                 <div className="text-4xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
