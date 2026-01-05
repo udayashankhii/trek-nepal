@@ -197,7 +197,6 @@ export const fetchTrekElevationChart = async (slug) => {
     const response = await axiosInstance.get(`treks/${slug}/elevation-chart/`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching trek elevation chart:", error);
     return null;
   }
 };

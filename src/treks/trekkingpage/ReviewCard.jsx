@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Star } from 'lucide-react';
 
 export default function ReviewCard({
-  // API field names
   reviewer_name,
   reviewer_country,
   reviewer_avatar,
   body,
-  // Backward compatible prop names
   avatar,
   name,
   country,
@@ -16,18 +14,55 @@ export default function ReviewCard({
   rating,
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
-  // Use API fields with fallback to legacy props
-  const displayName = reviewer_name || name || 'Anonymous';
-  const displayCountry = reviewer_country || country;
-  const displayAvatar = reviewer_avatar || avatar || '/default-avatar.png';
-  const displayText = body || text || '';
+  // Memoize computed values to prevent re-creation
+  const displayName = useMemo(() => 
+    reviewer_name || name || 'Anonymous', 
+    [reviewer_name, name]
+  );
+  
+  const displayCountry = useMemo(() => 
+    reviewer_country || country, 
+    [reviewer_country, country]
+  );
+  
+  const displayAvatar = useMemo(() => 
+    reviewer_avatar || avatar || '/default-avatar.png', 
+    [reviewer_avatar, avatar]
+  );
+  
+  const displayText = useMemo(() => 
+    body || text || '', 
+    [body, text]
+  );
 
-  const words = displayText.split(' ');
-  const isLong = words.length > 35;
-  const displayed = expanded
-    ? displayText
-    : words.slice(0, 35).join(' ') + (isLong ? '...' : '');
+  // Memoize word processing
+  const { displayed, isLong } = useMemo(() => {
+    const words = displayText.split(' ');
+    const isLong = words.length > 35;
+    const displayed = expanded
+      ? displayText
+      : words.slice(0, 35).join(' ') + (isLong ? '...' : '');
+    return { displayed, isLong };
+  }, [displayText, expanded]);
+
+  // Memoize star rendering
+  const stars = useMemo(() => 
+    Array.from({ length: rating || 0 }, (_, i) => (
+      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+    )), 
+    [rating]
+  );
+
+  // Fixed error handler - prevents infinite loop
+  const handleImgError = (e) => {
+    if (!imgError && e.target.src !== '/default-avatar.png') {
+      setImgError(true);
+      e.target.onerror = null;
+      e.target.src = '/default-avatar.png';
+    }
+  };
 
   return (
     <div className="bg-sky-50 border border-sky-100 rounded-none p-5 shadow-md">
@@ -36,7 +71,7 @@ export default function ReviewCard({
           src={displayAvatar}
           alt={displayName}
           className="w-16 h-16 rounded-full border-2 border-sky-100 object-cover"
-          onError={(e) => { e.target.src = '/default-avatar.png'; }}
+          onError={handleImgError}
         />
         <div>
           <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
@@ -45,12 +80,7 @@ export default function ReviewCard({
             {displayCountry && <span className="ml-1">— {displayCountry}</span>}
           </p>
           <div className="flex items-center mt-2 space-x-1">
-            {Array.from({ length: rating || 0 }).map((_, i) => (
-              <Star
-                key={i}
-                className="w-5 h-5 text-yellow-400 fill-current"
-              />
-            ))}
+            {stars}
           </div>
         </div>
       </div>
