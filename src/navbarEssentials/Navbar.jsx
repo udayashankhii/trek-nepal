@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -10,23 +11,31 @@ import AboutUsDropdown from "./Dropdown/AboutUsDropdown";
 import Treks from "./Treks";
 import LoginNavbar from "../Profile/Login.Navbar";
 
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [stickyDropdown, setStickyDropdown] = useState(null);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  // Add state for mobile dropdowns
+  const [mobileActiveDropdown, setMobileActiveDropdown] = useState(null);
+  
   const navigate = useNavigate();
   const location = useLocation();
   const containerRef = useRef(null);
+
 
   const isTrekkingSection =
     location.pathname.startsWith("/trekking-in-nepal") ||
     location.pathname.startsWith("/treks/");
 
+
   const isTravelStylesSection =
     location.pathname.startsWith("/travel-styles") ||
     location.pathname.startsWith("/tourindex");
+
 
   const isInfoSection = location.pathname.startsWith("/travel-info/");
   
@@ -35,6 +44,7 @@ export default function Navbar() {
     const shouldRender = isActive || isTransitioning;
     return { isActive, shouldRender };
   };
+
 
   const handleMouseEnter = (dropdownName) => {
     if (hoverTimeout) clearTimeout(hoverTimeout);
@@ -45,6 +55,7 @@ export default function Navbar() {
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
+
   const handleMouseLeave = () => {
     if (stickyDropdown) return;
     setIsTransitioning(true);
@@ -54,6 +65,7 @@ export default function Navbar() {
     }, 150);
     setHoverTimeout(timeout);
   };
+
 
   const handleDropdownClick = (dropdownName) => {
     setIsTransitioning(true);
@@ -67,12 +79,20 @@ export default function Navbar() {
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
+  // Add handler for mobile dropdown toggle
+  const toggleMobileDropdown = (dropdownName) => {
+    setMobileActiveDropdown(prev => prev === dropdownName ? null : dropdownName);
+  };
+
+
   useEffect(() => {
     setActiveDropdown(null);
     setStickyDropdown(null);
     setIsTransitioning(false);
+    setMobileActiveDropdown(null); // Reset mobile dropdown on route change
     if (hoverTimeout) clearTimeout(hoverTimeout);
   }, [location.pathname]);
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -87,10 +107,12 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
   const navItemStyles = (isActive) => `
     relative group flex items-center space-x-1 px-3 py-2 text-sm font-medium transition-all duration-300
     ${isActive ? "text-yellow-600" : "text-gray-700 hover:text-yellow-600"}
   `;
+
 
   return (
     <header
@@ -101,7 +123,7 @@ export default function Navbar() {
       <div className="bg-[#062c5b] text-white text-sm py-2 px-4 flex justify-between items-center">
         <span>
           Free Consultation:
-             <a
+          <a
             href="tel:+9779801000000"
             className="underline hover:text-yellow-100 ml-1"
           >
@@ -119,6 +141,7 @@ export default function Navbar() {
         </div>
       </div>
 
+
       {/* Main Navbar */}
       <nav className="bg-green-50 border-b border-gray-200">
         <div className="flex items-center justify-between py-4 px-4 lg:px-10">
@@ -131,8 +154,9 @@ export default function Navbar() {
             />
           </Link>
 
+
           {/* Desktop Menu */}
-          <div className="hidden lg:flex space-x-3 items-center">
+          <div className="hidden lg:flex space-x-1 items-center">
             {/* TREKKING IN NEPAL */}
             <div
               className="relative dropdown-container"
@@ -156,12 +180,14 @@ export default function Navbar() {
                 />
               </button>
 
+
               {getDropdownVisibility("trekking").shouldRender && (
                 <TrekkingDropdown
                   isOpen={getDropdownVisibility("trekking").isActive}
                 />
               )}
             </div>
+
 
             {/* TOURS IN NEPAL */}
             <div
@@ -183,6 +209,7 @@ export default function Navbar() {
                   }`}
                 />
               </button>
+
 
               {getDropdownVisibility("travelstyles").shouldRender && (
                 <div
@@ -214,6 +241,7 @@ export default function Navbar() {
               )}
             </div>
 
+
             {/* TRAVEL INFO */}
             <div
               className="relative dropdown-container"
@@ -234,12 +262,14 @@ export default function Navbar() {
                 />
               </button>
 
+
               {getDropdownVisibility("info").shouldRender && (
                 <TravelInfoDropdown
                   isOpen={getDropdownVisibility("info").isActive}
                 />
               )}
             </div>
+
 
             {/* BLOG */}
             <Link
@@ -249,6 +279,7 @@ export default function Navbar() {
               BLOG
             </Link>
 
+
             {/* CONTACT */}
             <Link
               to="/contact-us"
@@ -256,6 +287,7 @@ export default function Navbar() {
             >
               CONTACT US
             </Link>
+
 
             {/* ABOUT US */}
             <div
@@ -279,6 +311,7 @@ export default function Navbar() {
                 />
               </button>
 
+
               {getDropdownVisibility("about").shouldRender && (
                 <AboutUsDropdown
                   isOpen={getDropdownVisibility("about").isActive}
@@ -286,9 +319,11 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* LOGIN BUTTON - Added here at the rightmost position */}
+
+            {/* LOGIN BUTTON - Desktop */}
             <LoginNavbar />
           </div>
+
 
           {/* Mobile Toggle */}
           <button
@@ -299,53 +334,170 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+
+        {/* Updated Mobile Menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 shadow">
+          <div className="lg:hidden bg-white border-t border-gray-200 shadow max-h-[80vh] overflow-y-auto">
             <div className="px-4 py-6 space-y-3">
-              <Link
-                to="/trekking-in-nepal"
-                onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
-              >
-                Trekking in Nepal
-              </Link>
-              <Link
-                to="/tourindex"
-                onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
-              >
-                Travel Styles
-              </Link>
-              <Link
-                to="/travel-info/visa-information"
-                onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
-              >
-                Travel Info
-              </Link>
+              
+              {/* TREKKING IN NEPAL - Mobile Accordion */}
+              <div className="border-b border-gray-100 pb-2">
+                <button
+                  onClick={() => toggleMobileDropdown("trekking")}
+                  className="w-full flex items-center justify-between py-2 text-gray-800 font-medium"
+                >
+                  <span>Trekking in Nepal</span>
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform duration-300 ${
+                      mobileActiveDropdown === "trekking" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                
+                {/* Dropdown Content with smooth transition */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    mobileActiveDropdown === "trekking"
+                      ? "max-h-[2000px] opacity-100 mt-3"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-4 pr-2">
+                    <Treks onNavigate={() => {
+                      setMobileOpen(false);
+                      setMobileActiveDropdown(null);
+                    }} />
+                  </div>
+                </div>
+              </div>
+
+
+              {/* TRAVEL STYLES - Mobile Accordion */}
+              <div className="border-b border-gray-100 pb-2">
+                <button
+                  onClick={() => toggleMobileDropdown("travelstyles")}
+                  className="w-full flex items-center justify-between py-2 text-gray-800 font-medium"
+                >
+                  <span>Travel Styles</span>
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform duration-300 ${
+                      mobileActiveDropdown === "travelstyles" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    mobileActiveDropdown === "travelstyles"
+                      ? "max-h-[1000px] opacity-100 mt-3"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-4">
+                    <TravelStylesDropdown
+                      onNavigate={() => {
+                        setMobileOpen(false);
+                        setMobileActiveDropdown(null);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              {/* TRAVEL INFO - Mobile Accordion */}
+              <div className="border-b border-gray-100 pb-2">
+                <button
+                  onClick={() => toggleMobileDropdown("info")}
+                  className="w-full flex items-center justify-between py-2 text-gray-800 font-medium"
+                >
+                  <span>Travel Info</span>
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform duration-300 ${
+                      mobileActiveDropdown === "info" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    mobileActiveDropdown === "info"
+                      ? "max-h-[1000px] opacity-100 mt-3"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-4">
+                    <TravelInfoDropdown
+                      isOpen={true}
+                      onNavigate={() => {
+                        setMobileOpen(false);
+                        setMobileActiveDropdown(null);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              {/* BLOG - Direct Link */}
               <Link
                 to="/blog"
                 onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
+                className="block py-2 text-gray-800 font-medium"
               >
                 Blog
               </Link>
+
+
+              {/* CONTACT US - Direct Link */}
               <Link
                 to="/contact-us"
                 onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
+                className="block py-2 text-gray-800 font-medium"
               >
                 Contact Us
               </Link>
-              <Link
-                to="/about-us"
-                onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-800"
-              >
-                About Us
-              </Link>
-              {/* LOGIN BUTTON - Mobile version */}
+
+
+              {/* ABOUT US - Mobile Accordion */}
+              <div className="border-b border-gray-100 pb-2">
+                <button
+                  onClick={() => toggleMobileDropdown("about")}
+                  className="w-full flex items-center justify-between py-2 text-gray-800 font-medium"
+                >
+                  <span>About Us</span>
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform duration-300 ${
+                      mobileActiveDropdown === "about" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    mobileActiveDropdown === "about"
+                      ? "max-h-[600px] opacity-100 mt-3"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-4">
+                    <AboutUsDropdown
+                      isOpen={true}
+                      onNavigate={() => {
+                        setMobileOpen(false);
+                        setMobileActiveDropdown(null);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              {/* LOGIN BUTTON - Mobile */}
               <div className="pt-2 border-t border-gray-200">
                 <LoginNavbar />
               </div>

@@ -52,10 +52,10 @@ const Footer = () => {
           </h3>
           <ul className="space-y-2">
             <FooterLink to="/">Home</FooterLink>
-            <FooterLink to="/about">About Us</FooterLink>
-            <FooterLink to="/tours">Trekking Packages</FooterLink>
+            <FooterLink to="/about-us">About Us</FooterLink>
+            <FooterLink to="/trekking-in-nepal">Trekking Packages</FooterLink>
             <FooterLink to="/blog">Travel Blog</FooterLink>
-            <FooterLink to="/contact">Contact</FooterLink>
+            <FooterLink to="/contact-us">Contact</FooterLink>
           </ul>
         </div>
 

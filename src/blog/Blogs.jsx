@@ -389,10 +389,10 @@ const BlogPage = ({ currentUser }) => {
   );
 
   // Handle back to blog
-  // const handleBackToBlog = useCallback(() => {
-  //   console.log("⬅️ Going back to blog list");
-  //   navigate("/blog");
-  // }, [navigate]);
+  const handleBackToBlog = useCallback(() => {
+    console.log("⬅️ Going back to blog list");
+    navigate("/blog");
+  }, [navigate]);
 
   // Handle like and bookmark functions
   const handleLike = useCallback(

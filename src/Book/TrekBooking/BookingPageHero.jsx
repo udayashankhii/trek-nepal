@@ -1,10 +1,11 @@
 import React from "react";
-import { Mountain, Clock, Star } from "lucide-react";
+import { Mountain, Clock, Star, MapPin } from "lucide-react";
 
 /**
- * BookingPageHero
- * - expects a normalized `hero` object (see SinglePageBookingForm for normalization)
- * - `trek` is used only for rating/review display
+ * BookingPageHero Component
+ * Displays hero section with trek information from API
+ * @param {Object} hero - Hero data (title, subtitle, imageUrl, duration, difficulty, location)
+ * @param {Object} trek - Trek data (rating, reviews)
  */
 export default function BookingPageHero({ hero, trek }) {
   if (!hero || !trek) return null;
@@ -16,19 +17,24 @@ export default function BookingPageHero({ hero, trek }) {
         src={hero.imageUrl}
         alt={hero.title}
         className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+        onError={(e) => {
+          e.target.src = "/images/default-hero.jpg";
+        }}
       />
       <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">
         <div className="text-white">
           <div className="flex items-center space-x-2 mb-4">
             <Mountain className="w-6 h-6" />
-            <span className="text-sm font-medium">ADVENTURE AWAITS</span>
+            <span className="text-sm font-medium tracking-wider">
+              ADVENTURE AWAITS
+            </span>
           </div>
 
           <h1 className="text-5xl font-bold mb-4">{hero.title}</h1>
 
           {hero.subtitle && <p className="mb-6 text-lg">{hero.subtitle}</p>}
 
-          <div className="flex items-center space-x-6 text-lg">
+          <div className="flex items-center space-x-6 text-lg flex-wrap gap-y-2">
             <div className="flex items-center space-x-2">
               <Clock className="w-5 h-5" />
               <span>{hero.duration}</span>
@@ -48,7 +54,7 @@ export default function BookingPageHero({ hero, trek }) {
 
             {hero.location && (
               <div className="flex items-center space-x-2">
-                <Mountain className="w-5 h-5" />
+                <MapPin className="w-5 h-5" />
                 <span>{hero.location}</span>
               </div>
             )}

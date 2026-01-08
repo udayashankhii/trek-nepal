@@ -143,21 +143,16 @@ const DatesAndPrice = forwardRef(
       }
     };
 
-    const handleCustomizeTrek = () => {
-      const customizeData = {
-        trekName: trekName,
-        trekId: trekId,
-        preferredDates: filteredDepartures.map((d) => ({
-          start: d.start,
-          end: d.end,
-        })),
-      };
-      if (trekId) {
-        navigate(`/customize-trek?trek_id=${trekId}`, { state: customizeData });
-      } else {
-        navigate("/customize-trek", { state: customizeData });
-      }
-    };
+    // Change line where handleCustomizeTrek is defined (around line 125)
+const handleCustomizeTrek = () => {
+  if (trekId) {
+    navigate(`/customize-trek?trek_id=${trekId}`);
+  } else {
+    console.error("Trek ID is missing");
+    alert("Trek information is not available. Please select a trek first.");
+  }
+};
+
 
     // -- MAIN RENDER, always layout, sidebar and action visible! --
     return (

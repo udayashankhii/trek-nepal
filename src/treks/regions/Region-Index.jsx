@@ -5,14 +5,14 @@ import RegionCard from "./Regions-Card";
 
 const regions = [
   {
-    slug: "everest-region",
+    slug: "everest",
     name: "Everest Region Trekking",
     image: "/everest.jpeg",
     itinerariesCount: 22,
     description: "Classic EBC routes with Sherpa villages & stunning icefalls",
   },
   {
-    slug: "annapurna-region",
+    slug: "annapurna",
     name: "Annapurna Region Trekking",
     image: "/annapurna.jpeg",
     itinerariesCount: 24,
@@ -20,14 +20,14 @@ const regions = [
       "Diverse Annapurna Circuit, Poon Hill sunrise & tea-house comfort",
   },
   {
-    slug: "langtang-region",
+    slug: "langtang",
     name: "Langtang Region Trekking",
     image: "/images/langtang-region.jpg",
     itinerariesCount: 7,
     description: "Remote alpine valleys with rich Tamang cultural experiences",
   },
   {
-    slug: "mustang-region",
+    slug: "mustang",
     name: "Upper Mustang",
     image: "/images/mustang-region.jpg",
     itinerariesCount: 5,

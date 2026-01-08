@@ -19,7 +19,7 @@ import ContactUsPage from "./pages/Contact-Us";
 import CostAndDate from "./treks/trekkingpage/Datesandprice";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
-import SinglePageBookingForm from "./Book/TrekBooking/BookingForm.jsx";
+import SinglePageBookingForm from "./Book/TrekBooking/TrekBooking";
 //
 
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
@@ -61,6 +61,7 @@ import LoginForm from "./Profile/Login/LoginForm.jsx";
 import RegisterForm from "./Profile/Login/RegisterForm.jsx";
 import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
+import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -145,7 +146,7 @@ const App = () => (
         <Route path="/treks/langtang" element={<LangtangTrek />} />
         <Route path="/langtang/:slug" element={<TrekDetailPage />} />
         {/* <Route path="/booking" element={<BookingPage />} /> */}
-        {/* <Route path="/customize-trip" element={<CustomizeTripPage />} /> */}
+        <Route path="/customize-trek" element={<CustomizeTrekPage />} />
         
         <Route
           path="/travel-activities/jungle-safari"

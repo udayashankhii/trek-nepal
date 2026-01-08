@@ -1,31 +1,33 @@
-// src/navbarEssentials/TrekkingDropdown.jsx
+
+
+
+
 import React from "react";
 import Treks from "../Treks";
 
-export default function TrekkingDropdown({ isOpen }) {
+export default function TrekkingDropdown({ isOpen, onNavigate }) {
   return (
     <div
-      className={`absolute left-1 bg-white shadow-xl border border-gray-200 rounded-lg z-50 
+      className={`absolute left-1/2 -translate-x-1/2 bg-white shadow-2xl border border-gray-200 rounded-lg z-50 
       transform-gpu will-change-transform transition-all duration-300 ease-in-out ${
-        isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"
+        isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
       }`}
       style={{
-        width: "min(100vw, 1320px)",
-        maxHeight: "100vh",
-        overflowY: "auto",
-        transform: "translateX(-40%)",
+        width: "min(1280px, 95vw)",
+        maxHeight: "80vh",
         marginTop: "0.5rem",
         pointerEvents: isOpen ? "auto" : "none",
       }}
     >
-      <div
+      <div 
         className="p-6 overflow-y-auto"
         style={{
-          maxHeight: "60vh",
+          maxHeight: "calc(80vh - 1rem)",
           scrollbarWidth: "thin",
+          scrollbarColor: "#cbd5e0 #f7fafc",
         }}
       >
-        <Treks />
+        <Treks onNavigate={onNavigate} />
       </div>
     </div>
   );

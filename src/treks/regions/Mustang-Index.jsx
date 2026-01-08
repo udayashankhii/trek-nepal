@@ -2,59 +2,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Loader2, AlertCircle } from "lucide-react";
 import TrekCard from "../TrekCard";
-
-// Sample data for Mustang treks
-const treks = [
-  {
-    id: 1,
-    image: "/mustang1.jpeg",
-    title: "Upper Mustang Cultural Trek",
-    slug: "upper-mustang-cultural-trek",
-    days: 14,
-    price: 2999,
-    reviews: 38,
-    rating: 5,
-    badge: "CULTURAL",
-    location: "Upper Mustang",
-  },
-  {
-    id: 2,
-    image: "/mustang2.jpeg",
-    title: "Lo Manthang and Mustang Royal Trek",
-    slug: "lo-manthang-mustang-royal-trek",
-    days: 16,
-    price: 3199,
-    reviews: 26,
-    rating: 5,
-    badge: "ROYAL",
-    location: "Lo Manthang",
-  },
-  {
-    id: 3,
-    image: "/mustang3.jpeg",
-    title: "Mustang Tiji Festival Trek",
-    slug: "mustang-tiji-festival-trek",
-    days: 12,
-    price: 2799,
-    reviews: 22,
-    rating: 4,
-    badge: "FESTIVAL",
-    location: "Mustang Region",
-  },
-  {
-    id: 4,
-    image: "/mustang4.jpeg",
-    title: "Mustang Beauty and Mystery Trek",
-    slug: "mustang-beauty-mystery-trek",
-    days: 15,
-    price: 2899,
-    reviews: 18,
-    rating: 4,
-    badge: "SCENIC",
-    location: "Mustang Valley",
-  },
-];
+import { useTreksByRegion } from "../../api/useTreksByRegion";
+import { REGIONS } from "../../api/regionService";
 
 // Highlights for Mustang treks
 const highlights = [
@@ -89,10 +40,29 @@ const faqs = [
     q: "Are Mustang treks suitable for beginners?",
     a: "Mustang treks vary from moderate to challenging; prior experience is recommended for remote areas.",
   },
+  {
+    q: "What makes Upper Mustang unique?",
+    a: "Upper Mustang is a restricted area with preserved Tibetan culture, ancient cave dwellings, and the walled city of Lo Manthang.",
+  },
+];
+
+// Testimonials
+const testimonials = [
+  {
+    text: "Upper Mustang felt like stepping back in time. The landscapes and culture are absolutely mesmerizing.",
+    name: "Sophie L.",
+    date: "May 2025",
+  },
+  {
+    text: "An otherworldly experience! The Tiji Festival trek was a perfect blend of adventure and cultural immersion.",
+    name: "Tenzin W.",
+    date: "Mar 2025",
+  },
 ];
 
 export default function MustangTrek() {
   const [activeFAQ, setActiveFAQ] = useState(null);
+  const { treks, loading, error } = useTreksByRegion(REGIONS.MUSTANG);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-100 font-sans">
@@ -124,24 +94,78 @@ export default function MustangTrek() {
         </div>
       </section>
 
-      {/* Trek Cards */}
+      {/* Trek Cards Section */}
       <section className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="text-3xl font-semibold text-gray-900 mb-8">
-          Explore Our Treks
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {treks.map((trek) => (
-            <TrekCard
-              key={trek.id}
-              trek={trek}
-              region="mustang"
-              whileHover={{ scale: 1.02 }}
-            />
-          ))}
+        <div className="mb-8">
+          <h2 className="text-3xl font-semibold text-gray-900">
+            Explore Our Mustang Treks
+          </h2>
+          <p className="text-gray-600 mt-2">
+            Journey through the forbidden kingdom of Lo and experience ancient Tibetan culture.
+          </p>
         </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <div className="text-center">
+              <Loader2 className="h-10 w-10 animate-spin text-red-500 mx-auto mb-3" />
+              <p className="text-gray-600">Loading Mustang treks...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {!loading && error && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <div className="text-center max-w-md">
+              <AlertCircle className="h-10 w-10 text-red-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Unable to load treks
+              </h3>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              >
+                Try again
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && !error && treks.length === 0 && (
+          <div className="flex justify-center items-center min-h-[240px]">
+            <div className="text-center">
+              <p className="text-gray-600 mb-4">
+                No Mustang treks found. Please check back later.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-block px-6 py-2.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              >
+                Contact Us for Custom Treks
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Trek Grid */}
+        {!loading && !error && treks.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {treks.map((trek) => (
+              <TrekCard
+                key={trek.slug || trek.id}
+                trek={trek}
+                region="mustang"
+              />
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Highlights */}
+      {/* Highlights Section */}
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="text-3xl font-semibold text-center text-gray-800 mb-10">
@@ -157,7 +181,9 @@ export default function MustangTrek() {
                 className="flex flex-col items-center text-center p-6 bg-gradient-to-br from-red-50 to-red-200 rounded-xl shadow-lg"
               >
                 <img src={h.icon} alt={h.title} className="w-12 h-12 mb-4" />
-                <h4 className="text-xl font-medium mb-2 text-gray-900">{h.title}</h4>
+                <h4 className="text-xl font-medium mb-2 text-gray-900">
+                  {h.title}
+                </h4>
                 <p className="text-gray-600">{h.desc}</p>
               </motion.div>
             ))}
@@ -165,20 +191,75 @@ export default function MustangTrek() {
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* Special Feature: Lo Manthang Highlight */}
+      <section className="bg-gradient-to-r from-red-50 to-orange-50 py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                The Walled City of Lo Manthang
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Experience the former Buddhist kingdom of Lo, preserved in time within ancient walls. 
+                Explore royal palaces, monasteries dating back to the 15th century, and witness 
+                traditional Tibetan Buddhist rituals.
+              </p>
+              <p className="text-gray-700">
+                Upper Mustang remained closed to outsiders until 1992, making it one of the 
+                most preserved regions of Tibetan culture in the world.
+              </p>
+            </div>
+            <div className="relative h-64 md:h-full min-h-[300px]">
+              <img
+                src="/lo-manthang.jpg"
+                alt="Lo Manthang"
+                className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-xl"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h3 className="text-3xl font-semibold text-gray-800 text-center mb-12">
+            What Our Trekkers Say
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 }}
+                className="bg-red-50 p-8 rounded-xl shadow"
+              >
+                <p className="italic text-gray-700 mb-4">"{t.text}"</p>
+                <h4 className="font-medium text-gray-900">{t.name}</h4>
+                <span className="text-sm text-gray-500">{t.date}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <h3 className="text-3xl font-semibold text-gray-900 text-center mb-8">
-          FAQs
+          Frequently Asked Questions
         </h3>
         <div className="space-y-4">
           {faqs.map((f, idx) => (
             <div key={idx} className="border-b">
               <button
                 onClick={() => setActiveFAQ(idx === activeFAQ ? null : idx)}
-                className="w-full flex justify-between items-center py-4 text-left text-gray-800"
+                className="w-full flex justify-between items-center py-4 text-left text-gray-800 hover:text-red-600 transition-colors"
               >
-                <span>{f.q}</span>
-                <span className="text-2xl">{idx === activeFAQ ? "−" : "+"}</span>
+                <span className="font-medium">{f.q}</span>
+                <span className="text-2xl text-red-600">
+                  {idx === activeFAQ ? "−" : "+"}
+                </span>
               </button>
               {idx === activeFAQ && (
                 <p className="pb-4 text-gray-600">{f.a}</p>
@@ -195,7 +276,8 @@ export default function MustangTrek() {
             Ready to Discover Mustang?
           </h3>
           <p className="text-gray-600 mb-8">
-            Contact our trekking specialists to customize your Mustang adventure.
+            Contact our trekking specialists to customize your Mustang adventure and 
+            explore the last forbidden kingdom.
           </p>
           <Link
             to="/contact"

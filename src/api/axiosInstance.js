@@ -5,15 +5,29 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 8000,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    return Promise.reject(
-      error.response ? error.response.data : new Error("Network Error")
-    );
+    // Enhanced error handling for production
+    if (error.response) {
+      // Server responded with error status
+      const message = 
+        error.response.data?.message || 
+        error.response.data?.detail || 
+        `Server error: ${error.response.status}`;
+      return Promise.reject(new Error(message));
+    } else if (error.request) {
+      // Request made but no response
+      return Promise.reject(
+        new Error("No response from server. Please check your connection.")
+      );
+    } else {
+      // Something else happened
+      return Promise.reject(new Error(error.message || "Network Error"));
+    }
   }
 );
 
