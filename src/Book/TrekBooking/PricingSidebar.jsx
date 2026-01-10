@@ -1,19 +1,22 @@
-// src/components/PricingSidebar.jsx
+// src/pages/BookingPage/PricingSidebar.jsx
 import React from "react";
-import { Star, CheckCircle, Shield } from "lucide-react";
+import { Star, CheckCircle, Shield, Loader2, AlertTriangle } from "lucide-react";
 
 /**
- * Booking Sidebar with Price Breakdown and Trek Highlights
+ * ✅ COMPLETE: Booking Sidebar with Real Price Breakdown and Trek Highlights
  */
 export default function PricingSidebar({
   trek,
   travellers,
+  basePrice,
   baseTotal,
   totalPrice,
   initialPayment,
   dueAmount,
   formatCurrency,
   highlights = [],
+  quoteLoading = false,
+  quoteError = null,
 }) {
   const trekName = trek?.name || trek?.title || "Trek Booking";
   const rating = trek?.rating ?? "N/A";
@@ -36,11 +39,14 @@ export default function PricingSidebar({
           {/* Price Breakdown */}
           <PriceBreakdown
             travellers={travellers}
+            basePrice={basePrice}
             baseTotal={baseTotal}
             totalPrice={totalPrice}
             initialPayment={initialPayment}
             dueAmount={dueAmount}
             formatCurrency={formatCurrency}
+            quoteLoading={quoteLoading}
+            quoteError={quoteError}
           />
 
           {/* Trek Highlights */}
@@ -62,38 +68,88 @@ export default function PricingSidebar({
  */
 function PriceBreakdown({
   travellers,
+  basePrice,
   baseTotal,
   totalPrice,
   initialPayment,
   dueAmount,
   formatCurrency,
+  quoteLoading,
+  quoteError,
 }) {
   return (
     <div>
       <h3 className="text-lg font-bold text-gray-900 mb-4">Price Breakdown</h3>
+
+      {/* Loading State */}
+      {quoteLoading && (
+        <div className="bg-blue-50 rounded-lg p-3 mb-3 border border-blue-200">
+          <p className="text-xs text-blue-700 flex items-center">
+            <Loader2 className="w-3 h-3 animate-spin mr-2" />
+            Calculating live pricing...
+          </p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {quoteError && !quoteLoading && (
+        <div className="bg-amber-50 rounded-lg p-3 mb-3 border border-amber-200">
+          <p className="text-xs text-amber-700 flex items-center">
+            <AlertTriangle className="w-3 h-3 mr-2" />
+            Using estimated pricing. Live quote unavailable.
+          </p>
+        </div>
+      )}
+
       <div className="space-y-3 text-sm">
-        <div className="flex justify-between">
-          <span>Base price × {travellers}</span>
-          <span>{formatCurrency(baseTotal)}</span>
+        {/* Base Price Per Person */}
+        {basePrice > 0 && (
+          <div className="flex justify-between text-gray-600 text-xs pb-2 border-b border-gray-100">
+            <span>Price per person</span>
+            <span className="font-medium">{formatCurrency(basePrice)}</span>
+          </div>
+        )}
+
+        {/* Base Total (Price × Travellers) */}
+        <div className="flex justify-between text-gray-700">
+          <span>
+            Base price × {travellers} {travellers === 1 ? "person" : "people"}
+          </span>
+          <span className="font-medium">{formatCurrency(baseTotal)}</span>
         </div>
 
         <hr className="border-gray-200" />
 
-        <div className="flex justify-between font-semibold text-lg">
+        {/* Total Amount */}
+        <div className="flex justify-between font-semibold text-lg pt-1">
           <span>Total</span>
-          <span>{formatCurrency(totalPrice)}</span>
+          <span className="text-indigo-600">{formatCurrency(totalPrice)}</span>
         </div>
 
-        <div className="bg-green-50 rounded-lg p-3 border border-green-200">
-          <div className="flex justify-between text-green-800 font-medium">
+        {/* Payment Breakdown (20% down, 80% balance) */}
+        <div className="bg-green-50 rounded-lg p-4 border border-green-200 mt-3">
+          <div className="flex justify-between text-green-800 font-semibold mb-2">
             <span>Pay now (20%)</span>
-            <span>{formatCurrency(initialPayment)}</span>
+            <span className="text-lg">{formatCurrency(initialPayment)}</span>
           </div>
-          <div className="flex justify-between text-green-600 text-sm mt-1">
+          <div className="flex justify-between text-green-600 text-sm">
             <span>Balance due</span>
-            <span>{formatCurrency(dueAmount)}</span>
+            <span className="font-medium">{formatCurrency(dueAmount)}</span>
           </div>
+          <p className="text-xs text-green-700 mt-2 pt-2 border-t border-green-200">
+            Balance payable before trek departure
+          </p>
         </div>
+
+        {/* Zero Price Warning */}
+        {totalPrice === 0 && !quoteLoading && (
+          <div className="bg-red-50 rounded-lg p-3 border border-red-200 mt-2">
+            <p className="text-xs text-red-700 flex items-center">
+              <AlertTriangle className="w-3 h-3 mr-2" />
+              Pricing data unavailable. Please contact support.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -107,19 +163,27 @@ function TrekHighlights({ highlights }) {
     <div>
       <h4 className="font-semibold text-gray-900 mb-3">Trek Highlights</h4>
       <ul className="space-y-2 text-sm text-gray-600">
-        {highlights.map((highlight, index) => {
+        {highlights.slice(0, 5).map((highlight, index) => {
           const title =
             typeof highlight === "string"
               ? highlight
-              : highlight.title ?? highlight.name ?? "";
+              : highlight.title ?? highlight.name ?? highlight.description ?? "";
+
+          if (!title) return null;
+
           return (
             <li key={index} className="flex items-start space-x-2">
               <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-              <span>{title}</span>
+              <span className="leading-tight">{title}</span>
             </li>
           );
         })}
       </ul>
+      {highlights.length > 5 && (
+        <p className="text-xs text-gray-500 mt-2">
+          +{highlights.length - 5} more highlights
+        </p>
+      )}
     </div>
   );
 }
@@ -132,11 +196,22 @@ function PaymentMethods() {
     <div>
       <h4 className="font-semibold text-gray-900 mb-3">We Accept</h4>
       <div className="flex items-center space-x-3 flex-wrap gap-2">
-        <img src="/visa.png" alt="Visa" className="h-8" />
-        <img src="/mastercard.png" alt="Mastercard" className="h-8" />
-        <img src="/stripe.png" alt="Stripe" className="h-8" />
-        <img src="/paypal.png" alt="PayPal" className="h-8" />
+        <div className="bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium text-gray-700">
+          Visa
+        </div>
+        <div className="bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium text-gray-700">
+          Mastercard
+        </div>
+        <div className="bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium text-gray-700">
+          Khalti
+        </div>
+        <div className="bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium text-gray-700">
+          PayPal
+        </div>
       </div>
+      <p className="text-xs text-gray-500 mt-3">
+        Secure payment processing via Stripe & Khalti
+      </p>
     </div>
   );
 }
@@ -146,10 +221,13 @@ function PaymentMethods() {
  */
 function SecurityBadge() {
   return (
-    <div className="bg-gray-50 rounded-lg p-3 text-center">
+    <div className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
       <Shield className="w-6 h-6 text-green-500 mx-auto mb-2" />
+      <p className="text-xs text-gray-700 font-medium mb-1">
+        Secure Booking Guarantee
+      </p>
       <p className="text-xs text-gray-600">
-        Secure booking with 256-bit SSL encryption
+        256-bit SSL encryption • PCI DSS compliant
       </p>
     </div>
   );

@@ -210,18 +210,26 @@ export function TravellerCounter({ travellers, setTravellers }) {
 /**
  * Submit Button with Validation States
  */
-export function SubmitButton({ formValid, text = "Complete Booking & Pay Now" }) {
+export function SubmitButton({ 
+  formValid, 
+  submitting = false,
+  text = "Complete Booking & Pay Now" 
+}) {
   return (
     <button
       type="submit"
-      disabled={!formValid}
+      disabled={!formValid || submitting}
       className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all ${
-        formValid
+        formValid && !submitting
           ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           : "bg-gray-300 text-gray-500 cursor-not-allowed"
       }`}
     >
-      {formValid ? text : "Please Complete Required Fields"}
+      {submitting
+        ? "Creating Booking..."
+        : formValid
+        ? text
+        : "Please Complete Required Fields"}
     </button>
   );
 }

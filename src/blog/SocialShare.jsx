@@ -31,7 +31,14 @@ const WhatsAppIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
-const SocialShareSidebar = ({ isOpen, onClose, url, title, description }) => {
+const SocialShareSidebar = ({
+  isOpen,
+  onClose,
+  url,
+  title,
+  description,
+  shareLinks,
+}) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = useCallback(async () => {
@@ -44,16 +51,25 @@ const SocialShareSidebar = ({ isOpen, onClose, url, title, description }) => {
     }
   }, [url]);
 
-  const shareLinks = {
+  const defaultShareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`
+    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      title
+    )}&url=${encodeURIComponent(url)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+      url
+    )}`,
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
   };
 
+  const resolvedShareLinks =
+    shareLinks && typeof shareLinks === "object" && Object.keys(shareLinks).length
+      ? shareLinks
+      : defaultShareLinks;
+
   const handleShare = useCallback((platform) => {
-    window.open(shareLinks[platform], '_blank', 'width=600,height=400');
-  }, [shareLinks]);
+    window.open(resolvedShareLinks[platform], "_blank", "width=600,height=400");
+  }, [resolvedShareLinks]);
 
   if (!isOpen) return null;
 

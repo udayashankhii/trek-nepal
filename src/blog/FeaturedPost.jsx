@@ -55,6 +55,20 @@ const FeaturedPost = ({
   const handleShare = useCallback(async (e) => {
     e.stopPropagation();
     
+
+    const shareUrl = `${window.location.origin}/blog/${post.slug || post.id}`;
+    const shareLinks =
+      post.shareLinks && typeof post.shareLinks === "object"
+        ? post.shareLinks
+        : null;
+
+    if (shareLinks?.facebook) {
+      window.open(shareLinks.facebook, "_blank", "width=600,height=400");
+      return;
+    }
+
+
+
     if (navigator.share) {
       try {
         await navigator.share({

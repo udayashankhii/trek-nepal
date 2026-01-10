@@ -1,61 +1,96 @@
-import { useState, useEffect } from "react";
-import { fetchTrekBookingData } from "../api/trekService";
+// src/hooks/useTrekBooking.js
+import { useEffect, useState, useRef, useCallback } from "react";
+import { getBookingQuote } from "../api/bookingServices";
+import { fetchTrekBookingData } from "../api/trekService.js";
 
-/**
- * Custom hook to fetch and manage trek booking data
- * @param {string} trekId - Trek slug/ID
- * @returns {Object} { loading, error, data }
- */
-export function useTrekBooking(trekId) {
-  const [state, setState] = useState({
-    loading: true,
-    error: null,
-    data: null,
-  });
+export function useTrekBooking(trekSlug, partySize = 1) {
+  const [data, setData] = useState(null);
+  const [quote, setQuote] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [quoteError, setQuoteError] = useState(null);
 
+  const hasFetchedDataRef = useRef(false);
+  const hasFetchedQuoteRef = useRef(false);
+  const abortControllerRef = useRef(null);
+
+  // ✅ Fetch trek booking data
   useEffect(() => {
-    let isMounted = true;
+    if (!trekSlug || hasFetchedDataRef.current) return;
+    hasFetchedDataRef.current = true;
 
-    async function loadTrekData() {
-      if (!trekId) {
-        setState({
-          loading: false,
-          error: "No trek ID provided",
-          data: null,
-        });
-        return;
+    abortControllerRef.current = new AbortController();
+    const { signal } = abortControllerRef.current;
+
+    setLoading(true);
+    setError(null);
+
+    fetchTrekBookingData(trekSlug, { signal })
+      .then((result) => {
+        if (!signal.aborted) {
+          setData(result);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!signal.aborted) {
+          console.error("Trek booking data error:", err);
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, [trekSlug]);
+
+  // ✅ Fetch quote separately (optional, non-blocking)
+  const fetchQuote = useCallback(async () => {
+    if (!trekSlug || hasFetchedQuoteRef.current) return;
+    hasFetchedQuoteRef.current = true;
+
+    const quoteController = new AbortController();
+    
+    try {
+      setQuoteLoading(true);
+      setQuoteError(null);
+
+      const quoteData = await getBookingQuote(
+        { trekSlug, partySize },
+        true,
+        { signal: quoteController.signal }
+      );
+
+      if (!quoteController.signal.aborted) {
+        setQuote(quoteData);
+        setQuoteLoading(false);
       }
-
-      setState((prev) => ({ ...prev, loading: true, error: null }));
-
-      try {
-        const data = await fetchTrekBookingData(trekId);
-
-        if (isMounted) {
-          setState({
-            loading: false,
-            error: null,
-            data,
-          });
-        }
-      } catch (err) {
-        if (isMounted) {
-          setState({
-            loading: false,
-            error: err.message || "Failed to load trek data",
-            data: null,
-          });
-        }
+    } catch (err) {
+      if (!quoteController.signal.aborted) {
+        // ✅ Don't log as error - quote is optional
+        console.info("ℹ️ Quote unavailable (using base pricing):", err.message);
+        setQuoteError(err.message);
+        setQuoteLoading(false);
       }
     }
 
-    loadTrekData();
+    return () => quoteController.abort();
+  }, [trekSlug, partySize]);
 
-    // Cleanup function to prevent state updates on unmounted component
-    return () => {
-      isMounted = false;
-    };
-  }, [trekId]);
+  useEffect(() => {
+    if (data && trekSlug) {
+      fetchQuote();
+    }
+  }, [data, trekSlug, fetchQuote]);
 
-  return state;
+  return {
+    data,
+    quote,
+    loading,
+    quoteLoading,
+    error,
+    quoteError,
+  };
 }

@@ -1,11 +1,15 @@
 
 
 // src/pages/TrekDetailPage.jsx
-import { fetchTrekElevationChart } from "../api/trekService.js";
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchTrek, fetchSimilarTreks, fetchTrekReviews, fetchTrekBookingCard } from "../api/trekService.js";
+import { 
+  fetchTrek, 
+  fetchSimilarTreks, 
+  fetchTrekReviews, 
+  fetchTrekBookingCard,
+  fetchTrekElevationChart 
+} from "../api/trekService.js";
 
 import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
 import HeroSection from "./trekkingpage/Hero.jsx";
@@ -56,34 +60,48 @@ export default function TrekDetailPage() {
 
   useEffect(() => {
     const loadTrekData = async () => {
+      if (!slug) {
+        setError("Trek not found");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         setError(null);
 
-        const trekData = await fetchTrek(slug);
-        const elevationChartData = await fetchTrekElevationChart(slug);
-        const similar = await fetchSimilarTreks(slug, 3);
-        const reviewsData = await fetchTrekReviews(slug);
-        const bookingCard = await fetchTrekBookingCard(slug);
+        // Parallel API calls for better performance
+        const [trekData, elevationChartData, similar, reviewsData, bookingCard] = 
+          await Promise.all([
+            fetchTrek(slug),
+            fetchTrekElevationChart(slug),
+            fetchSimilarTreks(slug, 3),
+            fetchTrekReviews(slug),
+            fetchTrekBookingCard(slug),
+          ]);
 
         setTrek({ ...trekData, elevation_chart: elevationChartData });
         setSimilarTreks(similar);
         setTrekReviews(reviewsData?.results || []);
         setBookingCardData(bookingCard);
       } catch (err) {
+        console.error("Failed to load trek data:", err);
         setError(err.message || "Failed to load trek details");
       } finally {
         setLoading(false);
       }
     };
 
-    if (slug) loadTrekData();
+    loadTrekData();
   }, [slug]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading trek details...</p>
+        </div>
       </div>
     );
   }
@@ -127,21 +145,16 @@ export default function TrekDetailPage() {
     rating = 4.8,
     reviews = [],
     hero,
-    overview_sections,
     itinerary,
     highlights: trekHighlights = [],
     cost,
     booking_card: bookingCard,
     gallery,
-    additional_info_articles,
-    additional_info_bullets,
     similar,
   } = flat;
-  //
 
   const keyInfoData = {
     duration: duration || trek.trek?.duration,
-    //  Prioritize hero.difficulty (user-facing) → trek.trip_grade (technical)
     difficulty: hero.difficulty || flat.trek_grade || flat.tripGrade || "Moderate",
     startPoint: startPoint || flat.start_point || trek.trek?.start_point,
     groupSize: groupSize || flat.group_size || trek.trek?.group_size,
@@ -176,40 +189,49 @@ export default function TrekDetailPage() {
     size: gp.max_size || gp.size || 1,
   }));
 
-  // Highlights used by DatesAndPrice API (optional)
   const dateHighlights = (costDateApi.highlights || [])
     .map((h) => h.highlight)
     .filter(Boolean);
 
   const infoSections = trek.additional_info || [];
 
+  // Updated to use trek_slug consistently
   const handleBookNow = () =>
-    navigate(`/trek-booking?trek_id=${flat.public_id}`);
+    navigate(`/trek-booking?trek_slug=${slug}`);
+    
   const scrollToDates = () =>
-    datesRef.current?.scrollIntoView({ behavior: "smooth" });
+    datesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    
   const scrollToMap = () =>
-    mapRef.current?.scrollIntoView({ behavior: "smooth" });
+    mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    
   const scrollToReviews = () =>
-    reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
+    reviewsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const fallbackElevationData = [
     {
       day: 1,
-      title: "Sample Start",
-      elevation: 1000,
-      description: "Start point of the trek",
+      title: "Trek Start",
+      elevation: 1400,
+      description: "Beginning of your adventure",
     },
     {
       day: 2,
-      title: "Sample Mid",
-      elevation: 2000,
-      description: "Mid point",
+      title: "Mid Trek",
+      elevation: 2800,
+      description: "Ascending through beautiful landscapes",
     },
     {
       day: 3,
-      title: "Sample End",
-      elevation: 1500,
-      description: "End point",
+      title: "High Point",
+      elevation: 4200,
+      description: "Reaching the highest elevation",
+    },
+    {
+      day: 4,
+      title: "Trek End",
+      elevation: 1400,
+      description: "Descending back to starting point",
     },
   ];
 
@@ -227,9 +249,9 @@ export default function TrekDetailPage() {
         imageUrl={hero.imageUrl || flat.card_image_url || "/fallback.jpg"}
         season={hero.season}
         duration={hero.duration || duration}
-        difficulty={hero.difficulty}
-        location={hero.location}
-        ctaLabel={hero.cta_label}
+        difficulty={hero.difficulty || keyInfoData.difficulty}
+        location={hero.location || region}
+        ctaLabel={hero.cta_label || "Book Now"}
         onBookNow={hero.cta_link ? () => navigate(hero.cta_link) : handleBookNow}
         onInquiry={() => navigate(`/contact-us`)}
       />
@@ -246,7 +268,7 @@ export default function TrekDetailPage() {
           />
 
           {flat.overview && (
-            <section className="py-10 bg-white rounded-lg shadow-sm">
+            <section className="bg-white rounded-lg shadow-sm">
               <TrekOverview overview={flat.overview} />
             </section>
           )}
@@ -258,31 +280,31 @@ export default function TrekDetailPage() {
           <CostInclusions
             inclusions={cost.inclusions}
             exclusions={cost.exclusions}
-            title="Cost Details"
-            inclusionsTitle="Includes"
-            exclusionsTitle="Excludes"
+            title="What's Included & Excluded"
+            inclusionsTitle="Included"
+            exclusionsTitle="Not Included"
           />
 
-          <Itinerary itinerary={flat.itinerary} />
+          <Itinerary itinerary={itinerary} />
 
           <FAQSection faqCategories={trek.faq_categories || []} />
         </div>
 
-        {/* Right Column */}
-        <aside className="w-full lg:w-96">
-          <StickyBox offsetTop={200} offsetBottom={20}>
+        {/* Right Column - Sticky Booking Card */}
+        <aside className="w-70 lg:w-96">
+          <StickyBox offsetTop={170} offsetBottom={20}>
             <BookingCard
-              trekId={flat.public_id}
+              trekSlug={slug}
               trekName={trekName}
               basePrice={parseFloat(bookingCardData?.base_price || bookingCard.base_price) || 0}
               original={parseFloat(bookingCardData?.original_price || bookingCard.original_price) || 0}
               groups={bookingCardData?.group_prices || groupPrices}
               badgeLabel={bookingCardData?.badge_label || bookingCard.badge_label}
-              securePayment={bookingCardData?.secure_payment ?? bookingCard.secure_payment}
-              noHiddenFees={bookingCardData?.no_hidden_fees ?? bookingCard.no_hidden_fees}
-              freeCancellation={bookingCardData?.free_cancellation ?? bookingCard.free_cancellation}
-              support247={bookingCardData?.support_24_7 ?? bookingCard.support_24_7}
-              trustedReviews={bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews}
+              securePayment={bookingCardData?.secure_payment ?? bookingCard.secure_payment ?? true}
+              noHiddenFees={bookingCardData?.no_hidden_fees ?? bookingCard.no_hidden_fees ?? true}
+              freeCancellation={bookingCardData?.free_cancellation ?? bookingCard.free_cancellation ?? false}
+              support247={bookingCardData?.support_24_7 ?? bookingCard.support_24_7 ?? true}
+              trustedReviews={bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews ?? true}
               onCheckAvailability={scrollToDates}
               onBookNow={handleBookNow}
             />
@@ -291,74 +313,85 @@ export default function TrekDetailPage() {
       </div>
 
       {/* Additional Info */}
-      <TrekAddInfo sections={infoSections} />
+      {infoSections.length > 0 && (
+        <div className="bg-white py-8">
+          <TrekAddInfo sections={infoSections} />
+        </div>
+      )}
 
       {/* Gallery */}
+      {gallery && gallery.length > 0 && (
+        <div className="py-8 bg-gray-100">
+          <TrekGallery
+            images={gallery}
+            trekName={trekName}
+            showTitle
+            minImages={1}
+          />
+        </div>
+      )}
+
+      {/* Elevation Chart */}
       <div className="py-8">
-        <TrekGallery
-          images={gallery}
+        <ElevationChart
+          elevationData={
+            hasElevationData ? trek.elevation_chart.points : fallbackElevationData
+          }
+          title={
+            hasElevationData
+              ? trek.elevation_chart.title
+              : `${trekName} - Elevation Profile`
+          }
+          subtitle={
+            hasElevationData
+              ? trek.elevation_chart.subtitle
+              : "Visual representation of trek elevation changes"
+          }
           trekName={trekName}
-          showTitle
-          minImages={1}
+          showFullscreen
         />
       </div>
 
-      {/* Elevation Chart */}
-      <ElevationChart
-        elevationData={
-          hasElevationData ? trek.elevation_chart.points : fallbackElevationData
-        }
-        title={
-          hasElevationData
-            ? trek.elevation_chart.title
-            : "Elevation Chart Sample"
-        }
-        subtitle={
-          hasElevationData
-            ? trek.elevation_chart.subtitle
-            : "Sample chart in absence of real data"
-        }
-        trekName={trekName}
-        showFullscreen
-      />
-
       {/* Dates & Pricing */}
-      <div className="py-8" ref={datesRef}>
+      <div className="py-8 bg-white" ref={datesRef}>
         <DatesAndPrice
           dates={departures}
           groupPrices={groupPrices}
           highlights={dateHighlights}
           trekName={trekName}
-          trekId={flat.public_id}
+          trekId={slug}
           onBookDate={(date) =>
             navigate(
-              `/trek-booking?trek_id=${flat.public_id}&date=${date.start}`
+              `/trek-booking?trek_slug=${slug}&date=${date.start}`
             )
           }
         />
       </div>
 
       {/* Trek Actions (Map / PDF) */}
-      <div className="py-4" ref={mapRef}>
+      <div className="py-8 bg-gray-100" ref={mapRef}>
         <TrekActions
-          trekId={flat.public_id}
+          trekId={flat.public_id || slug}
           pdfUrl={trek.pdfUrl}
           onViewMap={toggleMapView}
         />
 
-        {showMap && (
-          <div className="py-4 flex justify-center">
-            <img
-              src={trek.mapImage}
-              alt={`Map for ${trekName}`}
-              className="max-w-full rounded-lg shadow-md"
-            />
+        {showMap && trek.mapImage && (
+          <div className="py-6 flex justify-center">
+            <div className="max-w-4xl w-full">
+              <img
+                src={trek.mapImage}
+                alt={`${trekName} Route Map`}
+                className="w-full rounded-lg shadow-lg"
+                loading="lazy"
+              />
+            </div>
           </div>
         )}
       </div>
 
       {/* Reviews */}
-      <div className="py-8 bg-gray-100" ref={reviewsRef}>
+      <div className="py-8 bg-white" ref={reviewsRef}>
         <ReviewsSlider
           reviews={trekReviews.length > 0 ? trekReviews : reviews}
           trekName={trekName}
@@ -370,17 +403,19 @@ export default function TrekDetailPage() {
       </div>
 
       {/* Similar Treks */}
-      <div className="py-8">
-        <SimilarTreks
-          treks={similarTreks.length > 0 ? similarTreks : similar}
-          title="Similar Treks You Might Like"
-          subtitle={`Discover more amazing treks in ${region}`}
-          exploreLink="/treks"
-          currentTrekId={flat.public_id}
-          maxItems={3}
-          showHeader
-        />
-      </div>
+      {(similarTreks.length > 0 || similar.length > 0) && (
+        <div className="py-8 bg-gray-50">
+          <SimilarTreks
+            treks={similarTreks.length > 0 ? similarTreks : similar}
+            title="Similar Treks You Might Like"
+            subtitle={`Discover more amazing treks ${region ? `in ${region}` : ''}`}
+            exploreLink="/treks"
+            currentTrekId={flat.public_id || slug}
+            maxItems={3}
+            showHeader
+          />
+        </div>
+      )}
     </div>
   );
 }

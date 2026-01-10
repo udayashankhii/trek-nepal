@@ -1,55 +1,158 @@
 // src/api/trekService.js
 import axiosInstance from "./axiosInstance";
 
+// ============================================
+// IN-MEMORY CACHE CONFIGURATION
+// ============================================
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+const getCacheKey = (endpoint, params = {}) => 
+  `${endpoint}_${JSON.stringify(params)}`;
 
-const convertToSlug = async (trekId) => {
-  // Check if it's already a slug (has letters, not just UUID format)
-  if (trekId.includes("-") && trekId.length > 35) {
-    // It's a UUID, need to convert
-    const response = await axiosInstance.get("treks/");
-    const treks = response.data.results || response.data;
-    const trek = treks.find(t => t.public_id === trekId);
-    if (!trek) throw new Error("Trek not found");
-    return trek.slug;
+const getFromCache = (key) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
   }
-  // Already a slug
-  return trekId;
+  cache.delete(key);
+  return null;
+};
+
+const setCache = (key, data) => {
+  cache.set(key, { data, timestamp: Date.now() });
+};
+
+export const clearTrekCache = () => cache.clear();
+
+// ============================================
+// REQUEST DEDUPLICATION
+// ============================================
+const pendingRequests = new Map();
+
+const dedupedRequest = async (key, requestFn) => {
+  if (pendingRequests.has(key)) {
+    return pendingRequests.get(key);
+  }
+  const promise = requestFn().finally(() => pendingRequests.delete(key));
+  pendingRequests.set(key, promise);
+  return promise;
 };
 
 // ============================================
 // MAIN TREK DATA FETCHERS
 // ============================================
 
-// Fetch all treks
-export const fetchAllTreks = async () => {
+export const fetchAllTreks = async (filters = {}, useCache = true) => {
+  const cacheKey = getCacheKey("treksall", filters);
+
+  if (useCache) {
+    const cached = getFromCache(cacheKey);
+    if (cached) return cached;
+  }
+
+  return dedupedRequest(cacheKey, async () => {
+    try {
+      const cleanFilters = filters && typeof filters === 'object' && !Array.isArray(filters)
+        ? { ...filters }
+        : {};
+
+      const response = await axiosInstance.get("/treks/", { 
+        params: Object.keys(cleanFilters).length > 0 ? cleanFilters : undefined 
+      });
+      const data = response.data;
+
+      let treks = [];
+
+      if (Array.isArray(data)) {
+        treks = data;
+      } else if (data && typeof data === 'object') {
+        if (Array.isArray(data.results)) {
+          treks = data.results;
+        } else if (Array.isArray(data.data)) {
+          treks = data.data;
+        } else if (Array.isArray(data.treks)) {
+          treks = data.treks;
+        }
+      }
+
+      setCache(cacheKey, treks);
+      return treks;
+    } catch (error) {
+      console.error("Error fetching all treks:", error);
+      return [];
+    }
+  });
+};
+
+export const fetchTrek = async (trekSlug, useCache = true) => {
+  const cacheKey = getCacheKey("trek_detail", { slug: trekSlug });
+
+  if (useCache) {
+    const cached = getFromCache(cacheKey);
+    if (cached) return cached;
+  }
+
+  return dedupedRequest(cacheKey, async () => {
+    try {
+      const response = await axiosInstance.get(`treks/${trekSlug}/detail/`);
+      const data = response.data;
+      
+      console.log("✅ fetchTrek response:", data);
+      
+      setCache(cacheKey, data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching trek:", error);
+      throw error;
+    }
+  });
+};
+
+export const fetchPopularTreks = async (limit = 6, useCache = true) => {
+  const cacheKey = getCacheKey("treks_popular", { limit });
+
+  if (useCache) {
+    const cached = getFromCache(cacheKey);
+    if (cached) return cached;
+  }
+
   try {
-    const response = await axiosInstance.get("treks/");
-    const data = response.data;
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data.results)) return data.results;
-    if (Array.isArray(data.data)) return data.data;
-    console.warn("Unexpected trek API response format:", data);
-    return [];
+    const response = await axiosInstance.get("treks/popular/", {
+      params: { limit },
+    });
+    const data = response.data.results || response.data;
+    setCache(cacheKey, data);
+    return data;
   } catch (error) {
-    console.error("Error fetching all treks:", error);
+    console.error("Error fetching popular treks:", error);
     return [];
   }
 };
 
-// Fetch single trek by slug - USES YOUR ACTUAL ENDPOINT
-export const fetchTrek = async (trekSlug) => {
+export const fetchTrendingTreks = async (limit = 6, useCache = true) => {
+  const cacheKey = getCacheKey("treks_trending", { limit });
+
+  if (useCache) {
+    const cached = getFromCache(cacheKey);
+    if (cached) return cached;
+  }
+
   try {
-    const response = await axiosInstance.get(`treks/${trekSlug}/detail/`);
-    return response.data;
+    const response = await axiosInstance.get("treks/trending/", {
+      params: { limit },
+    });
+    const data = response.data.results || response.data;
+    setCache(cacheKey, data);
+    return data;
   } catch (error) {
-    console.error("Error fetching trek:", error);
-    throw error;
+    console.error("Error fetching trending treks:", error);
+    return [];
   }
 };
 
 // ============================================
-// SECTION-SPECIFIC FETCHERS (YOUR ACTUAL ENDPOINTS)
+// SECTION-SPECIFIC FETCHERS
 // ============================================
 
 export const fetchTrekKeyInfo = async (trekSlug) => {
@@ -122,9 +225,11 @@ export const fetchTrekCostDates = async (trekSlug) => {
   }
 };
 
-export const fetchTrekReviews = async (trekSlug) => {
+export const fetchTrekReviews = async (trekSlug, page = 1, pageSize = 10) => {
   try {
-    const response = await axiosInstance.get(`treks/${trekSlug}/reviews/`);
+    const response = await axiosInstance.get(`treks/${trekSlug}/reviews/`, {
+      params: { page, page_size: pageSize },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching trek reviews:", error);
@@ -135,9 +240,10 @@ export const fetchTrekReviews = async (trekSlug) => {
 export const fetchTrekBookingCard = async (trekSlug) => {
   try {
     const response = await axiosInstance.get(`treks/${trekSlug}/booking-card/`);
+    console.log("✅ fetchTrekBookingCard response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching trek booking card:", error);
+    console.warn("Error fetching trek booking card:", error.message);
     return null;
   }
 };
@@ -157,8 +263,27 @@ export const fetchTrekHero = async (trekSlug) => {
     const response = await axiosInstance.get(`treks/${trekSlug}/hero/`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching trek hero:", error);
-    return null;
+    console.warn(`Hero endpoint not available for ${trekSlug}, using trek data fallback`);
+
+    try {
+      const trekData = await fetchTrek(trekSlug);
+      if (!trekData) throw new Error("Trek data not available");
+
+      const flat = { ...trekData, ...(trekData.trek || {}) };
+
+      return {
+        title: flat.title || flat.name || "Trek",
+        subtitle: flat.subtitle || flat.short_description || "",
+        imageUrl: flat.cover_image || flat.card_image_url || "/images/default-hero.jpg",
+        duration: flat.duration || "N/A",
+        difficulty: flat.trip_grade || flat.difficulty || "Moderate",
+        location: flat.region || flat.location || "",
+        season: flat.best_season || "",
+      };
+    } catch (fallbackError) {
+      console.error("Failed to create hero fallback:", fallbackError);
+      throw new Error("Unable to load trek information");
+    }
   }
 };
 
@@ -182,11 +307,42 @@ export const fetchTrekAdditionalInfo = async (trekSlug) => {
   }
 };
 
+export const fetchTrekMap = async (trekSlug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${trekSlug}/map/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek map:", error);
+    return null;
+  }
+};
+
+export const fetchTrekWeather = async (trekSlug, month = null) => {
+  try {
+    const params = month ? { month } : {};
+    const response = await axiosInstance.get(`treks/${trekSlug}/weather/`, { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek weather:", error);
+    return null;
+  }
+};
+
+export const fetchTrekFAQs = async (trekSlug) => {
+  try {
+    const response = await axiosInstance.get(`treks/${trekSlug}/faqs/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching trek FAQs:", error);
+    return [];
+  }
+};
+
 export const fetchSimilarTreks = async (trekSlug, limit = 3) => {
   try {
-    const response = await axiosInstance.get(
-      `treks/${trekSlug}/similar/?limit=${limit}`
-    );
+    const response = await axiosInstance.get(`treks/${trekSlug}/similar/`, {
+      params: { limit },
+    });
     const data = response.data;
     return Array.isArray(data) ? data : data.results || [];
   } catch (error) {
@@ -201,106 +357,111 @@ export const searchTreks = async (query = "", filters = {}) => {
     const response = await axiosInstance.get("treks/search/", { params });
     const data = response.data;
     return Array.isArray(data) ? data : data.results || [];
-  } catch (err) {
-    console.error("Error searching treks:", err);
+  } catch (error) {
+    console.error("Error searching treks:", error);
     return [];
   }
 };
 
 // ============================================
-// BOOKING-SPECIFIC FETCHER (USES REAL ENDPOINTS)
+// OPTIMIZED COMPOSITE FETCHERS
 // ============================================
 
 /**
- * ✅ PRODUCTION READY: Fetch trek data for booking page
- * Uses YOUR ACTUAL backend endpoints
- * @param {string} trekSlug - Trek slug (e.g., "everest-base-camp-trek")
- * @returns {Promise<Object>} Normalized booking data
+ * ✅ Fetch trek booking data - SINGLE VERSION ONLY
  */
-export const fetchTrekBookingData = async (trekId) => {
+export const fetchTrekBookingData = async (trekSlug) => {
   try {
-    // Convert UUID to slug
-    const slug = await convertToSlug(trekId);
-    
-    // Fetch data using slug
-    const [detail, highlights, hero, bookingCard] = await Promise.all([
-      axiosInstance.get(`treks/${slug}/detail/`).catch(() => null),
-      axiosInstance.get(`treks/${slug}/highlights/`).catch(() => []),
-      axiosInstance.get(`treks/${slug}/hero/`).catch(() => null),
-      axiosInstance.get(`treks/${slug}/booking-card/`).catch(() => null),
+    console.log("🔄 Fetching Trek Booking Data");
+    console.log("Trek Slug:", trekSlug);
+
+    const [trekResult, bookingCardResult, highlightsResult] = await Promise.allSettled([
+      fetchTrek(trekSlug),
+      fetchTrekBookingCard(trekSlug),
+      fetchTrekHighlights(trekSlug),
     ]);
 
-    const trek = detail?.data?.trek || detail?.data || {};
-    const heroData = hero?.data || {};
-    const booking = bookingCard?.data || {};
-    const highlightsList = highlights?.data || [];
+    const trek = trekResult.status === "fulfilled" ? trekResult.value : null;
+    const bookingCardData = bookingCardResult.status === "fulfilled" ? bookingCardResult.value : null;
+    const highlights = highlightsResult.status === "fulfilled" ? highlightsResult.value : [];
+
+    console.log("Trek Data:", trek);
+    console.log("Booking Card:", bookingCardData);
+
+    if (!trek) {
+      throw new Error("Trek not found");
+    }
+
+    const flat = { ...trek, ...(trek.trek || {}) };
+    const heroData = trek.hero || flat.hero || {};
+
+    const hero = {
+      title: heroData.title || flat.title || flat.name || "Trek",
+      subtitle: heroData.subtitle || flat.subtitle || flat.short_description || "",
+      imageUrl: heroData.imageUrl || heroData.image_url || flat.card_image_url || flat.cover_image || "/images/default-hero.jpg",
+      duration: heroData.duration || flat.duration || "N/A",
+      difficulty: heroData.difficulty || flat.trek_grade || flat.trip_grade || flat.difficulty || "Moderate",
+      location: heroData.location || flat.region_name || flat.region || "",
+      season: heroData.season || flat.best_season || "",
+    };
+
+    const trekInfo = {
+      id: flat.id || flat.trek_id || trek.id,
+      slug: flat.slug || trekSlug,
+      name: flat.title || flat.name,
+      title: flat.title || flat.name,
+      rating: flat.rating || bookingCardData?.rating || 4.8,
+      reviews: flat.reviews_count || bookingCardData?.reviews_count || 0,
+      base_price: bookingCardData?.base_price || flat.base_price || trek.base_price || flat.price || "1000",
+      price: flat.price || bookingCardData?.base_price || flat.base_price || "1000",
+      currency: bookingCardData?.currency || flat.currency || "USD",
+      duration: flat.duration,
+      difficulty: flat.trek_grade || flat.trip_grade || flat.difficulty,
+      region: flat.region_name || flat.region,
+      booking_card: bookingCardData,
+    };
+
+    console.log("✅ Returning result:", { hero, trek: trekInfo, highlights, bookingCard: bookingCardData });
 
     return {
-      hero: {
-        title: heroData.title || trek.title || "Unknown Trek",
-        subtitle: heroData.subtitle || `Experience ${trek.region_name || ""}`,
-        imageUrl: heroData.imageUrl || trek.card_image_url || "",
-        duration: heroData.duration || trek.duration || "N/A",
-        difficulty: heroData.difficulty || trek.trip_grade || "Moderate",
-        location: heroData.location || trek.region_name || "",
-      },
-      trek: {
-        id: trek.public_id || trek.id,
-        slug: slug,
-        name: trek.title,
-        title: trek.title,
-        rating: trek.rating || 0,
-        reviews: trek.reviews || 0,
-        base_price: booking.base_price || 0,
-        currency: booking.currency || "USD",
-      },
-      highlights: highlightsList,
-      booking: booking,
+      hero,
+      trek: trekInfo,
+      highlights: Array.isArray(highlights) ? highlights : [],
+      bookingCard: bookingCardData,
     };
   } catch (error) {
-    console.error("Error:", error);
+    console.error("❌ Error fetching trek booking data:", error);
     throw error;
   }
 };
 
-// ============================================
-// COMPOSITE FETCHER (ALL DATA AT ONCE)
-// ============================================
-
 export const fetchCompleteTrekData = async (trekSlug) => {
   try {
-    const [
-      detail,
-      overview,
-      highlights,
-      itinerary,
-      costs,
-      actions,
-      costDates,
-      similar,
-      hero,
-    ] = await Promise.allSettled([
+    const criticalData = await Promise.allSettled([
       fetchTrek(trekSlug),
+      fetchTrekHero(trekSlug),
       fetchTrekOverview(trekSlug),
+    ]);
+
+    const additionalData = await Promise.allSettled([
       fetchTrekHighlights(trekSlug),
       fetchTrekItinerary(trekSlug),
       fetchTrekCosts(trekSlug),
       fetchTrekActions(trekSlug),
       fetchTrekCostDates(trekSlug),
       fetchSimilarTreks(trekSlug, 3),
-      fetchTrekHero(trekSlug),
     ]);
 
     return {
-      detail: detail.status === "fulfilled" ? detail.value : null,
-      overview: overview.status === "fulfilled" ? overview.value : null,
-      highlights: highlights.status === "fulfilled" ? highlights.value : [],
-      itinerary: itinerary.status === "fulfilled" ? itinerary.value : [],
-      costs: costs.status === "fulfilled" ? costs.value : { inclusions: [], exclusions: [] },
-      actions: actions.status === "fulfilled" ? actions.value : null,
-      costDates: costDates.status === "fulfilled" ? costDates.value : [],
-      similar: similar.status === "fulfilled" ? similar.value : [],
-      hero: hero.status === "fulfilled" ? hero.value : null,
+      detail: criticalData[0].status === "fulfilled" ? criticalData[0].value : null,
+      hero: criticalData[1].status === "fulfilled" ? criticalData[1].value : null,
+      overview: criticalData[2].status === "fulfilled" ? criticalData[2].value : null,
+      highlights: additionalData[0].status === "fulfilled" ? additionalData[0].value : [],
+      itinerary: additionalData[1].status === "fulfilled" ? additionalData[1].value : [],
+      costs: additionalData[2].status === "fulfilled" ? additionalData[2].value : { inclusions: [], exclusions: [] },
+      actions: additionalData[3].status === "fulfilled" ? additionalData[3].value : null,
+      costDates: additionalData[4].status === "fulfilled" ? additionalData[4].value : [],
+      similar: additionalData[5].status === "fulfilled" ? additionalData[5].value : [],
     };
   } catch (error) {
     console.error("Error fetching complete trek data:", error);
@@ -308,58 +469,27 @@ export const fetchCompleteTrekData = async (trekSlug) => {
   }
 };
 
-// ============================================
-// BOOKING INTENT API (FOR ACTUAL BOOKING SUBMISSION)
-// ============================================
-
-/**
- * Create booking intent
- * @param {Object} bookingData - Booking form data
- * @returns {Promise<Object>} Booking intent response
- */
-export const createBookingIntent = async (trekSlug, bookingData) => {
+export const fetchTrekFilters = async () => {
   try {
-    const response = await axiosInstance.post(
-      `treks/${trekSlug}/booking-intents/`,
-      bookingData
-    );
+    const response = await axiosInstance.get("treks/filters/");
     return response.data;
   } catch (error) {
-    console.error("Error creating booking intent:", error);
-    throw error;
+    console.error("Error fetching trek filters:", error);
+    return {
+      regions: [],
+      difficulties: [],
+      durations: [],
+      price_ranges: [],
+    };
   }
 };
 
-/**
- * Get booking intent details
- * @param {string} bookingId - Booking intent UUID
- * @returns {Promise<Object>} Booking intent details
- */
-export const getBookingIntent = async (bookingId) => {
+export const fetchTrekStats = async (trekSlug) => {
   try {
-    const response = await axiosInstance.get(`booking-intents/${bookingId}/`);
+    const response = await axiosInstance.get(`treks/${trekSlug}/stats/`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching booking intent:", error);
-    throw error;
-  }
-};
-
-/**
- * Update booking intent
- * @param {string} bookingId - Booking intent UUID
- * @param {Object} updateData - Data to update
- * @returns {Promise<Object>} Updated booking intent
- */
-export const updateBookingIntent = async (bookingId, updateData) => {
-  try {
-    const response = await axiosInstance.patch(
-      `booking-intents/${bookingId}/update/`,
-      updateData
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error updating booking intent:", error);
-    throw error;
+    console.error("Error fetching trek stats:", error);
+    return null;
   }
 };

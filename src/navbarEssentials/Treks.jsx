@@ -2,7 +2,7 @@
 
 // Treks.jsx
 import React, { useEffect, useState } from "react";
-import { fetchAllTreks } from "../api/regionService";
+import { fetchAllTreks } from "../api/trekService";
 import { Link } from "react-router-dom";
 
 const STATIC_REGIONS = [

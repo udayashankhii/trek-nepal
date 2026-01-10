@@ -13,7 +13,7 @@ export default function TrekkingDropdown({ isOpen, onNavigate }) {
         isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
       }`}
       style={{
-        width: "min(1280px, 95vw)",
+        width: "min(1440px, 75vw)",
         maxHeight: "80vh",
         marginTop: "0.5rem",
         pointerEvents: isOpen ? "auto" : "none",

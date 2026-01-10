@@ -137,7 +137,7 @@ const DatesAndPrice = forwardRef(
         trekId: trekId,
       };
       if (trekId) {
-        navigate(`/trek-booking?trek_id=${trekId}`, { state: bookingData });
+    navigate(`/trek-booking?trek_slug=${trekId}`, { state: bookingData });
       } else {
         navigate("/trek-booking", { state: bookingData });
       }

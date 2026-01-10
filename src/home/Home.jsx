@@ -69,7 +69,6 @@ export default function Home() {
 
       {/* Additional Enhanced Sections */}
       <WhyChooseUsSection />
-      <TestimonialsSection />
       <CallToActionSection />
     </>
   );
@@ -78,7 +77,7 @@ export default function Home() {
 const WhyChooseUsSection = () => {
   const features = [
     {
-      icon: "🏔️",
+      icon: "",
       title: "Expert Local Guides",
       description:
         "Our certified Sherpa guides have decades of mountain experience and intimate knowledge of every trail.",
@@ -153,85 +152,6 @@ const WhyChooseUsSection = () => {
   );
 };
 
-const TestimonialsSection = () => {
-  const testimonials = [
-    {
-      name: "Sarah Mitchell",
-      location: "California, USA",
-      text: "The Everest Base Camp trek exceeded all my expectations. The guides were incredible, and the experience was truly life-changing.",
-      rating: 5,
-      image: "🇺🇸",
-    },
-    {
-      name: "James Thompson",
-      location: "London, UK",
-      text: "Professional service from start to finish. The Annapurna Circuit was perfectly organized and absolutely breathtaking.",
-      rating: 5,
-      image: "🇬🇧",
-    },
-    {
-      name: "Maria Rodriguez",
-      location: "Barcelona, Spain",
-      text: "An adventure of a lifetime! The team's expertise and care made me feel safe throughout the entire Langtang trek.",
-      rating: 5,
-      image: "🇪🇸",
-    },
-  ];
-
-  return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Stories from the{" "}
-            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-              Summit
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Hear from adventurers who've experienced the magic of the Himalayas
-            with us
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100"
-            >
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl mr-4">
-                  {testimonial.image}
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-gray-900">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    {testimonial.location}
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                "{testimonial.text}"
-              </p>
-
-              <div className="flex text-amber-400">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-xl">
-                    ★
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const CallToActionSection = () => {
   return (

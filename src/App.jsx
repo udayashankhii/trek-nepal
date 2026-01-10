@@ -5,7 +5,8 @@ import {
   Routes,
   Route,
   Outlet,
-  Navigate, // ← added
+  Navigate,
+  useLocation, // ← added
 } from "react-router-dom";
 import Home from "./home/Home";
 
@@ -21,6 +22,7 @@ import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
 import SinglePageBookingForm from "./Book/TrekBooking/TrekBooking";
 //
+import ForgotPassword from "./Profile/Login/ForgetPassword"
 
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 // import TrekMap from "./treks/trekkingpage/TrekMap";
@@ -62,6 +64,8 @@ import RegisterForm from "./Profile/Login/RegisterForm.jsx";
 import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
 import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
+import PaymentPage from "./Book/PaymentPage";
+import { getAccessToken } from "./api/auth.api";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -77,6 +81,16 @@ const Layout = () => (
   </>
 );
 
+const RequireAuth = ({ children }) => {
+  const location = useLocation();
+  const token = getAccessToken(); // ✅ SAME SOURCE
+
+  if (!token) {
+    const next = encodeURIComponent(`${location.pathname}${location.search}`);
+    return <Navigate to={`/login?next=${next}`} replace />;
+  }
+  return children;
+};
 const App = () => (
   <Router>
     <ScrollToTop />
@@ -170,9 +184,24 @@ const App = () => (
         <Route path="/about-us/*" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/customize-trip" element={<CustomizeTripPage />} />
-        <Route path="/trek-booking" element={<SinglePageBookingForm/>} />
         <Route path="/trek-overview" element={<TrekOverview />} />
 
+         <Route
+          path="/trek-booking"
+          element={
+            <RequireAuth>
+              <SinglePageBookingForm />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <RequireAuth>
+              <PaymentPage />
+            </RequireAuth>
+          }
+        />
 
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about-us" element={<OverviewPage />} />
@@ -216,6 +245,7 @@ const App = () => (
       <Route path="/login" element={<LoginForm modal />} />
         <Route path="/register" element={<RegisterForm modal />} />
          <Route path="/verify-otp" element={<VerifyOtp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
 
 
       </Route>

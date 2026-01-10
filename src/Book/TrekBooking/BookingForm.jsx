@@ -19,7 +19,7 @@ import {
 } from "./FormComponents.jsx";
 
 /**
- * Form Header Component
+ * ✅ FIXED: Form Header Component - No more "book undefined"
  */
 export function FormHeader({
   title = "Book Your Adventure",
@@ -62,7 +62,7 @@ export function TripDetailsSection({
           value={endDate}
           readOnly
           Icon={Calendar}
-          helperText={`Automatically calculated (${duration})`}
+          helperText={`Automatically calculated (${duration || "N/A"})`}
         />
       </div>
 
@@ -301,7 +301,12 @@ export function TravelTimesSection({
 /**
  * Terms and Submit Section
  */
-export function TermsAndSubmitSection({ accepted, setAccepted, formValid }) {
+export function TermsAndSubmitSection({
+  accepted,
+  setAccepted,
+  formValid,
+  submitting = false,
+}) {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -337,7 +342,7 @@ export function TermsAndSubmitSection({ accepted, setAccepted, formValid }) {
         </label>
       </div>
 
-      <SubmitButton formValid={formValid} />
+      <SubmitButton formValid={formValid} submitting={submitting} />
     </div>
   );
 }

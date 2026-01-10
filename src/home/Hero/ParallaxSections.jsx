@@ -115,98 +115,10 @@ const StatsSection = () => {
   );
 };
 
-const TestimonialsSection = () => {
-  const [ref, isVisible] = useIntersectionObserver();
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      location: "New York, USA",
-      text: "The Everest Base Camp trek was life-changing. The guides were incredible and the views were beyond words.",
-      rating: 5,
-      image: "/testimonial1.jpg"
-    },
-    {
-      name: "Marco Rodriguez",
-      location: "Madrid, Spain", 
-      text: "Professional service, amazing experience. The Annapurna Circuit exceeded all my expectations.",
-      rating: 5,
-      image: "/testimonial2.jpg"
-    },
-    {
-      name: "Yuki Tanaka",
-      location: "Tokyo, Japan",
-      text: "Perfect organization and unforgettable memories. The Langtang Valley trek was absolutely stunning.",
-      rating: 5,
-      image: "/testimonial3.jpg"
-    }
-  ];
-
-  return (
-    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-blue-900 to-indigo-900">
-      <ParallaxLayer speed={-0.2} className="absolute inset-0">
-        <div className="w-full h-full bg-[url('/mountain-silhouette.svg')] bg-cover bg-center opacity-10" />
-      </ParallaxLayer>
-
-      <div ref={ref} className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className={`text-4xl md:text-5xl font-bold text-white mb-6 transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            Stories from the Trail
-          </h2>
-          <p className={`text-xl text-white/80 max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            Hear from adventurers who've experienced the magic of the Himalayas with us
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className={`bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20
-                         hover:bg-white/20 transition-all duration-700 transform hover:scale-105
-                         hover:shadow-xl hover:shadow-amber-500/20 ${
-                           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                         }`}
-              style={{ 
-                transitionDelay: `${index * 0.2}s` 
-              }}
-            >
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-xl mr-4">
-                  {testimonial.name.charAt(0)}
-                </div>
-                <div>
-                  <h4 className="text-white font-semibold text-lg">{testimonial.name}</h4>
-                  <p className="text-white/60 text-sm">{testimonial.location}</p>
-                </div>
-              </div>
-              
-              <p className="text-white/90 text-lg leading-relaxed mb-6">
-                "{testimonial.text}"
-              </p>
-              
-              <div className="flex text-amber-400">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-xl">★</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function ParallaxSections() {
   return (
     <>
       <StatsSection />
-      <TestimonialsSection />
     </>
   );
 }

@@ -1,4 +1,4 @@
-// hooks/useTreksByRegion.js
+// api/useTreksByRegion.js
 import { useState, useEffect } from "react";
 import { fetchTreksByRegion } from "../api/regionService";
 

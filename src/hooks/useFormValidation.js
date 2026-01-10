@@ -1,37 +1,52 @@
 // src/hooks/useFormValidation.js
 import { useMemo } from "react";
 
-/**
- * Custom hook for form validation with memoized results
- */
 export function useFormValidation(lead, startDate, travellers, accepted) {
+  // Email validation with useMemo
   const emailValid = useMemo(() => {
-    if (!lead.email) return false;
-    return /^\S+@\S+\.\S+$/.test(lead.email);
-  }, [lead.email]);
+    return /^\S+@\S+\.\S+$/.test(lead?.email || "");
+  }, [lead?.email]);
 
+  // Phone validation with useMemo
   const phoneValid = useMemo(() => {
-    if (!lead.phone) return false;
-    return /^\+\d{1,3}\s?\d{4,14}$/.test(lead.phone);
-  }, [lead.phone]);
+    return /^\+?\d{10,15}$/.test((lead?.phone || "").replace(/[\s()-]/g, ""));
+  }, [lead?.phone]);
 
+  const showEmailError = lead?.email && !emailValid;
+  const showPhoneError = lead?.phone && !phoneValid;
+
+  // Form validation with all dependencies
   const formValid = useMemo(() => {
-    return (
+    const isValid = (
       startDate &&
       travellers > 0 &&
-      lead.firstName.trim() &&
-      lead.lastName.trim() &&
+      lead?.firstName?.trim() &&
+      lead?.lastName?.trim() &&
       emailValid &&
       phoneValid &&
       accepted
     );
-  }, [startDate, travellers, lead.firstName, lead.lastName, emailValid, phoneValid, accepted]);
+
+    // Debug log - remove after fixing
+    console.log("🔍 Form Validation:", {
+      startDate: !!startDate,
+      travellers: travellers > 0,
+      firstName: !!lead?.firstName?.trim(),
+      lastName: !!lead?.lastName?.trim(),
+      emailValid,
+      phoneValid,
+      accepted,
+      OVERALL: isValid
+    });
+
+    return isValid;
+  }, [startDate, travellers, lead?.firstName, lead?.lastName, emailValid, phoneValid, accepted]);
 
   return {
     emailValid,
     phoneValid,
+    showEmailError,
+    showPhoneError,
     formValid,
-    showEmailError: lead.email && !emailValid,
-    showPhoneError: lead.phone && !phoneValid,
   };
 }

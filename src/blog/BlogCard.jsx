@@ -1,11 +1,10 @@
-
-
 import React, { useState, useCallback } from 'react';
 import { 
   ClockIcon, 
   MapPinIcon, 
   CalendarIcon,
   ArrowRightIcon,
+  ShareIcon,
   HeartIcon,
   BookmarkIcon,
   EyeIcon
@@ -25,6 +24,7 @@ const BlogCard = ({
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked || false);
   const [likeCount, setLikeCount] = useState(post.likes || 0);
+  const [shareCopied, setShareCopied] = useState(false);
 
   const handleImageLoad = useCallback(() => {
     setImageLoaded(true);
@@ -74,6 +74,40 @@ const BlogCard = ({
     }
   }, [isBookmarked, currentUser, onBookmark, post.id]);
 
+  const handleShare = useCallback((e) => {
+    e.stopPropagation();
+
+    const shareUrl = `${window.location.origin}/blog/${post.slug || post.id}`;
+    const shareLinks =
+      post.shareLinks && typeof post.shareLinks === "object"
+        ? post.shareLinks
+        : null;
+
+    if (shareLinks?.facebook) {
+      window.open(shareLinks.facebook, "_blank", "width=600,height=400");
+      return;
+    }
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: post.title,
+          text: post.metaDescription || post.description,
+          url: shareUrl,
+        })
+        .catch(() => {});
+      return;
+    }
+
+    navigator.clipboard
+      .writeText(shareUrl)
+      .then(() => {
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2000);
+      })
+      .catch(() => {});
+  }, [post]);
+
   const formatDate = (dateString) => {
     if (!dateString) return 'Recently';
     const date = new Date(dateString);
@@ -89,11 +123,19 @@ const BlogCard = ({
 
   return (
     <article
-      className="group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white rounded-2xl overflow-hidden border border-gray-100"
+      className="group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white rounded-2xl overflow-hidden border border-gray-100 relative"
       data-aos="fade-up"
       data-aos-delay={index * 100}
       onClick={handleCardClick}
     >
+      {/* Share Copied Notification */}
+      {shareCopied && (
+        <div className="absolute top-4 right-4 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg z-10">
+          Link copied!
+        </div>
+      )}
+
+      {/* Image Section */}
       <div className="relative overflow-hidden rounded-2xl mb-4 aspect-[16/10]">
         {!imageLoaded && (
           <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
@@ -118,6 +160,7 @@ const BlogCard = ({
           </div>
         )}
 
+        {/* Category Badge */}
         <div className="absolute top-4 left-4">
           <span className="px-3 py-1 text-xs font-semibold text-white bg-white/20 backdrop-blur-md rounded-full border border-white/30 shadow-lg">
             {post.category}
@@ -137,8 +180,10 @@ const BlogCard = ({
           </div>
         )}
 
+        {/* Hover Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
+        {/* Arrow Icon on Hover */}
         <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
           <div className="p-2 bg-white/20 backdrop-blur-md rounded-full">
             <ArrowRightIcon className="w-4 h-4 text-white" />
@@ -146,7 +191,9 @@ const BlogCard = ({
         </div>
       </div>
 
+      {/* Content Section */}
       <div className="p-4 space-y-3">
+        {/* Metadata Row */}
         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
           <div className="flex items-center gap-1 hover:text-orange-500 transition-colors">
             <CalendarIcon className="w-3 h-3" />
@@ -180,14 +227,17 @@ const BlogCard = ({
           )}
         </div>
 
+        {/* Title */}
         <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2 leading-tight">
           {post.title}
         </h3>
 
+        {/* Description */}
         <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-700 transition-colors duration-300">
           {post.metaDescription || post.description}
         </p>
 
+        {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
             {post.tags.slice(0, 3).map((tag, tagIndex) => (
@@ -206,7 +256,9 @@ const BlogCard = ({
           </div>
         )}
 
+        {/* Action Bar - CORRECTED STRUCTURE */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          {/* Left Side - Like, Bookmark, Trek Info */}
           <div className="flex items-center gap-3">
             {currentUser && (
               <>
@@ -245,8 +297,19 @@ const BlogCard = ({
             </div>
           </div>
 
-          <div className="text-xs text-gray-400 group-hover:text-orange-500 transition-colors duration-300">
-            Read more →
+          {/* Right Side - Share & Read More */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleShare}
+              className="text-xs text-gray-500 hover:text-blue-500 transition-colors"
+              aria-label="Share post"
+            >
+              <ShareIcon className="w-4 h-4" />
+            </button>
+
+            <div className="text-xs text-gray-400 group-hover:text-orange-500 transition-colors duration-300">
+              Read more →
+            </div>
           </div>
         </div>
       </div>
