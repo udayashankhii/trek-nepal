@@ -1,0 +1,13 @@
+{% extends "accounts/email/base.html" %}
+{% block content %}
+<div style="font-size:18px;font-weight:700;margin-bottom:8px;">Login alert</div>
+<div style="font-size:14px;color:#475569;margin-bottom:16px;">
+  We noticed a login to your {{ site_name }} account.
+</div>
+<div style="font-size:13px;color:#64748b;margin-bottom:16px;">
+  Time: {{ event_time }}
+</div>
+<div style="font-size:13px;color:#64748b;">
+  If this wasn’t you, reset your password immediately.
+</div>
+{% endblock %}

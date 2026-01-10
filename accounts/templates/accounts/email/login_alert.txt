@@ -1,0 +1,6 @@
+Login alert
+
+We noticed a login to your {{ site_name }} account.
+Time: {{ event_time }}
+
+If this wasn’t you, reset your password immediately.

@@ -1,0 +1,10 @@
+Booking Confirmed
+
+Thanks, {{ booking.lead_name }}! Your booking is confirmed.
+Booking Ref: {{ booking.booking_ref }}
+Trek: {{ booking.trek.title }}
+Dates: {{ booking.start_date }} → {{ booking.end_date }}
+Party Size: {{ booking.party_size }}
+Total: {{ booking.currency }} {{ booking.total_amount }}
+
+View your booking: {{ frontend_url }}

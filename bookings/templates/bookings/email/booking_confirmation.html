@@ -1,0 +1,22 @@
+{% extends "accounts/email/base.html" %}
+{% block content %}
+<div style="font-size:18px;font-weight:700;margin-bottom:8px;">Booking Confirmed</div>
+<div style="font-size:14px;color:#475569;margin-bottom:16px;">
+  Thanks, {{ booking.lead_name }}! Your booking is confirmed.
+</div>
+<div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin:16px 0;">
+  <div style="font-size:13px;color:#64748b;margin-bottom:6px;">Booking Ref</div>
+  <div style="font-size:18px;font-weight:700;">{{ booking.booking_ref }}</div>
+</div>
+<div style="font-size:14px;color:#475569;line-height:1.6;">
+  <div><strong>Trek:</strong> {{ booking.trek.title }}</div>
+  <div><strong>Dates:</strong> {{ booking.start_date }} → {{ booking.end_date }}</div>
+  <div><strong>Party Size:</strong> {{ booking.party_size }}</div>
+  <div><strong>Total:</strong> {{ booking.currency }} {{ booking.total_amount }}</div>
+</div>
+<div style="margin:24px 0;text-align:center;">
+  <a href="{{ frontend_url }}" style="display:inline-block;background:{{ brand_color }};color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:8px;font-weight:600;">
+    View Your Booking
+  </a>
+</div>
+{% endblock %}

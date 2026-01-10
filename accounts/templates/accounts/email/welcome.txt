@@ -1,0 +1,7 @@
+Welcome, {{ username }}!
+
+Your {{ site_name }} account is active. You can now explore treks and manage your bookings.
+
+Visit: {{ frontend_url }}
+
+If this wasn’t you, please reset your password immediately.

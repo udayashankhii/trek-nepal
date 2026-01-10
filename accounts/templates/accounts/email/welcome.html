@@ -1,0 +1,15 @@
+{% extends "accounts/email/base.html" %}
+{% block content %}
+<div style="font-size:18px;font-weight:700;margin-bottom:8px;">Welcome, {{ username }}!</div>
+<div style="font-size:14px;color:#475569;margin-bottom:16px;">
+  Your account is active. You can now explore treks, save favorites, and manage your bookings.
+</div>
+<div style="margin:24px 0;text-align:center;">
+  <a href="{{ frontend_url }}" style="display:inline-block;background:{{ brand_color }};color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:8px;font-weight:600;">
+    Go to {{ site_name }}
+  </a>
+</div>
+<div style="font-size:13px;color:#64748b;">
+  If this wasn’t you, please reset your password right away.
+</div>
+{% endblock %}
