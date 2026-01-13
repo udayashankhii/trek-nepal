@@ -98,7 +98,6 @@ export const fetchTrek = async (trekSlug, useCache = true) => {
       const response = await axiosInstance.get(`treks/${trekSlug}/detail/`);
       const data = response.data;
       
-      console.log("✅ fetchTrek response:", data);
       
       setCache(cacheKey, data);
       return data;
@@ -240,8 +239,7 @@ export const fetchTrekReviews = async (trekSlug, page = 1, pageSize = 10) => {
 export const fetchTrekBookingCard = async (trekSlug) => {
   try {
     const response = await axiosInstance.get(`treks/${trekSlug}/booking-card/`);
-    console.log("✅ fetchTrekBookingCard response:", response.data);
-    return response.data;
+    return null;
   } catch (error) {
     console.warn("Error fetching trek booking card:", error.message);
     return null;

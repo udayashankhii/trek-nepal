@@ -66,6 +66,7 @@ import DataPreloader from "./PreLoader/Loader.jsx";
 import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
 import PaymentPage from "./Book/PaymentPage";
 import { getAccessToken } from "./api/auth.api";
+import Profile from "./Profile/Profile";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -246,6 +247,8 @@ const App = () => (
         <Route path="/register" element={<RegisterForm modal />} />
          <Route path="/verify-otp" element={<VerifyOtp />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/profile" element={<Profile />} />
+
 
 
       </Route>

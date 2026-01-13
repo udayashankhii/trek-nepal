@@ -14,11 +14,11 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
         {/* Brand */}
         <div>
-          <h2 className="text-2xl font-extrabold text-yellow-400 mb-4">
-            EverTrek <span className="text-white">Nepal</span>
+          <h2 className="text-2xl font-extrabold text-black-400 mb-4">
+            EverTrek <span className="text-blue">Nepal</span>
           </h2>
           <p>
-            Trusted by thousands of trekkers since 2010 for immersive Himalayan
+            Trusted by thousands of trekkers since 2025 for immersive Himalayan
             experiences.
           </p>
           <div className="flex space-x-4 mt-4">

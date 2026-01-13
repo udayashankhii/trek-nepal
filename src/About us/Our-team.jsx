@@ -382,7 +382,7 @@ const AboutUsPage = () => {
           </h3>
           <p className="text-xl text-gray-200 mt-4 mb-8">
             Your journey to the Himalayas awaits. Take the first step towards
-            your own **nirvana** with us.
+            your own nirvana with us.
           </p>
           <a
             href="/contact"

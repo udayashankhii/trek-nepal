@@ -283,7 +283,7 @@ const OverviewPage = () => {
           <ul className="text-gray-700 space-y-4 max-w-2xl mx-auto">
             <li>
               <span className="font-semibold text-gray-800">2010:</span> Nepal
-              Nirvana Adventours is founded in Kathmandu by Rajib and Udaya,
+              Ever Trek Nepal  is founded in Kathmandu by Rajib and Udaya,
               turning a passion into a mission.
             </li>
             <li>
@@ -382,7 +382,7 @@ const OverviewPage = () => {
           </h3>
           <p className="text-xl text-gray-200 mt-4 mb-8">
             Your journey to the Himalayas awaits. Take the first step towards
-            your own **nirvana** with us.
+            your own evertreknepal with us.
           </p>
           <a
             href="/contact"
