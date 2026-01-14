@@ -257,33 +257,33 @@ export default function TrekRouteMap({
         if (!isMounted) return;
         setDrawingDirections(true);
 
-        try {
-          const result = await generateRoute(map, selectedPoints);
+ try {
+  const result = await generateRoute(map, selectedPoints);
 
-          if (!isMounted) return;
+  if (!isMounted) return;
 
-          if (!result?.success || !result.path?.length) {
-            // Fallback for single day
-            const fallback = selectedPoints.map((p) => p.position);
-            drawPolyline(map, fallback, true);
-            fitBounds(map, fallback);
+  if (!result?.success || !result.path?.length) {
+    // Fallback for single day
+    const fallback = selectedPoints.map((p) => p.position);
+    drawPolyline(map, fallback, true, { strokeColor: "#f97316" }); // ✅ ORANGE
+    fitBounds(map, fallback);
 
-            const dist = computePathDistance(fallback);
-            setRouteSegmentInfo(
-              `Day ${selectedPoints[0].day} · ${formatDistance(dist)}`
-            );
-            setDirectionsStatus("⚠️ Direct trail (off-map)");
-            return;
-          }
+    const dist = computePathDistance(fallback);
+    setRouteSegmentInfo(
+      `Day ${selectedPoints[0].day} · ${formatDistance(dist)}`
+    );
+    setDirectionsStatus("⚠️ Direct trail (off-map)");
+    return;
+  }
 
-          // Success - draw the routed path
-          drawPolyline(map, result.path, true);
-          fitBounds(map, result.path);
+  // Success - draw the routed path
+  drawPolyline(map, result.path, true, { strokeColor: "#f97316" }); // ✅ ORANGE
+  fitBounds(map, result.path);
 
-          const dist = computePathDistance(result.path);
-          setRouteSegmentInfo(
-            `Day ${selectedPoints[0].day} · ${formatDistance(dist)}`
-          );
+  const dist = computePathDistance(result.path);
+  setRouteSegmentInfo(
+    `Day ${selectedPoints[0].day} · ${formatDistance(dist)}`
+  );
 
           if (result.source === "straight_line_fallback") {
             setDirectionsStatus("⚠️ Direct trail (no Google route)");

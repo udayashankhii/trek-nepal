@@ -134,41 +134,33 @@ export function useRouteMap() {
   );
 
   // Draw polyline on map
-  const drawPolyline = useCallback(
-    (map, path, isSegment) => {
-      if (!map || !path || path.length === 0) return;
+  // useRouteMap.js
+const drawPolyline = useCallback(
+  (map, path, isSegment, options = {}) => {
+    if (!map || !path || path.length === 0) return;
 
-      // Clear existing polyline of same type
-      const ref = isSegment
-        ? polylineRefsRef.current.segment
-        : polylineRefsRef.current.base;
+    const ref = isSegment
+      ? polylineRefsRef.current.segment
+      : polylineRefsRef.current.base;
 
-      if (ref) {
-        ref.setMap(null);
-      }
+    if (ref) ref.setMap(null);
 
-      const google = window.google;
-      const polyline = new google.maps.Polyline({
-        path,
-        geodesic: true,
-        strokeColor: isSegment ? "#3b82f6" : "#1e40af", // Blue for routes
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        map,
-      });
+    const google = window.google;
 
-      if (isSegment) {
-        polylineRefsRef.current.segment = polyline;
-      } else {
-        polylineRefsRef.current.base = polyline;
-      }
+    const polyline = new google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: options.strokeColor ?? (isSegment ? "#3b82f6" : "#1e40af"),
+      strokeOpacity: options.strokeOpacity ?? 1.0,
+      strokeWeight: options.strokeWeight ?? 3,
+      map,
+    });
 
-      console.log(
-        `✅ Drew ${isSegment ? "segment" : "full trek"} polyline with ${path.length} points`
-      );
-    },
-    []
-  );
+    if (isSegment) polylineRefsRef.current.segment = polyline;
+    else polylineRefsRef.current.base = polyline;
+  },
+  []
+);
 
   // Get cache key for route segment
   const getCacheKey = useCallback(
