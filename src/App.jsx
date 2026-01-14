@@ -44,6 +44,11 @@ import BlogPage from "./blog/Blogs.jsx";
 import BlogDetails from "./blog/BlogDetails.jsx";
 import "./index.css";
 
+
+
+import { BreadcrumbVisibilityProvider } from "./components/Breadcrumb/BreadcrumbVisibilityContext";
+import PageBreadcrumbs from "./components/Breadcrumb/PageBreadcrumbs";
+
 // NEW IMPORTS - Chatbot
 
 // TOurs events
@@ -70,16 +75,19 @@ import Profile from "./Profile/Profile";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
-  <>
+    <><BreadcrumbVisibilityProvider>
+    {/* <ImprovedNavbar /> */}
     <Navbar />
     <main className="min-h-[calc(100vh-8rem)]">
+
+      <PageBreadcrumbs />
       {/* Outlet renders the matching child route */}
       <Outlet />
     </main>
     <Footer />
     {/* CHATBOT - Visible on ALL pages */}
     <EverTrekChatbot />
-  </>
+  </BreadcrumbVisibilityProvider></>
 );
 
 const RequireAuth = ({ children }) => {
