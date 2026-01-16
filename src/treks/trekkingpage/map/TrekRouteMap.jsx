@@ -145,9 +145,7 @@ export default function TrekRouteMap({
           return;
         }
 
-        console.log(
-          `🗺️ Generating FULL TREK route for ${selectedPoints.length} points...`
-        );
+  
 
         if (!isMounted) return;
         setDrawingDirections(true);

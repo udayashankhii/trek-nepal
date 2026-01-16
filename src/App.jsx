@@ -59,7 +59,7 @@ import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
 import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
 import TrekDetailPage from "./treks/TreksDetailPage.jsx";
 
-import LangtangTrek from "./treks/regions/Lantang-Index.jsx"; 
+import LangtangTrek from "./treks/regions/Lantang-Index.jsx";
 import ManasluTrek from "./treks/regions/Manaslu-Index.jsx";
 import MustangTrek from "./treks/regions/Mustang-Index.jsx";
 import Navbar from "./navbarEssentials/Navbar.jsx";
@@ -70,12 +70,14 @@ import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
 import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
 import PaymentPage from "./Book/PaymentPage";
+import BookingDetailPage from "./Profile/ProfileData/BookingDetailPage";
 import { getAccessToken } from "./api/auth.api";
 import Profile from "./Profile/Profile";
+import MyBookingsPage from "./Profile/ProfileData/MyBookingPage";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
-    <><BreadcrumbVisibilityProvider>
+  <><BreadcrumbVisibilityProvider>
     {/* <ImprovedNavbar /> */}
     <Navbar />
     <main className="min-h-[calc(100vh-8rem)]">
@@ -103,7 +105,7 @@ const RequireAuth = ({ children }) => {
 const App = () => (
   <Router>
     <ScrollToTop />
-      <DataPreloader />
+    <DataPreloader />
 
     {/* Wrap everything in a Router to enable routing */}
     <Routes>
@@ -114,7 +116,7 @@ const App = () => (
         <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
         {/* <Route path="trekcard" element={<TrekCard />} /> */}
         <Route path="/travel-styles" element={<Tours />} />
-        
+
 
         <Route path="/treks/everest-treks" element={<EverestTrekIndex />} />
         <Route path="annapurna-treks" element={<AnnapurnaLuxuryPage />} />
@@ -170,7 +172,7 @@ const App = () => (
         <Route path="/langtang/:slug" element={<TrekDetailPage />} />
         {/* <Route path="/booking" element={<BookingPage />} /> */}
         <Route path="/customize-trek" element={<CustomizeTrekPage />} />
-        
+
         <Route
           path="/travel-activities/jungle-safari"
           element={<JungleSafariPage />}
@@ -195,7 +197,7 @@ const App = () => (
         <Route path="/customize-trip" element={<CustomizeTripPage />} />
         <Route path="/trek-overview" element={<TrekOverview />} />
 
-         <Route
+        <Route
           path="/trek-booking"
           element={
             <RequireAuth>
@@ -211,6 +213,24 @@ const App = () => (
             </RequireAuth>
           }
         />
+<Route
+  path="/bookings"
+  element={
+    <RequireAuth>
+      <MyBookingsPage />
+    </RequireAuth>
+  }
+/>
+
+<Route
+  path="/bookings/:bookingRef"
+  element={
+    <RequireAuth>
+      <BookingDetailPage />
+    </RequireAuth>
+  }
+/>
+
 
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about-us" element={<OverviewPage />} />
@@ -251,11 +271,11 @@ const App = () => (
 
 
         {/* Login */}
-      <Route path="/login" element={<LoginForm modal />} />
+        <Route path="/login" element={<LoginForm modal />} />
         <Route path="/register" element={<RegisterForm modal />} />
-         <Route path="/verify-otp" element={<VerifyOtp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/profile" element={<Profile />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/profile" element={<Profile />} />
 
 
 

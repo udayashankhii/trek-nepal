@@ -28,16 +28,7 @@ export function useFormValidation(lead, startDate, travellers, accepted) {
     );
 
     // Debug log - remove after fixing
-    console.log("🔍 Form Validation:", {
-      startDate: !!startDate,
-      travellers: travellers > 0,
-      firstName: !!lead?.firstName?.trim(),
-      lastName: !!lead?.lastName?.trim(),
-      emailValid,
-      phoneValid,
-      accepted,
-      OVERALL: isValid
-    });
+  
 
     return isValid;
   }, [startDate, travellers, lead?.firstName, lead?.lastName, emailValid, phoneValid, accepted]);

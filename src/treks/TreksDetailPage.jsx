@@ -1,12 +1,12 @@
 // src/pages/TrekDetailPage.jsx
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-  fetchTrek, 
-  fetchSimilarTreks, 
-  fetchTrekReviews, 
+import {
+  fetchTrek,
+  fetchSimilarTreks,
+  fetchTrekReviews,
   fetchTrekBookingCard,
-  fetchTrekElevationChart 
+  fetchTrekElevationChart
 } from "../api/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
 
@@ -88,10 +88,8 @@ export default function TrekDetailPage() {
       loadGoogleMaps()
         .then(() => {
           setMapReady(true);
-          console.log("✅ Google Maps loaded successfully");
         })
         .catch(err => {
-          console.error("❌ Google Maps load failed:", err);
           setMapReady(false);
         });
     }
@@ -125,23 +123,22 @@ export default function TrekDetailPage() {
 
 
 
-   useEffect(() => {
+  useEffect(() => {
     loadGoogleMaps()
       .then(() => {
-        console.log("✅ Google Maps loaded successfully");
       })
       .catch(err => {
-        console.error("❌ Google Maps load failed:", err);
       });
   }, []);
-  const handleBookNow = () => navigate(`/trek-booking?trek_slug=${slug}`);
-  
+  const handleBookNow = () => navigate(`/trek-booking?trekSlug=${slug}`)
+
+
   const scrollToDates = () =>
     datesRef.current?.scrollIntoView({ behavior: "smooth" });
-  
+
   const scrollToMap = () =>
     mapRef.current?.scrollIntoView({ behavior: "smooth" });
-  
+
   const scrollToReviews = () =>
     reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -390,7 +387,7 @@ export default function TrekDetailPage() {
           highlights={dateHighlights}
           trekName={trekName}
           trekId={slug}
-          onBookDate={(date) => navigate(`/trek-booking?trek_slug=${slug}&date=${date.start}`)}
+          onBookDate={(date) => navigate(`/trek-booking?trekSlug=${slug}&date=${date.start}`)}
         />
       </div>
 
@@ -402,7 +399,7 @@ export default function TrekDetailPage() {
             trekId={flat.public_id}
             pdfUrl={actionData.pdfUrl || trek.pdfUrl}
           />
-          
+
           {/* Always show map */}
           <div ref={mapRef} className="mt-12">
             <Suspense fallback={<MapLoadingSpinner />}>
@@ -444,7 +441,7 @@ export default function TrekDetailPage() {
 
       {/* ✅ NEW: Export notification */}
       {exportNotification && (
-        <ExportNotification 
+        <ExportNotification
           message={exportNotification.message}
           type={exportNotification.type}
         />

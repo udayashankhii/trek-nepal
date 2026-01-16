@@ -19,6 +19,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { getCurrentUser, getAccessToken } from "../api/auth.api.js";
+import { fetchUserBookings } from "../api/bookingServices";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -41,6 +42,9 @@ export default function Profile() {
   // Avatar upload state
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
+
+  const [bookings, setBookings] = useState([]);
+  const [bookingsLoading, setBookingsLoading] = useState(true);
 
   // Check authentication and load user data
   useEffect(() => {
@@ -100,6 +104,21 @@ export default function Profile() {
     setAvatarPreview(URL.createObjectURL(file));
   };
 
+  // Load user bookings
+  useEffect(() => {
+    const loadBookings = async () => {
+      try {
+        const data = await fetchUserBookings();
+        setBookings(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load bookings", err);
+      } finally {
+        setBookingsLoading(false);
+      }
+    };
+    loadBookings();
+  }, []);
+
   // Form validation
   const validateForm = () => {
     const newErrors = {};
@@ -150,7 +169,7 @@ export default function Profile() {
 
       toast.success("Profile updated successfully! 🎉");
       setIsEditing(false);
-      
+
       // Update local user state
       setUser({ ...user, ...formData });
     } catch (error) {
@@ -206,14 +225,7 @@ export default function Profile() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <button
-            onClick={() => navigate("/")}
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 
-                     transition-colors mb-4"
-          >
-            <ChevronRight className="w-4 h-4 rotate-180 mr-1" />
-            Back to Home
-          </button>
+        
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#0F2A44]">
             My Profile
           </h1>
@@ -279,7 +291,7 @@ export default function Profile() {
               {/* Quick Stats */}
               <div className="grid grid-cols-3 gap-3 sm:gap-4 py-4 border-t border-b border-gray-100">
                 <div className="text-center">
-                  <p className="text-lg sm:text-xl font-bold text-[#1F7A63]">0</p>
+                  <p className="text-lg sm:text-xl font-bold text-[#1F7A63]">{bookings.length}</p>
                   <p className="text-xs text-gray-600">Bookings</p>
                 </div>
                 <div className="text-center border-x border-gray-100">
@@ -584,6 +596,50 @@ export default function Profile() {
                   )}
                 </div>
               </form>
+            </div>
+
+            {/* My Bookings Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="px-6 sm:px-8 py-5 sm:py-6 border-b border-gray-100">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900">My Bookings</h3>
+              </div>
+              <div className="p-6">
+                {bookingsLoading ? (
+                  <div className="text-center py-4"><Loader2 className="w-6 h-6 animate-spin mx-auto text-gray-400" /></div>
+                ) : bookings.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No bookings yet.</p>
+                    <button onClick={() => navigate('/trekking-in-nepal')} className="mt-2 text-[#1F7A63] font-medium hover:underline">Explore Treks</button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {bookings.map((booking) => (
+                      <div key={booking.booking_ref} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-colors">
+                        <div className="mb-4 sm:mb-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-gray-900">{booking.trek_title || booking.trek_slug}</span>
+                            <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${booking.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                              }`}>
+                              {booking.status?.toUpperCase() || 'PENDING'}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-500 flex items-center gap-2">
+                            <Calendar className="w-3 h-3" />
+                            {booking.start_date}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">Ref: {booking.booking_ref}</p>
+                        </div>
+                        <button
+                          onClick={() => navigate(`/bookings/${booking.booking_ref}`)}
+                          className="w-full sm:w-auto px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Additional Settings Cards */}

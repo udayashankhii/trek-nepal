@@ -41,7 +41,6 @@ export function useRouteMap() {
         setMapError(
           "Google Maps API not loaded. Check your API key in .env"
         );
-        console.error("❌ Google Maps API not available");
         return;
       }
 
@@ -56,12 +55,10 @@ export function useRouteMap() {
       directionsServiceRef.current = new google.maps.DirectionsService();
 
       setMapReady(true);
-      console.log("✅ Map initialized successfully");
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to initialize map";
       setMapError(message);
-      console.error("❌ Map initialization failed:", err);
     }
   }, []);
 
@@ -128,39 +125,38 @@ export function useRouteMap() {
         });
       });
 
-      console.log(`✅ Added ${points.length} markers`);
     },
     []
   );
 
   // Draw polyline on map
   // useRouteMap.js
-const drawPolyline = useCallback(
-  (map, path, isSegment, options = {}) => {
-    if (!map || !path || path.length === 0) return;
+  const drawPolyline = useCallback(
+    (map, path, isSegment, options = {}) => {
+      if (!map || !path || path.length === 0) return;
 
-    const ref = isSegment
-      ? polylineRefsRef.current.segment
-      : polylineRefsRef.current.base;
+      const ref = isSegment
+        ? polylineRefsRef.current.segment
+        : polylineRefsRef.current.base;
 
-    if (ref) ref.setMap(null);
+      if (ref) ref.setMap(null);
 
-    const google = window.google;
+      const google = window.google;
 
-    const polyline = new google.maps.Polyline({
-      path,
-      geodesic: true,
-      strokeColor: options.strokeColor ?? (isSegment ? "#3b82f6" : "#1e40af"),
-      strokeOpacity: options.strokeOpacity ?? 1.0,
-      strokeWeight: options.strokeWeight ?? 3,
-      map,
-    });
+      const polyline = new google.maps.Polyline({
+        path,
+        geodesic: true,
+        strokeColor: options.strokeColor ?? (isSegment ? "#3b82f6" : "#1e40af"),
+        strokeOpacity: options.strokeOpacity ?? 1.0,
+        strokeWeight: options.strokeWeight ?? 3,
+        map,
+      });
 
-    if (isSegment) polylineRefsRef.current.segment = polyline;
-    else polylineRefsRef.current.base = polyline;
-  },
-  []
-);
+      if (isSegment) polylineRefsRef.current.segment = polyline;
+      else polylineRefsRef.current.base = polyline;
+    },
+    []
+  );
 
   // Get cache key for route segment
   const getCacheKey = useCallback(
@@ -206,7 +202,6 @@ const drawPolyline = useCallback(
             continue;
           }
 
-          console.log(`🔄 Segment ${i + 1}/${points.length - 1} (API CALL)`);
 
           // Try different travel modes
           let segmentPath = null;

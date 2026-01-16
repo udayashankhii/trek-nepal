@@ -11,7 +11,6 @@ export default function BookingPageHero({ hero, trek }) {
   const hasTrekData = trek && Object.keys(trek).length > 0;
 
   if (!hasHeroData || !hasTrekData) {
-    console.warn("⚠️ BookingPageHero: Missing hero or trek data", { hero, trek });
     
     // ✅ Render fallback hero instead of null
     return (

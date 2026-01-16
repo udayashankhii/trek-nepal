@@ -16,7 +16,7 @@ function parseDurationDays(duration) {
 
 export function useBookingForm(trek, hero) {
   const navigate = useNavigate();
-  
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [travellers, setTravellers] = useState(1);
@@ -83,7 +83,7 @@ export function useBookingForm(trek, hero) {
 
   const changeLead = (e) =>
     setLead((l) => ({ ...l, [e.target.name]: e.target.value }));
-    
+
   const changePreferences = (e) =>
     setPreferences((p) => ({ ...p, [e.target.name]: e.target.value }));
 
@@ -106,21 +106,21 @@ export function useBookingForm(trek, hero) {
     });
   };
 
-  const handleSubmit = async (e, formValid, totalPrice, trekSlug, currency = "USD") => {
+  const handleBookingSubmit = async (e, formValid, totalPrice, trekSlug, currency = "USD") => {
     e.preventDefault();
-    
+
     if (!formValid) {
       toast.error("Please fill in all required fields.");
       return;
     }
-    
+
     if (!trekSlug) {
       toast.error("Missing trek details. Please try again from the trek page.");
       return;
     }
 
     setSubmitting(true);
-    
+
     try {
       // ✅ Ensure phone has country code
       let phoneNumber = lead.phone.trim();
@@ -129,7 +129,7 @@ export function useBookingForm(trek, hero) {
       }
 
       console.log("📤 Creating booking intent...");
-      
+
       // ✅ Create booking intent (without departure field - it expects ID not date)
       const intent = await createBookingIntent({
         trekSlug,
@@ -142,9 +142,9 @@ export function useBookingForm(trek, hero) {
 
       // ✅ Prepare lead name
       const leadName = `${lead.title} ${lead.firstName} ${lead.lastName}`.trim();
-      
+
       console.log("📤 Creating booking...");
-      
+
       // ✅ Create booking with all details
       const booking = await createBooking({
         trekSlug,
@@ -168,7 +168,8 @@ export function useBookingForm(trek, hero) {
         comments: preferences.comments || "",
         departureTime: departureTime || null,
         returnTime: returnTime || null,
-        totalAmount: totalPrice,
+        // Don't send totalAmount - let the backend compute it to avoid mismatch
+        // totalAmount: totalPrice,
         currency,
         notes: preferences.comments || preferences.specialRequests || "",
         metadata: {
@@ -209,21 +210,22 @@ export function useBookingForm(trek, hero) {
       });
 
       toast.success("Booking created successfully! Redirecting to payment...");
-      
+
     } catch (error) {
       console.error("❌ Booking error:", error);
-      
+
       const message = error.message || "Unable to start booking. Please try again.";
       toast.error(message);
-      
+
       // Handle authentication errors
       if (
         message.toLowerCase().includes("session expired") ||
         message.toLowerCase().includes("login required") ||
         message.toLowerCase().includes("unauthorized")
       ) {
-        const next = encodeURIComponent(`/trek-booking?trek_slug=${trekSlug}`);
+        const next = encodeURIComponent(`/trek-booking?trekSlug=${trekSlug}`);
         navigate(`/login?next=${next}`, { replace: true });
+
       }
     } finally {
       setSubmitting(false);
@@ -250,6 +252,6 @@ export function useBookingForm(trek, hero) {
     countryList,
     formatCurrency,
     formatNepalTime,
-    handleSubmit,
+    handleBookingSubmit,
   };
 }

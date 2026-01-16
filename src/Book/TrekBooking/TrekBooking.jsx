@@ -1,7 +1,7 @@
 
 // src/pages/BookingPage/SinglePageBookingForm.jsx
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 import BookingPageHero from "./BookingPageHero.jsx";
 import {
@@ -20,7 +20,18 @@ import { fetchTrekBookingData } from "../../api/trekService.js";
 
 export default function SinglePageBookingForm() {
   const [searchParams] = useSearchParams();
-  const trekSlug = searchParams.get("trek_slug") || searchParams.get("trek_id") || "";
+  const location = useLocation();
+
+  // Get trek slug from URL parameters OR from location state (fallback)
+  const trekSlug =
+    searchParams.get("trekSlug") ||
+    searchParams.get("trekslug") ||
+    searchParams.get("trek_slug") ||  // used by Datesandprice.jsx
+    searchParams.get("slug") ||
+    searchParams.get("trekId") ||
+    location.state?.trekId ||         // from Datesandprice.jsx state
+    location.state?.trekSlug ||       // alternative state key
+    location.state?.slug;             // another alternative
 
   const [hero, setHero] = useState(null);
   const [trek, setTrek] = useState(null);
@@ -41,13 +52,13 @@ export default function SinglePageBookingForm() {
   // Calculate pricing - ALWAYS run, even during loading
   const basePrice = useMemo(() => {
     if (loading || !trek) return 0;
-    
-    const price = bookingCardData?.base_price 
-      || trek?.booking_card?.base_price 
-      || trek?.base_price 
-      || trek?.price 
+
+    const price = bookingCardData?.base_price
+      || trek?.booking_card?.base_price
+      || trek?.base_price
+      || trek?.price
       || 1000;
-    
+
     return parseFloat(price);
   }, [loading, bookingCardData, trek]);
 
@@ -59,7 +70,7 @@ export default function SinglePageBookingForm() {
 
   const handleFormSubmit = useCallback(
     (e) => {
-      bookingForm.handleSubmit(e, validation.formValid, totalPrice, trekSlug, currency);
+      bookingForm.handleBookingSubmit(e, validation.formValid, totalPrice, trekSlug, currency);
     },
     [bookingForm, validation.formValid, totalPrice, trekSlug, currency]
   );
@@ -77,7 +88,6 @@ export default function SinglePageBookingForm() {
 
     const timeoutId = setTimeout(() => {
       if (mounted && loading) {
-        console.error("⏱️ Fetch timeout");
         setError("Request timed out. Please refresh.");
         setLoading(false);
       }
@@ -89,9 +99,9 @@ export default function SinglePageBookingForm() {
     fetchTrekBookingData(trekSlug, { signal: controller.signal })
       .then((result) => {
         if (!mounted) return;
-        
+
         clearTimeout(timeoutId);
-        
+
         if (!result || !result.trek) {
           throw new Error("Invalid data received");
         }
@@ -101,14 +111,12 @@ export default function SinglePageBookingForm() {
         setBookingCardData(result.bookingCard || {});
         setHighlights(result.highlights || []);
         setLoading(false);
-        
-        console.log("✅ Booking data loaded successfully");
+
       })
       .catch((err) => {
         if (!mounted) return;
-        
+
         clearTimeout(timeoutId);
-        console.error("❌ Fetch error:", err);
         setError(err.message || "Failed to load trek");
         setLoading(false);
       });
@@ -121,7 +129,7 @@ export default function SinglePageBookingForm() {
   }, [trekSlug]);
 
   // ✅ NOW we can return conditionally - AFTER all hooks
-  
+
   // LOADING STATE
   if (loading) {
     return (

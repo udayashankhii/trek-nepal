@@ -144,9 +144,10 @@ const PaymentForm = ({ bookingRef, booking }) => {
         return;
       }
 
-      if (paymentIntent.status === "succeeded") {
-        setStatus("succeeded");
-      }
+    if (paymentIntent.status === "succeeded") {
+  await markBookingPaid(bookingRef);
+  setStatus("succeeded");
+}
     } catch (err) {
       console.error("Payment error:", err);
       setError(err.message || "Payment processing failed");

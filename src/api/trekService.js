@@ -368,23 +368,17 @@ export const searchTreks = async (query = "", filters = {}) => {
 /**
  * ✅ Fetch trek booking data - SINGLE VERSION ONLY
  */
-export const fetchTrekBookingData = async (trekSlug) => {
+export const fetchTrekBookingData = async (trekSlug, options = {}) => {
   try {
-    console.log("🔄 Fetching Trek Booking Data");
-    console.log("Trek Slug:", trekSlug);
-
     const [trekResult, bookingCardResult, highlightsResult] = await Promise.allSettled([
       fetchTrek(trekSlug),
       fetchTrekBookingCard(trekSlug),
       fetchTrekHighlights(trekSlug),
     ]);
-
     const trek = trekResult.status === "fulfilled" ? trekResult.value : null;
     const bookingCardData = bookingCardResult.status === "fulfilled" ? bookingCardResult.value : null;
     const highlights = highlightsResult.status === "fulfilled" ? highlightsResult.value : [];
 
-    console.log("Trek Data:", trek);
-    console.log("Booking Card:", bookingCardData);
 
     if (!trek) {
       throw new Error("Trek not found");
@@ -419,7 +413,6 @@ export const fetchTrekBookingData = async (trekSlug) => {
       booking_card: bookingCardData,
     };
 
-    console.log("✅ Returning result:", { hero, trek: trekInfo, highlights, bookingCard: bookingCardData });
 
     return {
       hero,
