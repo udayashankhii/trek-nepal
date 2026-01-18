@@ -61,7 +61,7 @@ function BookingCard({
   const handleBookNowClick = () => {
     const slug = trekSlug || trekId;
     if (slug) {
-        navigate(`/trek-booking?trekSlug=${slug}&price=${basePrice}`);
+        navigate(`/trek-booking?trekSlug=${slug}`);
     }
   };
 

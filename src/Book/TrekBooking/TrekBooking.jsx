@@ -49,8 +49,60 @@ export default function SinglePageBookingForm() {
     bookingForm.accepted
   );
 
-  // Calculate pricing - ALWAYS run, even during loading
+  // ✅ New: Quote State
+  const [quote, setQuote] = useState(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteError, setQuoteError] = useState(null);
+
+  // ✅ Fetch Quote when trekSlug or travellers change
+  useEffect(() => {
+    if (!trekSlug) return;
+
+    let active = true;
+    const controller = new AbortController();
+
+    const fetchQuote = async () => {
+      setQuoteLoading(true);
+      setQuoteError(null);
+      try {
+        const { getBookingQuote } = await import("../../api/bookingServices.js");
+        const data = await getBookingQuote(
+          { trekSlug, partySize: bookingForm.travellers },
+          true,
+          { signal: controller.signal }
+        );
+        if (active) {
+          setQuote(data);
+          setQuoteLoading(false);
+        }
+      } catch (err) {
+        if (active && !controller.signal.aborted) {
+          console.error("Quote fetch error:", err);
+          // Don't show critical error, just fallback (or set state to show warning)
+          setQuoteError(err.message);
+          setQuoteLoading(false);
+        }
+      }
+    };
+
+    // Debounce slightly to avoid rapid calls while spinning inputs
+    const timeoutId = setTimeout(fetchQuote, 300);
+
+    return () => {
+      active = false;
+      controller.abort();
+      clearTimeout(timeoutId);
+    };
+  }, [trekSlug, bookingForm.travellers]);
+
+
+  // Calculate pricing - Prioritize Backend Quote
   const basePrice = useMemo(() => {
+    // If we have a backend quote, use its unit_price
+    if (quote?.unit_price) {
+      return parseFloat(quote.unit_price);
+    }
+
     if (loading || !trek) return 0;
 
     const price = bookingCardData?.base_price
@@ -60,13 +112,21 @@ export default function SinglePageBookingForm() {
       || 1000;
 
     return parseFloat(price);
-  }, [loading, bookingCardData, trek]);
+  }, [loading, bookingCardData, trek, quote]);
 
-  const baseTotal = basePrice * bookingForm.travellers;
-  const totalPrice = baseTotal;
+  const totalPrice = useMemo(() => {
+    // If we have a backend quote, use its total_amount
+    if (quote?.total_amount) {
+      return parseFloat(quote.total_amount);
+    }
+    return basePrice * bookingForm.travellers;
+  }, [quote, basePrice, bookingForm.travellers]);
+
+  const baseTotal = basePrice * bookingForm.travellers; // For display breakdown
+
   const initialPayment = +(totalPrice * 0.20).toFixed(2);
   const dueAmount = +(totalPrice - initialPayment).toFixed(2);
-  const currency = trek?.currency || "USD";
+  const currency = quote?.currency || trek?.currency || "USD";
 
   const handleFormSubmit = useCallback(
     (e) => {
@@ -241,8 +301,8 @@ export default function SinglePageBookingForm() {
               dueAmount={dueAmount}
               formatCurrency={(amt) => bookingForm.formatCurrency(amt, currency)}
               highlights={highlights}
-              quoteLoading={false}
-              quoteError={null}
+              quoteLoading={quoteLoading}
+              quoteError={quoteError}
             />
           </div>
         </div>

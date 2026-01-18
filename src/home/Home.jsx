@@ -8,7 +8,7 @@ import FeaturedTreksGrid from "./FeaturedTreks";
 import MountainHomePage from "./Hero/AdvancedMountainHomePage";
 import ImprovedNavbar from "../navbarEssentials/Navbar";
 import HomeFeaturedTreks from "./FeaturedTreks";
-
+import {  useNavigate } from "react-router-dom";
 export default function Home() {
   return (
     <>
@@ -154,117 +154,50 @@ const WhyChooseUsSection = () => {
 
 
 const CallToActionSection = () => {
+  const navigate = useNavigate();
   return (
-    <section className="relative py-20 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
-      <div className="absolute inset-0 bg-[url('/mountain-pattern.svg')] opacity-10"></div>
+<section className="relative py-24 bg-sky-50 overflow-hidden">
+  {/* subtle texture */}
+  <div className="absolute inset-0 bg-[url('/mountain-pattern.svg')] opacity-[0.06]" />
 
-      {/* Floating elements */}
-      <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
-      <div
-        className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full blur-xl opacity-20 animate-pulse"
-        style={{ animationDelay: "1s" }}
-      ></div>
+  <div className="relative max-w-3xl mx-auto text-center px-6">
+    <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
+      Ready for your next{" "}
+      <span className="text-sky-600">adventure?</span>
+    </h2>
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
-        <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-          Ready for Your Next{" "}
-          <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-            Adventure?
-          </span>
-        </h2>
+    <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+      Explore Nepal’s most iconic trekking routes with trusted local guides and
+      thoughtfully crafted itineraries.
+    </p>
 
-        <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed">
-          Join thousands of adventurers who've discovered the magic of the
-          Himalayas. Your journey to the roof of the world starts here.
-        </p>
+    <div className="mt-10">
+      <button
+        onClick={() => navigate("/trekking-in-nepal")}
+        className="inline-flex items-center gap-3 px-8 py-4 rounded-xl
+                   bg-sky-600 text-white font-semibold
+                   hover:bg-sky-500 transition-colors"
+      >
+        Start your journey
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <button className="group px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-lg rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl">
-            <span className="flex items-center space-x-3">
-              <span>Start Your Journey</span>
-              <svg
-                className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </span>
-          </button>
 
-          <button className="group px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-bold text-lg rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-            <span className="flex items-center space-x-3">
-              <svg
-                className="w-5 h-5 group-hover:animate-pulse"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                />
-              </svg>
-              <span>Talk to Expert</span>
-            </span>
-          </button>
-        </div>
 
-        <div className="mt-12 flex items-center justify-center space-x-8 text-white/70">
-          <div className="flex items-center space-x-2">
-            <svg
-              className="w-5 h-5 text-green-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>Free Consultation</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <svg
-              className="w-5 h-5 text-green-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>24/7 Support</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <svg
-              className="w-5 h-5 text-green-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>Best Price Guarantee</span>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 };

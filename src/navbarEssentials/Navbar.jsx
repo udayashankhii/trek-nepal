@@ -321,7 +321,9 @@ export default function Navbar() {
 
 
             {/* LOGIN BUTTON - Desktop */}
-            <LoginNavbar />
+<div className="min-w-[180px] flex justify-end">
+  <LoginNavbar className="w-full flex justify-end" />
+</div>
           </div>
 
 

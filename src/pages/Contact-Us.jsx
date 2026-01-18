@@ -42,14 +42,14 @@ export default function ContactUsPage() {
               <MapPin className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-medium text-gray-700">Address</h3>
-                <p className="text-gray-600">Lazimpat, Kathmandu, Nepal</p>
+                <p className="text-gray-600">Thimi, Bhaktapur, Nepal</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
               <Mail className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-medium text-gray-700">Email</h3>
-                <p className="text-gray-600">info@adventuretreksnepal.com</p>
+                <p className="text-gray-600">info@evertreknepal.com</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
@@ -75,7 +75,7 @@ export default function ContactUsPage() {
               <Twitter className="w-5 h-5 text-white" />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/evertrek_nepal/"
               className="p-3 bg-pink-500 rounded-full hover:bg-pink-600 transition"
             >
               <Instagram className="w-5 h-5 text-white" />

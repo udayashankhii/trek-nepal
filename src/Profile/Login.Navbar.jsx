@@ -320,7 +320,8 @@ const LoginNavbar = ({ className = "" }) => {
         </Menu>
       ) : (
         // Not authenticated - Mobile-optimized buttons
-        <div className={`flex items-center gap-2 sm:gap-3 ${className}`}>
+      <div className={`flex items-center justify-end gap-2 sm:gap-3 w-full ${className}`}>
+
           {/* Log in button - Compact on mobile */}
           <button
             onClick={openModal}
