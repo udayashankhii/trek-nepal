@@ -121,7 +121,7 @@ export default function TrekkingInNepalPage() {
           Ready to start your journey?
         </h4>
         <a
-          href="/contact"
+          href="/contact-us"
           className="inline-block px-6 py-3 bg-white text-orange-500 font-semibold rounded-full hover:bg-gray-100"
         >
           Contact Us

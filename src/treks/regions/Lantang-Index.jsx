@@ -2,27 +2,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, Mountain, Users, TreePine, Award, Sparkles } from "lucide-react";
 import TrekCard from "../TrekCard";
 import { useTreksByRegion } from "../../api/useTreksByRegion";
 import { REGIONS } from "../../api/regionService";
 
-// Highlights for Langtang treks
+// Enhanced highlights for Langtang treks
 const highlights = [
   {
-    icon: "/icons/mountains.svg",
+    icon: <Mountain className="w-10 h-10 text-emerald-600" />,
     title: "Spectacular Mountain Views",
-    desc: "See Langtang Lirung and Ganesh Himal up close.",
+    desc: "Witness Langtang Lirung and Ganesh Himal in their pristine majesty",
   },
   {
-    icon: "/icons/temple.svg",
+    icon: <Users className="w-10 h-10 text-emerald-600" />,
     title: "Cultural Richness",
-    desc: "Experience Tamang culture, traditional villages, and monasteries.",
+    desc: "Immerse yourself in authentic Tamang culture, traditional villages, and ancient monasteries",
   },
   {
-    icon: "/icons/forest.svg",
+    icon: <TreePine className="w-10 h-10 text-emerald-600" />,
     title: "Dense Forest Trails",
-    desc: "Trek through rhododendron and oak forests along glacial rivers.",
+    desc: "Trek through enchanting rhododendron and oak forests along glacial rivers",
   },
 ];
 
@@ -30,33 +30,35 @@ const highlights = [
 const faqs = [
   {
     q: "Do I need a special permit for Langtang treks?",
-    a: "Yes, a Langtang National Park permit and TIMS card are required for most treks.",
+    a: "Yes, a Langtang National Park permit and TIMS card are required for most treks. Our team handles all permit arrangements as part of your package.",
   },
   {
     q: "What is the best season to trek Langtang?",
-    a: "Spring (March-May) and Autumn (September-November) offer the best weather and views.",
+    a: "Spring (March-May) and Autumn (September-November) offer optimal weather with clear mountain views, moderate temperatures, and blooming rhododendrons in spring.",
   },
   {
     q: "Are the Langtang treks suitable for beginners?",
-    a: "Most treks are moderate difficulty and suitable for fit beginners with proper acclimatization.",
+    a: "Most Langtang treks are moderate difficulty and suitable for fit beginners with proper acclimatization. We recommend cardiovascular preparation for 2-3 months before departure.",
   },
   {
     q: "How long does the Langtang Valley trek take?",
-    a: "The classic Langtang Valley trek typically takes 7-10 days depending on your pace and acclimatization needs.",
+    a: "The classic Langtang Valley trek typically takes 7-10 days depending on your pace and acclimatization needs. We can customize the itinerary to match your schedule.",
   },
 ];
 
 // Testimonials
 const testimonials = [
   {
-    text: "Langtang trek was a breathtaking experience, peaceful and beautiful. The Tamang hospitality was exceptional!",
+    text: "Langtang exceeded all expectations. The pristine beauty, warm Tamang hospitality, and our expert guide made this an unforgettable journey.",
     name: "Maya T.",
-    date: "Feb 2025",
+    location: "Sydney, Australia",
+    date: "February 2025",
   },
   {
-    text: "The cultural experience combined with stunning views was unforgettable. Kyanjin Gompa was absolutely magical.",
+    text: "The cultural immersion combined with breathtaking landscapes was extraordinary. Kyanjin Gompa at sunrise remains etched in my memory forever.",
     name: "Samir P.",
-    date: "Nov 2024",
+    location: "Mumbai, India",
+    date: "November 2024",
   },
 ];
 
@@ -65,226 +67,287 @@ export default function LangtangTrek() {
   const { treks, loading, error } = useTreksByRegion(REGIONS.LANGTANG);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 font-sans">
-      {/* Hero Section */}
-      <section className="relative h-[65vh]">
-        <img
-          src="/langtanghero.jpeg"
-          alt="Langtang Trekking"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-green-900/60" />
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      {/* Hero Section - Enhanced with Parallax Effect */}
+      <section className="relative h-[100vh] overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/langtang.jpg"
+            alt="Langtang Trekking"
+            className="w-full h-150 object-cover scale-110"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/60 to-slate-900/70" />
+        
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-serif text-white font-bold leading-tight drop-shadow-lg"
+            transition={{ duration: 1 }}
+            className="max-w-4xl"
           >
-            Langtang Treks
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="mt-4 text-lg md:text-xl text-green-200 max-w-2xl drop-shadow"
-          >
-            Explore serene valleys, rich culture, and majestic peaks closest to Kathmandu.
-          </motion.p>
+            <h1 className="text-6xl md:text-7xl font-serif font-light text-white leading-tight drop-shadow-2xl mb-6 tracking-wide">
+              Langtang Valley Treks
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-100 font-light max-w-3xl mx-auto leading-relaxed mb-8">
+              Explore serene valleys, rich Tamang culture, and majestic peaks closest to Kathmandu
+            </p>
+            <div className="flex gap-4 justify-center items-center">
+              <Award className="w-6 h-6 text-emerald-400" />
+              <span className="text-sm tracking-widest uppercase text-emerald-200">
+                Closest Himalayan Region to Kathmandu
+              </span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Trek Cards Section */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <h2 className="text-3xl font-semibold text-gray-900">
-            Explore Our Langtang Treks
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Discover pristine valleys, ancient monasteries, and friendly Tamang villages just north of Kathmandu.
-          </p>
-        </div>
-
-        {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center min-h-[240px]">
-            <div className="text-center">
-              <Loader2 className="h-10 w-10 animate-spin text-green-500 mx-auto mb-3" />
-              <p className="text-gray-600">Loading Langtang treks...</p>
-            </div>
+      {/* Highlights Section - Before Treks */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-light text-slate-900 mb-4">
+              Why Choose Langtang?
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              A perfect blend of natural beauty, cultural authenticity, and accessibility
+            </p>
           </div>
-        )}
-
-        {/* Error State */}
-        {!loading && error && (
-          <div className="flex justify-center items-center min-h-[240px]">
-            <div className="text-center max-w-md">
-              <AlertCircle className="h-10 w-10 text-red-500 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Unable to load treks
-              </h3>
-              <p className="text-gray-600 mb-4">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-6 py-2.5 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
-              >
-                Try again
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && treks.length === 0 && (
-          <div className="flex justify-center items-center min-h-[240px]">
-            <div className="text-center">
-              <p className="text-gray-600 mb-4">
-                No Langtang treks found. Please check back later.
-              </p>
-              <Link
-                to="/contact"
-                className="inline-block px-6 py-2.5 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
-              >
-                Contact Us for Custom Treks
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Trek Grid */}
-        {!loading && !error && treks.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {treks.map((trek) => (
-              <TrekCard
-                key={trek.slug || trek.id}
-                trek={trek}
-                region="langtang"
-              />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Highlights Section */}
-      <section className="bg-white py-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <h3 className="text-3xl font-semibold text-center text-gray-800 mb-10">
-            Why Choose Langtang?
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {highlights.map((h, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                className="flex flex-col items-center text-center p-6 bg-gradient-to-br from-green-50 to-green-200 rounded-xl shadow-lg"
+                transition={{ delay: i * 0.15, duration: 0.6 }}
+                className="text-center p-8 bg-gradient-to-br from-emerald-50 to-white rounded-2xl border border-emerald-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <img src={h.icon} alt={h.title} className="w-12 h-12 mb-4" />
-                <h4 className="text-xl font-medium mb-2 text-gray-900">
+                <div className="flex justify-center mb-6">
+                  {h.icon}
+                </div>
+                <h4 className="text-xl font-semibold mb-3 text-slate-900">
                   {h.title}
                 </h4>
-                <p className="text-gray-600">{h.desc}</p>
+                <p className="text-slate-600 leading-relaxed">{h.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Special Feature: Gosaikunda Lake Highlight */}
-      <section className="bg-gradient-to-r from-green-50 to-blue-50 py-16">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+      {/* Trek Cards Section - Enhanced */}
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-serif font-light text-slate-900 mb-4">
+              Explore Our Langtang Treks
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Discover pristine valleys, ancient monasteries, and welcoming Tamang villages just north of Kathmandu
+            </p>
+          </div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="text-center">
+                <Loader2 className="h-12 w-12 animate-spin text-emerald-600 mx-auto mb-4" />
+                <p className="text-slate-600 text-lg">Loading Langtang experiences...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {!loading && error && (
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="text-center max-w-md">
+                <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                  Unable to load treks
+                </h3>
+                <p className="text-slate-600 mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && treks.length === 0 && (
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="text-center">
+                <p className="text-slate-600 text-lg mb-6">
+                  No Langtang treks available at the moment. Check back soon.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-block px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-lg"
+                >
+                  Request Custom Trek
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* Trek Grid */}
+          {!loading && !error && treks.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {treks.map((trek) => (
+                <TrekCard
+                  key={trek.slug || trek.id}
+                  trek={trek}
+                  region="langtang"
+                />
+              ))}
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Special Feature: Gosaikunda Lake Highlight - Enhanced */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+              <div className="mb-4">
+                <Sparkles className="w-10 h-10 text-emerald-600" />
+              </div>
+              <h3 className="text-4xl md:text-5xl font-serif font-light text-slate-900 mb-6">
                 Sacred Gosaikunda Lake
               </h3>
-              <p className="text-gray-700 mb-4">
-                Trek to the sacred alpine lake of Gosaikunda (4,380m), revered by both Hindus 
-                and Buddhists. During the full moon festival of Janai Purnima, thousands of 
-                pilgrims visit this holy site.
+              <p className="text-lg text-slate-700 mb-6 leading-relaxed">
+                Journey to the sacred alpine lake of Gosaikunda (4,380m), revered by both Hindus 
+                and Buddhists as one of Nepal's most holy sites. During the full moon festival of 
+                Janai Purnima, thousands of pilgrims make this spiritual pilgrimage.
               </p>
-              <p className="text-gray-700">
-                The Langtang-Gosaikunda circuit combines stunning mountain scenery with deep 
-                spiritual significance, offering a unique blend of nature and culture.
+              <p className="text-lg text-slate-700 leading-relaxed">
+                The Langtang-Gosaikunda circuit seamlessly combines stunning mountain panoramas with 
+                profound spiritual significance, offering a unique blend of natural wonder and cultural depth.
               </p>
+              <Link
+                to="/contact"
+                className="inline-block mt-8 px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-lg"
+              >
+                Plan Gosaikunda Trek
+              </Link>
             </div>
-            <div className="relative h-64 md:h-full min-h-[300px] order-1 md:order-2">
+            <div className="relative h-96 md:h-full min-h-[400px] order-1 md:order-2">
               <img
-                src="/gosaikunda.jpg"
-                alt="Gosaikunda Lake"
-                className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-xl"
+                src="/gosainkunda.jpg"
+                alt="Sacred Gosaikunda Lake"
+                className="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-2xl"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="bg-green-50 py-16">
-        <div className="max-w-5xl mx-auto px-6">
-          <h3 className="text-3xl font-semibold text-gray-800 text-center mb-12">
-            What Our Trekkers Say
-          </h3>
-          <div className="grid md:grid-cols-2 gap-8">
+      {/* Testimonials Section - Enhanced */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="text-4xl md:text-5xl font-serif font-light text-slate-900 mb-4">
+              Trekker Experiences
+            </h3>
+            <p className="text-lg text-slate-600">Stories from the Langtang trails</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-10">
             {testimonials.map((t, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                className="bg-white p-8 rounded-xl shadow"
+                transition={{ delay: i * 0.2, duration: 0.6 }}
+                className="bg-white p-10 rounded-2xl shadow-lg border border-slate-200"
               >
-                <p className="italic text-gray-700 mb-4">"{t.text}"</p>
-                <h4 className="font-medium text-gray-900">{t.name}</h4>
-                <span className="text-sm text-gray-500">{t.date}</span>
+                <div className="mb-6">
+                  <Sparkles className="w-8 h-8 text-emerald-500" />
+                </div>
+                <p className="text-lg italic text-slate-700 mb-6 leading-relaxed">
+                  "{t.text}"
+                </p>
+                <div className="border-t border-slate-200 pt-6">
+                  <h4 className="font-semibold text-slate-900 text-lg">{t.name}</h4>
+                  <p className="text-sm text-slate-500 mt-1">{t.location}</p>
+                  <span className="text-sm text-emerald-600 mt-1 block">{t.date}</span>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
-        <h3 className="text-3xl font-semibold text-gray-900 text-center mb-8">
-          Frequently Asked Questions
-        </h3>
-        <div className="space-y-4">
-          {faqs.map((f, idx) => (
-            <div key={idx} className="border-b">
-              <button
-                onClick={() => setActiveFAQ(idx === activeFAQ ? null : idx)}
-                className="w-full flex justify-between items-center py-4 text-left text-gray-800 hover:text-green-600 transition-colors"
+      {/* FAQ Section - Enhanced */}
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="text-4xl md:text-5xl font-serif font-light text-slate-900 mb-4">
+              Frequently Asked Questions
+            </h3>
+            <p className="text-lg text-slate-600">Essential information for your Langtang journey</p>
+          </div>
+          
+          <div className="space-y-4">
+            {faqs.map((f, idx) => (
+              <div
+                key={idx}
+                className="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden"
               >
-                <span className="font-medium">{f.q}</span>
-                <span className="text-2xl text-green-600">
-                  {idx === activeFAQ ? "−" : "+"}
-                </span>
-              </button>
-              {idx === activeFAQ && (
-                <p className="pb-4 text-gray-600">{f.a}</p>
-              )}
-            </div>
-          ))}
+                <button
+                  onClick={() => setActiveFAQ(idx === activeFAQ ? null : idx)}
+                  className="w-full flex justify-between items-center p-6 text-left hover:bg-slate-100 transition-colors"
+                >
+                  <span className="font-semibold text-slate-900 text-lg pr-4">{f.q}</span>
+                  <span className="text-3xl text-emerald-600 flex-shrink-0">
+                    {idx === activeFAQ ? "−" : "+"}
+                  </span>
+                </button>
+                {idx === activeFAQ && (
+                  <div className="px-6 pb-6">
+                    <p className="text-slate-600 leading-relaxed">{f.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Inquiry CTA */}
-      <section className="bg-white py-16 border-t">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h3 className="text-3xl font-semibold text-gray-900 mb-4">
+      {/* Inquiry CTA - Enhanced */}
+      <section className="py-24 bg-gradient-to-br from-emerald-800 to-emerald-900">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h3 className="text-4xl md:text-5xl font-serif font-light text-white mb-6">
             Ready to Discover Langtang?
           </h3>
-          <p className="text-gray-600 mb-8">
-            Contact our trekking specialists to customize your perfect Langtang
-            adventure. We're here to help plan your journey!
+          <p className="text-xl text-emerald-100 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Our trekking specialists are ready to customize your perfect Langtang adventure. 
+            Let us help you create memories that last a lifetime.
           </p>
-          <Link
-            to="/contact"
-            className="inline-block px-8 py-3 bg-green-500 text-white font-medium rounded-full shadow hover:bg-green-600 transition"
-          >
-            Plan My Trek
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="inline-block px-10 py-4 bg-white text-emerald-900 font-medium rounded-full shadow-xl hover:bg-emerald-50 transition-all duration-300 hover:scale-105"
+            >
+              Plan My Trek
+            </Link>
+            <Link
+              to="/treks"
+              className="inline-block px-10 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-full border-2 border-white/30 hover:bg-white/20 transition-all duration-300"
+            >
+              View All Regions
+            </Link>
+          </div>
         </div>
       </section>
     </div>

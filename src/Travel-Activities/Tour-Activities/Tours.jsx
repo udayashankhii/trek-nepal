@@ -155,7 +155,7 @@ export default function Tours() {
 
       <section className="relative min-h-[60vh] mb-12 overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=2000&q=80"
+          src="/tours"
           alt="Travel activities hero"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />

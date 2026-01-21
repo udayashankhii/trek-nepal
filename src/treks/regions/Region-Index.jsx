@@ -7,14 +7,14 @@ const regions = [
   {
     slug: "everest",
     name: "Everest Region Trekking",
-    image: "/everest.jpeg",
+    image: "/everest.jpg",
     itinerariesCount: 22,
     description: "Classic EBC routes with Sherpa villages & stunning icefalls",
   },
   {
     slug: "annapurna",
     name: "Annapurna Region Trekking",
-    image: "/annapurna.jpeg",
+    image: "/annapurna.jpg",
     itinerariesCount: 24,
     description:
       "Diverse Annapurna Circuit, Poon Hill sunrise & tea-house comfort",
@@ -22,17 +22,24 @@ const regions = [
   {
     slug: "langtang",
     name: "Langtang Region Trekking",
-    image: "/images/langtang-region.jpg",
+    image: "/langtang.jpg",
     itinerariesCount: 7,
     description: "Remote alpine valleys with rich Tamang cultural experiences",
   },
   {
     slug: "mustang",
-    name: "Upper Mustang",
-    image: "/images/mustang-region.jpg",
+    name: "Mustang Trekking",
+    image: "/mustang.jpg",
     itinerariesCount: 5,
     description:
       "Ancient desert kingdom & Tibetan-style villages behind the Himalaya",
+  },
+   {
+    slug: "manaslu",
+    name: "Manaslu Region Trekking",
+    image: "/manaslu.jpg",
+    itinerariesCount: 8,
+    description: "Diverse landscapes with ancient monasteries and pristine mountain views",
   },
 ];
 

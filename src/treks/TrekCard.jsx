@@ -4,6 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Star, MapPin, Clock, Users, Mountain } from "lucide-react";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
+
 
 export default function TrekCard({ 
   trek, 
@@ -67,16 +69,25 @@ export default function TrekCard({
   };
 
   return (
-    <Link to={`/treks/${trekRegion}/${trekSlug}`} className="block group">
-      <div className="bg-white rounded-xl shadow-md overflow-hidden group-hover:shadow-xl transition-shadow duration-300">
+ <Link to={`/treks/${trekRegion}/${trekSlug}`} className="block group">
+      <motion.div
+        whileHover={{ y: -4 }}
+        whileTap={{ scale: 0.99 }}
+        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+        className="bg-white/80 backdrop-blur-md rounded-2xl overflow-hidden
+                   border border-slate-200/70 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)]
+                   group-hover:shadow-[0_18px_50px_-22px_rgba(15,23,42,0.50)]
+                   transition-shadow"
+      >
         <div className="relative h-48 w-full">
           <img
             src={trekImage}
             alt={trekTitle}
-            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
+            className="object-cover w-full h-full scale-[1.01] group-hover:scale-105
+                       transition-transform duration-500 ease-out"
             onError={(e) => {
-              e.target.src = "/fallback.jpg";
+              e.currentTarget.src = "/fallback.jpg";
             }}
           />
           
@@ -192,7 +203,7 @@ export default function TrekCard({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }
