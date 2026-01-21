@@ -1,5 +1,5 @@
 // src/trekkingpage/DatesAndPrice.jsx
-import React, { useState, useMemo, forwardRef } from "react";
+import React, { useState, useMemo, useEffect, forwardRef } from "react";
 import dayjs from "dayjs";
 import { ChevronLeft, ChevronRight, User, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -38,11 +38,12 @@ const DatesAndPrice = forwardRef(
     },
     ref
   ) => {
-    const [selectedMonth, setSelectedMonth] = useState(dayjs().month());
-    const [selectedTab, setSelectedTab] = useState("group"); // "group" or "private"
+    // ✅ STATE: Initialize to null, will be set by useEffect
+    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [selectedTab, setSelectedTab] = useState("group");
     const navigate = useNavigate();
 
-    // Memoized normalized dates from API
+    // ✅ Memoized normalized dates from API
     const normalizedDates = useMemo(() => {
       if (!Array.isArray(dates) || dates.length === 0) {
         return [];
@@ -65,7 +66,7 @@ const DatesAndPrice = forwardRef(
         .filter(Boolean);
     }, [dates]);
 
-    // Normalized group prices
+    // ✅ Normalized group prices
     const normalizedGroupPrices = useMemo(() => {
       if (!Array.isArray(groupPrices) || groupPrices.length === 0) {
         return DEFAULT_GROUP_PRICES;
@@ -84,7 +85,7 @@ const DatesAndPrice = forwardRef(
         .sort((a, b) => a.size - b.size);
     }, [groupPrices]);
 
-    // Memoized months dropdown
+    // ✅ Memoized available months
     const availableMonths = useMemo(() => {
       if (normalizedDates.length === 0) return [dayjs().month()];
       const monthsSet = new Set(
@@ -93,17 +94,30 @@ const DatesAndPrice = forwardRef(
       return Array.from(monthsSet).sort((a, b) => a - b);
     }, [normalizedDates]);
 
+    // ✅ AUTO-SELECT first available month when data loads
+    useEffect(() => {
+      if (selectedMonth === null && availableMonths.length > 0) {
+        setSelectedMonth(availableMonths[0]);
+      } else if (selectedMonth !== null && !availableMonths.includes(selectedMonth)) {
+        // If current selection is invalid, switch to first available
+        setSelectedMonth(availableMonths[0]);
+      }
+    }, [availableMonths, selectedMonth]);
+
+    // ✅ Filtered departures by selected month
     const filteredDepartures = useMemo(() => {
+      if (selectedMonth === null) return [];
       return normalizedDates.filter(
         (d) => dayjs(d.start).month() === selectedMonth
       );
     }, [normalizedDates, selectedMonth]);
 
+    // Navigation helpers
     const canGoPrevMonth = availableMonths.indexOf(selectedMonth) > 0;
     const canGoNextMonth =
       availableMonths.indexOf(selectedMonth) < availableMonths.length - 1;
 
-    // Event handlers
+    // ✅ Event handlers
     const handlePrevMonth = () => {
       const currentIndex = availableMonths.indexOf(selectedMonth);
       if (currentIndex > 0) setSelectedMonth(availableMonths[currentIndex - 1]);
@@ -137,24 +151,22 @@ const DatesAndPrice = forwardRef(
         trekId: trekId,
       };
       if (trekId) {
-    navigate(`/trek-booking?trek_slug=${trekId}`, { state: bookingData });
+        navigate(`/trek-booking?trek_slug=${trekId}`, { state: bookingData });
       } else {
         navigate("/trek-booking", { state: bookingData });
       }
     };
 
-    // Change line where handleCustomizeTrek is defined (around line 125)
-const handleCustomizeTrek = () => {
-  if (trekId) {
-    navigate(`/customize-trek?trek_id=${trekId}`);
-  } else {
-    console.error("Trek ID is missing");
-    alert("Trek information is not available. Please select a trek first.");
-  }
-};
+    const handleCustomizeTrek = () => {
+      if (trekId) {
+        navigate(`/customize-trek?trek_id=${trekId}`);
+      } else {
+        console.error("Trek ID is missing");
+        alert("Trek information is not available. Please select a trek first.");
+      }
+    };
 
-
-    // -- MAIN RENDER, always layout, sidebar and action visible! --
+    // ✅ RENDER
     return (
       <section
         ref={ref}
@@ -204,6 +216,7 @@ const handleCustomizeTrek = () => {
                 </button>
               </div>
             </header>
+
             <div className="mb-4 text-gray-700">
               <p className="mb-2">
                 <span className="font-semibold">Start Dates</span> refer to your
@@ -212,6 +225,7 @@ const handleCustomizeTrek = () => {
                 your return date from Nepal.
               </p>
             </div>
+
             <div className="mb-6 text-gray-700">
               <p>
                 The {trekName} set departure dates are tailored for the group
@@ -219,6 +233,7 @@ const handleCustomizeTrek = () => {
                 we can arrange alternative dates that better suit your needs.
               </p>
             </div>
+
             {/* Month Navigation */}
             <div
               className="flex items-center gap-2 mb-6"
@@ -266,7 +281,8 @@ const handleCustomizeTrek = () => {
                 <ChevronRight className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-            {/* Departure Cards OR Fallback */}
+
+            {/* Departure Cards */}
             <div
               className="space-y-4"
               role="region"
@@ -289,7 +305,6 @@ const handleCustomizeTrek = () => {
                     className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4"
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      {/* Date Information */}
                       <div className="flex flex-col md:flex-row md:items-center gap-4 flex-1">
                         <div>
                           <div className="text-sm text-gray-500 font-medium">
@@ -321,7 +336,6 @@ const handleCustomizeTrek = () => {
                           </span>
                         </div>
                       </div>
-                      {/* Pricing and Booking */}
                       <div className="flex flex-col md:flex-row md:items-center gap-4">
                         <div className="text-right">
                           <div className="text-lg font-bold text-blue-700">
@@ -345,7 +359,8 @@ const handleCustomizeTrek = () => {
               )}
             </div>
           </div>
-          {/* Sidebar is always visible */}
+
+          {/* Sidebar */}
           <aside className="w-full lg:w-80 flex flex-col gap-6">
             {/* Group Pricing */}
             {normalizedGroupPrices.length > 0 && (
@@ -368,7 +383,8 @@ const handleCustomizeTrek = () => {
                 </ul>
               </div>
             )}
-            {/* Company Highlights */}
+
+            {/* Highlights */}
             {highlights.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
                 <div className="font-bold text-lg mb-1 text-gray-900">
@@ -393,7 +409,7 @@ const handleCustomizeTrek = () => {
                 </ul>
               </div>
             )}
-            {/* Custom Trip Button */}
+
             <button
               onClick={handleCustomizeTrek}
               className="w-full bg-blue-900 text-white py-4 rounded-lg font-semibold shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-lg"

@@ -1,280 +1,469 @@
 // src/trekkingpage/ElevationChart.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
-  ResponsiveContainer,
   AreaChart,
   Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
   ReferenceLine,
   Label,
 } from "recharts";
 import {
-  ArrowTrendingUpIcon,
   ArrowsPointingOutIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 
 export default function ElevationChart({
-  title = "Elevation Chart",
-  subtitle = "Detailed Elevation and Duration Chart",
-  elevationData = [], // default empty array
+  title = "Elevation Profile",
+  subtitle = "Day-by-day altitude progression",
+  elevationData = [],
   trekName,
-  colorScheme = {
-    primary: "#38bdf8",
-    secondary: "#0ea5e9",
-    text: "#0c4a6e",
-    accent: "#60a5fa",
-  },
   showFullscreen = true,
 }) {
-  // guard against undefined or empty data
   const data = Array.isArray(elevationData) ? elevationData : [];
-  if (data.length === 0) {
-    return null;
-  }
+  if (data.length === 0) return null;
 
-  // state hooks
   const [activePoint, setActivePoint] = useState(null);
-  const [, setScreenSize] = useState({ width: 0, height: 0 });
-
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [hoveredStat, setHoveredStat] = useState(null);
   const chartRef = useRef(null);
 
-  // update screen size
-  useEffect(() => {
-    const updateScreenSize = () => {
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-    window.addEventListener("resize", updateScreenSize);
-    updateScreenSize();
-    return () => window.removeEventListener("resize", updateScreenSize);
-  }, []);
+  // Calculate comprehensive statistics
+  const stats = useMemo(() => {
+    const elevations = data.map((d) => d.elevation || 0);
+    const max = Math.max(...elevations);
+    const min = Math.min(...elevations);
+    
+    let totalAscent = 0;
+    let totalDescent = 0;
+    
+    for (let i = 1; i < data.length; i++) {
+      const diff = data[i].elevation - data[i - 1].elevation;
+      if (diff > 0) totalAscent += diff;
+      else totalDescent += Math.abs(diff);
+    }
 
-  // fullscreen toggle
+    return {
+      max,
+      min,
+      totalAscent: Math.round(totalAscent),
+      totalDescent: Math.round(totalDescent),
+      highestPoint: data.find((d) => d.elevation === max),
+    };
+  }, [data]);
+
+  // Fullscreen handlers
   const toggleFullscreen = () => {
     if (!chartRef.current) return;
     if (!isFullscreen) {
-      chartRef.current.requestFullscreen?.() ||
-        chartRef.current.webkitRequestFullscreen?.();
-      setIsFullscreen(true);
+      chartRef.current.requestFullscreen?.() || chartRef.current.webkitRequestFullscreen?.();
     } else {
       document.exitFullscreen?.() || document.webkitExitFullscreen?.();
-      setIsFullscreen(false);
     }
   };
 
-  // listen for fullscreen changes
   useEffect(() => {
     const handleFSChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handleFSChange);
-    document.addEventListener("webkitfullscreenchange", handleFSChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFSChange);
-      document.removeEventListener("webkitfullscreenchange", handleFSChange);
-    };
+    return () => document.removeEventListener("fullscreenchange", handleFSChange);
   }, []);
 
-  // elevation extents
-  const elevations = data.map((d) => d.elevation || 0);
-  const maxElevation = Math.max(...elevations);
-  const minElevation = Math.min(...elevations);
-  const highestPoint = data.find((d) => d.elevation === maxElevation);
+  // Premium Tooltip Component
+  const PremiumTooltip = ({ active, payload }) => {
+    if (!active || !payload?.[0]) return null;
 
-  // format meters
-  const formatMeter = (m) => `${m}m`;
+    const { day, title: dayTitle, elevation, description } = payload[0].payload;
+    const prevDay = data[day - 2];
+    const elevationChange = prevDay ? elevation - prevDay.elevation : 0;
 
-  // custom tooltip
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const {
-        day,
-        title: dayTitle,
-        elevation,
-        description,
-      } = payload[0].payload;
-      return (
-        <div className="backdrop-blur-md bg-white/90 shadow-lg rounded-lg p-3 border border-sky-100">
-          <h4 className="font-medium text-sky-800 mb-1">
-            Day {day}: {dayTitle}
-          </h4>
-          <div className="flex items-center text-sky-600 font-bold">
-            <ArrowTrendingUpIcon className="h-4 w-4 mr-1" />
-            <span>{formatMeter(elevation)}</span>
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white/98 backdrop-blur-2xl shadow-2xl rounded-2xl p-5 border border-gray-200/50 max-w-sm"
+        style={{ boxShadow: '0 20px 60px -10px rgba(0, 0, 0, 0.2)' }}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+              Day {day}
+            </p>
+            <h4 className="text-lg font-bold text-gray-900">
+              {dayTitle}
+            </h4>
           </div>
-          {description && (
-            <p className="text-xs text-gray-500 mt-1 max-w-xs">{description}</p>
-          )}
+          <div className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-br from-blue-50 to-sky-50 rounded-xl border border-blue-100">
+            <ChartBarIcon className="h-4 w-4 text-blue-600" />
+            <span className="text-base font-extrabold text-blue-700">
+              {elevation.toLocaleString()}m
+            </span>
+          </div>
         </div>
-      );
-    }
-    return null;
+        
+        {elevationChange !== 0 && (
+          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+            elevationChange > 0 
+              ? 'bg-emerald-50 border border-emerald-200' 
+              : 'bg-orange-50 border border-orange-200'
+          }`}>
+            <span className="text-xs font-semibold text-gray-600">
+              {elevationChange > 0 ? 'Ascent' : 'Descent'}:
+            </span>
+            <span className={`text-sm font-bold ${
+              elevationChange > 0 ? 'text-emerald-700' : 'text-orange-700'
+            }`}>
+              {elevationChange > 0 ? '+' : ''}{elevationChange.toLocaleString()}m
+            </span>
+          </div>
+        )}
+        
+        {description && (
+          <p className="text-xs text-gray-600 mt-3 leading-relaxed pt-3 border-t border-gray-100">
+            {description}
+          </p>
+        )}
+      </motion.div>
+    );
   };
 
-  // mouse events
-  const handleMouseMove = (props) => {
-    if (props?.activePayload) setActivePoint(props.activePayload[0].payload);
-  };
-  const handleMouseLeave = () => setActivePoint(null);
+  // Chart domain with smart padding
+  const yDomain = [
+    Math.floor(stats.min / 500) * 500 - 300,
+    Math.ceil(stats.max / 500) * 500 + 300,
+  ];
 
   return (
     <motion.section
       ref={chartRef}
-      className="relative bg-white rounded-3xl shadow-xl overflow-hidden my-12 mx-auto w-full max-w-5xl"
-      
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="relative bg-white rounded-3xl shadow-xl overflow-hidden my-20 mx-auto w-full max-w-7xl border border-gray-100"
     >
-      <div className="p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+      {/* Premium Header */}
+      <div className="relative px-8 sm:px-12 pt-10 pb-8 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.05),transparent_50%)]" />
+        
+        <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div className="flex-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100/60 rounded-full mb-4"
+            >
+              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide">
+                Trek Analysis
+              </span>
+            </motion.div>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 tracking-tight"
+            >
               {title}
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600">
+            </motion.h2>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-base text-gray-600 font-medium"
+            >
               {subtitle}
-              {trekName && ` of the ${trekName}`}
-            </p>
+              {trekName && (
+                <span className="text-gray-800 font-semibold"> · {trekName}</span>
+              )}
+            </motion.p>
           </div>
+
           {showFullscreen && (
-            <button
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ delay: 0.5 }}
               onClick={toggleFullscreen}
-              className="mt-2 sm:mt-0 flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-sky-700 transition"
+              className="inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 border border-blue-400/20"
             >
               <ArrowsPointingOutIcon className="h-5 w-5" />
-              <span>
-                {isFullscreen ? "Exit Fullscreen" : "View Fullscreen"}
-              </span>
-            </button>
+              <span className="text-sm">{isFullscreen ? "Exit Fullscreen" : "Fullscreen View"}</span>
+            </motion.button>
           )}
         </div>
-        <div className="h-[400px] sm:h-[500px]">
+      </div>
+
+      {/* Premium Stats Grid */}
+      <div className="px-8 sm:px-12 py-8 bg-gradient-to-br from-gray-50/80 via-white to-gray-50/80 border-y border-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <PremiumStatCard
+            label="Highest Point"
+            value={stats.max.toLocaleString()}
+            unit="m"
+            subtext={stats.highestPoint?.title}
+            icon="🏔️"
+            gradient="from-blue-500 to-cyan-500"
+            delay={0.1}
+            onHover={() => setHoveredStat('max')}
+            onLeave={() => setHoveredStat(null)}
+            isActive={hoveredStat === 'max'}
+          />
+          <PremiumStatCard
+            label="Total Ascent"
+            value={stats.totalAscent.toLocaleString()}
+            unit="m"
+            subtext="Cumulative elevation gain"
+            icon="📈"
+            gradient="from-emerald-500 to-green-500"
+            delay={0.2}
+            onHover={() => setHoveredStat('ascent')}
+            onLeave={() => setHoveredStat(null)}
+            isActive={hoveredStat === 'ascent'}
+          />
+          <PremiumStatCard
+            label="Total Descent"
+            value={stats.totalDescent.toLocaleString()}
+            unit="m"
+            subtext="Cumulative elevation loss"
+            icon="📉"
+            gradient="from-orange-500 to-amber-500"
+            delay={0.3}
+            onHover={() => setHoveredStat('descent')}
+            onLeave={() => setHoveredStat(null)}
+            isActive={hoveredStat === 'descent'}
+          />
+          <PremiumStatCard
+            label="Trek Duration"
+            value={data.length}
+            unit="Days"
+            subtext="Complete journey"
+            icon="⏱️"
+            gradient="from-purple-500 to-indigo-500"
+            delay={0.4}
+            onHover={() => setHoveredStat('duration')}
+            onLeave={() => setHoveredStat(null)}
+            isActive={hoveredStat === 'duration'}
+          />
+        </div>
+      </div>
+
+      {/* Premium Chart Container */}
+      <div className="px-8 sm:px-12 py-10 bg-white">
+        <div className="relative h-[500px] sm:h-[600px] bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100 shadow-inner">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data}
-              margin={{ top: 20, right: 30, left: 0, bottom: 60 }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              margin={{ top: 40, right: 50, left: 20, bottom: 80 }}
+              onMouseMove={(e) => e?.activePayload && setActivePoint(e.activePayload[0].payload)}
+              onMouseLeave={() => setActivePoint(null)}
             >
               <defs>
-                <linearGradient id="colorElev" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={colorScheme.primary}
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor={colorScheme.primary}
-                    stopOpacity={0.2}
-                  />
+                {/* Premium Multi-Stop Gradient */}
+                <linearGradient id="premiumElevation" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.9} />
+                  <stop offset="30%" stopColor="#60a5fa" stopOpacity={0.6} />
+                  <stop offset="60%" stopColor="#93c5fd" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#dbeafe" stopOpacity={0.1} />
                 </linearGradient>
+                
+                {/* Shadow Filter */}
+                <filter id="premiumShadow">
+                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.15" />
+                </filter>
               </defs>
+
               <CartesianGrid
                 strokeDasharray="3 3"
+                stroke="#e5e7eb"
+                strokeOpacity={0.5}
                 vertical={false}
-                stroke="#f1f5f9"
               />
+
               <XAxis
                 dataKey="day"
-                tick={{ fontSize: 12 }}
-                tickMargin={10}
-                axisLine={{ stroke: "#cbd5e1" }}
+                tick={{ fill: "#6b7280", fontSize: 14, fontWeight: 600 }}
+                tickMargin={20}
+                axisLine={{ stroke: "#d1d5db", strokeWidth: 2 }}
+                tickLine={false}
               >
                 <Label
-                  value="DAYS"
-                  offset={0}
+                  value="TREK DAYS"
                   position="bottom"
+                  offset={30}
                   style={{
-                    textAnchor: "middle",
-                    fill: "#64748b",
-                    fontWeight: 500,
-                    fontSize: 14,
+                    fill: "#374151",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    letterSpacing: "0.1em",
                   }}
                 />
               </XAxis>
+
               <YAxis
-                domain={[
-                  Math.floor(minElevation / 1000) * 1000,
-                  Math.ceil(maxElevation / 1000) * 1000,
-                ]}
-                tick={{ fontSize: 12 }}
-                tickFormatter={formatMeter}
-                width={60}
-                axisLine={{ stroke: "#cbd5e1" }}
+                domain={yDomain}
+                tick={{ fill: "#6b7280", fontSize: 14, fontWeight: 600 }}
+                tickFormatter={(m) => `${(m / 1000).toFixed(1)}k`}
+                width={80}
+                axisLine={{ stroke: "#d1d5db", strokeWidth: 2 }}
+                tickLine={false}
               >
                 <Label
+                  value="ELEVATION (METERS)"
                   angle={-90}
-                  value="HEIGHT IN METERS"
                   position="insideLeft"
+                  offset={15}
                   style={{
-                    textAnchor: "middle",
-                    fill: "#64748b",
-                    fontWeight: 500,
-                    fontSize: 14,
+                    fill: "#374151",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    letterSpacing: "0.1em",
                   }}
                 />
               </YAxis>
-              <Tooltip content={<CustomTooltip />} />
+
+              <Tooltip
+                content={<PremiumTooltip />}
+                cursor={{
+                  stroke: "#3b82f6",
+                  strokeWidth: 2,
+                  strokeDasharray: "6 4",
+                }}
+              />
+
+              {/* Main Elevation Area */}
               <Area
                 type="monotone"
                 dataKey="elevation"
-                stroke={colorScheme.secondary}
-                strokeWidth={3}
-                fillOpacity={1}
-                fill="url(#colorElev)"
-                animationDuration={1500}
+                stroke="#2563eb"
+                strokeWidth={4}
+                fill="url(#premiumElevation)"
+                animationDuration={2500}
+                animationEasing="ease-out"
+                filter="url(#premiumShadow)"
               />
-              {highestPoint && (
+
+              {/* Peak Marker */}
+              {stats.highestPoint && (
                 <ReferenceLine
-                  x={highestPoint.day}
-                  stroke={colorScheme.accent}
-                  strokeDasharray="3 3"
-                  strokeWidth={2}
+                  x={stats.highestPoint.day}
+                  stroke="#3b82f6"
+                  strokeWidth={3}
+                  strokeDasharray="8 4"
                 >
                   <Label
-                    value={`Peak (${highestPoint.elevation}m)`}
+                    value={`🏔️ Peak: ${stats.highestPoint.elevation.toLocaleString()}m`}
                     position="top"
-                    fill={colorScheme.text}
-                    fontSize={12}
-                    fontWeight={600}
+                    fill="#1e40af"
+                    fontSize={14}
+                    fontWeight={700}
+                    offset={20}
                   />
                 </ReferenceLine>
               )}
+
+              {/* Active Point Marker */}
               {activePoint && (
                 <ReferenceLine
                   x={activePoint.day}
-                  stroke={colorScheme.accent}
-                  strokeWidth={2}
-                  strokeDasharray="3 3"
+                  stroke="#f59e0b"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
                 />
               )}
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {/* Legend */}
-        <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 mt-4 text-sm text-gray-600">
-          <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
-            <span>Elevation</span>
-          </div>
-          <div className="flex items-center">
-            <span className="w-4 h-0.5 bg-blue-400 mr-2 relative">
-              <span className="absolute w-1 h-1 rounded-full bg-blue-500 left-0 top-1/2 transform -translate-y-1/2"></span>
-              <span className="absolute w-1 h-1 rounded-full bg-blue-500 right-0 top-1/2 transform -translate-y-1/2"></span>
-            </span>
-            <span>Trek route</span>
-          </div>
-          <div className="flex items-center">
-            <span className="w-4 h-0.5 bg-blue-600 mr-2 relative dashed-line"></span>
-            <span>Notable points</span>
-          </div>
+      </div>
+
+      {/* Premium Legend */}
+      <div className="px-8 sm:px-12 pb-10 bg-white">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
+          <LegendItem icon="📊" label="Elevation Profile" color="bg-gradient-to-r from-blue-500 to-blue-600" />
+          <LegendItem icon="🎯" label="Current Position" color="bg-orange-500" dashed />
+          <LegendItem icon="⛰️" label="Peak Point" color="bg-blue-600" dashed />
+          <LegendItem icon="📈" label="Ascending Path" color="bg-gradient-to-r from-emerald-400 to-green-500" />
         </div>
       </div>
     </motion.section>
+  );
+}
+
+// Premium Stat Card Component
+function PremiumStatCard({ label, value, unit, subtext, icon, gradient, delay, onHover, onLeave, isActive }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -8, scale: 1.03 }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`relative bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 overflow-hidden group ${
+        isActive ? 'border-blue-400 ring-4 ring-blue-100' : 'border-gray-100'
+      }`}
+    >
+      {/* Background Gradient on Hover */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+      
+      <div className="relative">
+        <div className="flex items-start justify-between mb-3">
+          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+            {icon}
+          </div>
+        </div>
+        
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+          {label}
+        </p>
+        
+        <div className="flex items-baseline gap-1 mb-1">
+          <p className="text-3xl font-extrabold text-gray-900">
+            {value}
+          </p>
+          <span className="text-lg font-bold text-gray-500">
+            {unit}
+          </span>
+        </div>
+        
+        {subtext && (
+          <p className="text-xs text-gray-600 truncate mt-1 font-medium">
+            {subtext}
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+// Premium Legend Item
+function LegendItem({ icon, label, color, dashed }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-default"
+    >
+      <span className="text-lg">{icon}</span>
+      {dashed ? (
+        <div className="flex gap-1">
+          {[...Array(3)].map((_, i) => (
+            <span key={i} className={`w-1.5 h-1.5 rounded-full ${color}`} />
+          ))}
+        </div>
+      ) : (
+        <span className={`block w-10 h-3 rounded-full ${color} shadow-sm`} />
+      )}
+      <span className="text-sm font-semibold text-gray-700">{label}</span>
+    </motion.div>
   );
 }
