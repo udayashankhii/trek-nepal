@@ -158,36 +158,40 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden lg:flex space-x-1 items-center">
             {/* TREKKING IN NEPAL */}
-            <div
-              className="relative dropdown-container"
-              onMouseEnter={() => handleMouseEnter("trekking")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <button
-                type="button"
-                className={navItemStyles(isTrekkingSection)}
-                onClick={() => {
-                  handleDropdownClick("trekking");
-                  navigate("/trekking-in-nepal");
-                }}
-              >
-                TREKKING IN NEPAL
-                <ChevronDown
-                  size={16}
-                  className={`ml-1 transition-transform duration-200 ${
-                    activeDropdown === "trekking" ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
 
+<div
+  className="relative dropdown-container"
+  onMouseEnter={() => handleMouseEnter("trekking")}
+  onMouseLeave={handleMouseLeave}
+>
+  <button
+    type="button"
+    className={navItemStyles(isTrekkingSection)}
+    onClick={() => {
+      handleDropdownClick("trekking");
+      navigate("/trekking-in-nepal");
+    }}
+  >
+    TREKKING IN NEPAL
+    <ChevronDown
+      size={16}
+      className={`ml-1 transition-transform duration-200 ${
+        activeDropdown === "trekking" ? "rotate-180" : ""
+      }`}
+    />
+  </button>
 
-              {getDropdownVisibility("trekking").shouldRender && (
-                <TrekkingDropdown
-                  isOpen={getDropdownVisibility("trekking").isActive}
-                />
-              )}
-            </div>
-
+  {getDropdownVisibility("trekking").shouldRender && (
+    <TrekkingDropdown
+      isOpen={getDropdownVisibility("trekking").isActive}
+      onNavigate={() => {
+        setActiveDropdown(null);
+        setStickyDropdown(null);
+        setIsTransitioning(false);
+      }}
+    />
+  )}
+</div>
 
             {/* TOURS IN NEPAL */}
             <div
