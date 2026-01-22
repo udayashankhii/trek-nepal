@@ -200,7 +200,7 @@ const DatesAndPrice = forwardRef(
                   <Users className="w-4 h-4" aria-hidden="true" />
                   Group Joining
                 </button>
-                <button
+                {/* <button
                   role="tab"
                   aria-selected={selectedTab === "private"}
                   aria-controls="private-content"
@@ -213,7 +213,7 @@ const DatesAndPrice = forwardRef(
                 >
                   <User className="w-4 h-4" aria-hidden="true" />
                   Private Trip
-                </button>
+                </button> */}
               </div>
             </header>
 

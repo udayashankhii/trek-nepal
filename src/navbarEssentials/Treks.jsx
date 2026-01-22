@@ -65,7 +65,6 @@ export default function Treks({ onNavigate }) {
               trek.area,
               trek.title,
             ].filter(Boolean);
-
             const normalizedTrekRegions = trekRegionFields.map(field => 
               field.toLowerCase().replace(/[\s-_]/g, "")
             );
@@ -136,10 +135,12 @@ export default function Treks({ onNavigate }) {
   }
 
   return (
-  <div className="w-full overflow-x-hidden px-6 md:px-8 lg:px-12">
+<div className="w-full overflow-x-hidden px-3 sm:px-4 md:px-5">
+
 
       {/* Desktop: Grid Layout - All Expanded */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-4 xl:gap-6">
+     <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+
         {STATIC_REGIONS.map((region) => {
           const list = treksByRegion[region.name] || [];
           return (

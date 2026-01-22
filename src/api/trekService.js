@@ -59,8 +59,12 @@ export const fetchAllTreks = async (filters = {}, useCache = true) => {
         ? { ...filters }
         : {};
 
+      // ✅ FIX: Add limit parameter to fetch all treks
       const response = await axiosInstance.get("/treks/", { 
-        params: Object.keys(cleanFilters).length > 0 ? cleanFilters : undefined 
+        params: { 
+          limit: 100,  // ← ADD THIS LINE
+          ...cleanFilters 
+        }
       });
       const data = response.data;
 
@@ -86,6 +90,7 @@ export const fetchAllTreks = async (filters = {}, useCache = true) => {
     }
   });
 };
+
 
 export const fetchTrek = async (trekSlug, useCache = true) => {
   const cacheKey = getCacheKey("trek_detail", { slug: trekSlug });

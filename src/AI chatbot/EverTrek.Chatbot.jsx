@@ -179,7 +179,7 @@ const EverTrekChatbot = () => {
             ? "bg-emerald-600 hover:bg-emerald-700 scale-105 ring-4 ring-emerald-400/50"
             : "bg-[#0F2A44] hover:bg-[#14385C]"
         }`}
-        aria-label={isOpen ? "Close EverTrek AI" : "Open EverTrek AI"}
+        aria-label={isOpen ? "Close EverTrek Chatbot" : "Open EverTrek Chatbot"}
         aria-expanded={isOpen}
       >
         {/* Logo wrapper */}
@@ -218,7 +218,7 @@ const EverTrekChatbot = () => {
               </div>
               <div className="min-w-0">
                 <h3 className="font-bold text-lg text-[#0F2A44] truncate">
-                  EverTrek AI
+                  EverTrek Chatbot
                 </h3>
                 <p className="text-xs text-[#1F7A63] flex items-center gap-1">
                   <MapPin className="w-3 h-3 flex-shrink-0" />
@@ -305,7 +305,7 @@ const EverTrekChatbot = () => {
                   />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">EverTrek AI</p>
+                  <p className="font-medium text-sm">EverTrek Chatbot</p>
                   <p className="text-xs opacity-90">3 new messages</p>
                 </div>
               </div>

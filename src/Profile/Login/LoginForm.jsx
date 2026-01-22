@@ -98,8 +98,8 @@ export default function LoginForm({ onClose, onSuccess }) {
         {/* Header Section - Responsive sizing */}
         <div className="text-center mb-4 sm:mb-6">
           <img
-            src="/logo7.webp"
-            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-2 sm:mb-3"
+            src="/log.webp"
+            className="w-20 h-15 sm:w-18 sm:h-15 md:w-16 md:h-16 mx-auto mb-2 sm:mb-3"
             alt="EverTrek Nepal Logo"
             loading="lazy"
           />

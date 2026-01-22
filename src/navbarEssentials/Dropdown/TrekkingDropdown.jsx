@@ -11,24 +11,22 @@ export default function TrekkingDropdown({ isOpen, onNavigate }) {
       }`}
       style={{
         width: "min(1280px, calc(100vw - 2rem))",
-        maxWidth: "1280px",
+        maxWidth: "1080px",
         maxHeight: "calc(80vh - 2rem)",
         marginTop: "0.5rem",
         pointerEvents: isOpen ? "auto" : "none",
       }}
     >
       <div 
-        className="p-4 sm:p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-500"
+        className="p-3 sm:p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-500"
         style={{
           maxHeight: "calc(80vh - 3rem)",
           scrollbarWidth: "thin",
           scrollbarColor: "#cbd5e0 #f7fafc",
         }}
       >
-        {/* Increased padding for more right shift */}
-        <div className="px-4 sm:px-6 md:px-8">
-          <Treks onNavigate={onNavigate} />
-        </div>
+        {/* Removed the extra padding div - Treks component handles its own padding */}
+        <Treks onNavigate={onNavigate} />
       </div>
       
       {/* CSS for webkit scrollbar */}

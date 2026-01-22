@@ -1,38 +1,86 @@
-
 // src/components/treks/TrekCard.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Star, MapPin, Clock, Users, Mountain } from "lucide-react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
+import { fetchTrekBookingCard } from "../api/trekService";
 
-
-export default function TrekCard({ 
-  trek, 
-  region, 
-  variant = "compact", 
-  showDetails = false 
+export default function TrekCard({
+  trek,
+  region,
+  variant = "compact",
+  showDetails = false
 }) {
-  // Extract data EXACTLY like TrekDetailPage does
   const trekSlug = trek.slug;
   const trekTitle = trek.title || trek.name;
-  
-  // Image handling - match TrekDetailPage: hero.imageUrl OR card_image_url
   const trekImage = trek.hero?.imageUrl || trek.card_image_url || trek.image || "/fallback.jpg";
-  
-  // Region handling - match TrekDetailPage
   const trekRegion = region || trek.region || "everest";
-  
-  // Rating and reviews
   const trekRating = Number(trek.rating) || 0;
   const reviewCount = Number(trek.reviews) || trek.reviewCount || 0;
-  
-  // Price handling - match TrekDetailPage's booking_card structure
+
+  // ===== FRONTEND-ONLY PRICE FIX =====
+  const parsePrice = (value) => {
+    if (value === null || value === undefined || value === '') return 0;
+
+    if (typeof value === 'string') {
+      const cleaned = value.replace(/[^0-9.]/g, '');
+      const num = parseFloat(cleaned);
+      return isNaN(num) ? 0 : num;
+    }
+
+    const num = Number(value);
+    return isNaN(num) ? 0 : num;
+  };
+
   const bookingCard = trek.booking_card || {};
-  const basePrice = bookingCard.base_price || trek.base_price || trek.price || 0;
-  const originalPrice = bookingCard.original_price || trek.original_price || null;
-  
-  // Duration handling - match TrekDetailPage
+  const [asyncPriceData, setAsyncPriceData] = useState(null);
+
+  // PRIORITY ORDER:
+  // 1. Direct trek.price (used in similar treks & list views)
+  // 2. booking_card.base_price (used in detail views)
+  // 3. trek.base_price (fallback)
+  const initialBasePrice = parsePrice(
+    trek.price ||                    // ← Check this FIRST
+    bookingCard.base_price ||
+    trek.base_price ||
+    0
+  );
+
+  const initialOriginalPrice = parsePrice(
+    bookingCard.original_price ||
+    trek.original_price ||
+    null
+  );
+
+  // Fetch price if missing
+  useEffect(() => {
+    let isMounted = true;
+
+    // Only fetch if we have a slug but NO valid price
+    const shouldFetch = initialBasePrice === 0 && trekSlug;
+
+    if (shouldFetch) {
+      fetchTrekBookingCard(trekSlug)
+        .then(data => {
+          if (isMounted && data) {
+            setAsyncPriceData({
+              base: parsePrice(data.base_price),
+              original: parsePrice(data.original_price)
+            });
+          }
+        })
+        .catch(err => console.warn(`Failed to fetch price for ${trekSlug}`, err));
+    }
+
+    return () => { isMounted = false; };
+  }, [trekSlug, initialBasePrice]);
+
+  // Merge initial vs async prices
+  const basePrice = asyncPriceData ? asyncPriceData.base : initialBasePrice;
+  const originalPrice = asyncPriceData ? asyncPriceData.original : initialOriginalPrice;
+  // ===== END PRICE HANDLING =====
+
   const duration = trek.duration || trek.days;
   const parseDuration = (durationStr) => {
     if (!durationStr) return null;
@@ -40,36 +88,34 @@ export default function TrekCard({
     return match ? match[1] : durationStr;
   };
   const trekDays = parseDuration(duration);
-  
-  // Additional details - match TrekDetailPage's field names
+
   const trekGrade = trek.trek_grade || trek.trip_grade || trek.difficulty;
   const maxAltitude = trek.max_altitude || trek.maxAltitude;
   const groupSize = trek.group_size || trek.groupSize;
   const badge = trek.badge || bookingCard.badge_label;
   const featured = trek.featured;
 
-  // Get difficulty color styling
   const getDifficultyColor = (difficulty) => {
     if (!difficulty) return "bg-gray-100 text-gray-800";
-    
+
     const diffLower = String(difficulty).toLowerCase();
-    
+
     if (diffLower === 'easy' || diffLower === 'a') {
       return "bg-green-100 text-green-800";
     }
     if (diffLower === 'moderate' || diffLower === 'b') {
       return "bg-blue-100 text-blue-800";
     }
-    if (diffLower.includes('strenuous') || diffLower.includes('challenging') || 
-        diffLower === 'hard' || diffLower === 'c') {
+    if (diffLower.includes('strenuous') || diffLower.includes('challenging') ||
+      diffLower === 'hard' || diffLower === 'c') {
       return "bg-red-100 text-red-800";
     }
-    
+
     return "bg-gray-100 text-gray-800";
   };
 
   return (
- <Link to={`/treks/${trekRegion}/${trekSlug}`} className="block group">
+    <Link to={`/treks/${trekRegion}/${trekSlug}`} className="block group">
       <motion.div
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.99 }}
@@ -90,64 +136,67 @@ export default function TrekCard({
               e.currentTarget.src = "/fallback.jpg";
             }}
           />
-          
-          {/* Badge */}
+
           {badge && (
             <span className="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
               {badge}
             </span>
           )}
-          
-          {/* Featured badge */}
+
           {featured && !badge && (
             <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
               Featured
             </span>
           )}
-          
-          {/* Discount badge */}
-          {originalPrice && Number(originalPrice) > Number(basePrice) && (
+
+          {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
             <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-              Save ${(Number(originalPrice) - Number(basePrice)).toFixed(0)}
+              Save ${(originalPrice - basePrice).toFixed(0)}
             </span>
           )}
         </div>
 
         <div className="p-4 space-y-3">
-          {/* Title */}
           <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors line-clamp-2">
             {trekTitle}
           </h3>
 
-          {/* Basic Info */}
           <div className="flex items-center text-sm text-gray-600 space-x-2">
             <Clock className="w-4 h-4" />
             <span>{trekDays} days</span>
             <span>•</span>
-            <span className="font-semibold text-indigo-600">${Number(basePrice).toFixed(0)}</span>
-            {originalPrice && Number(originalPrice) > Number(basePrice) && (
-              <span className="text-gray-400 line-through text-xs">
-                ${Number(originalPrice).toFixed(0)}
+
+            {(basePrice > 0 || (originalPrice > 0)) ? (
+              <>
+                <span className="font-semibold text-indigo-600">
+                  ${(basePrice > 0 ? basePrice : originalPrice).toFixed(0)}
+                </span>
+                {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
+                  <span className="text-gray-400 line-through text-xs">
+                    ${originalPrice.toFixed(0)}
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="font-semibold text-gray-500 text-xs">
+                Contact for Price
               </span>
             )}
           </div>
 
-          {/* Enhanced Details for Search Results */}
           {(showDetails || variant === "detailed") && (
             <>
-              {/* Description */}
               {trek.description && (
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {trek.description}
                 </p>
               )}
-              
-              {/* Additional Trek Info */}
+
               <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
                 {maxAltitude && (
                   <div className="flex items-center">
                     <Mountain className="w-3 h-3 mr-1" />
-                    <span>{maxAltitude}m</span>
+                    <span>{maxAltitude}</span>
                   </div>
                 )}
                 {groupSize && (
@@ -164,7 +213,6 @@ export default function TrekCard({
                 )}
               </div>
 
-              {/* Difficulty Badge */}
               {trekGrade && (
                 <div className="flex flex-wrap gap-1">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(trekGrade)}`}>
@@ -175,18 +223,16 @@ export default function TrekCard({
             </>
           )}
 
-          {/* Rating */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="flex items-center">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${
-                      i < Math.round(trekRating)
-                        ? "text-yellow-400 fill-current"
-                        : "text-gray-300"
-                    }`}
+                    className={`w-4 h-4 ${i < Math.round(trekRating)
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
+                      }`}
                   />
                 ))}
               </div>
@@ -194,12 +240,10 @@ export default function TrekCard({
                 {trekRating.toFixed(1)} ({reviewCount})
               </span>
             </div>
-            
-            {/* Availability indicator */}
+
             {trek.availability !== undefined && (
-              <div className={`w-2 h-2 rounded-full ${
-                trek.availability ? 'bg-green-400' : 'bg-red-400'
-              }`} title={trek.availability ? 'Available' : 'Not Available'} />
+              <div className={`w-2 h-2 rounded-full ${trek.availability ? 'bg-green-400' : 'bg-red-400'
+                }`} title={trek.availability ? 'Available' : 'Not Available'} />
             )}
           </div>
         </div>
@@ -241,8 +285,8 @@ TrekCard.propTypes = {
     groupSize: PropTypes.string,
     availability: PropTypes.bool,
     booking_card: PropTypes.shape({
-      base_price: PropTypes.string,
-      original_price: PropTypes.string,
+      base_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      original_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       badge_label: PropTypes.string,
     }),
     base_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
