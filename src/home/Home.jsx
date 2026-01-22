@@ -45,7 +45,7 @@ export default function Home() {
 
             {/* Enhanced Navigation Buttons */}
             <div className="hidden md:flex space-x-3">
-              <button
+              {/* <button
                 type="button"
                 className="group p-4 bg-white rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 hover:border-sky-200 transition-all duration-300 transform hover:scale-105"
               >
@@ -56,7 +56,7 @@ export default function Home() {
                 className="group p-4 bg-gradient-to-r from-sky-500 to-blue-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <ChevronRight className="w-6 h-6 text-white" />
-              </button>
+              </button> */}
             </div>
           </div>
 

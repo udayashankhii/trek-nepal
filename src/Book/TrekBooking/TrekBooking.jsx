@@ -28,9 +28,7 @@ export default function SinglePageBookingForm() {
     searchParams.get("trekslug") ||
     searchParams.get("trek_slug") ||  // used by Datesandprice.jsx
     searchParams.get("slug") ||
-    searchParams.get("trekId") ||
-    location.state?.trekId ||         // from Datesandprice.jsx state
-    location.state?.trekSlug ||       // alternative state key
+        // alternative state key
     location.state?.slug;             // another alternative
 
   const [hero, setHero] = useState(null);

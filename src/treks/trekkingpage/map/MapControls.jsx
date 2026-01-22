@@ -226,20 +226,20 @@ export function MapControls({
               >
                 Full Trek
               </button>
+{mapPoints.map((point) => (
+  <button
+    key={point.index}
+    onClick={() => handleDaySelect(String(point.day))} // use point.day instead of point.index
+    className={`w-full text-left px-4 py-2 text-sm border-t border-gray-200 ${
+      selectedDayIndex === String(point.day)
+        ? "bg-blue-50 text-blue-700 font-semibold"
+        : "text-gray-700 hover:bg-gray-50"
+    }`}
+  >
+    Day {point.day}: {point.title}
+  </button>
+))}
 
-              {mapPoints.map((point) => (
-                <button
-                  key={point.index}
-                  onClick={() => handleDaySelect(String(point.index))}
-                  className={`w-full text-left px-4 py-2 text-sm border-t border-gray-200 ${
-                    selectedDayIndex === String(point.index)
-                      ? "bg-blue-50 text-blue-700 font-semibold"
-                      : "text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Day {point.day}: {point.title}
-                </button>
-              ))}
             </div>
           )}
         </div>
