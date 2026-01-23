@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 
 # Base paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,10 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
-    "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
-
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 
     # Third-party
     'rest_framework',
@@ -57,10 +56,15 @@ INSTALLED_APPS = [
 
     # Local apps
     'TrekCard',
+    'tours',
     'blog.blog.apps.BlogConfig',
-   'admin_api',
+    'admin_api',
     'accounts',
     'bookings',
+    'travel_info',
+    'about_info',
+    'travel_styles',
+    'customize_trip',
 ]
 
 # -------------------------------------------------------------------
@@ -103,6 +107,7 @@ REST_FRAMEWORK = {
         "accounts_register": "5/min",
         "accounts_otp": "10/min",
         "accounts_password": "5/min",
+        "inquiry_create": "10/hour",
     },
 }
 
@@ -184,6 +189,18 @@ DATABASES = {
     }
 }
 
+RUNNING_TESTS = any(arg in {"test", "testserver"} for arg in sys.argv)
+
+if RUNNING_TESTS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test.sqlite3',
+        }
+    }
+
+AUTH_USER_MODEL = "auth.User"  # explicit default so migrations always resolve auth.user
+
 # -------------------------------------------------------------------
 # Auth / i18n
 # -------------------------------------------------------------------
@@ -226,10 +243,19 @@ SOCIAL_FACEBOOK = os.getenv("SOCIAL_FACEBOOK", "")
 SOCIAL_YOUTUBE = os.getenv("SOCIAL_YOUTUBE", "")
 SOCIAL_WHATSAPP = os.getenv("SOCIAL_WHATSAPP", "")
 
+CUSTOMIZE_TRIP_ADMIN_EMAILS = [
+    candidate.strip()
+    for candidate in os.getenv("CUSTOMIZE_TRIP_ADMIN_EMAILS", "").split(",")
+    if candidate.strip()
+]
+if not CUSTOMIZE_TRIP_ADMIN_EMAILS:
+    CUSTOMIZE_TRIP_ADMIN_EMAILS = [DEFAULT_FROM_EMAIL]
+
 # -------------------------------------------------------------------
 # Stripe
 # -------------------------------------------------------------------
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "")

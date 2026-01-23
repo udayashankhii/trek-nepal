@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from django.conf import settings
 from rest_framework import serializers
 
 from TrekCard.models import BookingIntent, TrekInfo
@@ -182,6 +183,7 @@ class BookingSerializer(serializers.ModelSerializer):
     trek_slug = serializers.CharField(source="trek.slug", read_only=True)
     form_details = serializers.SerializerMethodField()
     billing_details = serializers.SerializerMethodField()
+    stripe_publishable_key = serializers.SerializerMethodField()
 
     class Meta:
         model = Booking
@@ -199,8 +201,13 @@ class BookingSerializer(serializers.ModelSerializer):
             "total_amount",
             "currency",
             "status",
+            "paid_at",
+            "stripe_payment_intent_id",
+            "stripe_charge_id",
+            "receipt_url",
             "notes",
             "metadata",
+            "stripe_publishable_key",
             "form_details",
             "billing_details",
             "created_at",
@@ -218,6 +225,9 @@ class BookingSerializer(serializers.ModelSerializer):
         if not details:
             return None
         return BookingBillingDetailsSerializer(details).data
+
+    def get_stripe_publishable_key(self, obj):
+        return settings.STRIPE_PUBLISHABLE_KEY or None
 
 
 class BookingFormDetailsSerializer(serializers.ModelSerializer):

@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.db import transaction
+from django.utils import timezone
 from django.utils.encoding import force_str
 from rest_framework import generics, permissions, response, status, views
 
@@ -11,6 +12,64 @@ try:
     import stripe
 except Exception:  # pragma: no cover
     stripe = None  # type: ignore
+
+_ACTIONABLE_STRIPE_INTENT_STATUSES = frozenset(
+    {
+        "requires_payment_method",
+        "requires_confirmation",
+        "requires_action",
+        "processing",
+        "requires_capture",
+    }
+)
+
+def _finalize_booking_payment(
+    booking: Booking,
+    payment: BookingPayment,
+    *,
+    receipt_url: str | None = None,
+    stripe_charge_id: str | None = None,
+) -> None:
+    previous_status = booking.status
+    if payment.status == BookingPayment.Status.SUCCEEDED:
+        booking.status = Booking.Status.PAID
+    elif payment.status in (BookingPayment.Status.CANCELED, BookingPayment.Status.FAILED):
+        booking.status = Booking.Status.FAILED
+    else:
+        booking.status = Booking.Status.PENDING_PAYMENT
+
+    booking.stripe_payment_intent_id = payment.stripe_intent_id or booking.stripe_payment_intent_id
+    if stripe_charge_id:
+        booking.stripe_charge_id = stripe_charge_id
+    if receipt_url:
+        booking.receipt_url = receipt_url
+
+    if booking.status == Booking.Status.PAID:
+        if booking.paid_at is None:
+            booking.paid_at = timezone.now()
+    else:
+        booking.paid_at = None
+
+    update_fields = {"status", "updated_at", "stripe_payment_intent_id"}
+    if booking.paid_at is not None:
+        update_fields.add("paid_at")
+    if booking.stripe_charge_id:
+        update_fields.add("stripe_charge_id")
+    if booking.receipt_url:
+        update_fields.add("receipt_url")
+
+    booking.save(update_fields=list(update_fields))
+
+    if previous_status != Booking.Status.PAID and booking.status == Booking.Status.PAID:
+        if booking.booking_intent and booking.booking_intent.status != BookingIntent.Status.CONFIRMED:
+            booking.booking_intent.status = BookingIntent.Status.CONFIRMED
+            booking.booking_intent.save(update_fields=["status"])
+        generate_receipt_pdf(booking)
+        send_booking_confirmation_email(booking)
+    elif booking.status == Booking.Status.FAILED and booking.booking_intent:
+        if booking.booking_intent.status != BookingIntent.Status.CONFIRMED:
+            booking.booking_intent.status = BookingIntent.Status.EXPIRED
+            booking.booking_intent.save(update_fields=["status"])
 
 from TrekCard.models import BookingIntent, TrekInfo
 from .models import Booking, BookingBillingDetails, BookingPayment
@@ -83,30 +142,54 @@ class CreatePaymentIntentAPIView(views.APIView):
             return response.Response({"detail": "Booking payment failed."}, status=status.HTTP_400_BAD_REQUEST)
 
         existing_payment = booking.payments.order_by("-created_at").first()
-        if existing_payment and existing_payment.status in (
-            "requires_payment_method",
-            "requires_confirmation",
-            "requires_action",
-            "processing",
-        ):
-            payload = {
-                "client_secret": existing_payment.client_secret,
-                "stripe_intent_id": existing_payment.stripe_intent_id,
-            }
-            return response.Response(PaymentIntentSerializer(payload).data, status=status.HTTP_200_OK)
+        if existing_payment:
+            stripe_intent = None
+            intent_status = existing_payment.status
+            intent_client_secret = existing_payment.client_secret
+            if existing_payment.stripe_intent_id:
+                try:
+                    stripe_intent = stripe.PaymentIntent.retrieve(existing_payment.stripe_intent_id)
+                except Exception:
+                    stripe_intent = None
+            if stripe_intent:
+                intent_status = getattr(stripe_intent, "status", intent_status)
+                intent_client_secret = getattr(stripe_intent, "client_secret", intent_client_secret)
+            should_save = False
+            if intent_status != existing_payment.status:
+                existing_payment.status = intent_status
+                should_save = True
+            if intent_client_secret and intent_client_secret != existing_payment.client_secret:
+                existing_payment.client_secret = intent_client_secret
+                should_save = True
+            if should_save:
+                existing_payment.save()
+
+            if intent_status in _ACTIONABLE_STRIPE_INTENT_STATUSES and intent_client_secret:
+                payload = {
+                    "client_secret": intent_client_secret,
+                    "stripe_intent_id": existing_payment.stripe_intent_id,
+                }
+                return response.Response(PaymentIntentSerializer(payload).data, status=status.HTTP_200_OK)
 
         amount_cents = int((booking.total_amount * Decimal("100")).quantize(Decimal("1")))
         currency = (booking.currency or "USD").lower()
+
+        metadata = {
+            "booking_id": str(booking.public_id),
+            "booking_ref": booking.booking_ref,
+            "trek_slug": booking.trek.slug,
+            "email": booking.lead_email,
+        }
+        description = f"{getattr(settings, 'SITE_NAME', 'EverTrek Nepal')} booking {booking.booking_ref}"
 
         try:
             intent = stripe.PaymentIntent.create(
                 amount=amount_cents,
                 currency=currency,
                 receipt_email=booking.lead_email,
-                metadata={
-                    "booking_ref": booking.booking_ref,
-                    "trek": booking.trek.slug,
-                },
+                metadata=metadata,
+                description=description,
+                payment_method_types=["card", "link"],
                 idempotency_key=f"{booking.booking_ref}-intent",
             )
         except Exception as exc:
@@ -124,10 +207,83 @@ class CreatePaymentIntentAPIView(views.APIView):
         )
 
         booking.status = Booking.Status.PENDING_PAYMENT
-        booking.save(update_fields=["status", "updated_at"])
+        booking.stripe_payment_intent_id = intent.id
+        booking.save(update_fields=["status", "stripe_payment_intent_id", "updated_at"])
 
         payload = {"client_secret": intent.client_secret, "stripe_intent_id": intent.id}
         return response.Response(PaymentIntentSerializer(payload).data, status=status.HTTP_201_CREATED)
+
+
+class CreateCheckoutSessionAPIView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, booking_ref):
+        booking = Booking.objects.select_related("trek").filter(booking_ref=booking_ref).first()
+        if not booking:
+            return response.Response({"detail": "Booking not found."}, status=status.HTTP_404_NOT_FOUND)
+        if not request.user.is_staff and booking.user_id != request.user.id:
+            return response.Response({"detail": "Not allowed."}, status=status.HTTP_403_FORBIDDEN)
+
+        if stripe is None:
+            return response.Response({"detail": "Stripe SDK not installed."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if not settings.STRIPE_SECRET_KEY:
+            return response.Response({"detail": "Stripe secret key missing."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if booking.status == Booking.Status.PAID:
+            return response.Response({"detail": "Booking already paid."}, status=status.HTTP_400_BAD_REQUEST)
+        if booking.status == Booking.Status.CANCELLED:
+            return response.Response({"detail": "Booking is cancelled."}, status=status.HTTP_400_BAD_REQUEST)
+        if booking.status == Booking.Status.FAILED:
+            return response.Response({"detail": "Booking payment failed."}, status=status.HTTP_400_BAD_REQUEST)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        amount_cents = int((booking.total_amount * Decimal("100")).quantize(Decimal("1")))
+        currency = (booking.currency or "USD").lower()
+
+        base_url = (settings.FRONTEND_URL or "").rstrip("/")
+        success_url = f"{base_url}/payment?booking_ref={booking.booking_ref}&checkout=success"
+        cancel_url = f"{base_url}/payment?booking_ref={booking.booking_ref}&checkout=cancel"
+
+        metadata = {
+            "booking_ref": booking.booking_ref,
+            "trek": booking.trek.slug,
+        }
+
+        try:
+            session = stripe.checkout.Session.create(
+                mode="payment",
+                client_reference_id=booking.booking_ref,
+                customer_email=booking.lead_email or None,
+                metadata=metadata,
+                payment_intent_data={"metadata": metadata},
+                payment_method_types=["card", "link"],
+                line_items=[
+                    {
+                        "price_data": {
+                            "currency": currency,
+                            "product_data": {
+                                "name": f"{booking.trek.title} booking",
+                                "metadata": metadata,
+                            },
+                            "unit_amount": amount_cents,
+                        },
+                        "quantity": 1,
+                    }
+                ],
+                success_url=success_url,
+                cancel_url=cancel_url,
+            )
+        except Exception as exc:
+            return response.Response({"detail": force_str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+        booking.status = Booking.Status.PENDING_PAYMENT
+        booking.metadata = {**(booking.metadata or {}), "stripe_session_id": session.id}
+        booking.save(update_fields=["status", "metadata", "updated_at"])
+
+        payload = {"session_id": session.id, "url": session.url}
+        return response.Response(payload, status=status.HTTP_201_CREATED)
 
 
 class BookingBillingDetailsAPIView(views.APIView):
@@ -168,42 +324,134 @@ class StripeWebhookAPIView(views.APIView):
         except Exception as exc:
             return response.Response({"detail": force_str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
+        event_type = event.get("type", "")
         data = event.get("data", {}).get("object", {})
-        intent_id = data.get("id")
+
+        intent_id = None
+        metadata = data.get("metadata") or {}
+        if event_type.startswith("checkout.session"):
+            intent_id = data.get("payment_intent")
+        else:
+            intent_id = data.get("id")
 
         if not intent_id:
             return response.Response({"detail": "Missing intent id."}, status=status.HTTP_400_BAD_REQUEST)
 
         payment = BookingPayment.objects.filter(stripe_intent_id=intent_id).select_related("booking").first()
         if not payment:
-            return response.Response({"detail": "Payment not found."}, status=status.HTTP_404_NOT_FOUND)
+            booking_ref = metadata.get("booking_ref")
+            booking = Booking.objects.filter(booking_ref=booking_ref).first() if booking_ref else None
+            if not booking:
+                return response.Response({"detail": "Payment not found."}, status=status.HTTP_404_NOT_FOUND)
+            payment = BookingPayment.objects.create(
+                booking=booking,
+                stripe_intent_id=intent_id,
+                amount=booking.total_amount,
+                currency=booking.currency,
+                status="processing",
+                client_secret=data.get("client_secret", ""),
+                raw_event=data,
+            )
 
-        payment.status = data.get("status", payment.status)
+        status_override = None
+        if event_type == "checkout.session.completed" and data.get("payment_status") == "paid":
+            status_override = "succeeded"
+        elif event_type == "checkout.session.async_payment_succeeded":
+            status_override = "succeeded"
+        elif event_type == "checkout.session.async_payment_failed":
+            status_override = "failed"
+
+        payment.status = status_override or data.get("status", payment.status)
         payment.raw_event = data
         payment.save(update_fields=["status", "raw_event", "updated_at"])
 
         booking = payment.booking
-        previous_status = booking.status
+        receipt_url = None
+        stripe_charge_id = None
         if payment.status == "succeeded":
-            booking.status = Booking.Status.PAID
-        elif payment.status in ("canceled", "failed"):
-            booking.status = Booking.Status.FAILED
-        else:
-            booking.status = Booking.Status.PENDING_PAYMENT
-        booking.save(update_fields=["status", "updated_at"])
+            try:
+                charges = stripe.Charge.list(payment_intent=intent_id, limit=1)
+                charge = charges.data[0] if getattr(charges, "data", None) else None
+            except Exception:
+                charge = None
+            stripe_charge_id = getattr(charge, "id", None)
+            receipt_url = getattr(charge, "receipt_url", None)
 
-        if previous_status != Booking.Status.PAID and booking.status == Booking.Status.PAID:
-            if booking.booking_intent and booking.booking_intent.status != BookingIntent.Status.CONFIRMED:
-                booking.booking_intent.status = BookingIntent.Status.CONFIRMED
-                booking.booking_intent.save(update_fields=["status"])
-            generate_receipt_pdf(booking)
-            send_booking_confirmation_email(booking)
-        elif booking.status == Booking.Status.FAILED and booking.booking_intent:
-            if booking.booking_intent.status != BookingIntent.Status.CONFIRMED:
-                booking.booking_intent.status = BookingIntent.Status.EXPIRED
-                booking.booking_intent.save(update_fields=["status"])
+        _finalize_booking_payment(
+            booking,
+            payment,
+            receipt_url=receipt_url,
+            stripe_charge_id=stripe_charge_id,
+        )
 
         return response.Response({"ok": True}, status=status.HTTP_200_OK)
+
+
+class FinalizePaymentIntentAPIView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, booking_ref):
+        if stripe is None:
+            return response.Response({"detail": "Stripe SDK not installed."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if not settings.STRIPE_SECRET_KEY:
+            return response.Response(
+                {"detail": "Stripe secret key missing."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        intent_id = request.data.get("payment_intent_id")
+        if not intent_id:
+            return response.Response({"detail": "payment_intent_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        booking = Booking.objects.select_related("booking_intent", "trek").filter(booking_ref=booking_ref).first()
+        if not booking:
+            return response.Response({"detail": "Booking not found."}, status=status.HTTP_404_NOT_FOUND)
+        if not request.user.is_staff and booking.user_id != request.user.id:
+            return response.Response({"detail": "Not allowed."}, status=status.HTTP_403_FORBIDDEN)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        try:
+            intent = stripe.PaymentIntent.retrieve(intent_id, expand=["charges"])
+        except Exception as exc:
+            return response.Response({"detail": force_str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+        intent_data = intent.to_dict() if hasattr(intent, "to_dict") else {}
+        charge = None
+        charges = getattr(intent, "charges", None)
+        if charges and getattr(charges, "data", None):
+            charge = charges.data[0]
+
+        payment = booking.payments.filter(stripe_intent_id=intent_id).first()
+        if not payment:
+            payment = BookingPayment.objects.create(
+                booking=booking,
+                stripe_intent_id=intent_id,
+                amount=booking.total_amount,
+                currency=booking.currency,
+                status=intent.status or BookingPayment.Status.PROCESSING,
+                client_secret=getattr(intent, "client_secret", "") or "",
+                raw_event=intent_data,
+            )
+        else:
+            payment.amount = booking.total_amount
+            payment.currency = booking.currency
+            payment.status = intent.status or payment.status
+            payment.client_secret = getattr(intent, "client_secret", payment.client_secret) or payment.client_secret
+            payment.raw_event = intent_data
+            payment.save(update_fields=["amount", "currency", "status", "client_secret", "raw_event", "updated_at"])
+
+        receipt_url = getattr(charge, "receipt_url", None)
+        stripe_charge_id = getattr(charge, "id", None)
+
+        _finalize_booking_payment(
+            booking,
+            payment,
+            receipt_url=receipt_url,
+            stripe_charge_id=stripe_charge_id,
+        )
+
+        return response.Response({"ok": True, "booking": BookingSerializer(booking).data}, status=status.HTTP_200_OK)
 
 
 class DevMarkPaidAPIView(views.APIView):

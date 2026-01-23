@@ -214,6 +214,7 @@ class TrekAction(models.Model):
     trek = models.OneToOneField(TrekInfo, on_delete=models.CASCADE, related_name="action", null=True, blank=True)
     pdf = models.FileField(upload_to="trek_pdfs/", blank=True, null=True)
     map_image = models.ImageField(upload_to="trek_maps/", blank=True, null=True)
+    route_geojson = models.FileField(upload_to="trek_routes/", blank=True, null=True)
 
     def __str__(self) -> str:
         return f"Action · {self.trek.title}" if self.trek else "Action (Unlinked)"

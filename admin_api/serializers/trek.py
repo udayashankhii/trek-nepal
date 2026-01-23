@@ -111,10 +111,11 @@ class TrekHighlightSerializer(serializers.ModelSerializer):
 class TrekActionSerializer(serializers.ModelSerializer):
     pdf_url = serializers.SerializerMethodField(read_only=True)
     map_image_url = serializers.SerializerMethodField(read_only=True)
+    route_geojson_url = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = TrekAction
-        fields = ["pdf", "pdf_url", "map_image", "map_image_url"]
+        fields = ["pdf", "pdf_url", "map_image", "map_image_url", "route_geojson", "route_geojson_url"]
 
     def get_pdf_url(self, obj):
         try:
@@ -125,6 +126,12 @@ class TrekActionSerializer(serializers.ModelSerializer):
     def get_map_image_url(self, obj):
         try:
             return obj.map_image.url if obj.map_image else None
+        except Exception:
+            return None
+
+    def get_route_geojson_url(self, obj):
+        try:
+            return obj.route_geojson.url if obj.route_geojson else None
         except Exception:
             return None
 

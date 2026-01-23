@@ -4,6 +4,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("TrekCard", "0003_trekitineraryday_latitude_trekitineraryday_longitude_and_more"),
     ]
 

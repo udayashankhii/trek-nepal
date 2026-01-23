@@ -69,6 +69,16 @@ class RegionListAPIView(generics.ListAPIView):
     )
 
 
+class RegionDetailAPIView(generics.RetrieveAPIView):
+    """
+    Returns details for a single region by slug.
+    """
+    permission_classes = [permissions.AllowAny]
+    serializer_class = RegionSerializer
+    lookup_field = "slug"
+    queryset = Region.objects.annotate(treks_count=Count("treks"))
+
+
 # =========================================================
 # Trek list / key info detail
 # =========================================================

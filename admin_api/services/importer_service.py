@@ -294,6 +294,10 @@ def upsert_action(trek: TrekInfo, payload: Dict[str, Any]) -> None:
     if map_path:
         _set_filefield_from_path(action, "map_image", map_path)
 
+    route_geojson_path = payload.get("route_geojson_path")
+    if route_geojson_path:
+        _set_filefield_from_path(action, "route_geojson", route_geojson_path)
+
     action.save()
 
 

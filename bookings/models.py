@@ -59,6 +59,10 @@ class Booking(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     currency = models.CharField(max_length=8, default="USD")
     status = models.CharField(max_length=24, choices=Status.choices, default=Status.PENDING_PAYMENT)
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
+    stripe_charge_id = models.CharField(max_length=255, blank=True, null=True)
+    receipt_url = models.URLField(blank=True, null=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
 
     notes = models.TextField(blank=True)
     metadata = models.JSONField(default=dict, blank=True)

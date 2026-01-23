@@ -143,6 +143,7 @@ class TrekItineraryDaySerializer(serializers.ModelSerializer):
             "day", "title", "description",
             "accommodation", "altitude", "duration",
             "distance", "meals",
+            "place_name", "latitude", "longitude",
         ]
 
 
@@ -159,16 +160,20 @@ class TrekHighlightSerializer(serializers.ModelSerializer):
 class TrekActionSerializer(serializers.ModelSerializer):
     pdfUrl = serializers.SerializerMethodField()
     mapImage = serializers.SerializerMethodField()
+    routeGeojson = serializers.SerializerMethodField()
 
     class Meta:
         model = TrekAction
-        fields = ["id", "pdfUrl", "mapImage"]
+        fields = ["id", "pdfUrl", "mapImage", "routeGeojson"]
 
     def get_pdfUrl(self, obj):
         return abs_url(self.context.get("request"), obj.pdf)
 
     def get_mapImage(self, obj):
         return abs_url(self.context.get("request"), obj.map_image)
+
+    def get_routeGeojson(self, obj):
+        return abs_url(self.context.get("request"), obj.route_geojson)
 
 
 # -------------------------------------------------------

@@ -1,0 +1,118 @@
+[
+  {
+    "slug": "about",
+    "title": "About EverTrek Nepal",
+    "subtitle": "Who we are",
+    "summary": "EverTrek is a Nepal-based trekking operator offering guided treks, custom trips, and travel services across Nepal.",
+    "is_published": true,
+    "order": 0,
+    "stats": [
+      {"value": "15+", "label": "Years guiding", "order": 0},
+      {"value": "500+", "label": "Trips led", "order": 1},
+      {"value": "120+", "label": "Local guides", "order": 2}
+    ],
+    "features": [
+      {"title": "Local expertise", "text": "Guides born and raised in the Himalayas.", "order": 0},
+      {"title": "Responsible travel", "text": "We support local communities and sustainable practices.", "order": 1},
+      {"title": "Custom itineraries", "text": "Tailor-made trips for every traveller.", "order": 2}
+    ],
+    "ctas": [
+      {"heading": "Start your adventure", "body": "Book a trek with us today.", "primary_label": "Book Now", "primary_url": "/book", "order": 0}
+    ]
+  },
+
+  {
+    "slug": "our-team",
+    "title": "Our Team",
+    "subtitle": "Meet the people who guide you",
+    "summary": "Our experienced team of guides, porters, and logistics staff make every trip safe and memorable.",
+    "team_description": "Our guides, logistics leads, and support crews are rooted in the Himalayas, blending technical safety, guest-first service, and community partnerships to deliver unforgettable journeys.",
+    "is_published": true,
+    "order": 1,
+    "features": [
+      {"title": "Local expertise", "text": "Guides raised in local communities with deep route knowledge.", "order": 0},
+      {"title": "Licensed guides", "text": "Certified and first-aid trained for safety and reliability.", "order": 1},
+      {"title": "Guest-first service", "text": "Personalized care and flexible support on every trek.", "order": 2}
+    ],
+    "team_members": [
+      {"name": "Ram Bahadur", "role": "Lead Guide", "image": "", "bio": "15 years leading treks in the Annapurna region.", "order": 0},
+      {"name": "Sita Gurung", "role": "Logistics Manager", "image": "", "bio": "Expert in camp operations and guest care.", "order": 1},
+      {"name": "Dawa Sherpa", "role": "High-Altitude Guide", "image": "", "bio": "Specialist for Everest and high passes.", "order": 2}
+    ]
+  },
+
+  {
+    "slug": "how-to-make-a-payment",
+    "title": "How to Make a Payment",
+    "subtitle": "Payment methods and instructions",
+    "summary": "Information on available payment methods (bank transfer, Stripe, PayPal), timelines, and cancellations.",
+    "is_published": true,
+    "order": 2,
+    "features": [
+      {"title": "Multiple payment options", "text": "Bank transfer, card payments (Stripe) and PayPal available.", "order": 0},
+      {"title": "Secure processing", "text": "PCI-compliant payment gateways and encrypted transfers.", "order": 1},
+      {"title": "Receipts & invoicing", "text": "Automatic invoices and confirmation emails after payment.", "order": 2}
+    ],
+    "steps": [
+      {"step": "1", "title": "Choose your trip", "description": "Select dates and options on the trip page.", "order": 0},
+      {"step": "2", "title": "Deposit payment", "description": "Pay the deposit to confirm your booking. See bank details below.", "order": 1},
+      {"step": "3", "title": "Final payment", "description": "Make the final payment 30 days before departure.", "order": 2}
+    ],
+    "documents": [
+      {"title": "Bank Details", "image": "", "order": 0}
+    ]
+  },
+
+  {
+    "slug": "legal-document",
+    "title": "Legal & Documents",
+    "subtitle": "Terms, liability & required documents",
+    "summary": "Terms of booking, liability waivers, passport and visa requirements.",
+    "is_published": true,
+    "order": 3,
+    "features": [
+      {"title": "Clear terms", "text": "Plain-language booking terms and conditions for transparency.", "order": 0},
+      {"title": "Required documents checklist", "text": "Passport, visas, permits and recommended ID to bring.", "order": 1},
+      {"title": "Insurance guidance", "text": "Recommended insurance types and coverage levels for trekkers.", "order": 2}
+    ],
+    "documents": [
+      {"title": "Terms & Conditions", "image": "", "order": 0},
+      {"title": "Liability Waiver", "image": "", "order": 1}
+    ]
+  },
+
+  {
+    "slug": "policy",
+    "title": "Policy",
+    "subtitle": "Cancellation and safety policies",
+    "summary": "Our cancellation policy, refund rules, and health & safety guidance for trekkers.",
+    "is_published": true,
+    "order": 4,
+    "features": [
+      {"title": "Flexible cancellations", "text": "Tiered refund rules and clear cancellation windows.", "order": 0},
+      {"title": "Health & safety protocols", "text": "COVID-era precautions, altitude safety and emergency procedures.", "order": 1},
+      {"title": "Sustainability commitments", "text": "Practices we follow to support local communities and reduce impact.", "order": 2}
+    ],
+    "policy_sections": [
+      {"title": "Cancellation Policy", "bullets": ["Full refund 30+ days before departure", "50% refund 14-29 days before departure", "No refund within 14 days"], "order": 0},
+      {"title": "Health & Safety", "bullets": ["Carry travel insurance", "Follow guide instructions", "Notify us of medical conditions"], "order": 1}
+    ]
+  }
+,
+  {
+    "slug": "premium",
+    "title": "Premium Experiences",
+    "subtitle": "Luxury treks and private departures",
+    "summary": "Premium-guided treks offering upgraded accommodation, private services, and bespoke itineraries for travellers seeking a higher level of comfort.",
+    "is_published": true,
+    "order": 5,
+    "features": [
+      {"title": "Private departures", "text": "Departures tailored to your group and schedule.", "order": 0},
+      {"title": "Luxury lodges", "text": "Handpicked high-comfort lodging options.", "order": 1},
+      {"title": "Personal guide", "text": "Dedicated guide and porter team for your group.", "order": 2}
+    ],
+    "ctas": [
+      {"heading": "Enquire about Premium trips", "body": "Contact us for bespoke planning and pricing.", "primary_label": "Enquire", "primary_url": "/contact-us", "order": 0}
+    ]
+  }
+]

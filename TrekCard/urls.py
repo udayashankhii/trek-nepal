@@ -4,6 +4,7 @@ from django.urls import path
 from .views import (
 
     RegionListAPIView,        
+    RegionDetailAPIView,
     # Lists & key info
     TrekInfoListAPIView,
     TrekInfoDetailAPIView,
@@ -43,6 +44,7 @@ urlpatterns = [
 
     # Regions
     path("regions/", RegionListAPIView.as_view(), name="region-list"),
+    path("regions/<slug:slug>/", RegionDetailAPIView.as_view(), name="region-detail"),
     
     # ----------------------------------------------------
     # Trek list & key info

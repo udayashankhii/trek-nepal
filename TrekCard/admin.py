@@ -99,7 +99,7 @@ class TrekActionInline(nested_admin.NestedStackedInline):
     extra = 0
     max_num = 1
     show_change_link = True
-    fields = ("pdf", "map_image")
+    fields = ("pdf", "map_image", "route_geojson")
 
 
 
@@ -324,9 +324,9 @@ class TrekHighlightAdmin(admin.ModelAdmin):
 
 @admin.register(TrekAction)
 class TrekActionAdmin(admin.ModelAdmin):
-    list_display = ("trek", "pdf", "map_image")
+    list_display = ("trek", "pdf", "map_image", "route_geojson")
     search_fields = ("trek__title",)
-    fields = ("trek", "pdf", "map_image")
+    fields = ("trek", "pdf", "map_image", "route_geojson")
 
 
 @admin.register(Cost)
