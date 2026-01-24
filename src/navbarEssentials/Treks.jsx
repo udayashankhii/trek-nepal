@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { fetchAllTreks } from "../api/trekService";
+import { fetchAllTreks } from "../api/service/trekService";
 import { Link } from "react-router-dom";
 import { Clock, ChevronRight } from "lucide-react";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchAboutPage } from "../api/aboutInfoService.js";
+import { fetchAboutPage } from "../api/service/aboutInfoService";
 import HeroBreadcrumbs from "../components/Breadcrumb/HeroBreadcrumbs.jsx";
 import { useHideLayoutBreadcrumbs } from "../components/Breadcrumb/BreadcrumbVisibilityContext.jsx";
 

@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "./axiosInstance";
 import { cacheManager } from "../../cache/CacheManager";
 import { requestDeduplicator } from "../../cache/RequestDeduplicator";
 

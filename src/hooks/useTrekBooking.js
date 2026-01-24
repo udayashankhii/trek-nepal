@@ -1,7 +1,7 @@
 // src/hooks/useTrekBooking.js
 import { useEffect, useState, useRef, useCallback } from "react";
-import { getBookingQuote } from "../api/bookingServices";
-import { fetchTrekBookingData } from "../api/trekService.js";
+import { getBookingQuote } from "../api/service/bookingServices";
+import { fetchTrekBookingData } from "../api/service/trekService.js";
 
 export function useTrekBooking(trekSlug, partySize = 1) {
   const [data, setData] = useState(null);

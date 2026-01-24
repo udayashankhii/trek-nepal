@@ -18,7 +18,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchTours } from "../api/tourService.js";
+import { fetchTours } from "../api/service/tourService.js";
 import TourCardEnhanced from "../components/TourCard-Enhanced.jsx";
 
 /**

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { forgotPassword, resetPassword as resetPasswordRequest } from "../../api/auth.api.js";
+import { forgotPassword, resetPassword as resetPasswordRequest } from "../../api/auth/auth.api.js";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);

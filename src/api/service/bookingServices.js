@@ -1,10 +1,9 @@
 
 
 // src/api/bookingServices.js
-import { clearAuthTokens, getAccessToken } from "../api/auth.api.js";
+import { clearAuthTokens, getAccessToken } from "../auth/auth.api.js";
 
 const API_BASE = import.meta.env.VITE_API_URL;
-
 // ✅ Add separate base URL for booking endpoints
 const BOOKING_API_BASE = `${API_BASE}/api/bookings`;
 
@@ -134,97 +133,59 @@ export const clearQuoteCache = () => {
 // BOOKING INTENT APIs - ✅ UPDATED TO USE makeBookingRequest
 // ============================================
 
-export const createBookingIntent = async (
-  { trekSlug, partySize = 1, email, phone },
-  options = {}
-) => {
-  // ✅ FIX: Add /api/ prefix
-  return makeAuthenticatedRequest(`/api/treks/${trekSlug}/booking-intents/`, {
+
+
+
+export const createBookingIntent = async ({ trekSlug, partySize = 1, email, phone, departure }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/treks/${trekSlug}/booking-intents/`), {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       party_size: partySize,
       email,
       phone,
+      departure,
     }),
-    signal: options.signal,
   });
+
+  return parseResponse(res);
 };
 
 
-export const getBookingIntent = async (intentId, options = {}) => {
-  // ✅ FIX: Add /api/ prefix
-  return makeAuthenticatedRequest(`/api/booking-intents/${intentId}/`, {
-    signal: options.signal,
-  });
-};
-
-export const updateBookingIntent = async (intentId, updateData, options = {}) => {
-  // ✅ FIX: Add /api/ prefix
-  return makeAuthenticatedRequest(`/api/booking-intents/${intentId}/`, {
-    method: "PATCH",
-    body: JSON.stringify(updateData),
-    signal: options.signal,
-  });
-};
 
 // ============================================
 // BOOKING QUOTE APIs - ✅ UPDATED
 // ============================================
 
 // ✅ FIXED: Single endpoint, proper return
-export const getBookingQuote = async (
-  { trekSlug, partySize = 1, bookingIntent },
-  useCache = true,
-  options = {}
-) => {
-  const cacheKey = `quote_${trekSlug}_${partySize}_${bookingIntent || "new"}`;
-
-  // Check cache
-  if (useCache) {
-    const cached = getCachedQuote(cacheKey);
-    if (cached) {
-      console.log("✅ Using cached quote");
-      return cached;
-    }
+export const getBookingQuote = async ({ trekSlug, partySize = 1, bookingIntent }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
   }
 
-  // ✅ SINGLE endpoint - no fallbacks
-  const endpoint = `/quote/`;  // Becomes /api/bookings/quote/
-  
-  const requestBody = {
-    trek_slug: trekSlug,
-    party_size: partySize,
-    ...(bookingIntent && { booking_intent: bookingIntent }),
-  };
-
-  console.log(`🔄 Fetching quote from: ${endpoint}`, requestBody);
-
-  try {
-    const data = await makeBookingRequest(endpoint, {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      signal: options.signal,
-    });
-
-    console.log("✅ Quote received:", data);
-    
-    // ✅ Cache and RETURN
-    setCachedQuote(cacheKey, data);
-    return data;  // ✅ FIX: Return the data!
-
-  } catch (error) {
-    console.error("❌ Quote fetch failed:", error.message);
-    
-    // ✅ Return safe fallback object
-    return {
+  const res = await fetch(buildUrl("/api/bookings/quote/"), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
       trek_slug: trekSlug,
       party_size: partySize,
-      currency: "USD",
-      unit_price: null,
-      total_amount: null,
-      error: error.message,
-    };
-  }
+      booking_intent: bookingIntent,
+    }),
+  });
+
+  return parseResponse(res);
 };
 
 
@@ -233,58 +194,11 @@ export const getBookingQuote = async (
 // ============================================
 
 // ✅ FIXED: Use correct path (no leading slash needed)
-export const createBooking = async (bookingData, options = {}) => {
-  const payload = {
-    trek_slug: bookingData.trekSlug,
-    booking_intent: bookingData.bookingIntent,
-    party_size: bookingData.partySize,
-    start_date: bookingData.startDate,
-    end_date: bookingData.endDate,
-    lead_name: bookingData.leadName,
-    lead_email: bookingData.leadEmail,
-    lead_phone: bookingData.leadPhone,
-    lead_title: bookingData.leadTitle,
-    lead_first_name: bookingData.leadFirstName,
-    lead_last_name: bookingData.leadLastName,
-    country: bookingData.country,
-    emergency_contact: bookingData.emergencyContact,
-    dietary_requirements: bookingData.dietaryRequirements,
-    medical_conditions: bookingData.medicalConditions,
-    experience_level: bookingData.experienceLevel,
-    guide_language: bookingData.guideLanguage,
-    special_requests: bookingData.specialRequests,
-    comments: bookingData.comments,
-    departure_time: bookingData.departureTime,
-    return_time: bookingData.returnTime,
-    currency: bookingData.currency || "USD",
-    notes: bookingData.notes,
-    metadata: bookingData.metadata,
-  };
 
-  // Don't send total_amount - let backend calculate it
-  if (bookingData.totalAmount !== undefined && bookingData.totalAmount !== null) {
-    payload.total_amount = bookingData.totalAmount;
-  }
-
-  // ✅ Use empty path - buildBookingUrl will make it /api/bookings/
-  return makeBookingRequest("/", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    signal: options.signal,
-  });
-};
 // src/api/bookingServices.js
 
 /**
  * STEP 1: Create booking intent
- */
-// export async function createBookingIntent({ trekSlug, partySize }) {
-//   const res = await api.post(
-//     `/treks/${trekSlug}/booking-intents/`,
-//     { party_size: partySize }
-//   );
-//   return res.data; // { booking_id: UUID }
-// }
 
 /**
  * STEP 2: Create booking (STRICT serializer-compliant payload)
@@ -297,13 +211,24 @@ export const createBooking = async (bookingData, options = {}) => {
 /**
  * STEP 4: Fetch booking detail
  */
-export async function fetchBookingDetail(bookingRef) {
-  return makeBookingRequest(`/${bookingRef}/`);
-}
+export const fetchBookingDetail = async ({ bookingRef }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
 
-/**
- * Fetch all bookings for the authenticated user
- */
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/`), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return parseResponse(res);
+};
+
+
+//  * Fetch all bookings for the authenticated user
+//  */
 export async function fetchUserBookings(options = {}) {
   return makeBookingRequest("/", {
     signal: options.signal,
@@ -313,40 +238,75 @@ export async function fetchUserBookings(options = {}) {
 /**
  * STEP 5: Create Stripe PaymentIntent
  */
-export async function createPaymentIntent(bookingRef) {
-  return makeBookingRequest(`/${bookingRef}/payment-intent/`, {
+export const createPaymentIntent = async ({ bookingRef }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/payment-intent/`), {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-}
+
+  return parseResponse(res);
+};
+
+
 
 /**
  * STEP 6: Save billing details
  */
-export async function saveBillingDetails(bookingRef, billing) {
-  return makeBookingRequest(`/${bookingRef}/billing-details/`, {
+export const saveBillingDetails = async ({ bookingRef, billing }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/billing-details/`), {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       name: billing.name,
       email: billing.email,
       phone: billing.phone,
-      address_line1: billing.address1 || billing.addressLine1,
-      address_line2: billing.address2 || billing.addressLine2,
+      address_line1: billing.address1,
+      address_line2: billing.address2,
       city: billing.city,
       state: billing.state,
-      postal_code: billing.postalCode || billing.postal_code,
+      postal_code: billing.postalCode,
       country: billing.country,
     }),
   });
-}
 
+  return parseResponse(res);
+};
 /**
  * STEP 7: Mark booking paid (DEV / webhook fallback)
  */
-export async function markBookingPaid(bookingRef) {
-  return makeBookingRequest(`/${bookingRef}/mark-paid/`, {
+export const markBookingPaid = async ({ bookingRef }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/mark-paid/`), {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-}
+
+  return parseResponse(res);
+};
+
 
 
 export const verifyPayment = async (bookingRef, paymentData, options = {}) => {
@@ -357,23 +317,7 @@ export const verifyPayment = async (bookingRef, paymentData, options = {}) => {
   });
 };
 
-// export const saveBillingDetails = async (bookingRef, billing, options = {}) => {
-//   return makeBookingRequest(`/bookings/${bookingRef}/billing-details/`, {
-//     method: "POST",
-//     body: JSON.stringify({
-//       name: billing.name,
-//       email: billing.email,
-//       phone: billing.phone,
-//       address_line1: billing.address1 || billing.addressLine1,
-//       address_line2: billing.address2 || billing.addressLine2,
-//       city: billing.city,
-//       state: billing.state,
-//       postal_code: billing.postalCode || billing.postal_code,
-//       country: billing.country,
-//     }),
-//     signal: options.signal,
-//   });
-// };
+
 
 // ============================================
 // AVAILABILITY APIs - Keep using makeAuthenticatedRequest (TrekCard endpoints)
@@ -401,4 +345,111 @@ export const getAvailableDates = async (trekSlug, year = null, month = null, opt
   return makeAuthenticatedRequest(endpoint, {
     signal: options.signal,
   });
+};
+
+export const completePaymentIntent = async ({ bookingRef, paymentIntentId }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/finalize-payment/`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      payment_intent_id: paymentIntentId,
+    }),
+  });
+
+  return parseResponse(res);
+};
+
+export const createCheckoutSession = async ({ bookingRef }) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl(`/api/bookings/${bookingRef}/checkout-session/`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return parseResponse(res);
+};
+
+export const createBooking = async ({
+  trekSlug,
+  bookingIntent,
+  partySize,
+  startDate,
+  endDate,
+  leadName,
+  leadEmail,
+  leadPhone,
+  leadTitle,
+  leadFirstName,
+  leadLastName,
+  country,
+  emergencyContact,
+  dietaryRequirements,
+  medicalConditions,
+  experienceLevel,
+  guideLanguage,
+  specialRequests,
+  comments,
+  departureTime,
+  returnTime,
+  totalAmount,
+  currency = "USD",
+  notes,
+  metadata,
+}) => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("Login required");
+  }
+
+  const res = await fetch(buildUrl("/api/bookings/"), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      trek_slug: trekSlug,
+      booking_intent: bookingIntent,
+      party_size: partySize,
+      start_date: startDate,
+      end_date: endDate,
+      lead_name: leadName,
+      lead_email: leadEmail,
+      lead_phone: leadPhone,
+      lead_title: leadTitle,
+      lead_first_name: leadFirstName,
+      lead_last_name: leadLastName,
+      country,
+      emergency_contact: emergencyContact,
+      dietary_requirements: dietaryRequirements,
+      medical_conditions: medicalConditions,
+      experience_level: experienceLevel,
+      guide_language: guideLanguage,
+      special_requests: specialRequests,
+      comments,
+      departure_time: departureTime,
+      return_time: returnTime,
+      total_amount: totalAmount,
+      currency,
+      notes,
+      metadata,
+    }),
+  });
+
+  return parseResponse(res);
 };

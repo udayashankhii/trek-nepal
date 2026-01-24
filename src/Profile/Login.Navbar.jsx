@@ -21,7 +21,7 @@ import {
   AlertTriangle, 
   CreditCard,
 } from "lucide-react";
-import { getAccessToken, logout, getCurrentUser } from "../api/auth.api.js";
+import { getAccessToken, logout, getCurrentUser } from "../api/auth/auth.api.js";
 
 const LoginNavbar = ({ className = "" }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

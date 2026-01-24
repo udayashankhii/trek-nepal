@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, AlertCircle, Wind, Landmark, MapPin, Award, Sparkles, Castle } from "lucide-react";
 import TrekCard from "../TrekCard";
-import { useTreksByRegion } from "../../api/useTreksByRegion";
-import { REGIONS } from "../../api/regionService";
+import { useTreksByRegion } from "../../api/service/useTreksByRegion";
+import { REGIONS } from "../../api/service/regionService";
 
 // Enhanced highlights for Mustang treks
 const highlights = [

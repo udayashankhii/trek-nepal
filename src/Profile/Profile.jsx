@@ -18,8 +18,8 @@ import {
   Globe,
   ChevronRight,
 } from "lucide-react";
-import { getCurrentUser, getAccessToken } from "../api/auth.api.js";
-import { fetchUserBookings } from "../api/bookingServices";
+import { getCurrentUser, getAccessToken } from "../api/auth/auth.api";
+import { fetchUserBookings } from "../api/service/bookingServices";
 
 export default function Profile() {
   const navigate = useNavigate();

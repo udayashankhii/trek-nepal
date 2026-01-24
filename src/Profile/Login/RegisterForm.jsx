@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Loader2,
 } from "lucide-react";
-import { register } from "../../api/auth.api.js";
+import { register } from "../../api/auth/auth.api.js";
 
 export default function Register() {
   const [formData, setFormData] = useState({

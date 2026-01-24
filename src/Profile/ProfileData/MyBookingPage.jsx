@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { fetchUserBookings } from "../../api/bookingServices";
+import { fetchUserBookings } from "../../api/service/bookingServices";
 
 export default function MyBookingsPage() {
   const [bookings, setBookings] = useState([]);

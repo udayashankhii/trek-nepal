@@ -1,7 +1,7 @@
 // api/useTreksByRegion.js
 import { useState, useEffect } from "react";
-import { fetchTreksByRegion } from "../api/regionService";
-import axiosInstance from "../api/axiosInstance";
+import { fetchTreksByRegion } from "./regionService";
+import axiosInstance from "./axiosInstance";
 
 export const useTreksByRegion = (regionSlug) => {
   const [treks, setTreks] = useState([]);

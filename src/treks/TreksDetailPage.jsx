@@ -8,7 +8,7 @@ import {
   fetchTrekBookingCard,
   fetchTrekElevationChart,
   fetchTrekCostAndDates
-} from "../api/trekService.js";
+} from "../api/service/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
 
 import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";

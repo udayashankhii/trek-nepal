@@ -12,7 +12,7 @@ import {
     Loader2,
     AlertCircle
 } from "lucide-react";
-import { fetchBookingDetail } from "../../api/bookingServices";
+import { fetchBookingDetail } from "../../api/service/bookingServices";
 
 export default function BookingDetailPage() {
     const { bookingRef } = useParams();

@@ -6,7 +6,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { Link } from "react-router-dom";
 import { Mail, Lock, Loader2 } from "lucide-react";
-import { login } from "../../api/auth.api.js";
+import { login } from "../../api/auth/auth.api.js";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 

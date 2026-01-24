@@ -1,7 +1,7 @@
 
 
-import{  cacheManager}  from "../cache/CacheManager";
-import {apiGet, normalizeArray, transformCostDatesResponse}  from "./service/helpers";
+import{  cacheManager}  from "../../cache/CacheManager";
+import {apiGet, normalizeArray, transformCostDatesResponse}  from "./helper";
 
 // ============================================
 // MAIN TREK DATA FETCHERS

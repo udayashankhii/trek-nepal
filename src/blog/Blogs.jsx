@@ -14,7 +14,7 @@ import {
   fetchBlogCategories,
   fetchBlogPostBySlug,
   fetchBlogPosts,
-} from "../api/blogServices.js";
+} from "../api/service/blogServices.js";
 
 const DEFAULT_CATEGORIES = [
   { id: "all", name: "All Stories", icon: "📚" },

@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { SWRConfig } from "swr";
-import axiosInstance from "./api/axiosInstance";
+import axiosInstance from "./api/service/axiosInstance";
 
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 

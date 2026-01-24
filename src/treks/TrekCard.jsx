@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Star, MapPin, Clock, Users, Mountain } from "lucide-react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
-import { fetchTrekBookingCard } from "../api/trekService";
+import { fetchTrekBookingCard } from "../api/service/trekService";
 
 export default function TrekCard({
   trek,

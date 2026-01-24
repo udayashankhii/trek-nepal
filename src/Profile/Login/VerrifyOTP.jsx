@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ShieldCheck, Loader2, ArrowLeft } from "lucide-react";
-import { verifyOtp, resendOtp } from "../../api/auth.api.js";
+import { verifyOtp, resendOtp } from "../../api/auth/auth.api.js";
 
 export default function VerifyOtp() {
   const [searchParams] = useSearchParams();

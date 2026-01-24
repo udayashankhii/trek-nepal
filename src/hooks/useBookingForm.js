@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import { createBooking, createBookingIntent } from "../api/bookingServices.js";
+import { createBooking, createBookingIntent } from "../api/service/bookingServices.js";
 
 countries.registerLocale(enLocale);
 

@@ -1,4 +1,4 @@
-import { fetchAllTreks } from "../api/trekService";
+import { fetchAllTreks } from "../api/service/trekService";
 import useSWR from "swr";
 
 export default function DataPreloader() {

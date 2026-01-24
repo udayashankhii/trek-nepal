@@ -6,8 +6,8 @@ import { FaHelicopter } from "react-icons/fa";
 import { motion } from "framer-motion";
 import TrekCard from "../TrekCard";
 import ExperienceSelector from "../../components/ExperienceSelector";
-import { useTreksByRegion } from "../../api/useTreksByRegion";
-import { REGIONS } from "../../api/regionService";
+import { useTreksByRegion } from "../../api/service/useTreksByRegion";
+import { REGIONS } from "../../api/service/regionService";
 
 const AnnapurnaLuxuryPage = () => {
   const [selectedExperience, setSelectedExperience] = useState("all");

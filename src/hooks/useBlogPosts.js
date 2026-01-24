@@ -1,6 +1,6 @@
 // hooks/useBlogPosts.js
 import { useState, useEffect } from "react";
-import { fetchBlogPosts } from "../api/blogService";
+import { fetchBlogPosts } from "../api/service/blogService";
 
 export const useBlogPosts = (category = "all", page = 1) => {
   const [posts, setPosts] = useState([]);

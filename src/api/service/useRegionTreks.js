@@ -1,6 +1,6 @@
 // useRegionTreks.js
 import { useState, useEffect } from "react";
-import { fetchRegions } from "../api/regionService"; // create this API call
+import { fetchRegions } from "./regionService"; // create this API call
 
 export const useRegions = () => {
   const [regions, setRegions] = useState([]);

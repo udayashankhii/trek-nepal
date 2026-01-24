@@ -1,29 +1,85 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
   Mail,
   Phone,
-  Globe,
   Twitter,
   Instagram,
   Facebook,
 } from "lucide-react";
+import HeroBreadcrumbs from "../components/Breadcrumb/HeroBreadcrumbs";
+import { useHideLayoutBreadcrumbs } from "../components/Breadcrumb/BreadcrumbVisibilityContext.jsx";
 
 export default function ContactUsPage() {
+  const canonicalUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return window.location.href.split("?")[0];
+  }, []);
+
+  useHideLayoutBreadcrumbs();
+
+  const heroBreadcrumbs = useMemo(
+    () => [
+      { label: "Home", url: "/" },
+      { label: "Contact Us" },
+    ],
+    [],
+  );
+
+  const heroMetaTitle = "Contact EverTrek Nepal | Himalayan Travel Specialists";
+  const heroMetaDescription =
+    "Reach out to EverTrek Nepal for personalized Himalayan itineraries, expert logistics, and 24/7 support before and during your trek.";
+  const heroImage =
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80";
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <title>{heroMetaTitle}</title>
+      <meta name="description" content={heroMetaDescription} />
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      <meta property="og:title" content={heroMetaTitle} />
+      <meta property="og:description" content={heroMetaDescription} />
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content={heroImage} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={heroMetaTitle} />
+      <meta name="twitter:description" content={heroMetaDescription} />
+      <meta name="twitter:image" content={heroImage} />
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-gradient-to-r from-green-600 to-teal-500 text-white py-24 text-center overflow-hidden"
+        className="relative overflow-hidden text-white py-24"
       >
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">Get in Touch</h1>
-        <p className="max-w-2xl mx-auto text-lg">
-          We’re here to help you plan the trek of a lifetime. Reach out to us
-          with any questions.
-        </p>
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="Team members planning a trek"
+            className="h-full w-full object-cover object-center"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-900/70" />
+        </div>
+        <div className="relative z-10">
+          <div className="mx-auto flex max-w-4xl flex-col gap-4 px-4 text-center">
+            <HeroBreadcrumbs
+              breadcrumbs={heroBreadcrumbs}
+              className="mb-2 text-[11px]"
+            />
+            <div className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-1 text-xs uppercase tracking-[0.4em] text-white/90">
+              Contact
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+              Get in touch
+            </h1>
+            <p className="text-lg leading-relaxed text-white/90">
+              We’re here to help you plan the trek of a lifetime, fine-tune
+              logistics, and answer every question about trekking in Nepal.
+            </p>
+          </div>
+        </div>
       </motion.section>
 
       <div className="flex-grow container mx-auto px-6 lg:px-20 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -42,14 +98,14 @@ export default function ContactUsPage() {
               <MapPin className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-medium text-gray-700">Address</h3>
-                <p className="text-gray-600">Thimi, Bhaktapur, Nepal</p>
+                <p className="text-gray-600">Lazimpat, Kathmandu, Nepal</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
               <Mail className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-medium text-gray-700">Email</h3>
-                <p className="text-gray-600">info@evertreknepal.com</p>
+                <p className="text-gray-600">info@adventuretreksnepal.com</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
@@ -75,7 +131,7 @@ export default function ContactUsPage() {
               <Twitter className="w-5 h-5 text-white" />
             </a>
             <a
-              href="https://www.instagram.com/evertrek_nepal/"
+              href="#"
               className="p-3 bg-pink-500 rounded-full hover:bg-pink-600 transition"
             >
               <Instagram className="w-5 h-5 text-white" />

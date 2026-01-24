@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { Loader2, AlertCircle, Mountain, Sparkles, Award, FlagTriangleRight, Users, Heart } from "lucide-react";
 import { FaHelicopter } from "react-icons/fa";
 import TrekCard from "../TrekCard";
-import { useTreksByRegion } from "../../api/useTreksByRegion";
-import { REGIONS } from "../../api/regionService";
+import { useTreksByRegion } from "../../api/service/useTreksByRegion";
+import { REGIONS } from "../../api/service/regionService";
 
 // Enhanced highlights for Everest treks
 const highlights = [

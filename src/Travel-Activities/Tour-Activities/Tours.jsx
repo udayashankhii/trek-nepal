@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Star, MapPin, Clock, Users } from "lucide-react";
-import { fetchTours } from "../../api/tourService.js";
+import { fetchTours } from "../../api/service/tourService.js";
 import HeroBreadcrumbs from "../../components/Breadcrumb/HeroBreadcrumbs.jsx";
 import { useHideLayoutBreadcrumbs } from "../../components/Breadcrumb/BreadcrumbVisibilityContext.jsx";
 

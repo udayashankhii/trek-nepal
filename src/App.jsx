@@ -69,11 +69,13 @@ import RegisterForm from "./Profile/Login/RegisterForm.jsx";
 import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
 import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
-import PaymentPage from "./Book/PaymentPage";
 import BookingDetailPage from "./Profile/ProfileData/BookingDetailPage";
-import { getAccessToken } from "./api/auth.api";
+import { getAccessToken } from "./api/auth/auth.api";
 import Profile from "./Profile/Profile";
 import MyBookingsPage from "./Profile/ProfileData/MyBookingPage";
+import PaymentPage from "./Book/TrekBooking/PaymentPage";
+import PaymentSuccessPage from "./Book/TrekBooking/PaymentSuccessPage";
+import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -194,10 +196,13 @@ const App = () => (
         <Route path="/everest/:trekId" element={<TrekDetailPage />} />
         <Route path="/about-us/*" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
-        <Route path="/customize-trip" element={<CustomizeTripPage />} />
+            <Route
+          path="/customize-trip/success/:requestId"
+          element={<CustomizeTripSuccess />}
+        />
         <Route path="/trek-overview" element={<TrekOverview />} />
 
-        <Route
+            <Route
           path="/trek-booking"
           element={
             <RequireAuth>
@@ -210,6 +215,15 @@ const App = () => (
           element={
             <RequireAuth>
               <PaymentPage />
+            </RequireAuth>
+          }
+        />
+
+            <Route
+          path="/payment/success"
+          element={
+            <RequireAuth>
+              <PaymentSuccessPage />
             </RequireAuth>
           }
         />

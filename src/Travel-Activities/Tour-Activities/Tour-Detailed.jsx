@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchTourDetail, fetchTourReviews, fetchTourSimilar } from "../../api/tourService.js";
+import { fetchTourDetail, fetchTourReviews, fetchTourSimilar } from "../../api/service/tourService.js";
 import TourHero from "./Tour-Detailed-Pages/tour-hero.jsx";
 import TourKeyInfo from "./Tour-Detailed-Pages/tour-key_info.jsx";
 import TourOverview from "./Tour-Detailed-Pages/tour-overview.jsx";
