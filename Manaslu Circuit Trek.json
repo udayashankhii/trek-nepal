@@ -1,0 +1,741 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T23:27:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Manaslu",
+      "slug": "manaslu",
+      "short_label": "Larkya La Pass",
+      "order": 2,
+      "marker_x": 52,
+      "marker_y": 45,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "manaslu-circuit-trek",
+      "title": "Manaslu Circuit Trek",
+      "region_slug": "manaslu",
+      "duration": "16 Days",
+      "trip_grade": "Strenuous",
+      "start_point": "Kathmandu",
+      "group_size": "2-12",
+      "max_altitude": "5106m",
+      "activity": "Trekking",
+      "short_description": "Epic circuit trek around the world's eighth highest mountain crossing the dramatic Larkya La Pass at 5,106m. Experience pristine Tibetan Buddhist culture, remote villages, and breathtaking Himalayan panoramas on Nepal's most spectacular restricted area trek.",
+      "card_image_path": "trek_cards/manaslu_circuit_card.jpg",
+      "is_published": true,
+      "review_text": "The ultimate Himalayan adventure - challenging Larkya La Pass crossing with stunning mountain views and authentic Tibetan culture. Less crowded than Annapurna Circuit.",
+      "rating": 4.8,
+      "reviews": 142,
+      "hero_section": {
+        "title": "Manaslu Circuit Trek",
+        "subtitle": "Epic 16-day circuit around Mt. Manaslu crossing Larkya La Pass at 5,106m",
+        "image_path": "hero_images/manaslu_circuit_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "16",
+        "difficulty": "Strenuous",
+        "location": "Manaslu Region - Gorkha District",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Manaslu Circuit Trek Overview",
+            "articles": [
+              "Manaslu Circuit Trek is one of Nepal's most spectacular and challenging trekking adventures, circumnavigating Mt. Manaslu (8,163m), the eighth highest mountain in the world [web:2][web:7]. This 16-day trek traverses the restricted Manaslu Conservation Area, crossing the dramatic Larkya La Pass at 5,106m - one of the highest trekking passes in Nepal [web:7][web:9]. The route follows the ancient salt-trading path along the Budhi Gandaki River valley, ascending through subtropical forests, terraced farmlands, and high alpine meadows before entering the Tibetan Buddhist cultural heartland [web:2][web:17]. Remote villages like Samagaon, Lho, and Samdo offer authentic cultural experiences with ancient monasteries, prayer flags, and warm hospitality [web:17][web:20]. As a restricted area trek, Manaslu requires special permits and a licensed guide, which preserves its pristine character and limits tourist numbers [web:12][web:16]. The circuit offers stunning 360-degree mountain panoramas including Manaslu, Himlung Himal, Cheo Himal, and the Annapurna range [web:7][web:10]."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Larkya La Pass crossing at 5,106m - spectacular high pass",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Mt. Manaslu - world's eighth highest peak at 8,163m",
+                "icon": "peak",
+                "order": 1
+              },
+              {
+                "text": "Authentic Tibetan Buddhist culture and monasteries",
+                "icon": "culture",
+                "order": 2
+              },
+              {
+                "text": "Restricted area - fewer tourists, pristine trails",
+                "icon": "peace",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu",
+          "description": "Arrival in Kathmandu. Trek briefing, permit arrangements, and equipment check.",
+          "accommodation": "Hotel",
+          "altitude": "1,400m",
+          "duration": "Arrival day",
+          "distance": "",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Soti Khola",
+          "description": "Scenic drive through terraced hills and Trisuli River valley to Soti Khola, the trek starting point.",
+          "accommodation": "Teahouse",
+          "altitude": "730m",
+          "duration": "8-9 hours drive",
+          "distance": "140 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Soti Khola",
+          "latitude": 28.0347,
+          "longitude": 84.9647
+        },
+        {
+          "day": 3,
+          "title": "Trek Soti Khola to Machha Khola",
+          "description": "Trek along Budhi Gandaki River through subtropical forests. Cross suspension bridges and pass small villages.",
+          "accommodation": "Teahouse",
+          "altitude": "930m",
+          "duration": "6-7 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Machha Khola",
+          "latitude": 28.0889,
+          "longitude": 84.9528
+        },
+        {
+          "day": 4,
+          "title": "Trek Machha Khola to Jagat",
+          "description": "Continue along river gorges with several suspension bridge crossings. Enter Manaslu restricted area at Jagat checkpoint.",
+          "accommodation": "Teahouse",
+          "altitude": "1,410m",
+          "duration": "6-7 hours",
+          "distance": "22 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jagat",
+          "latitude": 28.1356,
+          "longitude": 84.9372
+        },
+        {
+          "day": 5,
+          "title": "Trek Jagat to Deng",
+          "description": "Trek through mixed forests and terraced fields. Landscape transitions from subtropical to temperate zone.",
+          "accommodation": "Teahouse",
+          "altitude": "1,804m",
+          "duration": "6-7 hours",
+          "distance": "19 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Deng",
+          "latitude": 28.1892,
+          "longitude": 84.9156
+        },
+        {
+          "day": 6,
+          "title": "Trek Deng to Namrung",
+          "description": "Ascend through pine and rhododendron forests. First spectacular views of Manaslu and Ganesh Himal peaks.",
+          "accommodation": "Teahouse",
+          "altitude": "2,630m",
+          "duration": "6-7 hours",
+          "distance": "18 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namrung",
+          "latitude": 28.2267,
+          "longitude": 84.8934
+        },
+        {
+          "day": 7,
+          "title": "Trek Namrung to Lho",
+          "description": "Enter Tibetan cultural zone with prayer flags and mani walls. Stunning views of Manaslu North Face from Lho village.",
+          "accommodation": "Teahouse",
+          "altitude": "3,180m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lho",
+          "latitude": 28.3789,
+          "longitude": 84.7234
+        },
+        {
+          "day": 8,
+          "title": "Trek Lho to Samagaon",
+          "description": "Short trek through Shyala village to Samagaon - largest village in upper Manaslu region with ancient monastery.",
+          "accommodation": "Teahouse",
+          "altitude": "3,530m",
+          "duration": "4-5 hours",
+          "distance": "9 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samagaon",
+          "latitude": 28.4123,
+          "longitude": 84.7456
+        },
+        {
+          "day": 9,
+          "title": "Acclimatization Day at Samagaon",
+          "description": "Rest day for altitude acclimatization. Optional hike to Manaslu Base Camp (4,800m), Pungyen Monastery, or Birendra Lake.",
+          "accommodation": "Teahouse",
+          "altitude": "3,530m",
+          "duration": "Rest/Exploration",
+          "distance": "Optional hike",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samagaon",
+          "latitude": 28.4123,
+          "longitude": 84.7456
+        },
+        {
+          "day": 10,
+          "title": "Trek Samagaon to Samdo",
+          "description": "Trek through alpine meadows with views of Tibetan border peaks. Samdo is the last village before the pass.",
+          "accommodation": "Teahouse",
+          "altitude": "3,875m",
+          "duration": "4-5 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samdo",
+          "latitude": 28.4489,
+          "longitude": 84.7789
+        },
+        {
+          "day": 11,
+          "title": "Trek Samdo to Dharmasala (Larkya Phedi)",
+          "description": "Short trek to Dharmasala base camp. Preparation for early morning pass crossing. Rest and hydrate.",
+          "accommodation": "Basic Teahouse",
+          "altitude": "4,460m",
+          "duration": "3-4 hours",
+          "distance": "7 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dharmasala",
+          "latitude": 28.5012,
+          "longitude": 84.8123
+        },
+        {
+          "day": 12,
+          "title": "Cross Larkya La Pass to Bimthang",
+          "description": "Pre-dawn start for Larkya La Pass (5,106m) - the most challenging and spectacular day. Descend to Bimthang through moraines and glaciers.",
+          "accommodation": "Teahouse",
+          "altitude": "3,720m",
+          "duration": "8-9 hours",
+          "distance": "16 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bimthang",
+          "latitude": 28.5456,
+          "longitude": 84.5234
+        },
+        {
+          "day": 13,
+          "title": "Trek Bimthang to Tilije",
+          "description": "Descend through forests and meadows. Enter Annapurna region with views of Manaslu behind and Annapurna ahead.",
+          "accommodation": "Teahouse",
+          "altitude": "2,300m",
+          "duration": "5-6 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tilije",
+          "latitude": 28.5889,
+          "longitude": 84.4567
+        },
+        {
+          "day": 14,
+          "title": "Trek Tilije to Tal",
+          "description": "Continue descent through pine forests. Join Annapurna Circuit trail at Dharapani.",
+          "accommodation": "Teahouse",
+          "altitude": "1,700m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tal",
+          "latitude": 28.6234,
+          "longitude": 84.3789
+        },
+        {
+          "day": 15,
+          "title": "Trek Tal to Syange and Drive to Kathmandu",
+          "description": "Final trek to Syange. Drive back to Kathmandu via Besisahar. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "1,400m",
+          "duration": "3 hours trek + 7-8 hours drive",
+          "distance": "10 km trek + 180 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        },
+        {
+          "day": 16,
+          "title": "Final Departure",
+          "description": "Transfer to airport for departure or extend your Nepal adventure.",
+          "accommodation": "",
+          "altitude": "1,400m",
+          "duration": "Departure",
+          "distance": "",
+          "meals": "Breakfast",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Larkya La Pass - Epic Mountain Pass",
+          "description": "Cross Larkya La Pass at 5,106m with breathtaking 360-degree panoramas of Manaslu, Himlung Himal, Cheo Himal, Kang Guru, and Annapurna II. One of Nepal's highest and most spectacular trekking passes.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Mt. Manaslu - Eighth Highest Peak",
+          "description": "Trek around Mt. Manaslu (8,163m), the world's eighth highest mountain. Spectacular views from multiple angles throughout the circuit including the stunning North Face from Lho village.",
+          "icon": "peak"
+        },
+        {
+          "title": "Tibetan Buddhist Culture",
+          "description": "Experience authentic Tibetan Buddhist culture in remote villages like Samagaon, Lho, and Samdo. Visit ancient monasteries, prayer wheels, chortens, and interact with warm local communities.",
+          "icon": "culture"
+        },
+        {
+          "title": "Restricted Area - Pristine Wilderness",
+          "description": "Trek through restricted conservation area with limited permits preserving pristine nature and authentic culture. Far fewer tourists than Annapurna or Everest regions.",
+          "icon": "peace"
+        },
+        {
+          "title": "Budhi Gandaki River Gorge",
+          "description": "Follow the dramatic Budhi Gandaki River through deep gorges with suspension bridges, waterfalls, and changing ecosystems from subtropical to alpine zones.",
+          "icon": "river"
+        },
+        {
+          "title": "Diverse Ecosystems",
+          "description": "Trek through incredible biodiversity - from subtropical forests with bamboo and rhododendron to high alpine meadows and glacial landscapes. Rich wildlife including Himalayan Thar and snow leopards.",
+          "icon": "forest"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/manaslu_circuit.pdf",
+        "map_image_path": "trek_maps/manaslu_circuit_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced English-speaking licensed trekking guide (mandatory)",
+          "Porter support for luggage (1 porter for 2 trekkers)",
+          "Manaslu Restricted Area Permit (MRAP)",
+          "Manaslu Conservation Area Permit (MCAP)",
+          "Annapurna Conservation Area Permit (ACAP)",
+          "TIMS Card",
+          "All teahouse accommodations during trek",
+          "Three meals daily (breakfast, lunch, dinner) during trek",
+          "Hotel accommodation in Kathmandu (2 nights)",
+          "Ground transportation Kathmandu-Soti Khola-Kathmandu",
+          "Guide and porter insurance, salary, food, and accommodation",
+          "First aid medical kit",
+          "All government and local taxes"
+        ],
+        "cost_exclusions": [
+          "International airfare to/from Nepal",
+          "Nepal entry visa fee (USD 50 for 30 days)",
+          "Meals in Kathmandu (except breakfast)",
+          "Personal trekking equipment and gear",
+          "Travel and medical insurance (mandatory)",
+          "Emergency helicopter evacuation insurance",
+          "Tips for guide and porters (customary)",
+          "Hot showers and battery charging on trek (extra cost)",
+          "Extra beverages (soft drinks, alcohol, hot drinks)",
+          "Personal expenses and snacks",
+          "Optional side trips"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Manaslu Circuit Trek is best during spring (March-May) and autumn (September-November) with stable weather and clear mountain views. As a restricted area trek, minimum 2 people required with licensed guide. This challenging trek demands excellent physical fitness and prior high-altitude trekking experience."
+      },
+      "departures": [
+        {
+          "start": "2026-03-07",
+          "end": "2026-03-22",
+          "status": "Available",
+          "price": 1195.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-04-04",
+          "end": "2026-04-19",
+          "status": "Available",
+          "price": 1195.0,
+          "seats_left": 6
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-27",
+          "status": "Available",
+          "price": 1295.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-10-10",
+          "end": "2026-10-25",
+          "status": "Available",
+          "price": 1295.0,
+          "seats_left": 7
+        },
+        {
+          "start": "2026-11-07",
+          "end": "2026-11-22",
+          "status": "Available",
+          "price": 1095.0,
+          "seats_left": 9
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "2 People",
+          "price": 1295.0
+        },
+        {
+          "label": "3-5 People",
+          "price": 1195.0
+        },
+        {
+          "label": "6-8 People",
+          "price": 1095.0
+        },
+        {
+          "label": "9-12 People",
+          "price": 995.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendron blooms, warmer temperatures, clear skies"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Best visibility, stable weather, ideal for pass crossing"
+        },
+        {
+          "highlight": "Winter (Dec-Feb): Possible but extremely cold, heavy snow at pass"
+        },
+        {
+          "highlight": "Monsoon (June-Aug): Not recommended - landslides, leeches, obscured views"
+        }
+      ],
+      "booking_card": {
+        "base_price": 1195.0,
+        "original_price": 1495.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 20,
+        "badge_label": "Epic Circuit Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 2,
+            "max_size": 2,
+            "price": 1295.0
+          },
+          {
+            "min_size": 3,
+            "max_size": 5,
+            "price": 1195.0
+          },
+          {
+            "min_size": 6,
+            "max_size": 8,
+            "price": 1095.0
+          },
+          {
+            "min_size": 9,
+            "max_size": 12,
+            "price": 995.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "About This Trek",
+          "icon": "info",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Why is Manaslu Circuit a restricted area trek?",
+              "answer": "Manaslu borders Tibet and passes through culturally sensitive Tibetan Buddhist regions. The restricted area permit (MRAP) limits tourist numbers to preserve fragile ecosystems and authentic culture. You must trek with a licensed guide - solo trekking is not permitted.",
+              "order": 1
+            },
+            {
+              "question": "How difficult is Larkya La Pass crossing?",
+              "answer": "Larkya La Pass at 5,106m is the most challenging section. The crossing involves 8-9 hours of trekking with pre-dawn start. Altitude, steep sections, and possible snow make it strenuous. Proper acclimatization at Samagaon is essential for safe crossing.",
+              "order": 2
+            },
+            {
+              "question": "What makes Manaslu Circuit different from Annapurna Circuit?",
+              "answer": "Manaslu is more remote with far fewer tourists due to restricted area permits. It offers authentic Tibetan culture, pristine trails, and spectacular mountain views. The circuit is more challenging with basic teahouse facilities compared to developed Annapurna Circuit infrastructure.",
+              "order": 3
+            },
+            {
+              "question": "Can beginners do Manaslu Circuit Trek?",
+              "answer": "No, Manaslu Circuit is for experienced trekkers only. You need excellent physical fitness, prior high-altitude trekking experience, and mental preparedness for challenging conditions. Previous treks like Annapurna Base Camp or Everest Base Camp recommended as preparation.",
+              "order": 4
+            }
+          ]
+        },
+        {
+          "title": "Permits & Regulations",
+          "icon": "document",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What permits are required for Manaslu Circuit?",
+              "answer": "Three permits required: Manaslu Restricted Area Permit (MRAP), Manaslu Conservation Area Permit (MCAP), and Annapurna Conservation Area Permit (ACAP). All permits arranged through registered trekking agency with licensed guide - cannot obtain individually.",
+              "order": 1
+            },
+            {
+              "question": "Can I trek solo on Manaslu Circuit?",
+              "answer": "No, solo trekking is not permitted. Minimum 2 trekkers required with licensed guide for restricted area permit. This regulation protects trekkers' safety and preserves the region's sensitive cultural and environmental balance.",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "title": "Accommodation & Facilities",
+          "icon": "hotel",
+          "order": 3,
+          "questions": [
+            {
+              "question": "What are teahouse facilities like on Manaslu Circuit?",
+              "answer": "Teahouses are basic but comfortable with twin rooms and shared bathrooms. Facilities become more basic at higher altitudes. Hot showers and battery charging available for extra cost. Food is simple dal bhat, noodles, soup, and Tibetan bread.",
+              "order": 1
+            },
+            {
+              "question": "Is internet and phone service available?",
+              "answer": "Limited mobile network coverage in lower areas. Higher villages like Samagaon and Samdo have intermittent connectivity. WiFi available in some teahouses for extra charge but very slow. Best to inform family you'll be offline for extended periods.",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "title": "Health & Safety",
+          "icon": "medical",
+          "order": 4,
+          "questions": [
+            {
+              "question": "What about altitude sickness on Manaslu Circuit?",
+              "answer": "Altitude sickness is the biggest risk. The itinerary includes acclimatization day at Samagaon (3,530m) before Larkya La Pass. Ascend gradually, stay hydrated, recognize symptoms (headache, nausea, dizziness). Descend immediately if symptoms worsen. Diamox can help but consult doctor first.",
+              "order": 1
+            },
+            {
+              "question": "Is helicopter rescue available in emergencies?",
+              "answer": "Helicopter rescue is possible from most areas including Samagaon and Samdo in good weather. However, rescue from Dharmasala or pass area may be difficult. Comprehensive travel insurance with helicopter evacuation coverage up to 6,000m is mandatory.",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "title": "Best Time & Weather",
+          "icon": "weather",
+          "order": 5,
+          "questions": [
+            {
+              "question": "When is the best time for Manaslu Circuit Trek?",
+              "answer": "Best periods are spring (March-May) and autumn (September-November). Spring offers blooming rhododendrons and warmer temperatures. Autumn provides clearest mountain views and most stable weather for pass crossing. Both seasons have minimal precipitation and excellent visibility.",
+              "order": 1
+            },
+            {
+              "question": "Can Manaslu Circuit be done in winter or monsoon?",
+              "answer": "Winter (December-February) is possible but extremely challenging with heavy snow at Larkya La Pass, freezing temperatures, and risk of trail closure. Monsoon (June-August) is not recommended due to landslides, leeches, obscured views, and dangerous trail conditions.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/larkya_la_pass.jpg",
+          "title": "Larkya La Pass",
+          "caption": "Spectacular panorama from Larkya La Pass at 5,106m",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/manaslu_mountain.jpg",
+          "title": "Mt. Manaslu",
+          "caption": "Mt. Manaslu (8,163m) - world's eighth highest peak",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/samagaon_monastery.jpg",
+          "title": "Samagaon Monastery",
+          "caption": "Ancient Tibetan Buddhist monastery in Samagaon village",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/budhi_gandaki_gorge.jpg",
+          "title": "Budhi Gandaki Gorge",
+          "caption": "Dramatic river gorge with suspension bridges",
+          "order": 4
+        },
+        {
+          "image_path": "trek_gallery/lho_village.jpg",
+          "title": "Lho Village",
+          "caption": "Traditional Tibetan village with Manaslu backdrop",
+          "order": 5
+        },
+        {
+          "image_path": "trek_gallery/manaslu_circuit_trail.jpg",
+          "title": "Mountain Trail",
+          "caption": "Pristine trekking trail through alpine meadows",
+          "order": 6
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "16-day circuit trek around Mt. Manaslu crossing Larkya La Pass",
+        "background_image_path": "elevation_chart/manaslu_circuit.jpg",
+        "points": [
+          {
+            "day": 2,
+            "title": "Soti Khola",
+            "elevation": 730,
+            "description": "Trek start",
+            "order": 1
+          },
+          {
+            "day": 4,
+            "title": "Jagat",
+            "elevation": 1410,
+            "description": "Restricted area entry",
+            "order": 2
+          },
+          {
+            "day": 6,
+            "title": "Namrung",
+            "elevation": 2630,
+            "description": "First mountain views",
+            "order": 3
+          },
+          {
+            "day": 8,
+            "title": "Samagaon",
+            "elevation": 3530,
+            "description": "Acclimatization",
+            "order": 4
+          },
+          {
+            "day": 11,
+            "title": "Dharmasala",
+            "elevation": 4460,
+            "description": "Pass base camp",
+            "order": 5
+          },
+          {
+            "day": 12,
+            "title": "Larkya La Pass",
+            "elevation": 5106,
+            "description": "Highest point",
+            "order": 6
+          },
+          {
+            "day": 12,
+            "title": "Bimthang",
+            "elevation": 3720,
+            "description": "After pass crossing",
+            "order": 7
+          },
+          {
+            "day": 14,
+            "title": "Tal",
+            "elevation": 1700,
+            "description": "Join Annapurna Circuit",
+            "order": 8
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Why Choose Manaslu Circuit Trek?",
+          "articles": [
+            "Manaslu Circuit is Nepal's most spectacular restricted area trek, offering authentic Himalayan adventure away from crowded tourist trails. The circuit around the world's eighth highest mountain provides unmatched mountain panoramas and cultural immersion.",
+            "Crossing Larkya La Pass at 5,106m is a life-changing achievement with 360-degree views of Manaslu, Himlung Himal, Annapurna II, and countless other peaks. The pass crossing is challenging but properly acclimatized trekkers find it incredibly rewarding.",
+            "Tibetan Buddhist culture in remote villages like Samagaon, Lho, and Samdo offers authentic interactions rarely found on mainstream treks. Ancient monasteries, prayer wheels, and warm local hospitality create unforgettable cultural experiences.",
+            "The restricted area permit system limits tourist numbers, preserving pristine nature and traditional culture. You'll encounter far fewer trekkers than Annapurna or Everest regions while experiencing equally spectacular scenery.",
+            "The 16-day itinerary provides proper acclimatization with rest day at Samagaon before the challenging pass crossing. This duration balances safety with comprehensive exploration of the Manaslu Conservation Area's diverse ecosystems and cultural highlights."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Epic Larkya La Pass crossing at 5,106m",
+              "icon": "mountain",
+              "order": 0
+            },
+            {
+              "text": "World's eighth highest peak - Mt. Manaslu",
+              "icon": "peak",
+              "order": 1
+            },
+            {
+              "text": "Authentic Tibetan Buddhist culture",
+              "icon": "culture",
+              "order": 2
+            },
+            {
+              "text": "Restricted area - pristine and uncrowded",
+              "icon": "peace",
+              "order": 3
+            },
+            {
+              "text": "Diverse ecosystems from subtropical to alpine",
+              "icon": "forest",
+              "order": 4
+            }
+          ]
+        },
+        {
+          "heading": "Preparing for Manaslu Circuit Trek",
+          "articles": [
+            "Physical preparation is crucial for Manaslu Circuit. Train with cardiovascular exercises (running, cycling, swimming) for 2-3 months before the trek. Include hill walking with weighted backpack to simulate trekking conditions.",
+            "Prior high-altitude trekking experience is highly recommended. Previous treks to 4,000m+ like Annapurna Base Camp, Everest Base Camp, or Langtang help prepare your body for altitude challenges.",
+            "Mental preparation is equally important. The trek involves long days (6-8 hours), basic facilities, and challenging weather. Maintain positive attitude and realistic expectations about comfort levels.",
+            "Essential gear includes four-season sleeping bag, quality trekking boots, layered clothing system, trekking poles, headlamp, and water purification. Pack light but include all safety essentials.",
+            "Comprehensive travel insurance with helicopter evacuation coverage up to 6,000m is mandatory. Medical check-up before departure recommended, especially if you have any pre-existing conditions."
+          ],
+          "order": 1,
+          "bullets": [
+            {
+              "text": "Train 2-3 months with cardio and hill walking",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Prior high-altitude trekking experience essential",
+              "icon": "experience",
+              "order": 1
+            },
+            {
+              "text": "Four-season sleeping bag and proper gear",
+              "icon": "gear",
+              "order": 2
+            },
+            {
+              "text": "Comprehensive insurance with helicopter evacuation",
+              "icon": "insurance",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": [
+     
+      ]
+    }
+  ]
+}

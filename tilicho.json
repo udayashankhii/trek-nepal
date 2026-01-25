@@ -1,0 +1,386 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-11T17:55:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Manang, Tilicho, Thorong",
+      "order": 2,
+      "marker_x": 52,
+      "marker_y": 48,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "tilicho-lake-trek",
+      "title": "Tilicho Lake Trek",
+      "region_slug": "annapurna",
+      "duration": "14 Days",
+      "trip_grade": "Challenging",
+      "start_point": "Besisahar",
+      "group_size": "1-12",
+      "max_altitude": "4919m",
+      "activity": "Trekking",
+      "short_description": "High-altitude trek to Tilicho Lake, one of the world's highest lakes at 4,919m.",
+      "card_image_path": "trek_cards/tilicho_lake_card.jpg",
+      "is_published": true,
+      "review_text": "A high-altitude adventure to one of the world's highest lakes.",
+      "rating": 4.7,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Tilicho Lake Trek",
+        "subtitle": "One of the highest lakes on Earth",
+        "image_path": "hero_images/tilicho_lake_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "14",
+        "difficulty": "Challenging",
+        "location": "Manang Annapurna",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Tilicho Lake Trek",
+            "articles": [
+              "Tilicho Lake Trek branches off from the Annapurna Circuit and leads to Tilicho Lake at 4,919m, surrounded by massive Himalayan peaks. The trek is remote, rugged, and ideal for experienced trekkers seeking altitude adventure."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 4,919m (Tilicho Lake)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March–May, Sept–Nov",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "High altitude & landslide-prone sections",
+                "icon": "warning",
+                "order": 2
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Drive to Besisahar",
+          "description": "Drive from Kathmandu to Besisahar, the gateway to the Annapurna region.",
+          "accommodation": "Hotel",
+          "altitude": "760m",
+          "duration": "6–7 hours",
+          "distance": "14 km",
+          "meals": "Dinner",
+          "place_name": "Besisahar",
+          "latitude": 28.2333,
+          "longitude": 84.4167
+        },
+        {
+          "day": 2,
+          "title": "Drive to Chame",
+          "description": "Jeep drive along the Marsyangdi River through villages and forests.",
+          "accommodation": "Teahouse",
+          "altitude": "2670m",
+          "duration": "6–7 hours",
+          "distance": "45 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chame",
+          "latitude": 28.5536,
+          "longitude": 84.2286
+        },
+        {
+          "day": 3,
+          "title": "Trek to Pisang",
+          "description": "Gradual ascent with views of Annapurna II and Pisang Peak.",
+          "accommodation": "Teahouse",
+          "altitude": "3300m",
+          "duration": "5–6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pisang",
+          "latitude": 28.5833,
+          "longitude": 84.1667
+        },
+        {
+          "day": 4,
+          "title": "Trek to Manang",
+          "description": "Scenic trek through upper Pisang and Braga monastery.",
+          "accommodation": "Teahouse",
+          "altitude": "3540m",
+          "duration": "5–6 hours",
+          "distance": "16 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Manang",
+          "latitude": 28.6667,
+          "longitude": 84.0167
+        },
+        {
+          "day": 5,
+          "title": "Acclimatization Day at Manang",
+          "description": "Rest and short hikes for proper acclimatization.",
+          "accommodation": "Teahouse",
+          "altitude": "3540m",
+          "duration": "Rest day",
+          "distance": "Optional hikes",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Manang",
+          "latitude": 28.6667,
+          "longitude": 84.0167
+        },
+        {
+          "day": 6,
+          "title": "Trek to Siri Kharka",
+          "description": "Leave the main circuit and enter the Tilicho region.",
+          "accommodation": "Teahouse",
+          "altitude": "4060m",
+          "duration": "4–5 hours",
+          "distance": "9 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Siri Kharka",
+          "latitude": 28.7194,
+          "longitude": 83.9528
+        },
+        {
+          "day": 7,
+          "title": "Trek to Tilicho Base Camp",
+          "description": "Challenging trail across landslide-prone slopes.",
+          "accommodation": "Teahouse",
+          "altitude": "4150m",
+          "duration": "5–6 hours",
+          "distance": "7 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tilicho Base Camp",
+          "latitude": 28.6987,
+          "longitude": 83.8667
+        },
+        {
+          "day": 8,
+          "title": "Hike to Tilicho Lake and return to Base Camp",
+          "description": "Early morning hike to Tilicho Lake with breathtaking views.",
+          "accommodation": "Teahouse",
+          "altitude": "4919m",
+          "duration": "6–7 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tilicho Lake",
+          "latitude": 28.6889,
+          "longitude": 83.85
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Tilicho Lake",
+          "description": "One of the highest lakes in the world at 4,919m elevation.",
+          "icon": "lake"
+        },
+        {
+          "title": "Manang Valley",
+          "description": "Dry trans-Himalayan landscape and unique culture.",
+          "icon": "village"
+        },
+        {
+          "title": "Annapurna Views",
+          "description": "Stunning panoramic views of the Annapurna range.",
+          "icon": "mountain"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/tilicho_lake.pdf",
+        "map_image_path": "trek_maps/tilicho_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced trekking guide",
+          "TIMS card and Annapurna permit",
+          "Teahouse accommodation during trek",
+          "All meals (breakfast, lunch, dinner) during trek"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Extra expenses (drinks, snacks, tips)"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Departures are seasonal and depend on weather conditions."
+      },
+      "departures": [
+        {
+          "start": "2026-04-05",
+          "end": "2026-04-18",
+          "status": "Available",
+          "price": 1399.0,
+          "seats_left": 6
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1499.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 1399.0
+        },
+        {
+          "label": "5-12 People",
+          "price": 1299.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Clear lake views in April & October"
+        },
+        {
+          "highlight": "Best weather conditions in spring and autumn"
+        }
+      ],
+      "booking_card": {
+        "base_price": 1399.0,
+        "original_price": 1599.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Adventure",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1499.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 1399.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 12,
+            "price": 1299.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Altitude & Safety",
+          "icon": "safety",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Tilicho Lake Trek difficult?",
+              "answer": "Yes. It involves high altitude, cold weather, and exposed trails. Proper acclimatization is essential.",
+              "order": 1
+            },
+            {
+              "question": "Do I need travel insurance?",
+              "answer": "Yes, comprehensive travel and medical insurance covering high-altitude trekking is mandatory.",
+              "order": 2
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Spring (March-May) and Autumn (September-November) offer the best weather and views.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/tilicho_lake_1.jpg",
+          "title": "Tilicho Lake",
+          "caption": "Frozen lake surrounded by peaks.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/tilicho_lake_2.jpg",
+          "title": "Manang Valley",
+          "caption": "Traditional Sherpa village.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/tilicho_lake_3.jpg",
+          "title": "Annapurna Range",
+          "caption": "Panoramic mountain views.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression throughout the trek",
+        "background_image_path": "elevation_chart/tilicho.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Besisahar",
+            "elevation": 760,
+            "description": "Starting point",
+            "order": 1
+          },
+          {
+            "day": 4,
+            "title": "Manang",
+            "elevation": 3540,
+            "description": "Acclimatization stop",
+            "order": 2
+          },
+          {
+            "day": 7,
+            "title": "Tilicho Base Camp",
+            "elevation": 4150,
+            "description": "Base camp",
+            "order": 3
+          },
+          {
+            "day": 8,
+            "title": "Tilicho Lake",
+            "elevation": 4919,
+            "description": "Highest point",
+            "order": 4
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Proper acclimatization is mandatory to prevent altitude sickness.",
+            "Weather can change rapidly at high altitude. Be prepared for snow and cold."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Not recommended for beginners",
+              "icon": "alert",
+              "order": 0
+            },
+            {
+              "text": "Requires good physical fitness",
+              "icon": "fitness",
+              "order": 1
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

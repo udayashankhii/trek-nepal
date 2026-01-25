@@ -1,0 +1,590 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T18:27:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Langtang",
+      "slug": "langtang",
+      "short_label": "Langtang Valley, Kyanjin Gompa, Gosaikunda, Helambu",
+      "order": 1,
+      "marker_x": 62,
+      "marker_y": 35,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "helambu-trekking",
+      "title": "Helambu Trekking",
+      "region_slug": "langtang",
+      "duration": "11 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Sundarijal",
+      "group_size": "1-15",
+      "max_altitude": "3880m",
+      "activity": "Trekking",
+      "short_description": "An unspoilt trekking region showcasing diverse Tamang and Sherpa cultures with pristine forests, monasteries, and stunning Himalayan views just 72 km northeast of Kathmandu.",
+      "card_image_path": "trek_cards/helambu_card.jpg",
+      "is_published": true,
+      "review_text": "Explore Nepal's best-kept trekking secret with rich cultural experiences and diverse wildlife in Shivapuri National Park.",
+      "rating": 4.5,
+      "reviews": 42,
+      "hero_section": {
+        "title": "Helambu Trekking",
+        "subtitle": "Unspoilt Valley of Tamang & Sherpa Cultures - A Hidden Himalayan Gem",
+        "image_path": "hero_images/helambu_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "11",
+        "difficulty": "Moderate",
+        "location": "Central Nepal - 72 km northeast of Kathmandu",
+        "cta_label": "Book Your Adventure",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Helambu Trekking Overview",
+            "articles": [
+              "Helambu Trekking explores one of Nepal's best-kept secrets in the shadow of Langtang Peak, bordering Tibet. This 11-day moderate trek is located just 72 km northeast of Kathmandu through Shivapuri National Park. The trail wanders through culturally rich villages dominated by Tamang and Sherpa communities, offering diverse scenery from dense forests to alpine meadows. The trek encounters remarkable biodiversity including rare red pandas, deer, monkeys, Himalayan tahr, and over 250 bird species, watched over by dominant peaks like Langtang Lirung (7,245m), Dorje Lakpa (6,966m), and Gauri Shankar (7,134m)."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude: 3,880m (Melamchigaun) - low altitude, minimal AMS risk",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Moderate trek suitable for first-time trekkers and experienced adventurers",
+                "icon": "hiking",
+                "order": 2
+              },
+              {
+                "text": "Rich wildlife sanctuary with red pandas, migratory birds, and diverse fauna",
+                "icon": "achievement",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Rest",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes you and transfers to hotel in Thamel district for acclimatization.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Sundarijal",
+          "description": "Early morning drive 1 hour to Sundarijal, the gateway to Shivapuri National Park. Brief orientation with guide and trek preparation.",
+          "accommodation": "Teahouse/Lodge",
+          "altitude": "1360m",
+          "duration": "1 hour drive + orientation",
+          "distance": "30 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Sundarijal",
+          "latitude": 27.8286,
+          "longitude": 85.3283
+        },
+        {
+          "day": 3,
+          "title": "Trek Sundarijal to Chisapani",
+          "description": "Trek through Shivapuri National Park ascending on stone stairs through dense oak, rhododendron, and pine forests. Magical sunrise/sunset views over Himalayan vistas.",
+          "accommodation": "Teahouse",
+          "altitude": "2165m",
+          "duration": "4-5 hours",
+          "distance": "10.5 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chisapani",
+          "latitude": 27.8814,
+          "longitude": 85.3547
+        },
+        {
+          "day": 4,
+          "title": "Trek Chisapani to Kutumsang",
+          "description": "Continue through beautiful forest crossing ridges and meadows strewn with wildflowers. Encounter rural settlements and traditional Tamang lifestyle.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "6-7 hours",
+          "distance": "13.3 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kutumsang",
+          "latitude": 27.8853,
+          "longitude": 85.4201
+        },
+        {
+          "day": 5,
+          "title": "Trek Kutumsang to Tharepati",
+          "description": "Trek through smaller settlements and traditional Tamang villages of Pati Bhanjyang and Gul Bhanjyang. Views of Jugal Himal and Ganesh Himal.",
+          "accommodation": "Teahouse",
+          "altitude": "2880m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tharepati",
+          "latitude": 27.8945,
+          "longitude": 85.4598
+        },
+        {
+          "day": 6,
+          "title": "Trek Tharepati to Melamchi Gaun",
+          "description": "Descend crossing the scenic Melamchi River via suspension bridges. Trek to villages of Tarke Ghyang and Melamchi Gaun with Sherpa cultural immersion.",
+          "accommodation": "Teahouse",
+          "altitude": "2880m",
+          "duration": "5-6 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Melamchi Gaun",
+          "latitude": 27.9234,
+          "longitude": 85.5103
+        },
+        {
+          "day": 7,
+          "title": "Trek Melamchi Gaun to Tarkeghyang",
+          "description": "Climb to villages of Tarke Ghyang after long ascent through alpine forest. Traditional Sherpa settlement with ancient architecture and Buddhist monasteries.",
+          "accommodation": "Teahouse",
+          "altitude": "2743m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tarkeghyang",
+          "latitude": 27.9356,
+          "longitude": 85.5234
+        },
+        {
+          "day": 8,
+          "title": "Trek Tarkeghyang to Sermathang",
+          "description": "Pass through smaller settlements to Sermathang, a charming village in the heart of Helambu with panoramic mountain views and traditional homestays.",
+          "accommodation": "Teahouse/Homestay",
+          "altitude": "2621m",
+          "duration": "4 hours",
+          "distance": "9 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Sermathang",
+          "latitude": 27.9478,
+          "longitude": 85.5367
+        },
+        {
+          "day": 9,
+          "title": "Trek Sermathang to Melamchi Pul Bazaar",
+          "description": "Descend through Valley Ridge, past multiple waterfalls and streams. Trek to Kakani village with enhanced wildlife spotting opportunities during descent.",
+          "accommodation": "Teahouse",
+          "altitude": "846m",
+          "duration": "5-6 hours",
+          "distance": "18 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Melamchi Pul Bazaar",
+          "latitude": 27.9645,
+          "longitude": 85.5821
+        },
+        {
+          "day": 10,
+          "title": "Trek Melamchi Pul to Sundarijal",
+          "description": "Final trek back through beautiful forests and scenic trails to Sundarijal. Celebration with trekking crew marking completion of the adventure.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1360m",
+          "duration": "5-6 hours",
+          "distance": "16 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Sundarijal",
+          "latitude": 27.8286,
+          "longitude": 85.3283
+        },
+        {
+          "day": 11,
+          "title": "Return to Kathmandu & Departure",
+          "description": "Drive 1 hour back to Kathmandu hotel. Free time for shopping, rest, and cultural exploration. Farewell dinner with trekking team.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day",
+          "distance": "30 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Diverse Mountain Vistas - Multiple Himalayan Perspectives",
+          "description": "Experience breathtaking views of Langtang Lirung (7,227m), Dorje Lakpa (6,966m), Gauri Shankar (7,134m), Jugal Himal Range, Ganesh Himal Range, and Rolwaling Himal Range from various trekking points.\nEnjoy marvelous sunrise and sunset views over the Himalayan range from ridge points like Chisapani and Tharepati.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Shivapuri National Park - Rare Red Panda & Wildlife Sanctuary",
+          "description": "Trek through pristine rhododendron and oak forests where endangered red pandas roam near Ghoda Tabela.\nSpot Himalayan wildlife including musk deer, Himalayan tahr, pika, and over 250 migratory bird species in this protected sanctuary.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Authentic Tamang & Sherpa Culture - Village Immersion",
+          "description": "Immerse yourself in the rich traditions of Tamang and Sherpa villages with unique language, architecture, and Buddhist practices.\nStay in family-run teahouses and interact with local communities rebuilding after 2015 earthquake, learning traditional agricultural practices and local cuisine.",
+          "icon": "culture"
+        },
+        {
+          "title": "Pristine Monastic Heritage - Buddhist Spiritual Sites",
+          "description": "Visit ancient monasteries and spiritual sites dotting the trekking trail, receiving blessings from resident monks.\nExperience the deep Buddhist culture intertwined with pre-Buddhist Bon practices of the indigenous mountain communities.",
+          "icon": "achievement"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/helambu.pdf",
+        "map_image_path": "trek_maps/helambu_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry luggage",
+          "Shivapuri National Park permit",
+          "All teahouse accommodations during trek",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (nights before and after trek)",
+          "Trek orientation and emergency support"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Bottled water and beverages",
+          "Tips for guide and porters",
+          "Personal expenses and souvenirs"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Helambu Trekking is best done in Spring (March-May) and Autumn (September-November) when weather is clear and visibility is excellent. All prices are per person and vary by group size. Private group departures can be arranged on your preferred dates. Early booking recommended for peak seasons."
+      },
+      "departures": [
+        {
+          "start": "2026-03-08",
+          "end": "2026-03-18",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 12,
+          "id": "2026-03-08-001"
+        },
+        {
+          "start": "2026-03-22",
+          "end": "2026-04-01",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 10,
+          "id": "2026-03-22-001"
+        },
+        {
+          "start": "2026-04-05",
+          "end": "2026-04-15",
+          "status": "Limited",
+          "price": 549.0,
+          "seats_left": 3,
+          "id": "2026-04-05-001"
+        },
+        {
+          "start": "2026-04-19",
+          "end": "2026-04-29",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 14,
+          "id": "2026-04-19-001"
+        },
+        {
+          "start": "2026-05-03",
+          "end": "2026-05-13",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 11,
+          "id": "2026-05-03-001"
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-22",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 15,
+          "id": "2026-09-12-001"
+        },
+        {
+          "start": "2026-09-26",
+          "end": "2026-10-06",
+          "status": "Available",
+          "price": 549.0,
+          "seats_left": 13,
+          "id": "2026-09-26-001"
+        },
+        {
+          "start": "2026-10-10",
+          "end": "2026-10-20",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 12,
+          "id": "2026-10-10-001"
+        },
+        {
+          "start": "2026-10-24",
+          "end": "2026-11-03",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 9,
+          "id": "2026-10-24-001"
+        },
+        {
+          "start": "2026-11-07",
+          "end": "2026-11-17",
+          "status": "Limited",
+          "price": 449.0,
+          "seats_left": 5,
+          "id": "2026-11-07-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 699.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 549.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 449.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Rhododendron blooms magnificent in March-April"
+        },
+        {
+          "highlight": "Clear mountain views during autumn (September-November)"
+        },
+        {
+          "highlight": "Wildflower meadows in spring create stunning scenery"
+        },
+        {
+          "highlight": "Red panda spotting best in March-May & September-November"
+        }
+      ],
+      "booking_card": {
+        "base_price": 549.0,
+        "original_price": 699.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 21,
+        "badge_label": "Hidden Gem",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 699.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 549.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 449.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Difficulty & Preparation",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Helambu Trek suitable for beginners?",
+              "answer": "Yes! Helambu is a moderate trek perfect for first-time trekkers and experienced hikers. The relatively low altitude (max 3,880m) minimizes altitude sickness risk, making it accessible for various fitness levels.",
+              "order": 1
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Spring (March-May) for rhododendron blooms and wildflowers, and Autumn (September-November) for clear mountain views and stable weather conditions.",
+              "order": 2
+            },
+            {
+              "question": "How much physical fitness is required?",
+              "answer": "Moderate fitness is needed. Training 4-6 weeks before the trek with hiking, running, or similar cardio exercises is recommended for optimal enjoyment.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/helambu_1.jpg",
+          "title": "Tarkeghyang Village",
+          "caption": "Traditional Sherpa settlement with ancient monasteries.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/helambu_2.jpg",
+          "title": "Rhododendron Forests",
+          "caption": "Lush forests adorned with blooming rhododendrons.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/helambu_3.jpg",
+          "title": "Red Panda Habitat",
+          "caption": "Pristine forest sanctuary for endangered red pandas.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression throughout trek",
+        "background_image_path": "elevation_chart/helambu.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 5,
+            "title": "Tharepati",
+            "elevation": 2880,
+            "description": "Highest point",
+            "order": 2
+          },
+          {
+            "day": 9,
+            "title": "Melamchi Pul",
+            "elevation": 846,
+            "description": "Lowest point",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Helambu Trek has recovered completely from 2015 earthquake effects and now showcases thriving communities and rebuilt structures.",
+            "The trek is away from main tourist routes, offering authentic cultural experiences and pristine natural environments. Respect local customs and practices during your visit.",
+            "Shivapuri National Park requires permits. All arrangements are handled by EverTrek Nepal team."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Moderate fitness required - train 4-6 weeks before",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Travel insurance including high-altitude coverage recommended",
+              "icon": "alert",
+              "order": 1
+            },
+            {
+              "text": "Low altitude trek minimizes altitude sickness risk",
+              "icon": "achievement",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [
+          {
+            "month": "January",
+            "month_index": 0,
+            "departures": []
+          },
+          {
+            "month": "February",
+            "month_index": 1,
+            "departures": []
+          },
+          {
+            "month": "March",
+            "month_index": 2,
+            "departures": [
+              {
+                "start": "2026-03-08",
+                "end": "2026-03-18",
+                "status": "Available",
+                "price": 549.0,
+                "seats_left": 12,
+                "id": "2026-03-08-001"
+              },
+              {
+                "start": "2026-03-22",
+                "end": "2026-04-01",
+                "status": "Available",
+                "price": 549.0,
+                "seats_left": 10,
+                "id": "2026-03-22-001"
+              }
+            ]
+          }
+        ],
+        "groupPrices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "label": "Solo Trekker (Private Trek)",
+            "price": 699.0,
+            "size": 1
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "label": "2-4 People",
+            "price": 549.0,
+            "size": 4
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "label": "5-15 People",
+            "price": 449.0,
+            "size": 15
+          }
+        ],
+        "highlights": [
+          {
+            "highlight": "Rhododendron blooms magnificent in March-April"
+          },
+          {
+            "highlight": "Clear mountain views during autumn"
+          },
+          {
+            "highlight": "Red panda spotting best in March-May & September-November"
+          }
+        ]
+      }
+    }
+    ]
+    }

@@ -1,0 +1,596 @@
+    {
+      "slug": "langtang-gosaikunda-helambu-circuit",
+      "title": "Langtang-Gosaikunda-Helambu Circuit",
+      "region_slug": "langtang",
+      "duration": "15-18 Days",
+      "trip_grade": "Moderate-Challenging",
+      "start_point": "Syabrubesi",
+      "group_size": "1-15",
+      "max_altitude": "4610m",
+      "activity": "Trekking",
+      "short_description": "The ultimate Langtang circuit combining glacier-carved valleys, sacred Gosaikunda Lake, and culturally rich Helambu region with high pass crossing. Comprehensive Himalayan experience combining nature, spirituality, and culture.",
+      "card_image_path": "trek_cards/langtang_circuit_card.jpg",
+      "is_published": true,
+      "review_text": "Epic 15-day circuit combining the best of Langtang Valley, Gosaikunda pilgrimage, and Helambu cultural immersion with Laurebina La high pass crossing.",
+      "rating": 4.8,
+      "reviews": 64,
+      "hero_section": {
+        "title": "Langtang-Gosaikunda-Helambu Circuit",
+        "subtitle": "The Complete Himalayan Experience - Valley, Lake, Pass & Culture in One Epic Journey",
+        "image_path": "hero_images/langtang_circuit_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "15-18",
+        "difficulty": "Moderate-Challenging",
+        "location": "Langtang National Park - Central Nepal Circuit Trek",
+        "cta_label": "Book Epic Adventure",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Langtang-Gosaikunda-Helambu Circuit Overview",
+            "articles": [
+              "The Langtang-Gosaikunda-Helambu Circuit is a comprehensive 15-18 day trek combining three distinct Himalayan experiences into one remarkable journey. Starting from Syabrubesi, the route circles around the Langtang mountain range through Langtang National Park, reaching its maximum altitude at Gosaikunda Pass (Laurebina La) at 4,610m. This complete circuit naturally divides into three sections: the glacier-carved Langtang Valley exploration (Days 2-6), the Gosaikunda sacred lake pilgrimage (Days 7-10), and the Helambu cultural circuit (Days 11-14). The trek showcases diverse landscapes from subtropical forests to alpine meadows, offers panoramic mountain views of Langtang Lirung (7,246m), Ganesh Himal, and other snow-capped peaks, and provides intimate cultural immersion with Tamang and Sherpa communities. High pass crossing of Laurebina La at 4,610m marks the adventure's pinnacle, offering 360-degree Himalayan vistas."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Maximum altitude: 4,610m (Laurebina La Pass) - challenging high-altitude crossing",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Epic circuit combining three distinct regions: Langtang Valley, Gosaikunda, Helambu",
+                "icon": "hiking",
+                "order": 2
+              },
+              {
+                "text": "Comprehensive experience: glaciers, sacred lake, high pass, culture, and wildlife",
+                "icon": "achievement",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Rest",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes and transfers to hotel for acclimatization and preparation for epic circuit trek.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Syabrubesi",
+          "description": "Early morning 7-8 hour drive northward through Trishuli River valley and terraced farmlands to Syabrubesi gateway.",
+          "accommodation": "Teahouse",
+          "altitude": "1462m",
+          "duration": "7-8 hours",
+          "distance": "123 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syabrubesi",
+          "latitude": 28.1628,
+          "longitude": 85.3378
+        },
+        {
+          "day": 3,
+          "title": "Trek Syabrubesi to Lama Hotel",
+          "description": "First trekking day through scenic forests alongside Langtang River with views of Langtang Lirung emerging.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "6-7 hours",
+          "distance": "11.3 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lama Hotel",
+          "latitude": 28.1615,
+          "longitude": 85.4301
+        },
+        {
+          "day": 4,
+          "title": "Trek Lama Hotel to Langtang Village",
+          "description": "Trek through forests with red panda spotting opportunities near Ghoda Tabela. Visit rebuilt Langtang Village.",
+          "accommodation": "Teahouse",
+          "altitude": "3430m",
+          "duration": "5-6 hours",
+          "distance": "14.8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Langtang Village",
+          "latitude": 28.2114,
+          "longitude": 85.5108
+        },
+        {
+          "day": 5,
+          "title": "Trek Langtang Village to Kyanjin Gompa",
+          "description": "Shorter day trekking to Kyanjin Gompa at 3,870m. Visit 7th-century monastery and yak cheese factory.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m",
+          "duration": "3-4 hours",
+          "distance": "6.8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2061,
+          "longitude": 85.5633
+        },
+        {
+          "day": 6,
+          "title": "Acclimatization Day - Kyanjin Ri/Tserko Ri Hike",
+          "description": "Optional hike to Kyanjin Ri (4,380m) or Tserko Ri (5,030m) for panoramic views. Important acclimatization for high pass crossing.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m to 5030m",
+          "duration": "3-6 hours hike",
+          "distance": "Optional hikes only",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2061,
+          "longitude": 85.5633
+        },
+        {
+          "day": 7,
+          "title": "Trek Kyanjin Gompa to Lama Hotel Descend",
+          "description": "Descend back to Lama Hotel. Wildlife spotting opportunities enhanced during descent through pristine forests.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "6-7 hours",
+          "distance": "21 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lama Hotel",
+          "latitude": 28.1615,
+          "longitude": 85.4301
+        },
+        {
+          "day": 8,
+          "title": "Trek Lama Hotel to Thulo Syabru",
+          "description": "Trek to Thulo Syabru village at 2,250m. Begin route toward Gosaikunda and Helambu region.",
+          "accommodation": "Teahouse",
+          "altitude": "2250m",
+          "duration": "6-7 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Thulo Syabru",
+          "latitude": 28.1756,
+          "longitude": 85.3945
+        },
+        {
+          "day": 9,
+          "title": "Trek Thulo Syabru to Singompa",
+          "description": "Ascend through alpine forests to Singompa. Visit Buddhist monastery with panoramic mountain views.",
+          "accommodation": "Teahouse",
+          "altitude": "3250m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Singompa",
+          "latitude": 28.2056,
+          "longitude": 85.4234
+        },
+        {
+          "day": 10,
+          "title": "Trek Singompa to Gosaikunda Lake",
+          "description": "Challenging ascent through subtropical to alpine forest zones with rhododendron, oak, pine, birch. Reach sacred Gosaikunda Lake at 4,312m.",
+          "accommodation": "Teahouse",
+          "altitude": "4312m",
+          "duration": "6-7 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gosaikunda Lake",
+          "latitude": 28.2134,
+          "longitude": 85.4456
+        },
+        {
+          "day": 11,
+          "title": "Cross Laurebina La Pass (4,610m) to Ghopte",
+          "description": "Most challenging day crossing Gosaikunda Pass (Laurebina La) at 4,610m - highest point. Panoramic Himalayan vistas including views of Manaslu and Annapurna range on clear days. Descent to Ghopte entering Helambu region.",
+          "accommodation": "Teahouse",
+          "altitude": "3430m",
+          "duration": "7-8 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghopte",
+          "latitude": 28.1967,
+          "longitude": 85.5312
+        },
+        {
+          "day": 12,
+          "title": "Trek Ghopte to Melamchi Gaon",
+          "description": "Continue descent through beautiful alpine forest to Melamchi Gaon at 3,490m. Enter culturally rich Helambu valley section.",
+          "accommodation": "Teahouse",
+          "altitude": "3490m",
+          "duration": "6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Melamchi Gaon",
+          "latitude": 28.2345,
+          "longitude": 85.5421
+        },
+        {
+          "day": 13,
+          "title": "Trek Melamchi Gaon to Tarkeghyang",
+          "description": "Trek to Tarkeghyang village at 2,743m. Traditional Sherpa settlement with ancient architecture and monasteries.",
+          "accommodation": "Teahouse",
+          "altitude": "2743m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tarkeghyang",
+          "latitude": 28.2456,
+          "longitude": 85.5534
+        },
+        {
+          "day": 14,
+          "title": "Trek Tarkeghyang to Melamchi Pul Bazaar",
+          "description": "Final day descent through Valley Ridge, waterfalls, and streams to Melamchi Pul Bazaar at 846m marking trek end.",
+          "accommodation": "Teahouse",
+          "altitude": "846m",
+          "duration": "5-6 hours",
+          "distance": "18 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Melamchi Pul Bazaar",
+          "latitude": 28.1645,
+          "longitude": 85.6123
+        },
+        {
+          "day": 15,
+          "title": "Drive Melamchi Pul to Kathmandu",
+          "description": "3-4 hour scenic drive through Sindhupalchok District back to Kathmandu. Celebration dinner with trekking team marking completion of epic circuit.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "3-4 hours",
+          "distance": "60 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Glacier-Carved Langtang Valley - Nature's Masterpiece",
+          "description": "Experience breathtaking Valley of Glaciers with 360-degree views of Langtang Lirung (7,246m), Kimshung (6,781m), Langshisha Ri (6,370m).\nWitness dramatic glacier-carved valley surrounded by snow-capped peaks with pristine rhododendron forests.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Sacred Gosaikunda Lake Pilgrimage - Spiritual Journey",
+          "description": "Visit holiest alpine lake at 4,312m in Hindu culture believed created by Lord Shiva's Trishul. Explore surrounding sacred lakes (Saraswati, Bhairav, Surya Kunds).\nWitness thousands of pilgrims during August full moon festival (Janai Purnima).",
+          "icon": "culture"
+        },
+        {
+          "title": "Laurebina La Pass Crossing - High Adventure",
+          "description": "Cross Gosaikunda Pass (Laurebina La) at 4,610m - route's highest and most challenging point with panoramic Himalayan vistas.\nOn clear days, views extend to Langtang Lirung, Ganesh Himal, Manaslu, Annapurna range.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Helambu Cultural Immersion - Mountain Communities",
+          "description": "Trek through villages of Tarkeghyang, Sermathang, and Melamchi Gaon with authentic Sherpa and Tamang communities.\nVisit monasteries, experience traditional lifestyles, and engage with rebuilt communities after 2015 earthquake.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/langtang_gosaikunda_helambu_circuit.pdf",
+        "map_image_path": "trek_maps/langtang_circuit_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry luggage",
+          "TIMS Card and Langtang National Park permits",
+          "All teahouse accommodations during trek",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (nights before and after trek)",
+          "Trek orientation and comprehensive support",
+          "Emergency evacuation insurance included"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance (optional additional)",
+          "Bottled water and beverages",
+          "Tips for guide and porters",
+          "Personal expenses and souvenirs"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Langtang-Gosaikunda-Helambu Circuit is best done March-May (Spring for rhododendrons) and September-November (Autumn for clear views). This comprehensive circuit requires 13-16 trekking days plus 2 driving days. All prices are per person and vary by group size. Private group departures on preferred dates available. Early booking essential 2-3 months ahead."
+      },
+      "departures": [
+        {
+          "start": "2026-03-06",
+          "end": "2026-03-20",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 9,
+          "id": "2026-03-06-001"
+        },
+        {
+          "start": "2026-03-20",
+          "end": "2026-04-03",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 11,
+          "id": "2026-03-20-001"
+        },
+        {
+          "start": "2026-04-03",
+          "end": "2026-04-17",
+          "status": "Limited",
+          "price": 899.0,
+          "seats_left": 3,
+          "id": "2026-04-03-001"
+        },
+        {
+          "start": "2026-04-17",
+          "end": "2026-05-01",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 10,
+          "id": "2026-04-17-001"
+        },
+        {
+          "start": "2026-05-01",
+          "end": "2026-05-15",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 8,
+          "id": "2026-05-01-001"
+        },
+        {
+          "start": "2026-09-09",
+          "end": "2026-09-23",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 12,
+          "id": "2026-09-09-001"
+        },
+        {
+          "start": "2026-09-23",
+          "end": "2026-10-07",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 11,
+          "id": "2026-09-23-001"
+        },
+        {
+          "start": "2026-10-07",
+          "end": "2026-10-21",
+          "status": "Available",
+          "price": 799.0,
+          "seats_left": 10,
+          "id": "2026-10-07-001"
+        },
+        {
+          "start": "2026-10-21",
+          "end": "2026-11-04",
+          "status": "Available",
+          "price": 799.0,
+          "seats_left": 9,
+          "id": "2026-10-21-001"
+        },
+        {
+          "start": "2026-11-04",
+          "end": "2026-11-18",
+          "status": "Limited",
+          "price": 799.0,
+          "seats_left": 4,
+          "id": "2026-11-04-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1199.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 899.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 799.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Rhododendron blooms spectacular in March-April with clear skies"
+        },
+        {
+          "highlight": "August Janai Purnima pilgrimage festival at Gosaikunda"
+        },
+        {
+          "highlight": "Autumn September-November offers clearest mountain views"
+        },
+        {
+          "highlight": "Laurebina La Pass crossable in spring and autumn only"
+        }
+      ],
+      "booking_card": {
+        "base_price": 899.0,
+        "original_price": 1199.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 25,
+        "badge_label": "Epic Circuit",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1199.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 899.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 799.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Circuit Difficulty & High Pass Crossing",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is this circuit for experienced trekkers only?",
+              "answer": "The circuit combines moderate and challenging sections. While high pass crossing requires good fitness, the gradual acclimatization schedule and support team make it achievable for determined trekkers with 4-6 weeks physical training.",
+              "order": 1
+            },
+            {
+              "question": "How challenging is Laurebina La Pass crossing?",
+              "answer": "Laurebina La at 4,610m is the route's most challenging section. Early morning starts, proper acclimatization, and favorable weather are essential. We've planned rest days and gradual climbs specifically for safe pass crossing.",
+              "order": 2
+            },
+            {
+              "question": "What makes this circuit special?",
+              "answer": "It's the only trek combining glacier-carved Langtang Valley, sacred Gosaikunda Lake pilgrimage, high Laurebina La pass crossing, and culturally rich Helambu valley in one continuous 15-day journey without backtracking.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/circuit_1.jpg",
+          "title": "Langtang Valley",
+          "caption": "Glacier-carved valley with Langtang Lirung backdrop.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/circuit_2.jpg",
+          "title": "Gosaikunda Lake",
+          "caption": "Sacred alpine lake at 4,312m.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/circuit_3.jpg",
+          "title": "Helambu Villages",
+          "caption": "Traditional Sherpa settlements with mountain views.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Complete circuit with high pass adventure",
+        "background_image_path": "elevation_chart/langtang_circuit.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 11,
+            "title": "Laurebina La Pass",
+            "elevation": 4610,
+            "description": "Highest point",
+            "order": 2
+          },
+          {
+            "day": 15,
+            "title": "Melamchi Pul",
+            "elevation": 846,
+            "description": "Trek end",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "This is a comprehensive circuit Trek requiring significant physical commitment and mental preparation. Recommended for trekkers with previous high-altitude experience or exceptional dedication.",
+            "No backtracking on this circular route - continuous forward progression from Syabrubesi through Langtang Valley, Gosaikunda, Laurebina Pass, and Helambu to Melamchi Pul.",
+            "The trek naturally acclimatizes you for the high pass crossing with rest days at Kyanjin Gompa (3,870m) and Gosaikunda (4,312m) before attempting Laurebina La."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Excellent fitness required - 4-6 weeks pre-trek training essential",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "High altitude insurance and medication strongly recommended",
+              "icon": "alert",
+              "order": 1
+            },
+            {
+              "text": "No domestic flights required - road and trekking only",
+              "icon": "achievement",
+              "order": 2
+            },
+            {
+              "text": "Circular route - no backtracking saves time compared to separate treks",
+              "icon": "achievement",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [],
+        "groupPrices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "label": "Solo Trekker (Private Trek)",
+            "price": 1199.0,
+            "size": 1
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "label": "2-4 People",
+            "price": 899.0,
+            "size": 4
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "label": "5-15 People",
+            "price": 799.0,
+            "size": 15
+          }
+        ],
+        "highlights": [
+          {
+            "highlight": "Complete Langtang Circuit - no backtracking"
+          },
+          {
+            "highlight": "Laurebina La Pass crossing at 4,610m"
+          },
+          {
+            "highlight": "Sacred Gosaikunda Lake pilgrimage"
+          },
+          {
+            "highlight": "Authentic Sherpa & Tamang cultural immersion"
+          }
+        ]
+      }
+    }
+  

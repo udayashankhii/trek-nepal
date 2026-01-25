@@ -1,0 +1,621 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T21:22:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Mustang",
+      "slug": "mustang",
+     "short_label": "Upper Mustang, Lo Manthang",
+
+      "order": 1,
+      "marker_x": 52,
+      "marker_y": 65,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "upper-mustang-trek-lo-manthang",
+      "title": "Upper Mustang Trek (Lo Manthang)",
+      "region_slug": "mustang",
+      "duration": "14 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Pokhara",
+      "group_size": "2-12",
+      "max_altitude": "3840m",
+      "activity": "Trekking",
+      "short_description": "Trek through the ancient walled kingdom of Lo Manthang, exploring Tibetan monasteries, desert landscapes, and the restricted forbidden kingdom with sacred caves and cultural immersion.",
+      "card_image_path": "trek_cards/upper_mustang_card.jpg",
+      "is_published": true,
+      "review_text": "The ultimate Mustang experience - walled city, ancient monasteries, Tibetan culture, and world's deepest gorge. Most famous and popular Upper Mustang trek.",
+      "rating": 4.9,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Upper Mustang Trek (Lo Manthang)",
+        "subtitle": "Trek through the ancient walled kingdom of Mustang",
+        "image_path": "hero_images/upper_mustang_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "14",
+        "difficulty": "Moderate",
+        "location": "Mustang, Upper Mustang, Lo Manthang",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Upper Mustang Trek (Lo Manthang)",
+            "articles": [
+              "The Upper Mustang Trek is one of Nepal's most exclusive and culturally significant treks. This 14-day journey takes you from Pokhara through the Kali Gandaki gorge - the world's deepest gorge - to the ancient walled city of Lo Manthang at 3,840m. The trek is restricted and requires special permits, preserving its authentic Tibetan culture, Buddhist monasteries, and desert landscapes. You'll explore the mystical Chhoser caves, visit Lo Gekar Gompa (Ghar Gompa), trek through ancient caravan trade routes, and experience the unique Loba people's traditions. This is the most famous Mustang trek, perfect for culture-focused trekkers seeking the 'Forbidden Kingdom.'"
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 3,840m (Lo Manthang, walled city)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Restricted Area Permit required: USD $50/day (new 2025 rates)",
+                "icon": "permit",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March–May, September–November",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Ancient Buddhist monasteries and sky caves",
+                "icon": "temple",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu, prepare for trek",
+          "description": "Arrive in Kathmandu. Meet guide, purchase permits and trekking gear. Visit Kathmandu's cultural sites.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Preparation day",
+          "distance": "Local walks",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        },
+        {
+          "day": 2,
+          "title": "Fly Kathmandu to Pokhara, then Pokhara to Jomsom",
+          "description": "Flight from Kathmandu to Pokhara (1 hour), then scenic flight from Pokhara to Jomsom. Drive to Kagbeni.",
+          "accommodation": "Hotel",
+          "altitude": "2810m",
+          "duration": "4-5 hours total",
+          "distance": "Flight + 8 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kagbeni",
+          "latitude": 28.8133,
+          "longitude": 83.8367
+        },
+        {
+          "day": 3,
+          "title": "Trek from Kagbeni to Chele",
+          "description": "Begin trekking through Kali Gandaki Valley following ancient caravan routes. Pass through Mustang's arid desert landscape.",
+          "accommodation": "Teahouse",
+          "altitude": "3065m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chele",
+          "latitude": 28.8667,
+          "longitude": 83.8233
+        },
+        {
+          "day": 4,
+          "title": "Trek from Chele to Samar",
+          "description": "Trek through high desert with views of eroded cliffs and monasteries. Cross high altitude passes.",
+          "accommodation": "Teahouse",
+          "altitude": "3660m",
+          "duration": "6-7 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samar",
+          "latitude": 28.8967,
+          "longitude": 83.8033
+        },
+        {
+          "day": 5,
+          "title": "Trek from Samar to Ghiling",
+          "description": "Trek through barren hills and monasteries. Enter deeper into Upper Mustang's restricted zone.",
+          "accommodation": "Teahouse",
+          "altitude": "3570m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghiling",
+          "latitude": 28.9167,
+          "longitude": 83.7867
+        },
+        {
+          "day": 6,
+          "title": "Trek from Ghiling to Tsarang",
+          "description": "Visit old Ghiling monastery perched on hillside. Trek to Tsarang with its ancient monasteries and desert views.",
+          "accommodation": "Teahouse",
+          "altitude": "3620m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tsarang",
+          "latitude": 28.9333,
+          "longitude": 83.7767
+        },
+        {
+          "day": 7,
+          "title": "Trek from Tsarang to Lo Manthang via Lo La Pass",
+          "description": "Dramatic ascent to Lo La Pass (3,950m). First panoramic views of walled city Lo Manthang. Descend to kingdom's capital.",
+          "accommodation": "Teahouse",
+          "altitude": "3840m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": 28.9667,
+          "longitude": 83.7633
+        },
+        {
+          "day": 8,
+          "title": "Explore Lo Manthang - Royal Palace and Monasteries",
+          "description": "Explore walled city, visit Royal Palace, Thani Mai Gompa, and Choser Cave - dramatic 14th-century cave dwelling carved into cliffs.",
+          "accommodation": "Teahouse",
+          "altitude": "3840m",
+          "duration": "6-7 hours exploration",
+          "distance": "10 km exploration",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": 28.9667,
+          "longitude": 83.7633
+        },
+        {
+          "day": 9,
+          "title": "Excursion to Ghar Gompa (Lo Gekar Monastery) and Chhoser",
+          "description": "Visit sacred Ghar Gompa (8th century monastery founded by Guru Padmasambhava) and Chhoser cave complex. Panoramic Himalayan views.",
+          "accommodation": "Teahouse",
+          "altitude": "3921m",
+          "duration": "6-7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": 28.9667,
+          "longitude": 83.7633
+        },
+        {
+          "day": 10,
+          "title": "Trek from Lo Manthang to Dhakmar",
+          "description": "Descend through dramatic red cliffs (iron-rich formations). Trek through open desert to Dhakmar village.",
+          "accommodation": "Teahouse",
+          "altitude": "3820m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dhakmar",
+          "latitude": 28.9400,
+          "longitude": 83.8100
+        },
+        {
+          "day": 11,
+          "title": "Trek from Dhakmar to Ghami",
+          "description": "Trek past Ghami's famous 250-meter long Mani wall (longest in Mustang) covered with Tibetan mantras.",
+          "accommodation": "Teahouse",
+          "altitude": "3520m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghami",
+          "latitude": 28.9200,
+          "longitude": 83.8367
+        },
+        {
+          "day": 12,
+          "title": "Trek from Ghami to Jomsom",
+          "description": "Long descent through Kali Gandaki Valley back to Jomsom. Trek along river with views of Nilgiri and Dhaulagiri.",
+          "accommodation": "Hotel",
+          "altitude": "2720m",
+          "duration": "6-7 hours",
+          "distance": "18 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jomsom",
+          "latitude": 28.7833,
+          "longitude": 83.7367
+        },
+        {
+          "day": 13,
+          "title": "Fly Jomsom to Pokhara",
+          "description": "Early morning scenic flight from Jomsom to Pokhara. Afternoon free for relaxation.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "45 minutes flight",
+          "distance": "Flight",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 14,
+          "title": "Fly Pokhara to Kathmandu",
+          "description": "Flight from Pokhara back to Kathmandu. Rest and celebration dinner.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "1 hour flight",
+          "distance": "Flight",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Walled City of Lo Manthang",
+          "description": "Ancient kingdom's capital with narrow streets, royal palace, and 14th-century monasteries preserved in time.",
+          "icon": "kingdom"
+        },
+        {
+          "title": "Lo Gekar Gompa (Ghar Gompa)",
+          "description": "Sacred 8th-century monastery founded by Guru Padmasambhava, connected to Tibet's Samye Monastery.",
+          "icon": "temple"
+        },
+        {
+          "title": "Choser Cave Complex",
+          "description": "Dramatic 14th-century five-story man-made cave dwelling with 40+ rooms carved into cliff faces.",
+          "icon": "cave"
+        },
+        {
+          "title": "Kali Gandaki Gorge",
+          "description": "World's deepest river gorge with stunning geological formations and ancient caravan trade routes.",
+          "icon": "gorge"
+        },
+        {
+          "title": "Tibetan Culture & Loba People",
+          "description": "Authentic Tibetan-influenced villages with yak herding traditions, Buddhist monasteries, and unique heritage.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/upper_mustang_lo_manthang.pdf",
+        "map_image_path": "trek_maps/upper_mustang_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced trekking guide with Mustang expertise",
+          "Porter support (1 porter per 2 trekkers)",
+          "Restricted Area Permit (RAP) - USD $50/day NEW RATE",
+          "ACAP permit (Annapurna Conservation Area Project)",
+          "TIMS card",
+          "Teahouse accommodation during trek",
+          "All meals (breakfast, lunch, dinner) during trek",
+          "Ground transportation Kathmandu-Pokhara-Jomsom-Kathmandu",
+          "Domestic flights (Kathmandu-Pokhara-Jomsom-Pokhara-Kathmandu)",
+          "Monastery entrance fees in Lo Manthang"
+        ],
+        "cost_exclusions": [
+          "International flights to Nepal",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance (highly recommended)",
+          "Extra expenses (drinks, snacks, tips, souvenirs)",
+          "Tiji Festival registration (if attending May)",
+          "Optional activities and cave exploration fees"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Choose your preferred dates. Upper Mustang operates year-round but spring and autumn offer the best weather, clear visibility, and comfortable trekking conditions."
+      },
+      "departures": [
+        {
+          "start": "2026-03-10",
+          "end": "2026-03-23",
+          "status": "Available",
+          "price": 2195.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-04-08",
+          "end": "2026-04-21",
+          "status": "Available",
+          "price": 2245.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-05-14",
+          "end": "2026-05-27",
+          "status": "Available",
+          "price": 2295.0,
+          "seats_left": 6
+        },
+        {
+          "start": "2026-09-18",
+          "end": "2026-10-01",
+          "status": "Available",
+          "price": 2245.0,
+          "seats_left": 9
+        },
+        {
+          "start": "2026-10-10",
+          "end": "2026-10-23",
+          "status": "Available",
+          "price": 2195.0,
+          "seats_left": 11
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 2495.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 2195.0
+        },
+        {
+          "label": "5-12 People",
+          "price": 1995.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Clear views, wildflowers blooming, comfortable temperatures, Tiji Festival in May"
+        },
+        {
+          "highlight": "Summer (June-Aug): Green landscapes, occasional rain, fewer crowds, cool mornings"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Crystal-clear visibility, stable weather, ideal for photography, peak trekking season"
+        },
+        {
+          "highlight": "Winter (Dec-Feb): Snow possible at passes, fewer trekkers, deep discounts, harsh weather above 3500m"
+        }
+      ],
+      "booking_card": {
+        "base_price": 2195.0,
+        "original_price": 2495.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Most Famous Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 2495.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 2195.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 12,
+            "price": 1995.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Permits & Restrictions",
+          "icon": "permit",
+          "order": 1,
+          "questions": [
+            {
+              "question": "What permits do I need for Upper Mustang Trek?",
+              "answer": "Three permits required: (1) Restricted Area Permit (RAP) - USD $50/day (new 2025 rate), (2) ACAP - NPR 3,000 (~USD 23), (3) TIMS Card - USD 10. Minimum 2 people required to apply. Guide is mandatory.",
+              "order": 1
+            },
+            {
+              "question": "Is Upper Mustang really restricted?",
+              "answer": "Yes, Upper Mustang is a restricted area. Solo trekking is NOT allowed. You must trek with a licensed Nepali guide and minimum party of 2 people. This preserves the region's culture and environment.",
+              "order": 2
+            },
+            {
+              "question": "Can I trek independently in Upper Mustang?",
+              "answer": "No. Independent trekking is strictly forbidden. You must hire a licensed guide through a registered trekking agency. This is a government regulation enforced to protect the region.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "About the Trek",
+          "icon": "trekking",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What makes Upper Mustang special?",
+              "answer": "Upper Mustang is the ancient walled kingdom of Lo Manthang - a time capsule of Tibetan culture. It features the world's deepest gorge (Kali Gandaki), Buddhist monasteries dating back centuries, dramatic desert landscapes, and authentic Loba people traditions. It's the 'Forbidden Kingdom' of Nepal.",
+              "order": 1
+            },
+            {
+              "question": "Is this trek suitable for beginners?",
+              "answer": "Yes, Upper Mustang is graded MODERATE and suitable for trekkers with basic fitness levels. Maximum altitude is only 3,840m (lower than Everest Base Camp). The challenge is remote location and long trekking days, not technical difficulty.",
+              "order": 2
+            },
+            {
+              "question": "What is Choser Cave?",
+              "answer": "Choser Cave is a dramatic 14th-century five-story man-made cave dwelling with 40+ rooms carved into cliff faces. It's believed to be built for protection during invasions. Located in cave system accessed from Lo Manthang area.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Practical Information",
+          "icon": "info",
+          "order": 3,
+          "questions": [
+            {
+              "question": "What type of accommodation will we have?",
+              "answer": "Simple but comfortable teahouses with basic amenities during trek. Rooms have beds, heating stoves (essential at altitude), and shared/private bathrooms with hot water buckets.",
+              "order": 1
+            },
+            {
+              "question": "What are the meals like?",
+              "answer": "Authentic Nepali and Mustang cuisine. Dal bhat (rice and lentils), momos, noodles, local vegetables. International options available. All meals included in package price.",
+              "order": 2
+            },
+            {
+              "question": "How much cash should I bring?",
+              "answer": "Bring extra cash for tips, optional activities, and drinks. ATMs only in Kathmandu and Pokhara. Teahouses don't accept cards. Plan for 100-200 USD extra for 14 days.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Culture & History",
+          "icon": "culture",
+          "order": 4,
+          "questions": [
+            {
+              "question": "What is the Tiji Festival?",
+              "answer": "Ancient 3-day Buddhist festival held in May at Lo Manthang (dates: May 14-16, 2026 projected). Celebrates victory of good over evil. If you want to attend, book separate trip or extend your trek.",
+              "order": 1
+            },
+            {
+              "question": "Who are the Loba people?",
+              "answer": "Loba people are the indigenous inhabitants of Mustang with Tibetan heritage. They practice Tibetan Buddhism, maintain yak herding traditions, and preserve unique cultural customs. Meeting them is a highlight of the trek.",
+              "order": 2
+            },
+            {
+              "question": "What monasteries will I visit?",
+              "answer": "Visit Lo Gekar Gompa (Ghar Gompa) - 8th-century monastery, Thani Mai Gompa in Lo Manthang, Choser Cave monastery complex, and various chortens and prayer walls. Each has unique Buddhist significance.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/lo_manthang_walled_city.jpg",
+          "title": "Walled City of Lo Manthang",
+          "caption": "Ancient kingdom with narrow streets, royal palace, and monasteries frozen in time.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/choser_cave_complex.jpg",
+          "title": "Choser Cave Complex",
+          "caption": "Dramatic 14th-century five-story cave dwelling with 40+ rooms carved into cliffs.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/lo_gekar_gompa.jpg",
+          "title": "Lo Gekar Gompa (Ghar Gompa)",
+          "caption": "Sacred 8th-century monastery perched on hillside overlooking valleys.",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/kali_gandaki_gorge.jpg",
+          "title": "Kali Gandaki Gorge",
+          "caption": "World's deepest river gorge with ancient caravan trade routes.",
+          "order": 4
+        },
+        {
+          "image_path": "trek_gallery/mustang_desert_landscape.jpg",
+          "title": "Mustang Desert Landscape",
+          "caption": "Barren multi-colored hills with Buddhist prayer flags and monasteries.",
+          "order": 5
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression through Upper Mustang",
+        "background_image_path": "elevation_chart/upper_mustang.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu Start",
+            "elevation": 1340,
+            "description": "Trek preparation in capital",
+            "order": 1
+          },
+          {
+            "day": 2,
+            "title": "Kagbeni Gateway",
+            "elevation": 2810,
+            "description": "Entry to Upper Mustang region",
+            "order": 2
+          },
+          {
+            "day": 3,
+            "title": "Chele",
+            "elevation": 3065,
+            "description": "First night in restricted zone",
+            "order": 3
+          },
+          {
+            "day": 7,
+            "title": "Lo Manthang City",
+            "elevation": 3840,
+            "description": "Walled city - trek's crown jewel",
+            "order": 4
+          },
+          {
+            "day": 10,
+            "title": "Dhakmar Red Cliffs",
+            "elevation": 3820,
+            "description": "Dramatic desert views",
+            "order": 5
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Upper Mustang is a high-altitude desert region with extreme weather changes. Carry warm layers, rain protection, and sun protection (high UV at altitude).",
+            "The new permit rate (USD $50/day) is effective from November 2025. This makes the trek more accessible than previous $500/10-day minimum rate.",
+            "Restricted area status protects the region's Tibetan culture and environment. Respect local customs, monasteries, and prayer sites.",
+            "Mobile network is intermittent. Limited communication with outside world. Plan accordingly.",
+            "Medical facilities are very limited. Travel insurance is highly recommended, not optional.",
+            "The trek involves long daily walking hours (5-7 hours). Good physical fitness is essential."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Mandatory guide required - no solo trekking allowed",
+              "icon": "guide",
+              "order": 0
+            },
+            {
+              "text": "Minimum 2 people required for permit application",
+              "icon": "group",
+              "order": 1
+            },
+            {
+              "text": "Restricted area permits protect this unique region",
+              "icon": "shield",
+              "order": 2
+            },
+            {
+              "text": "Tiji Festival in May adds cultural depth",
+              "icon": "festival",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+    ]               
+}

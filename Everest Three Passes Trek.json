@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T19:47:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Everest",
+      "slug": "everest",
+      "short_label": "Everest Three Passes, Gokyo Lakes, Khumbu",
+      "order": 2,
+      "marker_x": 75,
+      "marker_y": 25,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "everest-three-passes-trek",
+      "title": "Everest Three Passes Trek",
+      "region_slug": "everest",
+      "duration": "18 Days",
+      "trip_grade": "Very Difficult",
+      "start_point": "Lukla",
+      "group_size": "1-15",
+      "max_altitude": "5535m",
+      "activity": "Trekking",
+      "short_description": "Epic high-altitude adventure crossing three 5,000m+ passes: Kongma La, Cho La, and Renjo La. Features Gokyo Lakes, Everest Base Camp, and Kala Patthar with maximum mountain vistas and minimal crowds.",
+      "card_image_path": "trek_cards/everest_three_passes.jpg",
+      "is_published": true,
+      "review_text": "The ultimate Everest region challenge - cross three high passes with stunning turquoise lakes and comprehensive mountain panoramas.",
+      "rating": 4.7,
+      "reviews": 128,
+      "hero_section": {
+        "title": "Everest Three Passes Trek",
+        "subtitle": "Epic High-Pass Adventure - Three 5,000m+ Crossings",
+        "image_path": "hero_images/everest_three_passes_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "18",
+        "difficulty": "Very Difficult",
+        "location": "Khumbu-Gokyo Valley Circuit, Eastern Nepal - Ultimate Challenge",
+        "cta_label": "Book The Challenge",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Everest Three Passes Trek Overview",
+            "articles": [
+              "The Everest Three Passes Trek is the most challenging trek in the Everest region. Over 18 days, you'll cross three high-altitude passes - Kongma La (5,535m), Cho La (5,420m), and Renjo La (5,360m) - connecting the Everest Valley, Gokyo Lakes, and Khumbu regions. This epic circuit offers the complete Himalayan experience: pristine turquoise glacial lakes, four 8,000m peaks, authentic Sherpa culture, and dramatic high-altitude terrain with minimal commercialization. No backtracking on this circular route - maximum efficiency, maximum scenery."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude: 5,535m (Kongma La Pass), the highest of three passes",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Three high passes: Kongma La (5,535m), Cho La (5,420m), Renjo La (5,360m)",
+                "icon": "achievement",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Very Difficult trek - requires excellent fitness, high-altitude acclimatization experience",
+                "icon": "hiking",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Briefing",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes you. Afternoon trek briefing with detailed pass crossing preparation and equipment check.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Fly to Lukla & Trek to Phakding",
+          "description": "Scenic 40-minute mountain flight from Ramechap to Lukla (2,800m). Trek downhill through rhododendron forests crossing suspension bridges to Phakding.",
+          "accommodation": "Teahouse",
+          "altitude": "2600m",
+          "duration": "Flight 40 min + Trek 3-4 hours",
+          "distance": "7 km trek",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Phakding",
+          "latitude": 27.7457,
+          "longitude": 86.7371
+        },
+        {
+          "day": 3,
+          "title": "Trek Phakding to Namche Bazaar",
+          "description": "Steep ascent with multiple suspension bridges (Hillary Bridge). Arrive at Namche Bazaar (3,440m), the Sherpa capital.",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 4,
+          "title": "Namche Bazaar - Acclimatization & Exploration",
+          "description": "Acclimatization day. Hike to Everest View Hotel (3,880m) for first Everest views. Explore Namche market, Tenzing Norgay Museum, and local culture.",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "4-5 hours hike",
+          "distance": "Local exploration",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 5,
+          "title": "Trek Namche to Dole via Gokyo Valley",
+          "description": "Trek northeast through forests to Dole (4,200m), the gateway to Gokyo Valley. Less crowded route with beautiful views.",
+          "accommodation": "Teahouse",
+          "altitude": "4200m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dole",
+          "latitude": 27.8145,
+          "longitude": 86.8301
+        },
+        {
+          "day": 6,
+          "title": "Trek Dole to Machhermo",
+          "description": "Continue through Gokyo Valley approaching high altitude. Reach Machhermo (4,470m) with views of Cho Oyu (6,189m) and Ngozumpa Glacier.",
+          "accommodation": "Teahouse",
+          "altitude": "4470m",
+          "duration": "5-6 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Machhermo",
+          "latitude": 27.8212,
+          "longitude": 86.8534
+        },
+        {
+          "day": 7,
+          "title": "Trek Machhermo to Gokyo Lakes",
+          "description": "Trek to spectacular Gokyo (4,790m) with its chain of five turquoise glacial lakes. Visit the Gokyo village and explore the pristine alpine environment.",
+          "accommodation": "Teahouse",
+          "altitude": "4790m",
+          "duration": "4-5 hours",
+          "distance": "6 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gokyo",
+          "latitude": 27.8289,
+          "longitude": 86.8612
+        },
+        {
+          "day": 8,
+          "title": "Gokyo - Acclimatization & Gokyo Ri Hike",
+          "description": "Acclimatization day at high altitude. Hike to Gokyo Ri (5,357m) for 360-degree panoramic views of Everest, Lhotse, Cho Oyu, Makalu and turquoise lakes below.",
+          "accommodation": "Teahouse",
+          "altitude": "4790m",
+          "duration": "4-6 hours hike",
+          "distance": "Gokyo Ri summit",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gokyo",
+          "latitude": 27.8289,
+          "longitude": 86.8612
+        },
+        {
+          "day": 9,
+          "title": "Trek Gokyo to Thangnak via Cho La Pass (5,420m)",
+          "description": "FIRST HIGH PASS: Climb to Cho La Pass (5,420m) with steep rocky terrain. Descend to Thangnak (4,700m). Spectacular but challenging day - technical pass crossing.",
+          "accommodation": "Teahouse",
+          "altitude": "4700m",
+          "duration": "7-8 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Thangnak",
+          "latitude": 27.8156,
+          "longitude": 86.8834
+        },
+        {
+          "day": 10,
+          "title": "Trek Thangnak to Dzongla",
+          "description": "Trek to Dzongla (4,855m) with views of Cho La behind and preparation for next pass crossing. Follow Khumbu Glacier moraine.",
+          "accommodation": "Teahouse",
+          "altitude": "4855m",
+          "duration": "5-6 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dzongla",
+          "latitude": 27.8034,
+          "longitude": 86.8901
+        },
+        {
+          "day": 11,
+          "title": "Trek Dzongla to Lobuche",
+          "description": "Trek to Lobuche (4,930m) across boulder-filled terrain. View memorials of fallen climbers and trekkers. Prepare for Kongma La Pass crossing.",
+          "accommodation": "Teahouse",
+          "altitude": "4930m",
+          "duration": "4-5 hours",
+          "distance": "6 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lobuche",
+          "latitude": 27.8756,
+          "longitude": 86.8667
+        },
+        {
+          "day": 12,
+          "title": "Trek Lobuche to Gorakshep & Everest Base Camp",
+          "description": "Trek to Gorakshep (5,185m). Afternoon excursion to Everest Base Camp (5,364m). Return to Gorakshep for overnight.",
+          "accommodation": "Teahouse",
+          "altitude": "5364m",
+          "duration": "7-8 hours",
+          "distance": "8 km to EBC",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gorakshep",
+          "latitude": 27.8834,
+          "longitude": 86.8867
+        },
+        {
+          "day": 13,
+          "title": "Kala Patthar Sunrise & Trek to Pheriche",
+          "description": "Pre-dawn hike to Kala Patthar (5,545m) for iconic Everest sunrise. Descend to Pheriche (4,250m). Long challenging day - recovery day needed.",
+          "accommodation": "Teahouse",
+          "altitude": "4250m",
+          "duration": "6-8 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pheriche",
+          "latitude": 27.8667,
+          "longitude": 86.8456
+        },
+        {
+          "day": 14,
+          "title": "Trek Pheriche to Dingboche",
+          "description": "Trek back up to Dingboche (4,410m). Recovery walking with acclimatization. Views of Ama Dablam and Makalu.",
+          "accommodation": "Teahouse",
+          "altitude": "4410m",
+          "duration": "4-5 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dingboche",
+          "latitude": 27.8611,
+          "longitude": 86.8234
+        },
+        {
+          "day": 15,
+          "title": "Trek Dingboche to Pangboche",
+          "description": "Trek towards Khumbu Valley. Visit Pangboche gompa with yeti relics. Continue to Pangboche (3,985m). Preparation for SECOND and THIRD passes.",
+          "accommodation": "Teahouse",
+          "altitude": "3985m",
+          "duration": "4-5 hours",
+          "distance": "9 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pangboche",
+          "latitude": 27.8456,
+          "longitude": 86.7812
+        },
+        {
+          "day": 16,
+          "title": "Trek Pangboche to Thame via Renjo La Pass (5,360m)",
+          "description": "THIRD HIGH PASS: Climb to Renjo La Pass (5,360m) - less technical than previous passes. Descend to Thame (3,860m), a traditional Sherpa village off main tourist trail.",
+          "accommodation": "Teahouse",
+          "altitude": "3860m",
+          "duration": "7-8 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Thame",
+          "latitude": 27.8367,
+          "longitude": 86.6945
+        },
+        {
+          "day": 17,
+          "title": "Trek Thame to Namche Bazaar via Kongma La Pass (5,535m)",
+          "description": "SECOND HIGH PASS: Climb to Kongma La (5,535m) - the highest of the three passes. Steep rocky terrain requires care. Descend back to Namche Bazaar (3,440m). Celebrate all three passes completed!",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "8-9 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 18,
+          "title": "Fly Lukla to Kathmandu & Celebration",
+          "description": "Trek down to Lukla (3-4 hours). Afternoon return flight to Kathmandu. Evening celebration dinner with EverTrek Nepal team marking trek completion.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Trek 3-4 hours + Flight 40 min",
+          "distance": "7 km trek",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Three Epic High Passes - 5,000m+ Challenge",
+          "description": "Cross three high-altitude passes in the Himalayas:\n- Kongma La (5,535m) - highest of the three, steep and technical\n- Cho La (5,420m) - spectacular glacier crossing with dramatic terrain\n- Renjo La (5,360m) - stunning saddle between valleys\nOnly for experienced high-altitude trekkers. Multiple passes create maximum acclimatization challenge and reward.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Gokyo Lakes - Turquoise Alpine Treasures",
+          "description": "Explore the pristine chain of five turquoise glacial lakes of Gokyo Valley. Hike to Gokyo Ri (5,357m) for 360-degree panoramic views of four 8,000m peaks: Everest, Lhotse, Cho Oyu, and Makalu.\nNgozumpa Glacier - Nepal's largest glacier - dominates the landscape.\nVirtually no other tourists - true wilderness experience.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Complete Mountain Circuit - No Backtracking",
+          "description": "The three-pass route forms a perfect circular trek through three distinct valleys:\n- Everest Valley (south)\n- Gokyo Valley (west)\n- Khumbu Valley (north)\nNo retracing steps - maximum efficiency, maximum variety. Each day offers completely new terrain and perspectives.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Authentic Remote Sherpa Culture",
+          "description": "Experience less-commercialized Sherpa communities, especially around Thame and Gokyo. Visit ancient monasteries including Pangboche Gompa with yeti relics. Stay in family-run teahouses far from main tourist trail.\nSee traditional Sherpa farming, yak herding, and high-altitude adaptation strategies.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/everest_three_passes.pdf",
+        "map_image_path": "trek_maps/everest_three_passes_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide with high-altitude pass experience",
+          "Professional porters to carry 80% of luggage",
+          "TIMS Card and Sagarmatha National Park permit",
+          "All teahouse accommodations during trek (twin sharing rooms)",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (2 nights - before/after trek)",
+          "Domestic flights Kathmandu-Lukla-Kathmandu",
+          "Welcome and farewell dinner in Kathmandu"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment (especially high-altitude gear)",
+          "Travel and medical insurance (mandatory for high altitude)",
+          "Bottled water and beverages",
+          "Tips for guide and porters (customary $120-180 for longer trek)",
+          "Personal expenses (phone calls, souvenirs, extra meals)",
+          "Hot showers and additional services at teahouses"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Everest Three Passes Trek is a premium high-altitude adventure. Departures available Spring (March-May) and Autumn (September-November) only - these are the only safe seasons for high-pass crossings. Early booking essential (12+ weeks). Limited departures compared to classic EBC trek due to high difficulty rating. Private group departures can be customized."
+      },
+      "departures": [
+        {
+          "start": "2026-03-10",
+          "end": "2026-03-27",
+          "status": "Available",
+          "price": 2350.0,
+          "seats_left": 8,
+          "id": "2026-03-10-001"
+        },
+        {
+          "start": "2026-04-01",
+          "end": "2026-04-18",
+          "status": "Available",
+          "price": 2350.0,
+          "seats_left": 10,
+          "id": "2026-04-01-001"
+        },
+        {
+          "start": "2026-04-20",
+          "end": "2026-05-07",
+          "status": "Limited",
+          "price": 2350.0,
+          "seats_left": 4,
+          "id": "2026-04-20-001"
+        },
+        {
+          "start": "2026-09-08",
+          "end": "2026-09-25",
+          "status": "Available",
+          "price": 2350.0,
+          "seats_left": 12,
+          "id": "2026-09-08-001"
+        },
+        {
+          "start": "2026-09-26",
+          "end": "2026-10-13",
+          "status": "Available",
+          "price": 2350.0,
+          "seats_left": 11,
+          "id": "2026-09-26-001"
+        },
+        {
+          "start": "2026-10-14",
+          "end": "2026-10-31",
+          "status": "Available",
+          "price": 2199.0,
+          "seats_left": 9,
+          "id": "2026-10-14-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 2799.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 2350.0
+        },
+        {
+          "label": "5-8 People",
+          "price": 2199.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Best snow conditions on high passes, clear skies"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Excellent visibility, stable weather for pass crossings"
+        },
+        {
+          "highlight": "Winter/Summer: High passes dangerous or closed - NOT recommended"
+        },
+        {
+          "highlight": "Very challenging trek - for experienced high-altitude trekkers only"
+        }
+      ],
+      "booking_card": {
+        "base_price": 2350.0,
+        "original_price": 2799.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 16,
+        "badge_label": "Expert Challenge",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 2799.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 2350.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 8,
+            "price": 2199.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "High-Pass Difficulty & Experience",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is this trek for me?",
+              "answer": "Only if you have previous high-altitude trekking experience (8,000m+ altitude), excellent fitness (6-8 week training), and strong acclimatization knowledge. This is NOT a beginner trek. Consider classic EBC trek first if you're new to high altitude.",
+              "order": 1
+            },
+            {
+              "question": "How technical are the pass crossings?",
+              "answer": "Moderately technical. Kongma La and Cho La require careful footwork on steep rocky terrain. Renjo La is easier but still exposed. Not roped climbing, but scrambling skills helpful. Guide assistance provided throughout.",
+              "order": 2
+            },
+            {
+              "question": "What if I can't cross a pass?",
+              "answer": "If health/altitude issues prevent pass crossing, alternatives exist: descend to lower teahouses, rest longer, or skip one pass. Guide will advise based on your condition. This is why guide experience is critical.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Weather & Season",
+          "icon": "calendar",
+          "order": 2,
+          "questions": [
+            {
+              "question": "Why only spring and autumn?",
+              "answer": "Winter brings heavy snow, avalanche risk, and extreme cold. Summer (monsoon) brings clouds, heavy rain, and rockfall. Spring and autumn offer stable weather, clear skies, and safe pass conditions.",
+              "order": 1
+            },
+            {
+              "question": "What's the weather like on the passes?",
+              "answer": "Expect cold (sub-zero), thin air, and sudden weather changes. Afternoon storms common. Start passes early (5-6am) to cross before weather deteriorates. Wind can be intense. Proper gear critical.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/three_passes_1.jpg",
+          "title": "Gokyo Lakes",
+          "caption": "Turquoise glacial lakes chain with Ngozumpa Glacier",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/three_passes_2.jpg",
+          "title": "Cho La Pass",
+          "caption": "Steep rocky technical pass crossing at 5,420m",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/three_passes_3.jpg",
+          "title": "Gokyo Ri Panorama",
+          "caption": "360-degree views of Everest, Lhotse, Cho Oyu, Makalu",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression over 18 days with three high passes",
+        "background_image_path": "elevation_chart/three_passes.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 7,
+            "title": "Gokyo",
+            "elevation": 4790,
+            "description": "Gokyo Lakes",
+            "order": 2
+          },
+          {
+            "day": 9,
+            "title": "Cho La Pass",
+            "elevation": 5420,
+            "description": "First high pass",
+            "order": 3
+          },
+          {
+            "day": 12,
+            "title": "Everest Base Camp",
+            "elevation": 5364,
+            "description": "EBC + Kala Patthar",
+            "order": 4
+          },
+          {
+            "day": 16,
+            "title": "Renjo La Pass",
+            "elevation": 5360,
+            "description": "Third pass",
+            "order": 5
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Critical Preparation Checklist",
+          "articles": [
+            "This trek requires meticulous preparation. (1) High-altitude acclimatization experience - consider Langtang or Annapurna first if this is your first time above 4,000m. (2) Excellent fitness - train with hill repetitions, elevation gain practice, and multi-hour hiking. (3) Specialist gear - down jacket rated -20°C, insulated hiking boots, high-altitude sleeping bag, trekking poles essential. (4) Medical preparation - carry altitude sickness medications, first-aid kit, and verify travel insurance covers 5,500m+ altitude.",
+            "The three-passes trek is a lifetime achievement for most trekkers. Proper preparation ensures you succeed safely and enjoy every moment of this incredible journey."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Excellent fitness required - train 6-8 weeks minimum with hill work",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "High-altitude experience recommended - not recommended for first-timers",
+              "icon": "alert",
+              "order": 1
+            },
+            {
+              "text": "Specialist gear essential - proper down and insulated equipment non-negotiable",
+              "icon": "hiking",
+              "order": 2
+            },
+            {
+              "text": "Travel insurance with evacuation covering 5,500m+ mandatory",
+              "icon": "alert",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [
+          {
+            "month": "March",
+            "month_index": 2,
+            "departures": [
+              {
+                "start": "2026-03-10",
+                "end": "2026-03-27",
+                "status": "Available",
+                "price": 2350.0,
+                "seats_left": 8,
+                "id": "2026-03-10-001"
+              }
+            ]
+          },
+          {
+            "month": "April",
+            "month_index": 3,
+            "departures": [
+              {
+                "start": "2026-04-01",
+                "end": "2026-04-18",
+                "status": "Available",
+                "price": 2350.0,
+                "seats_left": 10,
+                "id": "2026-04-01-001"
+              }
+            ]
+          },
+          {
+            "month": "September",
+            "month_index": 8,
+            "departures": [
+              {
+                "start": "2026-09-08",
+                "end": "2026-09-25",
+                "status": "Available",
+                "price": 2350.0,
+                "seats_left": 12,
+                "id": "2026-09-08-001"
+              }
+            ]
+          },
+          {
+            "month": "October",
+            "month_index": 9,
+            "departures": [
+              {
+                "start": "2026-10-14",
+                "end": "2026-10-31",
+                "status": "Available",
+                "price": 2199.0,
+                "seats_left": 9,
+                "id": "2026-10-14-001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

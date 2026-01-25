@@ -1,0 +1,403 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:18:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Ghorepani, Poon Hill, Tatopani",
+      "order": 1,
+      "marker_x": 45,
+      "marker_y": 58,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "ghorepani-poon-hill-trek",
+      "title": "Ghorepani Poon Hill Trek",
+      "region_slug": "annapurna",
+      "duration": "5 Days",
+      "trip_grade": "Easy",
+      "start_point": "Pokhara",
+      "group_size": "1-20",
+      "max_altitude": "3210m",
+      "activity": "Trekking",
+      "short_description": "Perfect short trek with iconic sunrise views over Annapurna and Dhaulagiri from Poon Hill. Explore rhododendron forests, traditional villages, and hot springs with minimal time commitment.",
+      "card_image_path": "trek_cards/poon_hill_card.jpg",
+      "is_published": true,
+      "review_text": "Iconic Annapurna region trek accessible to all fitness levels. Poon Hill sunrise is magical - one of Nepal's most photographed mountain views.",
+      "rating": 4.8,
+      "reviews": 287,
+      "hero_section": {
+        "title": "Ghorepani Poon Hill Trek",
+        "subtitle": "Iconic sunrise views over Annapurna range from Poon Hill at 3,210m",
+        "image_path": "hero_images/poon_hill_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "5",
+        "difficulty": "Easy",
+        "location": "Annapurna Region - Poon Hill",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Ghorepani Poon Hill Trek Overview",
+            "articles": [
+              "Ghorepani Poon Hill Trek is Nepal's most iconic short trek, perfect for trekkers with limited time. The 5-day trek takes you from Pokhara through rhododendron forests, traditional Gurung villages, and the famous hot springs of Tatopani to Poon Hill (3,210m). The highlight is the magical sunrise from Poon Hill where Annapurna I, II, III, Dhaulagiri, and Machhapuchhare appear in stunning alignment. This easy trek is suitable for all fitness levels including families and beginners. You'll experience authentic mountain villages, local hospitality, and some of the best mountain photography opportunities in Nepal."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Iconic Poon Hill sunrise - most photographed view in Nepal",
+                "icon": "sunrise",
+                "order": 0
+              },
+              {
+                "text": "Max altitude 3,210m (easily accessible, no acclimatization needed)",
+                "icon": "peak",
+                "order": 1
+              },
+              {
+                "text": "Easy difficulty - suitable for all ages and fitness levels",
+                "icon": "easy",
+                "order": 2
+              },
+              {
+                "text": "5 days total - perfect for short vacation or Annapurna introduction",
+                "icon": "calendar",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Pokhara from Kathmandu",
+          "description": "Drive or fly from Kathmandu to Pokhara (6-7 hours or 45 minutes flight). Rest and acclimatization.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "Travel day",
+          "distance": "200 km drive",
+          "meals": "Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 2,
+          "title": "Trek Pokhara to Ghorepani via Ulleri",
+          "description": "Drive to Birethanti village. Trek uphill through rhododendron forests via Ulleri (steep stone stairs). Arrive Ghorepani village at 2,750m.",
+          "accommodation": "Teahouse",
+          "altitude": "2750m",
+          "duration": "5-6 hours trek",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghorepani",
+          "latitude": 28.4234,
+          "longitude": 83.4123
+        },
+        {
+          "day": 3,
+          "title": "Poon Hill Sunrise & Trek to Tatopani",
+          "description": "Early morning hike to Poon Hill (3,210m) for magical sunrise over Annapurna and Dhaulagiri. Return to Ghorepani. Trek down to Tatopani village (hot springs).",
+          "accommodation": "Teahouse",
+          "altitude": "1190m",
+          "duration": "6-7 hours (sunrise hike + trek)",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tatopani",
+          "latitude": 28.5678,
+          "longitude": 83.4856
+        },
+        {
+          "day": 4,
+          "title": "Relax at Tatopani Hot Springs & Trek to Birethanti",
+          "description": "Morning optional soak in Tatopani hot springs. Trek down to Birethanti village. Drive back to Pokhara.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "4-5 hours trek + 1 hour drive",
+          "distance": "10 km trek + 30 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 5,
+          "title": "Departure from Pokhara",
+          "description": "Rest day in Pokhara or flight back to Kathmandu. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "Full day or morning departure",
+          "distance": "Local",
+          "meals": "Breakfast, optional lunch/dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Poon Hill Sunrise - Iconic View",
+          "description": "Watch the sunrise from Poon Hill (3,210m) with panoramic views of Annapurna I, II, III, Dhaulagiri, and Machhapuchhare. This is Nepal's most photographed mountain view.",
+          "icon": "sunrise"
+        },
+        {
+          "title": "Tatopani Hot Springs",
+          "description": "Relax in natural geothermal hot springs at Tatopani village. Perfect for muscle recovery after trekking.",
+          "icon": "spa"
+        },
+        {
+          "title": "Rhododendron Forests",
+          "description": "Trek through lush rhododendron forests. Spring season (March-April) offers spectacular rhododendron blooms in pink, red, and white colors.",
+          "icon": "flower"
+        },
+        {
+          "title": "Traditional Gurung Villages",
+          "description": "Experience authentic mountain village life. Stay in family-run teahouses and interact with local Gurung communities.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/poon_hill.pdf",
+        "map_image_path": "trek_maps/poon_hill_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "English-speaking trekking guide",
+          "Annapurna Conservation Area permit",
+          "TIMS Card",
+          "All teahouse accommodations during trek",
+          "All meals (breakfast, lunch, dinner)",
+          "Hotel in Pokhara (first night)",
+          "Hot spring access at Tatopani",
+          "Transport from Pokhara to trailhead"
+        ],
+        "cost_exclusions": [
+          "Transport Kathmandu-Pokhara",
+          "Personal trekking gear",
+          "Travel and medical insurance",
+          "Tips for guide and porters",
+          "Extra beverages and snacks",
+          "Optional activities"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Poon Hill Trek is available year-round but best March-May (rhododendron blooms) and September-November (clear views). Daily departures available with group or private options."
+      },
+      "departures": [
+        {
+          "start": "2026-03-01",
+          "end": "2026-03-05",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 15
+        },
+        {
+          "start": "2026-03-08",
+          "end": "2026-03-12",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 18
+        },
+        {
+          "start": "2026-04-05",
+          "end": "2026-04-09",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 12
+        },
+        {
+          "start": "2026-09-10",
+          "end": "2026-09-14",
+          "status": "Available",
+          "price": 449.0,
+          "seats_left": 20
+        },
+        {
+          "start": "2026-10-05",
+          "end": "2026-10-09",
+          "status": "Available",
+          "price": 399.0,
+          "seats_left": 16
+        },
+        {
+          "start": "2026-10-20",
+          "end": "2026-10-24",
+          "status": "Available",
+          "price": 399.0,
+          "seats_left": 14
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 549.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 449.0
+        },
+        {
+          "label": "5-20 People",
+          "price": 349.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendron blooms, perfect weather"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Crystal-clear visibility, stable weather"
+        }
+      ],
+      "booking_card": {
+        "base_price": 449.0,
+        "original_price": 549.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 18,
+        "badge_label": "Iconic Short Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 549.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 449.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 20,
+            "price": 349.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "For Beginners",
+          "icon": "easy",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Poon Hill suitable for beginners?",
+              "answer": "Yes! Poon Hill Trek is EASY and suitable for all fitness levels including families, seniors, and first-time trekkers. Max altitude is only 3,210m requiring no special acclimatization.",
+              "order": 1
+            },
+            {
+              "question": "Do I need previous trekking experience?",
+              "answer": "No. This is a perfect introduction to trekking in Nepal. The trail is well-established, teahouses are comfortable, and guides are experienced with beginners.",
+              "order": 2
+            },
+            {
+              "question": "What's the best time to visit?",
+              "answer": "Spring (March-May) for rhododendron blooms and autumn (Sept-Nov) for clear mountain views. Both seasons have excellent weather.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/poon_hill_sunrise.jpg",
+          "title": "Poon Hill Sunrise",
+          "caption": "Iconic sunrise over Annapurna range from Poon Hill",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/rhododendron_forest.jpg",
+          "title": "Rhododendron Forests",
+          "caption": "Lush forests with spring blooms",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/tatopani_hot_springs.jpg",
+          "title": "Tatopani Hot Springs",
+          "caption": "Natural geothermal hot springs for relaxation",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Easy 5-day trek with minimal altitude gain",
+        "background_image_path": "elevation_chart/poon_hill.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Pokhara",
+            "elevation": 823,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 3,
+            "title": "Poon Hill",
+            "elevation": 3210,
+            "description": "Highest point - sunrise view",
+            "order": 2
+          },
+          {
+            "day": 3,
+            "title": "Tatopani",
+            "elevation": 1190,
+            "description": "Hot springs",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Why Choose Poon Hill Trek?",
+          "articles": [
+            "Perfect for trekkers with limited time (only 5 days total). Iconic Poon Hill sunrise is one of the world's most beautiful mountain views.",
+            "Easy difficulty makes it accessible to families, seniors, and first-time trekkers. No special fitness required.",
+            "Excellent value for money. Hot springs, rhododendron forests, and authentic village experiences included.",
+            "Year-round option. Daily departures with flexible scheduling and group/private options available."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "5 days - perfect for short holidays",
+              "icon": "calendar",
+              "order": 0
+            },
+            {
+              "text": "Easy difficulty - no experience needed",
+              "icon": "easy",
+              "order": 1
+            },
+            {
+              "text": "Iconic Poon Hill sunrise view",
+              "icon": "sunrise",
+              "order": 2
+            },
+            {
+              "text": "Hot springs and forest trekking",
+              "icon": "spa",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

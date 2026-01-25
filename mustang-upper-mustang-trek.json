@@ -1,0 +1,329 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "internet_research_seed",
+    "generated_at": "2026-01-21T21:16:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Mustang",
+      "slug": "mustang",
+      "short_label": "Upper & Lower Mustang (Lo Manthang, Kagbeni, Muktinath)",
+      "order": 1,
+      "marker_x": 78,
+      "marker_y": 28,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "upper-mustang-trek-lo-manthang",
+      "title": "Upper Mustang Trek (Lo Manthang)",
+      "region_slug": "mustang",
+      "duration": "14 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Jomsom / Kagbeni",
+      "group_size": "2-15",
+      "max_altitude": "3840m",
+      "activity": "Trekking",
+      "short_description": "Classic trek to the walled city of Lo Manthang through Mustang’s rain-shadow landscapes, Tibetan-influenced culture, monasteries, and ancient cave sites. Restricted area trek requiring special permits.",
+      "card_image_path": "trek_cards/upper_mustang_card.jpg",
+      "is_published": true,
+      "review_text": "A culturally rich, arid trans-Himalayan trek to Lo Manthang with dramatic cliffs, caves, and living Tibetan-Buddhist heritage.",
+      "rating": 0,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Upper Mustang Trek (Lo Manthang)",
+        "subtitle": "The Forbidden Kingdom Route: Walled City, Monasteries & Desert Valleys",
+        "image_path": "hero_images/upper_mustang_hero.jpg",
+        "season": "Spring & Autumn",
+        "duration": "14",
+        "difficulty": "Moderate",
+        "location": "Mustang District, Nepal (Restricted Area)",
+        "cta_label": "Explore Upper Mustang",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Upper Mustang Trek Overview",
+            "articles": [
+              "Upper Mustang trekking typically follows the Kali Gandaki valley north from Kagbeni into the restricted region toward Lo Manthang. Expect arid landscapes, Tibetan-influenced villages, monasteries, chortens, and cave features shaped by wind erosion."
+            ],
+            "order": 0,
+            "bullets": [
+              { "text": "Max altitude: ~3,840m (Lo Manthang).", "icon": "mountain", "order": 0 },
+              { "text": "Restricted area: requires Restricted Area Permit; official fee is USD 500 (first 10 days) + USD 50/day beyond.", "icon": "permit", "order": 1 },
+              { "text": "Common route points: Kagbeni → Chele → Syangboche → Ghami → Charang → Lo Manthang.", "icon": "route", "order": 2 },
+              { "text": "Best seasons: typically spring and autumn for clearer conditions.", "icon": "calendar", "order": 3 }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu",
+          "description": "Arrival and preparation day; permit/briefing commonly arranged via agency for restricted region travel.",
+          "accommodation": "Hotel",
+          "altitude": "1337m",
+          "duration": "Full day",
+          "distance": "Local",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 2,
+          "title": "Travel to Pokhara",
+          "description": "Transit to Pokhara (flight or road), commonly used as staging point for Mustang access.",
+          "accommodation": "Hotel",
+          "altitude": "822m",
+          "duration": "6-8 hours (road) or short flight",
+          "distance": "Varies",
+          "meals": "Breakfast",
+          "place_name": "Pokhara",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 3,
+          "title": "Fly/Drive to Jomsom; trek to Kagbeni",
+          "description": "Reach Jomsom and walk to Kagbeni, a typical gateway settlement before entering the restricted Upper Mustang zone.",
+          "accommodation": "Lodge",
+          "altitude": "2800m",
+          "duration": "3-4 hours trekking (after travel)",
+          "distance": "Approx. 10-12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kagbeni",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 4,
+          "title": "Kagbeni to Chele",
+          "description": "Enter Upper Mustang region after permit checkpoint and trek north through dry valley terrain to Chele.",
+          "accommodation": "Lodge",
+          "altitude": "3050m",
+          "duration": "5-7 hours",
+          "distance": "Approx. 15-17 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chele",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 5,
+          "title": "Chele to Syangboche",
+          "description": "Continue along windswept canyons and cliffs toward Syangboche area (route varies by itinerary).",
+          "accommodation": "Lodge",
+          "altitude": "3800m",
+          "duration": "5-7 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syangboche",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 6,
+          "title": "Syangboche to Ghami",
+          "description": "Traverse high desert ridges and valley crossings toward Ghami, known for traditional settlement features.",
+          "accommodation": "Lodge",
+          "altitude": "3520m",
+          "duration": "4-6 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghami",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 7,
+          "title": "Ghami to Charang (Tsarang)",
+          "description": "Trek to Charang/Tsarang, a major village with monastery culture and traditional architecture.",
+          "accommodation": "Lodge",
+          "altitude": "3560m",
+          "duration": "4-6 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Charang",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 8,
+          "title": "Charang to Lo Manthang",
+          "description": "Approach the walled capital of Upper Mustang, Lo Manthang, a highlight of the restricted region route.",
+          "accommodation": "Lodge",
+          "altitude": "3840m",
+          "duration": "4-6 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 9,
+          "title": "Explore Lo Manthang",
+          "description": "Buffer/exploration day commonly used for cultural sites and optional side hikes (specific sites vary by operator).",
+          "accommodation": "Lodge",
+          "altitude": "3840m",
+          "duration": "Day hike / exploration",
+          "distance": "Local",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 10,
+          "title": "Return trek (Lo Manthang to Charang area)",
+          "description": "Begin return toward the south following a similar corridor (route variations possible).",
+          "accommodation": "Lodge",
+          "altitude": "3560m",
+          "duration": "6-8 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Charang",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 11,
+          "title": "Charang to Ghami area",
+          "description": "Continue return leg through high desert valleys toward Ghami.",
+          "accommodation": "Lodge",
+          "altitude": "3520m",
+          "duration": "4-6 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghami",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 12,
+          "title": "Ghami to Kagbeni",
+          "description": "Descend south toward Kagbeni, exiting the restricted region zone.",
+          "accommodation": "Lodge",
+          "altitude": "2800m",
+          "duration": "6-8 hours",
+          "distance": "Varies",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kagbeni",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 13,
+          "title": "Kagbeni to Jomsom; fly/drive out",
+          "description": "Walk back to Jomsom and travel onward (typically to Pokhara).",
+          "accommodation": "Hotel",
+          "altitude": "822m",
+          "duration": "Travel day",
+          "distance": "Varies",
+          "meals": "Breakfast",
+          "place_name": "Pokhara",
+          "latitude": null,
+          "longitude": null
+        },
+        {
+          "day": 14,
+          "title": "Return Kathmandu / depart",
+          "description": "Return to Kathmandu for departure or buffer day.",
+          "accommodation": "Hotel",
+          "altitude": "1337m",
+          "duration": "Travel day",
+          "distance": "Varies",
+          "meals": "Breakfast",
+          "place_name": "Kathmandu",
+          "latitude": null,
+          "longitude": null
+        }
+      ],
+      "highlights": [
+        { "title": "Lo Manthang walled city", "description": "Reach the historic capital of Upper Mustang, known for its walled settlement and Tibetan-influenced heritage.", "icon": "culture" },
+        { "title": "Trans-Himalayan desert landscapes", "description": "Walk through wind-carved cliffs, canyons, and arid valleys in Nepal’s rain-shadow zone.", "icon": "scenary" },
+        { "title": "Monasteries & chortens", "description": "Visit Buddhist sites and traditional villages along the Kali Gandaki corridor.", "icon": "achievement" }
+      ],
+      "action": {
+        "pdf_path": "",
+        "map_image_path": ""
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [],
+        "cost_exclusions": []
+      },
+      "cost_and_date_section": {
+        "intro_text": "Seasonality, prices, and logistics depend on permits, group size, flights/roads, and lodge availability."
+      },
+      "departures": [],
+      "group_prices": [],
+      "date_highlights": [],
+      "booking_card": {
+        "base_price": 0,
+        "original_price": 0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 0,
+        "badge_label": "Restricted Area",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": false,
+        "support_24_7": true,
+        "trusted_reviews": false,
+        "group_prices": []
+      },
+      "faq_categories": [
+        {
+          "title": "Permits & Rules",
+          "icon": "permit",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Upper Mustang restricted?",
+              "answer": "Yes—Upper Mustang is a restricted trekking area and requires a Restricted Area Permit; official fees are USD 500 for first 10 days and USD 50/day beyond.",
+              "order": 1
+            }
+          ]
+        }
+      ],
+      "gallery_images": [],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "High desert trekking to Lo Manthang",
+        "background_image_path": "",
+        "points": [
+          { "day": 3, "title": "Kagbeni", "elevation": 2800, "description": "Gateway", "order": 1 },
+          { "day": 8, "title": "Lo Manthang", "elevation": 3840, "description": "High point", "order": 2 }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Upper Mustang requires restricted-area permitting and is typically managed through a registered operator/guide due to local regulations.",
+            "Strong winds are common in Mustang; plan trekking hours accordingly."
+          ],
+          "order": 0,
+          "bullets": [
+            { "text": "Carry required permits and passport copies.", "icon": "permit", "order": 0 },
+            { "text": "Acclimatize responsibly around 3,500–3,900m.", "icon": "fitness", "order": 1 }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [],
+        "groupPrices": [],
+        "highlights": []
+      }
+    }
+  ]
+}

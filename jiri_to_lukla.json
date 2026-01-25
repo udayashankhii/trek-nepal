@@ -1,0 +1,587 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T19:47:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Everest",
+      "slug": "everest",
+      "short_label": "Gokyo Valley, Turquoise Lakes, Everest Views",
+      "order": 3,
+      "marker_x": 72,
+      "marker_y": 28,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "gokyo-lakes-trek",
+      "title": "Gokyo Lakes Trek",
+      "region_slug": "everest",
+      "duration": "11 Days",
+      "trip_grade": "Moderate-Difficult",
+      "start_point": "Lukla",
+      "group_size": "1-12",
+      "max_altitude": "5357m",
+      "activity": "Trekking",
+      "short_description": "Trek to the pristine Gokyo Lakes valley with turquoise glacial lakes and Gokyo Ri viewpoint. Less crowded alternative to classic EBC trek with stunning panoramic views of Everest, Lhotse, Cho Oyu, and Makalu from 5,357m.",
+      "card_image_path": "trek_cards/gokyo_lakes.jpg",
+      "is_published": true,
+      "review_text": "Hidden gem of Everest region - pristine turquoise lakes and peaceful mountain valleys without the crowds of standard EBC trek.",
+      "rating": 4.6,
+      "reviews": 187,
+      "hero_section": {
+        "title": "Gokyo Lakes Trek",
+        "subtitle": "Turquoise Alpine Lakes - Gateway to Hidden Everest Vistas",
+        "image_path": "hero_images/gokyo_lakes_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "11",
+        "difficulty": "Moderate-Difficult",
+        "location": "Gokyo Valley, Khumbu Region - Off-the-Beaten-Path",
+        "cta_label": "Book The Lakes",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Gokyo Lakes Trek Overview",
+            "articles": [
+              "The Gokyo Lakes Trek is a stunning yet less-crowded alternative to the classic Everest Base Camp trek. Over 11 days, you'll trek through the pristine Gokyo Valley to a chain of five spectacular turquoise glacial lakes nested at 4,790m. The highlight is the ascent to Gokyo Ri (5,357m), which offers 360-degree panoramic views of four 8,000m peaks: Everest, Lhotse, Cho Oyu, and Makalu. The trek features Nepal's largest glacier (Ngozumpa Glacier), authentic Sherpa villages with virtually no tourism infrastructure, and a sense of wilderness and discovery missing from the main EBC route."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude: 5,357m (Gokyo Ri viewpoint), peaceful glacial lake setting",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Five turquoise glacial lakes and Ngozumpa Glacier - Nepal's largest",
+                "icon": "scenary",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Moderate-Difficult trek - less crowded than EBC, fewer services",
+                "icon": "hiking",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Briefing",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes you. Afternoon trek briefing with focus on Gokyo Valley unique challenges and opportunities.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Fly to Lukla & Trek to Phakding",
+          "description": "Scenic 40-minute mountain flight from Ramechap to Lukla (2,800m). Trek downhill through rhododendron forests crossing suspension bridges to Phakding (2,600m).",
+          "accommodation": "Teahouse",
+          "altitude": "2600m",
+          "duration": "Flight 40 min + Trek 3-4 hours",
+          "distance": "7 km trek",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Phakding",
+          "latitude": 27.7457,
+          "longitude": 86.7371
+        },
+        {
+          "day": 3,
+          "title": "Trek Phakding to Namche Bazaar",
+          "description": "Steep ascent with multiple suspension bridges (Hillary Bridge) over Dudh Koshi River. Arrive at Namche Bazaar (3,440m), the Sherpa capital.",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 4,
+          "title": "Namche Bazaar - Acclimatization & Exploration",
+          "description": "Acclimatization day. Hike to Everest View Hotel (3,880m) for first Everest views. Explore Namche market, Tenzing Norgay Museum, shops, and local culture.",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "4-5 hours hike",
+          "distance": "Local exploration",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 5,
+          "title": "Trek Namche to Dole via Gokyo Valley",
+          "description": "Trek northeast through forests away from main EBC route. Reach Dole (4,200m), the gateway to Gokyo Valley. Fewer tourists, more peaceful mountain experience begins here.",
+          "accommodation": "Teahouse",
+          "altitude": "4200m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dole",
+          "latitude": 27.8145,
+          "longitude": 86.8301
+        },
+        {
+          "day": 6,
+          "title": "Trek Dole to Machhermo",
+          "description": "Continue through Gokyo Valley approaching high altitude. Pass through alpine meadows and reach Machhermo (4,470m). Views of Cho Oyu (6,189m) and Ngozumpa Glacier begin.",
+          "accommodation": "Teahouse",
+          "altitude": "4470m",
+          "duration": "5-6 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Machhermo",
+          "latitude": 27.8212,
+          "longitude": 86.8534
+        },
+        {
+          "day": 7,
+          "title": "Trek Machhermo to Gokyo - Turquoise Lakes",
+          "description": "Trek to spectacular Gokyo (4,790m) with its chain of five turquoise glacial lakes. This is a magical place - pristine alpine environment with virtually no tourism infrastructure. Explore the lakes and village.",
+          "accommodation": "Teahouse",
+          "altitude": "4790m",
+          "duration": "4-5 hours",
+          "distance": "6 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gokyo",
+          "latitude": 27.8289,
+          "longitude": 86.8612
+        },
+        {
+          "day": 8,
+          "title": "Gokyo - Acclimatization & Gokyo Ri Summit",
+          "description": "Acclimatization day at high altitude. Hike to Gokyo Ri (5,357m) for 360-degree panoramic views. See Everest, Lhotse, Cho Oyu, Makalu, Kanguru, and turquoise lakes spread below. One of Nepal's greatest viewpoints.",
+          "accommodation": "Teahouse",
+          "altitude": "4790m",
+          "duration": "4-6 hours hike",
+          "distance": "Gokyo Ri summit",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gokyo",
+          "latitude": 27.8289,
+          "longitude": 86.8612
+        },
+        {
+          "day": 9,
+          "title": "Trek Gokyo to Machhermo & Return Route",
+          "description": "Descend from Gokyo retracing steps to Machhermo. Alternative route back offers different perspectives of glaciers and valleys.",
+          "accommodation": "Teahouse",
+          "altitude": "4470m",
+          "duration": "5-6 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Machhermo",
+          "latitude": 27.8212,
+          "longitude": 86.8534
+        },
+        {
+          "day": 10,
+          "title": "Trek Machhermo to Namche Bazaar",
+          "description": "Descend through forests back to Namche Bazaar (3,440m). Return to lower altitude for recovery. Relax and prepare for departure.",
+          "accommodation": "Teahouse",
+          "altitude": "3440m",
+          "duration": "6-7 hours",
+          "distance": "20 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Namche Bazaar",
+          "latitude": 27.8011,
+          "longitude": 86.7156
+        },
+        {
+          "day": 11,
+          "title": "Fly Lukla to Kathmandu & Celebration",
+          "description": "Trek down to Lukla (3-4 hours). Afternoon scenic return flight to Kathmandu. Evening celebration dinner with EverTrek Nepal team marking trek completion.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Trek 3-4 hours + Flight 40 min",
+          "distance": "7 km trek",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Five Turquoise Glacial Lakes - Alpine Treasures",
+          "description": "Explore the spectacular chain of five pristine turquoise glacial lakes in Gokyo Valley. Each lake is a different shade of blue-green depending on light and glacier mineral content.\nThe fifth lake is the highest and most remote - a rare alpine experience in the Himalayas.\nPhotographic paradise for mountain lovers.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Gokyo Ri - 360-Degree Mountain Theater",
+          "description": "Hike to Gokyo Ri (5,357m) for 360-degree panoramic views of four 8,000m peaks:\n- Mount Everest (8,848m)\n- Mount Lhotse (8,516m)\n- Mount Cho Oyu (6,189m)\n- Mount Makalu (8,485m)\nGokyo Ri rivals Kala Patthar for pure mountain spectacle - and it's far less crowded.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Ngozumpa Glacier - Nepal's Largest Glacier",
+          "description": "Trek across and around Nepal's largest glacier system. Witness the massive expanse of ice, glacial moraines, and dramatic landscape carved by ancient ice flows.\nExperience the power of glaciation and climate in real time.\nUnderstand high-altitude alpine ecosystems.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Off-the-Beaten-Path Sherpa Culture",
+          "description": "Experience authentic Sherpa communities largely untouched by mass tourism. Gokyo village operates at subsistence level with traditional yak herding and limited lodges.\nStay in family-run teahouses with genuine Sherpa hospitality.\nVirtually no other international tourists - true cultural immersion without commercialization.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/gokyo_lakes.pdf",
+        "map_image_path": "trek_maps/gokyo_lakes_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry 80% of luggage",
+          "TIMS Card and Sagarmatha National Park permit",
+          "All teahouse accommodations during trek (twin sharing rooms)",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (2 nights - before/after trek)",
+          "Domestic flights Kathmandu-Lukla-Kathmandu",
+          "Welcome and farewell dinner in Kathmandu"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Bottled water and beverages",
+          "Tips for guide and porters (customary $80-120)",
+          "Personal expenses (phone calls, souvenirs, extra meals)",
+          "Hot showers and additional services at teahouses"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Gokyo Lakes Trek is a premium Everest region experience for those seeking fewer crowds and pristine natural beauty. Departures available Spring (March-May) and Autumn (September-November). Early booking (8-10 weeks) recommended. Private departures can be arranged on your preferred dates."
+      },
+      "departures": [
+        {
+          "start": "2026-03-05",
+          "end": "2026-03-15",
+          "status": "Available",
+          "price": 1199.0,
+          "seats_left": 10,
+          "id": "2026-03-05-001"
+        },
+        {
+          "start": "2026-03-20",
+          "end": "2026-03-30",
+          "status": "Available",
+          "price": 1199.0,
+          "seats_left": 9,
+          "id": "2026-03-20-001"
+        },
+        {
+          "start": "2026-04-05",
+          "end": "2026-04-15",
+          "status": "Available",
+          "price": 1199.0,
+          "seats_left": 12,
+          "id": "2026-04-05-001"
+        },
+        {
+          "start": "2026-04-22",
+          "end": "2026-05-02",
+          "status": "Limited",
+          "price": 1199.0,
+          "seats_left": 4,
+          "id": "2026-04-22-001"
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-22",
+          "status": "Available",
+          "price": 1199.0,
+          "seats_left": 14,
+          "id": "2026-09-12-001"
+        },
+        {
+          "start": "2026-09-28",
+          "end": "2026-10-08",
+          "status": "Available",
+          "price": 1199.0,
+          "seats_left": 11,
+          "id": "2026-09-28-001"
+        },
+        {
+          "start": "2026-10-10",
+          "end": "2026-10-20",
+          "status": "Available",
+          "price": 1099.0,
+          "seats_left": 13,
+          "id": "2026-10-10-001"
+        },
+        {
+          "start": "2026-10-25",
+          "end": "2026-11-04",
+          "status": "Available",
+          "price": 1099.0,
+          "seats_left": 8,
+          "id": "2026-10-25-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1499.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 1199.0
+        },
+        {
+          "label": "5-10 People",
+          "price": 1099.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendron blooms in lower valleys, clear skies"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Best visibility, stable weather, fewer crowds than EBC"
+        },
+        {
+          "highlight": "Shortest Everest region trek - only 11 days vs 13+ for EBC"
+        },
+        {
+          "highlight": "Perfect combination of high altitude and lower-impact experience"
+        }
+      ],
+      "booking_card": {
+        "base_price": 1199.0,
+        "original_price": 1499.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 20,
+        "badge_label": "Hidden Gem",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1499.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 1199.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 10,
+            "price": 1099.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Gokyo Valley Specifics",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "How does Gokyo Lakes compare to Everest Base Camp?",
+              "answer": "Both reach similar altitudes (~5,300m). EBC trek is 13 days and very crowded. Gokyo is 11 days, less crowded, and features turquoise lakes instead of base camp. Gokyo Ri viewpoint (5,357m) rivals Kala Patthar (5,545m) for mountain views but with fewer trekkers.",
+              "order": 1
+            },
+            {
+              "question": "Is Gokyo easier than EBC?",
+              "answer": "Difficulty is similar - both reach 5,300m+. Gokyo is slightly easier (fewer steep sections, one day shorter) but still requires good fitness and acclimatization discipline. Altitude is the main challenge on both treks.",
+              "order": 2
+            },
+            {
+              "question": "Will I be alone in Gokyo?",
+              "answer": "You won't be completely alone, but Gokyo Valley has far fewer trekkers than the EBC route (80% fewer). Lodge capacity is lower, trail is quieter, and sense of wilderness is greater. Perfect for those seeking mountain experience with fewer crowds.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Trekking Conditions & Services",
+          "icon": "alert",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What teahouse facilities are like in Gokyo?",
+              "answer": "Basic but comfortable - twin rooms, blankets, basic meals. Hot showers available (extra cost). WiFi minimal. No luxury amenities. This is authentic Himalayan lodging. Bring own entertainment. Embrace the simplicity!",
+              "order": 1
+            },
+            {
+              "question": "Is food safe in Gokyo Valley?",
+              "answer": "Yes, food is safe. Teahouses provide simple Sherpa food: dal bhat (rice + lentils), noodles, eggs, potatoes. Bring hand sanitizer. Water is boiled. Giardia risk is low if you follow basic hygiene. Acclimatization may suppress appetite anyway.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/gokyo_lakes_1.jpg",
+          "title": "Turquoise Lakes",
+          "caption": "Chain of five pristine glacial lakes in Gokyo Valley",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/gokyo_lakes_2.jpg",
+          "title": "Gokyo Ri Panorama",
+          "caption": "360-degree mountain views from 5,357m viewpoint",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/gokyo_lakes_3.jpg",
+          "title": "Ngozumpa Glacier",
+          "caption": "Nepal's largest glacier spanning the valley",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression over 11 days",
+        "background_image_path": "elevation_chart/gokyo_lakes.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 7,
+            "title": "Gokyo Lakes",
+            "elevation": 4790,
+            "description": "Turquoise lakes",
+            "order": 2
+          },
+          {
+            "day": 8,
+            "title": "Gokyo Ri",
+            "elevation": 5357,
+            "description": "Highest point - best views",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Perfect Trek For...",
+          "articles": [
+            "Gokyo Lakes Trek is ideal for trekkers seeking a balance between achievement and authenticity. If you want to reach high altitude (5,300m+) while avoiding the crowds and commercialization of the main EBC route, this is your trek. If you value pristine natural beauty, turquoise lakes, and off-the-beaten-path Sherpa culture over a famous base camp visit, Gokyo offers a superior experience.",
+            "This trek rewards those willing to venture slightly off the main trail. You'll return home with stories of isolation, beauty, and personal discovery rather than crowded lodge encounters."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Good fitness required - 5-6 weeks training recommended",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Travel insurance covering 5,400m+ altitude mandatory",
+              "icon": "alert",
+              "order": 1
+            },
+            {
+              "text": "Shortest major Everest trek - only 11 days total",
+              "icon": "achievement",
+              "order": 2
+            },
+            {
+              "text": "Significantly fewer crowds than EBC route",
+              "icon": "hiking",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [
+          {
+            "month": "March",
+            "month_index": 2,
+            "departures": [
+              {
+                "start": "2026-03-05",
+                "end": "2026-03-15",
+                "status": "Available",
+                "price": 1199.0,
+                "seats_left": 10,
+                "id": "2026-03-05-001"
+              }
+            ]
+          },
+          {
+            "month": "April",
+            "month_index": 3,
+            "departures": [
+              {
+                "start": "2026-04-05",
+                "end": "2026-04-15",
+                "status": "Available",
+                "price": 1199.0,
+                "seats_left": 12,
+                "id": "2026-04-05-001"
+              }
+            ]
+          },
+          {
+            "month": "September",
+            "month_index": 8,
+            "departures": [
+              {
+                "start": "2026-09-12",
+                "end": "2026-09-22",
+                "status": "Available",
+                "price": 1199.0,
+                "seats_left": 14,
+                "id": "2026-09-12-001"
+              }
+            ]
+          },
+          {
+            "month": "October",
+            "month_index": 9,
+            "departures": [
+              {
+                "start": "2026-10-10",
+                "end": "2026-10-20",
+                "status": "Available",
+                "price": 1099.0,
+                "seats_left": 13,
+                "id": "2026-10-10-001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,609 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T21:45:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Mustang",
+      "slug": "mustang",
+      "short_label": "Upper Mustang, Damodar Kunda",
+      "order": 1,
+      "marker_x": 52,
+      "marker_y": 65,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "damodar-kunda-trek",
+      "title": "Damodar Kunda Trek",
+      "region_slug": "mustang",
+      "duration": "20 Days",
+      "trip_grade": "Challenging",
+      "start_point": "Pokhara",
+      "group_size": "2-10",
+      "max_altitude": "5565m",
+      "activity": "Trekking",
+      "short_description": "Remote spiritual pilgrimage to sacred Damodar Kunda lakes at 4,890m. Combines Upper Mustang trek with high-altitude lake pilgrimage. For experienced trekkers only.",
+      "card_image_path": "trek_cards/damodar_kunda_card.jpg",
+      "is_published": true,
+      "review_text": "Most remote and sacred pilgrimage trek. Very few trekkers attempt this. Physically demanding with exceptional spiritual rewards. Sacred for both Hindus and Buddhists.",
+      "rating": 4.8,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Damodar Kunda Trek",
+        "subtitle": "Spiritual pilgrimage to sacred high-altitude lakes at 4,890m",
+        "image_path": "hero_images/damodar_kunda_hero.png",
+        "season": "Autumn & Early Winter",
+        "duration": "20",
+        "difficulty": "Challenging",
+        "location": "Upper Mustang, Damodar Kunda",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Damodar Kunda Trek",
+            "articles": [
+              "The Damodar Kunda Trek is Nepal's most remote and spiritually significant pilgrimage trek. This 20-day journey takes you through Upper Mustang's desert landscapes to sacred Damodar Kunda lakes at 4,890m - the highest pilgrimage site in the region. Damodar Kunda is sacred for both Hindus and Buddhists, believed to be Shiva's sacred location. The trek is extremely demanding, combining high altitude exposure, remote location, sparse facilities, and long trekking days. Maximum 4,890m requires excellent acclimatization. Only 50-100 trekkers attempt this annually. Experienced trekkers with high-altitude experience (EBC or higher altitude treks) are essential."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 4,890m (sacred Damodar Kunda)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Restricted Area Permit required: USD $50/day",
+                "icon": "permit",
+                "order": 1
+              },
+              {
+                "text": "20+ days high-altitude, remote trekking",
+                "icon": "flag",
+                "order": 2
+              },
+              {
+                "text": "For experienced high-altitude trekkers only",
+                "icon": "expert",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu",
+          "description": "Arrive in Kathmandu. Permit preparation, guide briefing, gear checking.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Preparation",
+          "distance": "Local",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        },
+        {
+          "day": 2,
+          "title": "Kathmandu to Pokhara",
+          "description": "Flight or drive from Kathmandu to Pokhara. Rest and prepare for trek.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "1 hour flight / 6-7 hours drive",
+          "distance": "200 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 3,
+          "title": "Fly Pokhara to Jomsom, trek to Kagbeni",
+          "description": "Scenic flight to Jomsom (2,720m), then trek to Kagbeni - gateway to Upper Mustang.",
+          "accommodation": "Hotel",
+          "altitude": "2810m",
+          "duration": "Flight + 4-5 hours trek",
+          "distance": "Flight + 10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kagbeni",
+          "latitude": 28.8133,
+          "longitude": 83.8367
+        },
+        {
+          "day": 4,
+          "title": "Trek Kagbeni to Chele",
+          "description": "Enter Mustang's arid zone. Trek along ancient caravan routes through desert landscape.",
+          "accommodation": "Teahouse",
+          "altitude": "3065m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chele",
+          "latitude": 28.8667,
+          "longitude": 83.8233
+        },
+        {
+          "day": 5,
+          "title": "Trek Chele to Samar via Talkam La and Dajori La passes",
+          "description": "Cross two high passes (3,624m and 3,735m) with views of Tilicho and Yakawa Kang mountains.",
+          "accommodation": "Teahouse",
+          "altitude": "3660m",
+          "duration": "7-8 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samar",
+          "latitude": 28.8967,
+          "longitude": 83.8033
+        },
+        {
+          "day": 6,
+          "title": "Trek Samar to Syanbochen",
+          "description": "Trek through high desert with minimal vegetation. Acclimatization day at moderate altitude.",
+          "accommodation": "Teahouse",
+          "altitude": "3475m",
+          "duration": "6-7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syanbochen",
+          "latitude": 28.9000,
+          "longitude": 83.7933
+        },
+        {
+          "day": 7,
+          "title": "Trek Syanbochen to Ghami",
+          "description": "Trek through ochre hills. Visit Ghami's famous 250-meter Mani wall (longest in Mustang).",
+          "accommodation": "Teahouse",
+          "altitude": "3520m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghami",
+          "latitude": 28.9200,
+          "longitude": 83.8367
+        },
+        {
+          "day": 8,
+          "title": "Trek Ghami to Charang",
+          "description": "Trek through desert landscape. Charang sits above ochre cliffs. Old monastery with local traditions.",
+          "accommodation": "Teahouse",
+          "altitude": "3560m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Charang",
+          "latitude": 28.9367,
+          "longitude": 83.7600
+        },
+        {
+          "day": 9,
+          "title": "Trek Charang to Lo Manthang",
+          "description": "Dramatic ascent to Lo La Pass (3,950m). Enter walled city of Lo Manthang at 3,840m.",
+          "accommodation": "Teahouse",
+          "altitude": "3840m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": 28.9667,
+          "longitude": 83.7633
+        },
+        {
+          "day": 10,
+          "title": "Rest day in Lo Manthang",
+          "description": "Explore walled city, royal palace, monasteries. Acclimatization for high altitude trek ahead.",
+          "accommodation": "Teahouse",
+          "altitude": "3840m",
+          "duration": "Exploration",
+          "distance": "10 km exploration",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lo Manthang",
+          "latitude": 28.9667,
+          "longitude": 83.7633
+        },
+        {
+          "day": 11,
+          "title": "Trek Lo Manthang to Yara",
+          "description": "Trek to Yara village. Prepare for remote Damodar Kunda trek section (most challenging part).",
+          "accommodation": "Teahouse",
+          "altitude": "3650m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Yara",
+          "latitude": 28.9500,
+          "longitude": 83.7500
+        },
+        {
+          "day": 12,
+          "title": "Trek Yara to Luri Gompa to Ghuma Thanti",
+          "description": "Side trip to ancient Luri Gompa (700-year-old monastery) with 15th-century cave murals. Trek to Ghuma Thanti camp.",
+          "accommodation": "Tent Camp",
+          "altitude": "5100m",
+          "duration": "8-9 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghuma Thanti",
+          "latitude": 28.9300,
+          "longitude": 83.7200
+        },
+        {
+          "day": 13,
+          "title": "Trek Ghuma Thanti to Bas Khola (High Camp)",
+          "description": "Strenuous trek across rugged, barren terrain at extreme altitude. Highest daily challenge.",
+          "accommodation": "Tent Camp",
+          "altitude": "5565m",
+          "duration": "7-8 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bas Khola Camp",
+          "latitude": 28.9100,
+          "longitude": 83.7000
+        },
+        {
+          "day": 14,
+          "title": "Trek Bas Khola to Damodar Kunda (Sacred Lake)",
+          "description": "Final push to Damodar Kunda at 4,890m. Long, steady climb. Spiritual destination. This is the 'crown' of the trek.",
+          "accommodation": "Tent Camp",
+          "altitude": "4890m",
+          "duration": "7-8 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Damodar Kunda",
+          "latitude": 28.8900,
+          "longitude": 83.6900
+        },
+        {
+          "day": 15,
+          "title": "Rest day at Damodar Kunda",
+          "description": "Explore sacred lake area. Spiritual reflection and recovery. Stunning views of Damodar Himal (6,706m).",
+          "accommodation": "Tent Camp",
+          "altitude": "4890m",
+          "duration": "Rest & exploration",
+          "distance": "Local walks",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Damodar Kunda",
+          "latitude": 28.8900,
+          "longitude": 83.6900
+        },
+        {
+          "day": 16,
+          "title": "Trek Damodar Kunda to Ghuma Thanti (Descend)",
+          "description": "Begin descent retracing path. Easier on body than ascent.",
+          "accommodation": "Tent Camp",
+          "altitude": "5100m",
+          "duration": "6-7 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghuma Thanti",
+          "latitude": 28.9300,
+          "longitude": 83.7200
+        },
+        {
+          "day": 17,
+          "title": "Trek Ghuma Thanti to Tangye",
+          "description": "Descend to Tangye village. Return to Lower Mustang region.",
+          "accommodation": "Teahouse",
+          "altitude": "3240m",
+          "duration": "7-8 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tangye",
+          "latitude": 28.9150,
+          "longitude": 83.7400
+        },
+        {
+          "day": 18,
+          "title": "Trek Tangye to Tetang to Muktinath",
+          "description": "Trek to Muktinath Temple (3,760m). Complete sacred pilgrimage cycle.",
+          "accommodation": "Hotel",
+          "altitude": "3760m",
+          "duration": "7-8 hours",
+          "distance": "17 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Muktinath",
+          "latitude": 28.8233,
+          "longitude": 83.8500
+        },
+        {
+          "day": 19,
+          "title": "Trek Muktinath to Jomsom",
+          "description": "Descend to Jomsom. Prepare for return flights.",
+          "accommodation": "Hotel",
+          "altitude": "2720m",
+          "duration": "3-4 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jomsom",
+          "latitude": 28.7833,
+          "longitude": 83.7367
+        },
+        {
+          "day": 20,
+          "title": "Fly Jomsom to Pokhara to Kathmandu",
+          "description": "Flights back to Kathmandu. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "2 hours flight total",
+          "distance": "Flights",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Damodar Kunda Sacred Lake",
+          "description": "Sacred pilgrimage site at 4,890m. Holy for Hindus (Shiva connection) and Buddhists. Only 50-100 trekkers attempt annually.",
+          "icon": "sacred"
+        },
+        {
+          "title": "Luri Gompa Monastery",
+          "description": "700-year-old cliffside monastery with 15th-century murals, cave dwellings, and Buddhist art treasures.",
+          "icon": "temple"
+        },
+        {
+          "title": "Lo Manthang Walled City",
+          "description": "Ancient kingdom with monasteries, royal palace, and time-preserved Tibetan culture.",
+          "icon": "kingdom"
+        },
+        {
+          "title": "Extreme Altitude Challenge",
+          "description": "4,890m altitude demands excellent acclimatization and physical fitness. Ultimate high-altitude pilgrimage.",
+          "icon": "peak"
+        },
+        {
+          "title": "Remote Spiritual Journey",
+          "description": "Most remote pilgrimage trek in Nepal. Few trekkers, pristine wilderness, deep spiritual significance.",
+          "icon": "spirit"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/damodar_kunda_trek.pdf",
+        "map_image_path": "trek_maps/damodar_kunda_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Expert high-altitude trekking guide (essential)",
+          "Porter support for camping gear and food",
+          "Restricted Area Permit (RAP) - USD $50/day",
+          "ACAP permit",
+          "TIMS card",
+          "Tent camping accommodation (high-altitude camps)",
+          "Teahouse accommodation (lower-altitude sections)",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Domestic flights and ground transportation",
+          "Monastery entrance fees",
+          "All high-altitude camping equipment"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Personal trekking and mountaineering gear",
+          "Travel and emergency evacuation insurance (MANDATORY)",
+          "Extra expenses and tips",
+          "Acclimatization trek prerequisites"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Damodar Kunda operates primarily in autumn (September-November) and early winter (December). Snow and extreme cold in winter make it inaccessible most of the year."
+      },
+      "departures": [
+        {
+          "start": "2026-09-15",
+          "end": "2026-10-04",
+          "status": "Available",
+          "price": 3495.0,
+          "seats_left": 6
+        },
+        {
+          "start": "2026-10-20",
+          "end": "2026-11-08",
+          "status": "Available",
+          "price": 3495.0,
+          "seats_left": 5
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "2-3 People",
+          "price": 3495.0
+        },
+        {
+          "label": "4-6 People",
+          "price": 3295.0
+        },
+        {
+          "label": "7-10 People",
+          "price": 3095.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Autumn (Sept-Nov): Best season, clear visibility, stable weather, essential for success"
+        },
+        {
+          "highlight": "Early Winter (Dec): Possible but risky, extreme cold, early snow, for experienced only"
+        }
+      ],
+      "booking_card": {
+        "base_price": 3495.0,
+        "original_price": 3995.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Expert Only",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 2,
+            "max_size": 3,
+            "price": 3495.0
+          },
+          {
+            "min_size": 4,
+            "max_size": 6,
+            "price": 3295.0
+          },
+          {
+            "min_size": 7,
+            "max_size": 10,
+            "price": 3095.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Experience Required",
+          "icon": "expert",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Who can trek Damodar Kunda?",
+              "answer": "Only experienced high-altitude trekkers. Prerequisite: Everest Base Camp trek or higher altitude trek. Excellent physical fitness (VO2 max testing recommended). Previous altitude sickness experience essential. Not suitable for first-time altitude trekkers.",
+              "order": 1
+            },
+            {
+              "question": "What altitude experience is required?",
+              "answer": "Minimum: EBC trek (5,364m). Recommended: Prior 5,000m+ peak summits. This trek reaches 4,890m with sustained exposure. Altitude acclimatization is non-negotiable.",
+              "order": 2
+            },
+            {
+              "question": "Is this trek life-threatening?",
+              "answer": "It carries real risks: extreme altitude, remote location (no rescue access), harsh weather, limited facilities. Guides monitor for altitude sickness closely. Turnaround decisions made on trek if needed. Not recommended for people with altitude sickness history.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Sacred Pilgrimage",
+          "icon": "sacred",
+          "order": 2,
+          "questions": [
+            {
+              "question": "Why is Damodar Kunda sacred?",
+              "answer": "Damodar Kunda is sacred in Hindu belief (connected to Lord Shiva) and Buddhist pilgrimage. The twin lakes at 4,890m are believed to hold spiritual power. Pilgrims visit for spiritual cleansing and blessings.",
+              "order": 1
+            },
+            {
+              "question": "Can non-believers trek it?",
+              "answer": "Yes. The trek offers spiritual significance for believers and extraordinary high-altitude adventure for others. Respect the site's sacredness. Most trekkers experience spiritual transformation regardless of prior beliefs.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/damodar_kunda_lake.jpg",
+          "title": "Damodar Kunda Sacred Lake",
+          "caption": "Twin sacred lakes at 4,890m - the trek's ultimate destination.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/luri_gompa_cliffs.jpg",
+          "title": "Luri Gompa Monastery",
+          "caption": "700-year-old cliffside monastery with ancient murals.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/damodar_himal_peak.jpg",
+          "title": "Damodar Himal Peak",
+          "caption": "6,706m peak towering above the sacred lake.",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/high_altitude_camp.jpg",
+          "title": "High Altitude Camps",
+          "caption": "Tent camping at 5,000m+ in remote wilderness.",
+          "order": 4
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile - Extreme High-Altitude Trek",
+        "subtitle": "Altitude progression showing extreme elevation challenge",
+        "background_image_path": "elevation_chart/damodar_kunda_extreme.jpg",
+        "points": [
+          {
+            "day": 3,
+            "title": "Kagbeni",
+            "elevation": 2810,
+            "description": "Trek entry point",
+            "order": 1
+          },
+          {
+            "day": 10,
+            "title": "Lo Manthang",
+            "elevation": 3840,
+            "description": "Walled city at high altitude",
+            "order": 2
+          },
+          {
+            "day": 12,
+            "title": "Ghuma Thanti",
+            "elevation": 5100,
+            "description": "Base camp for sacred lake push",
+            "order": 3
+          },
+          {
+            "day": 14,
+            "title": "Damodar Kunda",
+            "elevation": 4890,
+            "description": "Sacred lake - trek apex",
+            "order": 4
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Critical Information",
+          "articles": [
+            "This is Nepal's most remote and challenging pilgrimage trek. Only 50-100 trekkers attempt it annually. Very few complete it.",
+            "Travel insurance with high-altitude coverage and emergency evacuation (minimum USD 50,000 evacuation coverage) is MANDATORY, not optional.",
+            "Turnaround decisions will be made if weather, altitude sickness, or physical condition deteriorates. Success is not guaranteed.",
+            "Last supplies purchased in Pokhara. No resupply possible after Yara. All food and equipment must be carried or porter-carried.",
+            "Medical facilities: Jomsom has basic clinic. Beyond that, helicopter evacuation is only option (extremely expensive - USD 3,000-5,000+).",
+            "Pre-trek acclimatization highly recommended: 2-3 days in Pokhara/Jomsom before starting trek."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Expert guides only - highest qualifications",
+              "icon": "guide",
+              "order": 0
+            },
+            {
+              "text": "Emergency evacuation insurance MANDATORY",
+              "icon": "shield",
+              "order": 1
+            },
+            {
+              "text": "Extreme altitude and weather exposure",
+              "icon": "warning",
+              "order": 2
+            },
+            {
+              "text": "Most remote pilgrimage in Nepal",
+              "icon": "spirit",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

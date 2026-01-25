@@ -1,0 +1,510 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:07:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Langtang",
+      "slug": "langtang",
+      "short_label": "Gosaikunda, Helambu, Langtang Valley",
+      "order": 1,
+      "marker_x": 48,
+      "marker_y": 62,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "gosaikunda-pass-trekking",
+      "title": "Gosaikunda Pass Trekking",
+      "region_slug": "langtang",
+      "duration": "11 Days",
+      "trip_grade": "Moderate-Challenging",
+      "start_point": "Syabrubesi",
+      "group_size": "1-15",
+      "max_altitude": "4610m",
+      "activity": "Trekking",
+      "short_description": "Trek to the holiest alpine lake in Hindu culture at 4,312m with stunning glacier-carved valley views, sacred pilgrimage significance, and abundant wildlife in Langtang National Park.",
+      "card_image_path": "trek_cards/gosaikunda_card.jpg",
+      "is_published": true,
+      "review_text": "A challenging yet rewarding trek combining natural heritage with religious pilgrimage to Nepal's most sacred alpine lake.",
+      "rating": 4.7,
+      "reviews": 56,
+      "hero_section": {
+        "title": "Gosaikunda Pass Trekking",
+        "subtitle": "Sacred Alpine Lake - Where Earth Touches Heaven at 4,312m",
+        "image_path": "hero_images/gosaikunda_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "11",
+        "difficulty": "Moderate-Challenging",
+        "location": "Langtang Region - Holy Lake Trek",
+        "cta_label": "Book Your Pilgrimage",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Gosaikunda Pass Trekking Overview",
+            "articles": [
+              "Gosaikunda Lake is the holiest lake in Hindu culture situated at 4,312m elevation, believed to have originated from the digging of earth by Lord Shiva's Trishul (holy three-pointed sword). According to legend, a black rock in the lake's middle is the head of Lord Shiva. Thousands of Hindu pilgrims visit during the full moon festival in August (Janai Purnima). This 11-day trek combines natural heritage with glacial landscapes, intense forests with wildflowers, animal species, and heart-touching natural scenery. The route passes through oak and rhododendron forests, crosses glacial moraines, and encounters typical Tamang villages in Langtang National Park."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Sacred Gosaikunda Lake: 4,312m elevation - holiest alpine lake in Hindu culture",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: September-November (Autumn), March-May (Spring)",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Challenging trek requiring good physical fitness and acclimatization",
+                "icon": "hiking",
+                "order": 2
+              },
+              {
+                "text": "Thousands of pilgrims visit during August full moon festival (Janai Purnima)",
+                "icon": "culture",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Rest",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes and transfers to Thamel district hotel for acclimatization and trek preparation.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Syabrubesi",
+          "description": "Early morning departure from Kathmandu. Drive 120+ km north through terraced farmlands and picturesque villages following the Trishuli River valley.",
+          "accommodation": "Teahouse/Lodge",
+          "altitude": "1460m",
+          "duration": "7-8 hours",
+          "distance": "120 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syabrubesi",
+          "latitude": 28.1628,
+          "longitude": 85.3378
+        },
+        {
+          "day": 3,
+          "title": "Trek Syabrubesi to Thulo Syabru",
+          "description": "First trekking day through scenic terraced farmlands and forests alongside Langtang River. Encounter traditional villages and local agricultural practices.",
+          "accommodation": "Teahouse",
+          "altitude": "2250m",
+          "duration": "6-7 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Thulo Syabru",
+          "latitude": 28.1756,
+          "longitude": 85.3945
+        },
+        {
+          "day": 4,
+          "title": "Trek Thulo Syabru to Singompa",
+          "description": "Trek to Singompa (also called Cholangpati) at 3,250m. Visit Buddhist monastery and explore yak cheese factory. Ascending through alpine forests with mountain vistas emerging.",
+          "accommodation": "Teahouse",
+          "altitude": "3250m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Singompa",
+          "latitude": 28.2056,
+          "longitude": 85.4234
+        },
+        {
+          "day": 5,
+          "title": "Trek Singompa to Gosaikunda Lake",
+          "description": "Challenging ascent through subtropical forest transitioning to alpine zone with beautiful rhododendron, oak, pine, and birch forests. Reach the sacred Gosaikunda Lake at 4,312m.",
+          "accommodation": "Teahouse",
+          "altitude": "4312m",
+          "duration": "6-7 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gosaikunda Lake",
+          "latitude": 28.2134,
+          "longitude": 85.4456
+        },
+        {
+          "day": 6,
+          "title": "Acclimatization Day - Gosaikunda Exploration",
+          "description": "Full day acclimatization at the sacred lake. Explore surrounding alpine lakes (Saraswati Kund, Bhairav Kund, Surya Kund). Receive blessings and observe religious ceremonies at this pilgrimage site.",
+          "accommodation": "Teahouse",
+          "altitude": "4312m",
+          "duration": "Full day exploration",
+          "distance": "Day walk around lake",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gosaikunda Lake",
+          "latitude": 28.2134,
+          "longitude": 85.4456
+        },
+        {
+          "day": 7,
+          "title": "Trek Gosaikunda to Laurebina Pass Descent",
+          "description": "Most challenging day crossing Gosaikunda Pass (Laurebina La) at 4,610m with panoramic Himalayan views. Trek to Ghopte at 3,430m entering Helambu region.",
+          "accommodation": "Teahouse",
+          "altitude": "3430m",
+          "duration": "7-8 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghopte",
+          "latitude": 28.1967,
+          "longitude": 85.5312
+        },
+        {
+          "day": 8,
+          "title": "Trek Ghopte to Kutumsang",
+          "description": "Continue descent through beautiful alpine forest with further wildlife spotting opportunities. Trek through Pati Pass with stunning mountain and valley views below.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kutumsang",
+          "latitude": 28.1634,
+          "longitude": 85.5867
+        },
+        {
+          "day": 9,
+          "title": "Trek Kutumsang to Chisapani",
+          "description": "Descent through meadows and forests to Chisapani village. Ascend to dusty wide road and continue on steep rocky path through Gul Bhanjyang to Chisapani.",
+          "accommodation": "Teahouse",
+          "altitude": "2295m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chisapani",
+          "latitude": 28.1423,
+          "longitude": 85.6234
+        },
+        {
+          "day": 10,
+          "title": "Trek Chisapani to Sundarijal & Drive to Kathmandu",
+          "description": "Final short descent to Sundarijal through beautiful forests and valleys. 1-hour drive back to Kathmandu. Celebration dinner with trekking crew marking trek completion.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "4 hours trek + 1 hour drive",
+          "distance": "12 km trek + 30 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 11,
+          "title": "Departure Day",
+          "description": "Rest day in Kathmandu. Free time for shopping, cultural activities, or optional city tour. Prepare for departure to airport based on flight schedule.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day",
+          "distance": "Local movements",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Sacred Gosaikunda Lake - Religious Pilgrimage Site",
+          "description": "Visit Nepal's holiest alpine lake at 4,312m believed to have originated from Lord Shiva's Trishul. Explore surrounding sacred lakes (Saraswati Kund, Bhairav Kund, Surya Kund). Witness thousands of Hindu pilgrims during August full moon festival (Janai Purnima) making this a unique spiritual experience.",
+          "icon": "culture"
+        },
+        {
+          "title": "Laurebina Pass Crossing - High Pass Adventure",
+          "description": "Cross Gosaikunda Pass (Laurebina La) at 4,610m, the route's highest and most challenging point with panoramic 360-degree Himalayan views. Experience views of Langtang Lirung (7,246m), Ganesh Himal, Manaslu, and on clear days, the Annapurna range.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Tamang Culture & Hospitality - Mountain Communities",
+          "description": "Trek through pristine rhododendron and oak forests to encounter typical Tamang villages and their authentic mountain lifestyle. Stay in family-run teahouses and experience Sherpa and Tamang communities' unique traditions, cuisine, and warm hospitality.",
+          "icon": "culture"
+        },
+        {
+          "title": "Glacial Landscapes & Alpine Ecosystems",
+          "description": "Pass through glacial moraine terrain and observe dramatic glacier-carved valley landscapes unique to the Langtang region. Explore intense forests teeming with wildflowers, rare alpine flora, and diverse fauna including red pandas, musk deer, and Himalayan wildlife.",
+          "icon": "scenary"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/gosaikunda_pass.pdf",
+        "map_image_path": "trek_maps/gosaikunda_pass_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry luggage",
+          "TIMS Card and Langtang National Park permit",
+          "All teahouse accommodations during trek",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (nights before and after trek)",
+          "Emergency support and first-aid assistance"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Bottled water and beverages",
+          "Tips for guide and porters",
+          "Personal items and souvenirs"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Gosaikunda Pass Trekking is best done September-November (Autumn) for clear skies and March-May (Spring) for stunning rhododendron blooms. All prices are per person and vary by group size. Private group departures on preferred dates available upon request. Early booking essential for peak seasons."
+      },
+      "departures": [
+        {
+          "start": "2026-03-09",
+          "end": "2026-03-19",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-03-23",
+          "end": "2026-04-02",
+          "status": "Limited",
+          "price": 699.0,
+          "seats_left": 4
+        },
+        {
+          "start": "2026-04-06",
+          "end": "2026-04-16",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 11
+        },
+        {
+          "start": "2026-04-20",
+          "end": "2026-04-30",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 9
+        },
+        {
+          "start": "2026-05-04",
+          "end": "2026-05-14",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-09-13",
+          "end": "2026-09-23",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 14
+        },
+        {
+          "start": "2026-09-27",
+          "end": "2026-10-07",
+          "status": "Available",
+          "price": 699.0,
+          "seats_left": 12
+        },
+        {
+          "start": "2026-10-11",
+          "end": "2026-10-21",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 11
+        },
+        {
+          "start": "2026-10-25",
+          "end": "2026-11-04",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-11-08",
+          "end": "2026-11-18",
+          "status": "Limited",
+          "price": 599.0,
+          "seats_left": 3
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 899.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 699.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 599.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "August Janai Purnima (full moon) - thousands of pilgrims visit"
+        },
+        {
+          "highlight": "Rhododendron blooms spectacular in March-April"
+        },
+        {
+          "highlight": "Clear mountain views and stable weather autumn"
+        },
+        {
+          "highlight": "Challenging high-altitude pass crossing experience"
+        }
+      ],
+      "booking_card": {
+        "base_price": 699.0,
+        "original_price": 899.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 22,
+        "badge_label": "Sacred Pilgrimage",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 899.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 699.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 599.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Difficulty & Altitude Concerns",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Gosaikunda Pass Trekking suitable for beginners?",
+              "answer": "Gosaikunda is moderately challenging and best suited for trekkers with good fitness and previous trekking experience. The high altitude and challenging pass crossing require proper acclimatization and mental preparation.",
+              "order": 1
+            },
+            {
+              "question": "How do I prevent altitude sickness?",
+              "answer": "Proper acclimatization is key. We include rest days and gradual ascents. Drink 3-4 liters of water daily, avoid alcohol, ascend slowly, and consult your doctor about altitude sickness medication.",
+              "order": 2
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Autumn (September-November) for clear views and stable weather, and Spring (March-May) for rhododendron blooms. August draws pilgrims for Janai Purnima full moon festival.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/gosaikunda_1.jpg",
+          "title": "Sacred Gosaikunda Lake",
+          "caption": "Holiest alpine lake at 4,312m with sacred pilgrimage significance.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/gosaikunda_2.jpg",
+          "title": "Laurebina Pass Crossing",
+          "caption": "High pass adventure at 4,610m with panoramic Himalayan views.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/gosaikunda_3.jpg",
+          "title": "Alpine Landscape",
+          "caption": "Glacier-carved valleys and alpine meadows.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression with challenging high pass",
+        "background_image_path": "elevation_chart/gosaikunda_pass.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 5,
+            "title": "Gosaikunda Lake",
+            "elevation": 4312,
+            "description": "Sacred lake",
+            "order": 2
+          },
+          {
+            "day": 7,
+            "title": "Laurebina Pass",
+            "elevation": 4610,
+            "description": "Highest point",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Gosaikunda Pass Trekking is a challenging high-altitude trek that requires good physical fitness and previous trekking experience. Medical consultation before trek is essential.",
+            "The full moon festival (Janai Purnima) in August draws thousands of pilgrims. If trekking during this time, expect crowded trails and book accommodations well in advance.",
+            "Proper acclimatization and slow pace are critical for safe passage over Laurebina La Pass."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Good fitness required - previous trekking experience essential",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Medical insurance and altitude sickness medication recommended",
+              "icon": "alert",
+              "order": 1
+            },
+            {
+              "text": "High pass (4,610m) crossing most challenging section",
+              "icon": "achievement",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

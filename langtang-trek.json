@@ -1,0 +1,681 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T18:27:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Langtang",
+      "slug": "langtang",
+      "short_label": "Langtang Valley, Kyanjin Gompa",
+      "order": 1,
+      "marker_x": 62,
+      "marker_y": 35,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "langtang-valley-trek",
+      "title": "Langtang Valley Trek",
+      "region_slug": "langtang",
+      "duration": "8 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Syabrubesi",
+      "group_size": "1-15",
+      "max_altitude": "3870m",
+      "activity": "Trekking",
+      "short_description": "A perfect moderate trek with stunning mountain views and rich Tamang culture just 7 hours from Kathmandu.",
+      "card_image_path": "trek_cards/langtang_valley_card.jpg",
+      "is_published": true,
+      "review_text": "A perfect moderate trek with stunning mountain views and rich Tamang culture just 7 hours from Kathmandu.",
+      "rating": 4.6,
+      "reviews": 48,
+      "hero_section": {
+        "title": "Langtang Valley Trek",
+        "subtitle": "Valley of Glaciers - Experience Authentic Tamang Culture",
+        "image_path": "hero_images/langtang_valley_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "8",
+        "difficulty": "Moderate",
+        "location": "Central Nepal - 123 km from Kathmandu",
+        "cta_label": "Book Your Adventure",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Langtang Valley Trek Overview",
+            "articles": [
+              "Langtang Valley Trek is one of Nepal's closest and most popular trekking destinations, located just 123 km north of Kathmandu. This 8-day moderate trek takes you through remote villages, pristine forests, and up to the beautiful Kyanjin Gompa at 3,870m. Known as the 'Valley of Glaciers', Langtang is home to stunning views of Langtang Lirung (7,246m), Kimshung (6,781m), and Langshisha RI (6,370m)."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude: 3,870m (Kyanjin Gompa), optional viewpoints to 4,380-5,030m",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Beginner-friendly moderate trek - guaranteed low AMS risk (<4,000m)",
+                "icon": "hiking",
+                "order": 2
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Rest",
+          "description": "Arrive at Tribhuwan International Airport in Kathmandu. Our EverTrek Nepal representative will welcome you and transfer you to your hotel in Thamel district.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Syabrubesi",
+          "description": "Early morning departure from Kathmandu. Drive 123 km north through terraced farmlands and picturesque villages.",
+          "accommodation": "Teahouse/Lodge",
+          "altitude": "1460m",
+          "duration": "7 hours",
+          "distance": "123 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syabrubesi",
+          "latitude": 28.1628,
+          "longitude": 85.3378
+        },
+        {
+          "day": 3,
+          "title": "Trek Syabrubesi to Lama Hotel",
+          "description": "Your first trekking day begins with a scenic walk through terraced farmlands and forests alongside the Langtang River.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "6-7 hours",
+          "distance": "11.3 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lama Hotel",
+          "latitude": 28.1615,
+          "longitude": 85.4301
+        },
+        {
+          "day": 4,
+          "title": "Trek Lama Hotel to Langtang Village",
+          "description": "Trek through dense forests with best chance to spot red pandas near Ghoda Tabela. Village rebuilt after 2015 earthquake.",
+          "accommodation": "Teahouse",
+          "altitude": "3430m",
+          "duration": "5-6 hours",
+          "distance": "14.8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Langtang Village",
+          "latitude": 28.2114,
+          "longitude": 85.5108
+        },
+        {
+          "day": 5,
+          "title": "Trek Langtang Village to Kyanjin Gompa",
+          "description": "Shorter day with 3-4 hours walking to Kyanjin Gompa at 3,870m. Visit 7th century monastery and yak cheese factory.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m",
+          "duration": "3-4 hours",
+          "distance": "6.8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2061,
+          "longitude": 85.5633
+        },
+        {
+          "day": 6,
+          "title": "Acclimatization Day - Kyanjin Ri Hike",
+          "description": "Optional hike to Kyanjin Ri (4,380m) or Tserko Ri (5,030m) for panoramic mountain views.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m to 4380m",
+          "duration": "3-6 hours hike",
+          "distance": "Optional hikes only",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2061,
+          "longitude": 85.5633
+        },
+        {
+          "day": 7,
+          "title": "Trek Kyanjin Gompa to Lama Hotel",
+          "description": "Descend back to Lama Hotel. Better wildlife spotting opportunities during descent.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "7-8 hours",
+          "distance": "21 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lama Hotel",
+          "latitude": 28.1615,
+          "longitude": 85.4301
+        },
+        {
+          "day": 8,
+          "title": "Trek to Syabrubesi & Drive to Kathmandu",
+          "description": "Final descent to Syabrubesi followed by 7-hour drive back to Kathmandu. Celebration dinner with trekking crew.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "4-5 hours trek + 7 hours drive",
+          "distance": "11.3 km trek + 123 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Valley of Glaciers - Panoramic Mountain Views",
+          "description": "Experience breathtaking 360-degree views of Langtang Lirung (7,246m), Kimshung (6,781m), and Langshisha Ri (6,370m) from Kyanjin Gompa and optional viewpoints.\nWitness the dramatic glacier-carved valley surrounded by snow-capped peaks.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Ancient Kyanjin Gompa & Yak Cheese Factory",
+          "description": "Visit the sacred 7th-century Buddhist monastery nestled at 3,870m and receive blessings from resident monks.\nTaste authentic yak cheese at the local factory and experience traditional Himalayan dairy production.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Red Panda Wildlife Sanctuary",
+          "description": "Trek through pristine rhododendron and oak forests where endangered red pandas roam near Ghoda Tabela.\nSpot Himalayan wildlife including musk deer, Himalayan tahr, and over 250 bird species in Langtang National Park.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Authentic Tamang Culture & Hospitality",
+          "description": "Immerse yourself in the rich traditions of Tamang villages with their unique language, architecture, and Buddhist practices.\nStay in family-run teahouses and share stories with local Sherpa and Tamang communities rebuilding after 2015.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/langtang_valley.pdf",
+        "map_image_path": "trek_maps/langtang_valley_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry luggage",
+          "TIMS Card and Langtang National Park permit",
+          "All teahouse accommodations during trek",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (nights before and after trek)"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Bottled water and beverages",
+          "Tips for guide and porters"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Langtang Valley Trek departures available year-round with special seasonal packages for Spring and Autumn. All prices are per person and vary by group size. Private group departures can be arranged on your preferred dates. Early booking recommended for peak seasons (September-November and March-May)."
+      },
+      "departures": [
+        {
+          "start": "2026-02-15",
+          "end": "2026-02-22",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 10,
+          "id": "2026-02-15-001"
+        },
+        {
+          "start": "2026-03-10",
+          "end": "2026-03-17",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 12,
+          "id": "2026-03-10-001"
+        },
+        {
+          "start": "2026-03-25",
+          "end": "2026-04-01",
+          "status": "Limited",
+          "price": 599.0,
+          "seats_left": 3,
+          "id": "2026-03-25-001"
+        },
+        {
+          "start": "2026-04-08",
+          "end": "2026-04-15",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 15,
+          "id": "2026-04-08-001"
+        },
+        {
+          "start": "2026-04-22",
+          "end": "2026-04-29",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 8,
+          "id": "2026-04-22-001"
+        },
+        {
+          "start": "2026-05-06",
+          "end": "2026-05-13",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 11,
+          "id": "2026-05-06-001"
+        },
+        {
+          "start": "2026-09-10",
+          "end": "2026-09-17",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 14,
+          "id": "2026-09-10-001"
+        },
+        {
+          "start": "2026-09-24",
+          "end": "2026-10-01",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 12,
+          "id": "2026-09-24-001"
+        },
+        {
+          "start": "2026-10-08",
+          "end": "2026-10-15",
+          "status": "Available",
+          "price": 599.0,
+          "seats_left": 13,
+          "id": "2026-10-08-001"
+        },
+        {
+          "start": "2026-10-22",
+          "end": "2026-10-29",
+          "status": "Available",
+          "price": 499.0,
+          "seats_left": 9,
+          "id": "2026-10-22-001"
+        },
+        {
+          "start": "2026-11-05",
+          "end": "2026-11-12",
+          "status": "Limited",
+          "price": 499.0,
+          "seats_left": 4,
+          "id": "2026-11-05-001"
+        },
+        {
+          "start": "2026-11-19",
+          "end": "2026-11-26",
+          "status": "Available",
+          "price": 499.0,
+          "seats_left": 7,
+          "id": "2026-11-19-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 799.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 599.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 499.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Red panda spotting best in March-May & Sept-Nov"
+        },
+        {
+          "highlight": "Rhododendron blooms spectacular in March-April"
+        },
+        {
+          "highlight": "Clear mountain views during autumn"
+        },
+        {
+          "highlight": "Moderate weather year-round (below 4000m)"
+        }
+      ],
+      "booking_card": {
+        "base_price": 599.0,
+        "original_price": 799.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 25,
+        "badge_label": "Beginner Friendly",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 799.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 599.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 499.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Difficulty & Preparation",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Langtang Valley Trek suitable for beginners?",
+              "answer": "Yes! It's a moderate trek perfect for first-time trekkers. The maximum altitude is only 3,870m with gradual ascent, minimizing altitude sickness risk.",
+              "order": 1
+            },
+            {
+              "question": "Do I need travel insurance?",
+              "answer": "Yes, travel and medical insurance covering high-altitude trekking is highly recommended.",
+              "order": 2
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Spring (March-May) for rhododendron blooms and Autumn (September-November) for clear mountain views.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/langtang_valley_1.jpg",
+          "title": "Kyanjin Gompa",
+          "caption": "Ancient monastery with mountain backdrop.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/langtang_valley_2.jpg",
+          "title": "Langtang Valley",
+          "caption": "Valley of Glaciers panorama.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/langtang_valley_3.jpg",
+          "title": "Red Panda",
+          "caption": "Endangered red panda in natural habitat.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression",
+        "background_image_path": "elevation_chart/langtang.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 5,
+            "title": "Kyanjin Gompa",
+            "elevation": 3870,
+            "description": "Highest point",
+            "order": 2
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Langtang Valley Trek is beginner-friendly but requires moderate fitness. Most first-time trekkers succeed with proper training.",
+            "The 2015 earthquake devastated Langtang but the community has rebuilt completely. Your trek supports local economic recovery."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Moderate fitness required - train 4-6 weeks before",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Travel insurance highly recommended",
+              "icon": "alert",
+              "order": 1
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [
+          {
+            "month": "January",
+            "month_index": 0,
+            "departures": []
+          },
+          {
+            "month": "February",
+            "month_index": 1,
+            "departures": [
+              {
+                "start": "2026-02-15",
+                "end": "2026-02-22",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 10,
+                "id": "2026-02-15-001"
+              }
+            ]
+          },
+          {
+            "month": "March",
+            "month_index": 2,
+            "departures": [
+              {
+                "start": "2026-03-10",
+                "end": "2026-03-17",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 12,
+                "id": "2026-03-10-001"
+              },
+              {
+                "start": "2026-03-25",
+                "end": "2026-04-01",
+                "status": "Limited",
+                "price": 599.0,
+                "seats_left": 3,
+                "id": "2026-03-25-001"
+              }
+            ]
+          },
+          {
+            "month": "April",
+            "month_index": 3,
+            "departures": [
+              {
+                "start": "2026-04-08",
+                "end": "2026-04-15",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 15,
+                "id": "2026-04-08-001"
+              },
+              {
+                "start": "2026-04-22",
+                "end": "2026-04-29",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 8,
+                "id": "2026-04-22-001"
+              }
+            ]
+          },
+          {
+            "month": "May",
+            "month_index": 4,
+            "departures": [
+              {
+                "start": "2026-05-06",
+                "end": "2026-05-13",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 11,
+                "id": "2026-05-06-001"
+              }
+            ]
+          },
+          {
+            "month": "June",
+            "month_index": 5,
+            "departures": []
+          },
+          {
+            "month": "July",
+            "month_index": 6,
+            "departures": []
+          },
+          {
+            "month": "August",
+            "month_index": 7,
+            "departures": []
+          },
+          {
+            "month": "September",
+            "month_index": 8,
+            "departures": [
+              {
+                "start": "2026-09-10",
+                "end": "2026-09-17",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 14,
+                "id": "2026-09-10-001"
+              },
+              {
+                "start": "2026-09-24",
+                "end": "2026-10-01",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 12,
+                "id": "2026-09-24-001"
+              }
+            ]
+          },
+          {
+            "month": "October",
+            "month_index": 9,
+            "departures": [
+              {
+                "start": "2026-10-08",
+                "end": "2026-10-15",
+                "status": "Available",
+                "price": 599.0,
+                "seats_left": 13,
+                "id": "2026-10-08-001"
+              },
+              {
+                "start": "2026-10-22",
+                "end": "2026-10-29",
+                "status": "Available",
+                "price": 499.0,
+                "seats_left": 9,
+                "id": "2026-10-22-001"
+              }
+            ]
+          },
+          {
+            "month": "November",
+            "month_index": 10,
+            "departures": [
+              {
+                "start": "2026-11-05",
+                "end": "2026-11-12",
+                "status": "Limited",
+                "price": 499.0,
+                "seats_left": 4,
+                "id": "2026-11-05-001"
+              },
+              {
+                "start": "2026-11-19",
+                "end": "2026-11-26",
+                "status": "Available",
+                "price": 499.0,
+                "seats_left": 7,
+                "id": "2026-11-19-001"
+              }
+            ]
+          },
+          {
+            "month": "December",
+            "month_index": 11,
+            "departures": []
+          }
+        ],
+        "groupPrices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "label": "Solo Trekker (Private Trek)",
+            "price": 799.0,
+            "size": 1
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "label": "2-4 People",
+            "price": 599.0,
+            "size": 4
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "label": "5-15 People",
+            "price": 499.0,
+            "size": 15
+          }
+        ],
+        "highlights": [
+          {
+            "highlight": "Red panda spotting best in March-May & Sept-Nov"
+          },
+          {
+            "highlight": "Rhododendron blooms spectacular in March-April"
+          },
+          {
+            "highlight": "Clear mountain views during autumn"
+          },
+          {
+            "highlight": "Moderate weather year-round (below 4000m)"
+          }
+        ]
+      }
+    }
+  ]
+}

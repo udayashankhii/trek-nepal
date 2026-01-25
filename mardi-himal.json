@@ -1,0 +1,388 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:20:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Mardi Himal, Pokhara, Forests",
+      "order": 1,
+      "marker_x": 45,
+      "marker_y": 58,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "mardi-himal-trek",
+      "title": "Mardi Himal Trek",
+      "region_slug": "annapurna",
+      "duration": "6 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Pokhara",
+      "group_size": "1-15",
+      "max_altitude": "4500m",
+      "activity": "Trekking",
+      "short_description": "Less crowded alternative to popular treks with stunning close-up views of Machapuchare and Annapurna peaks. Trek through pristine forests, rhododendron groves, and high alpine meadows at the foot of Mardi Himal.",
+      "card_image_path": "trek_cards/mardi_himal_card.jpg",
+      "is_published": true,
+      "review_text": "Hidden gem trek with incredible mountain views and fewer crowds. Direct views of Machapuchare and Annapurna - less popular but equally stunning.",
+      "rating": 4.6,
+      "reviews": 98,
+      "hero_section": {
+        "title": "Mardi Himal Trek",
+        "subtitle": "Less crowded trek with close-up Annapurna views at 4,500m",
+        "image_path": "hero_images/mardi_himal_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "6",
+        "difficulty": "Moderate",
+        "location": "Annapurna Region, Mardi Valley",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Mardi Himal Trek Overview",
+            "articles": [
+              "Mardi Himal Trek is a hidden gem in the Annapurna region, offering stunning close-up views of Machapuchare and Annapurna peaks with significantly fewer crowds than Poon Hill or ABC treks. This 6-day trek starts from Pokhara and takes you through pristine forests, rhododendron groves, and high alpine meadows to Mardi Himal viewpoint at 4,500m. The trek offers excellent mountain photography opportunities, authentic village experiences, and some of the region's most breathtaking panoramic views. Unlike popular trekking routes, Mardi Himal remains relatively untouched and less commercialized, offering true wilderness experience."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Less crowded than Poon Hill and ABC treks",
+                "icon": "peace",
+                "order": 0
+              },
+              {
+                "text": "Max altitude 4,500m - higher views of Annapurna and Machapuchare",
+                "icon": "mountain",
+                "order": 1
+              },
+              {
+                "text": "Pristine forests and rhododendron groves",
+                "icon": "forest",
+                "order": 2
+              },
+              {
+                "text": "6 days total - good balance of time and experience",
+                "icon": "calendar",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Pokhara from Kathmandu",
+          "description": "Drive or fly from Kathmandu to Pokhara. Rest and trek preparation.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "Travel day",
+          "distance": "200 km",
+          "meals": "Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 2,
+          "title": "Trek Pokhara to Dhampus via Sarangkot",
+          "description": "Trek from Pokhara uphill through Sarangkot forest to Dhampus village with first views of Annapurna and Machapuchare.",
+          "accommodation": "Teahouse",
+          "altitude": "1680m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dhampus",
+          "latitude": 28.3234,
+          "longitude": 83.5678
+        },
+        {
+          "day": 3,
+          "title": "Trek Dhampus to Pothana",
+          "description": "Trek through rhododendron forests and villages to Pothana village at higher altitude. Excellent mountain views.",
+          "accommodation": "Teahouse",
+          "altitude": "2000m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pothana",
+          "latitude": 28.3012,
+          "longitude": 83.6234
+        },
+        {
+          "day": 4,
+          "title": "Trek Pothana to Forest Camp",
+          "description": "Trek through dense rhododendron and oak forests to Forest Camp at high altitude. Wildlife spotting opportunities.",
+          "accommodation": "Teahouse",
+          "altitude": "3250m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Forest Camp",
+          "latitude": 28.2834,
+          "longitude": 83.6845
+        },
+        {
+          "day": 5,
+          "title": "Trek Forest Camp to Mardi Himal Viewpoint",
+          "description": "Final ascent to Mardi Himal viewpoint (4,500m). Stunning close-up views of Machapuchare, Annapurna, and high alpine scenery. Return to Forest Camp.",
+          "accommodation": "Teahouse",
+          "altitude": "3250m",
+          "duration": "6-7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Forest Camp",
+          "latitude": 28.2834,
+          "longitude": 83.6845
+        },
+        {
+          "day": 6,
+          "title": "Trek Forest Camp to Pokhara",
+          "description": "Descend to Pokhara. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "6-7 hours descent",
+          "distance": "16 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Mardi Himal Viewpoint - Close-up Mountain Views",
+          "description": "Reach Mardi Himal at 4,500m for stunning close-up views of Machapuchare (Fish Tail) and Annapurna peaks. Excellent for photography with fewer crowds.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Less Crowded Alternative",
+          "description": "Unlike popular Poon Hill and ABC treks, Mardi Himal remains relatively untouched. Authentic experience without commercial trekking infrastructure.",
+          "icon": "peace"
+        },
+        {
+          "title": "Pristine Forest Trekking",
+          "description": "Trek through dense rhododendron and oak forests with incredible biodiversity. Spring season offers spectacular wildflower blooms.",
+          "icon": "forest"
+        },
+        {
+          "title": "Wilderness Experience",
+          "description": "Higher altitude alpine meadows and glacial terrain. True mountain wilderness with minimal infrastructure.",
+          "icon": "landscape"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/mardi_himal.pdf",
+        "map_image_path": "trek_maps/mardi_himal_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced English-speaking trekking guide",
+          "Porter support for luggage",
+          "Annapurna Conservation Area permit",
+          "TIMS Card",
+          "All teahouse accommodations",
+          "All meals (breakfast, lunch, dinner)",
+          "Hotel in Pokhara",
+          "Transport from Pokhara to trailhead"
+        ],
+        "cost_exclusions": [
+          "Transport Kathmandu-Pokhara",
+          "Personal trekking gear",
+          "Travel and medical insurance",
+          "Tips for guide and porters",
+          "Extra beverages and snacks"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Mardi Himal Trek best March-May (spring) and September-November (autumn). Private departures available on request. Less crowded option for Annapurna region exploration."
+      },
+      "departures": [
+        {
+          "start": "2026-03-10",
+          "end": "2026-03-15",
+          "status": "Available",
+          "price": 695.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-04-08",
+          "end": "2026-04-13",
+          "status": "Available",
+          "price": 695.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-09-18",
+          "end": "2026-09-23",
+          "status": "Available",
+          "price": 695.0,
+          "seats_left": 9
+        },
+        {
+          "start": "2026-10-15",
+          "end": "2026-10-20",
+          "status": "Available",
+          "price": 595.0,
+          "seats_left": 11
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 895.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 695.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 495.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Wildflowers blooming, clear views"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Stable weather, crystal-clear mountain views"
+        }
+      ],
+      "booking_card": {
+        "base_price": 695.0,
+        "original_price": 895.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 22,
+        "badge_label": "Hidden Gem Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 895.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 695.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 495.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Specifics",
+          "icon": "info",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Why is Mardi Himal less crowded?",
+              "answer": "Mardi Himal is off the main trekking circuit. Fewer tourists know about it compared to Poon Hill. Higher altitude (4,500m) means fewer casual trekkers.",
+              "order": 1
+            },
+            {
+              "question": "Is altitude acclimatization needed?",
+              "answer": "Yes. Maximum altitude 4,500m requires proper acclimatization and good fitness. Gradual ascent helps prevent altitude sickness.",
+              "order": 2
+            },
+            {
+              "question": "Best season for this trek?",
+              "answer": "Spring (March-May) for wildflower blooms and autumn (September-November) for clear mountain views. Winter can be very cold at high altitude.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/mardi_himal_view.jpg",
+          "title": "Mardi Himal Viewpoint",
+          "caption": "Close-up views of Machapuchare and Annapurna peaks",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/mardi_forest.jpg",
+          "title": "Rhododendron Forests",
+          "caption": "Pristine forests with wildflower blooms",
+          "order": 2
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "6-day trek to Mardi Himal viewpoint",
+        "background_image_path": "elevation_chart/mardi_himal.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Pokhara",
+            "elevation": 823,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 5,
+            "title": "Mardi Himal",
+            "elevation": 4500,
+            "description": "Highest point - viewpoint",
+            "order": 2
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Why Choose Mardi Himal?",
+          "articles": [
+            "Less crowded than mainstream trekking routes. Authentic wilderness experience without commercial infrastructure.",
+            "Higher altitude (4,500m) provides better views of Annapurna and Machapuchare than lower altitude treks.",
+            "6 days is good balance - not too short, not too long. Fits vacation schedules well.",
+            "Pristine forests and alpine meadows offer incredible photography opportunities."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Less crowded alternative to popular Poon Hill",
+              "icon": "peace",
+              "order": 0
+            },
+            {
+              "text": "Moderate difficulty with good mountain views",
+              "icon": "hiking",
+              "order": 1
+            },
+            {
+              "text": "6 days total - perfect trek duration",
+              "icon": "calendar",
+              "order": 2
+            },
+            {
+              "text": "Pristine forest and alpine terrain",
+              "icon": "forest",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

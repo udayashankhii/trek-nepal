@@ -1,0 +1,430 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:16:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Annapurna Base Camp, Modi Khola",
+      "order": 1,
+      "marker_x": 45,
+      "marker_y": 58,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "annapurna-base-camp-abc-trek",
+      "title": "Annapurna Base Camp (ABC) Trek",
+      "region_slug": "annapurna",
+      "duration": "10 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Pokhara",
+      "group_size": "2-15",
+      "max_altitude": "4130m",
+      "activity": "Trekking",
+      "short_description": "Trek to the base camp of Annapurna I (8,091m) through Modi Khola valley with spectacular mountain views, pristine forests, and direct views of Annapurna's north face and surrounding peaks.",
+      "card_image_path": "trek_cards/annapurna_abc_card.jpg",
+      "is_published": true,
+      "review_text": "Spectacular trek with incredible close-up views of Annapurna and surrounding peaks. Less crowded than Everest Base Camp with equally stunning scenery.",
+      "rating": 4.7,
+      "reviews": 156,
+      "hero_section": {
+        "title": "Annapurna Base Camp Trek",
+        "subtitle": "Base camp of Annapurna I - Stunning close-up mountain views at 4,130m",
+        "image_path": "hero_images/annapurna_abc_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "10",
+        "difficulty": "Moderate",
+        "location": "Annapurna Region, Modi Khola Valley",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Annapurna Base Camp Trek Overview",
+            "articles": [
+              "Annapurna Base Camp (4,130m) sits at the foot of Annapurna I (8,091m), one of the world's most beautiful and dangerous mountains. This 10-day trek follows the Modi Khola valley through lush rhododendron forests, alpine meadows, and offers stunning direct views of Annapurna's north face, Machhapuchhare, and surrounding peaks. The trek is relatively short but offers incredible mountain scenery and fewer crowds than popular Everest Base Camp trek. You'll stay in teahouses throughout with authentic mountain village experiences. The final push to ABC includes passing through pristine wilderness and glacial terrain."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Direct base camp of Annapurna I (8,091m)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Max altitude 4,130m - less extreme than Everest Base Camp",
+                "icon": "peak",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Fewer crowds, exceptional mountain photography",
+                "icon": "camera",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu",
+          "description": "Arrival in Kathmandu. Meet guide, prepare trekking gear, briefing and acclimatization.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Preparation day",
+          "distance": "Local",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Pokhara, trek to Phedi",
+          "description": "Drive 200 km to Pokhara (6-7 hours). Trek from Pokhara to Phedi village starting Modi Khola valley.",
+          "accommodation": "Teahouse",
+          "altitude": "1130m",
+          "duration": "6-7 hours total",
+          "distance": "200 km + 12 km trek",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Phedi",
+          "latitude": 28.3456,
+          "longitude": 83.5234
+        },
+        {
+          "day": 3,
+          "title": "Trek Phedi to Dhampus",
+          "description": "Trek through rhododendron forests and terraced villages. First views of Annapurna and Machhapuchhare.",
+          "accommodation": "Teahouse",
+          "altitude": "1680m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Dhampus",
+          "latitude": 28.3234,
+          "longitude": 83.5678
+        },
+        {
+          "day": 4,
+          "title": "Trek Dhampus to Landruk",
+          "description": "Trek through Gurung villages and agricultural lands. Gradual ascent through forests.",
+          "accommodation": "Teahouse",
+          "altitude": "2000m",
+          "duration": "5-6 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Landruk",
+          "latitude": 28.3012,
+          "longitude": 83.6123
+        },
+        {
+          "day": 5,
+          "title": "Trek Landruk to Bhaglung",
+          "description": "Ascend through rhododendron and oak forests. High altitude forest views with mountain vistas.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bhaglung",
+          "latitude": 28.2834,
+          "longitude": 83.6845
+        },
+        {
+          "day": 6,
+          "title": "Trek Bhaglung to Chomrung",
+          "description": "Trek through dense forests and meadows. Approach Modi Khola valley. Spectacular mountain views emerging.",
+          "accommodation": "Teahouse",
+          "altitude": "2680m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chomrung",
+          "latitude": 28.2567,
+          "longitude": 83.7234
+        },
+        {
+          "day": 7,
+          "title": "Trek Chomrung to Deurali",
+          "description": "Trek along Modi Khola gorge through rhododendron forests. Continuous mountain views. Ascent to Deurali.",
+          "accommodation": "Teahouse",
+          "altitude": "3450m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Deurali",
+          "latitude": 28.2345,
+          "longitude": 83.7845
+        },
+        {
+          "day": 8,
+          "title": "Trek Deurali to Annapurna Base Camp",
+          "description": "Final ascent to ABC. Trek through alpine meadows and glacial terrain. Stunning direct views of Annapurna I north face and Modi Glacier.",
+          "accommodation": "Teahouse",
+          "altitude": "4130m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Annapurna Base Camp",
+          "latitude": 28.2123,
+          "longitude": 83.8567
+        },
+        {
+          "day": 9,
+          "title": "Rest day at ABC & Descent to Deurali",
+          "description": "Explore ABC area. Photography and acclimatization. Descend to Deurali for overnight.",
+          "accommodation": "Teahouse",
+          "altitude": "3450m",
+          "duration": "4-5 hours descent",
+          "distance": "10 km descent",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Deurali",
+          "latitude": 28.2345,
+          "longitude": 83.7845
+        },
+        {
+          "day": 10,
+          "title": "Trek Deurali to Phedi & Drive to Pokhara",
+          "description": "Descend to Phedi. Drive back to Pokhara. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "5-6 hours trek + 1 hour drive",
+          "distance": "14 km trek + 30 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Annapurna Base Camp - Direct Mountain Views",
+          "description": "Reach the base camp of Annapurna I (8,091m) with stunning direct views of the north face and Modi Glacier. Incredible mountaineering perspective.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Modi Khola Valley - Pristine Wilderness",
+          "description": "Trek through the beautiful Modi Khola valley with lush rhododendron forests, alpine meadows, and glacier-fed streams.",
+          "icon": "landscape"
+        },
+        {
+          "title": "Less Crowded Than EBC",
+          "description": "Experience similar mountain beauty to Everest Base Camp but with significantly fewer trekkers and more authentic local interactions.",
+          "icon": "peace"
+        },
+        {
+          "title": "Machhapuchhare Close-up Views",
+          "description": "See the sacred Fish Tail Mountain (Machhapuchhare) from multiple angles throughout the trek. One of the world's most beautiful peaks.",
+          "icon": "peak"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/annapurna_base_camp.pdf",
+        "map_image_path": "trek_maps/annapurna_base_camp_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced English-speaking trekking guide",
+          "Porter support for luggage",
+          "Annapurna Conservation Area Project permit",
+          "TIMS Card",
+          "All teahouse accommodations",
+          "All meals (breakfast, lunch, dinner)",
+          "Hotel in Kathmandu",
+          "Transport Kathmandu-Pokhara and return"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Nepal visa",
+          "Personal trekking gear",
+          "Travel and medical insurance",
+          "Tips for guide and porters",
+          "Extra beverages and snacks"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "ABC Trek is best March-May (Spring) and September-November (Autumn). All prices per person vary by group size. Private departures available on request."
+      },
+      "departures": [
+        {
+          "start": "2026-03-08",
+          "end": "2026-03-17",
+          "status": "Available",
+          "price": 895.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-04-05",
+          "end": "2026-04-14",
+          "status": "Available",
+          "price": 895.0,
+          "seats_left": 12
+        },
+        {
+          "start": "2026-09-15",
+          "end": "2026-09-24",
+          "status": "Available",
+          "price": 895.0,
+          "seats_left": 11
+        },
+        {
+          "start": "2026-10-13",
+          "end": "2026-10-22",
+          "status": "Available",
+          "price": 795.0,
+          "seats_left": 13
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1095.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 895.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 695.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendron blooms, clear visibility"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Stable weather, crystal-clear mountain views"
+        }
+      ],
+      "booking_card": {
+        "base_price": 895.0,
+        "original_price": 1095.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 18,
+        "badge_label": "Mountain Base Camp",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1095.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 895.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 695.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Details",
+          "icon": "info",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is ABC Trek suitable for beginners?",
+              "answer": "Yes, ABC Trek is moderately challenging. Previous trekking experience helpful but not mandatory. Max altitude is 4,130m which is lower than EBC.",
+              "order": 1
+            },
+            {
+              "question": "How many days is ABC Trek?",
+              "answer": "Total 10 days including arrival/departure days. Actual trekking is 6 days with gradual acclimatization.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/abc_camp.jpg",
+          "title": "Annapurna Base Camp",
+          "caption": "Base camp with direct Annapurna I views",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/modi_valley.jpg",
+          "title": "Modi Khola Valley",
+          "caption": "Scenic valley trekking through forests",
+          "order": 2
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "10-day trek to Annapurna Base Camp",
+        "background_image_path": "elevation_chart/annapurna_abc.jpg",
+        "points": [
+          {
+            "day": 2,
+            "title": "Phedi",
+            "elevation": 1130,
+            "description": "Trek start",
+            "order": 1
+          },
+          {
+            "day": 8,
+            "title": "Annapurna Base Camp",
+            "elevation": 4130,
+            "description": "Trek destination",
+            "order": 2
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Information",
+          "articles": [
+            "ABC Trek is shorter and easier than EBC trek. Good for trekkers with limited time but wanting mountain experiences.",
+            "Modi Khola valley has reliable teahouse accommodations throughout the trek.",
+            "Autumn is peak season. Book in advance for better accommodations."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "10 days total including Kathmandu",
+              "icon": "calendar",
+              "order": 0
+            },
+            {
+              "text": "Moderate difficulty - suitable for most trekkers",
+              "icon": "hiking",
+              "order": 1
+            },
+            {
+              "text": "Less crowded than popular Everest Base Camp",
+              "icon": "peace",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

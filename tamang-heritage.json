@@ -1,0 +1,553 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T18:27:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Langtang",
+      "slug": "langtang",
+      "short_label": "Langtang Valley, Kyanjin Gompa",
+      "order": 1,
+      "marker_x": 62,
+      "marker_y": 35,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "tamang-heritage-trail-trekking",
+      "title": "Tamang Heritage Trail Trekking",
+      "region_slug": "langtang",
+      "duration": "11 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Syabrubesi",
+      "group_size": "1-15",
+      "max_altitude": "3154m",
+      "activity": "Trekking",
+      "short_description": "Experience timeless Tamang culture and heritage life intertwined with ancient Buddhism and nature worship. Trek through high country between Ganesh and Langtang Himal ranges on ancient caravan and salt trade routes.",
+      "card_image_path": "trek_cards/tamang_heritage_card.jpg",
+      "is_published": true,
+      "review_text": "Immerse yourself in authentic Tamang traditions and millennia-old caravan trade routes while enjoying refreshing natural hot springs.",
+      "rating": 4.6,
+      "reviews": 38,
+      "hero_section": {
+        "title": "Tamang Heritage Trail Trekking",
+        "subtitle": "Ancient Caravan Routes & Timeless Mountain Culture - A Living Museum Trek",
+        "image_path": "hero_images/tamang_heritage_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "11",
+        "difficulty": "Moderate",
+        "location": "Central Nepal - Ganesh & Langtang Himal Range",
+        "cta_label": "Explore Heritage Culture",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Tamang Heritage Trail Trekking Overview",
+            "articles": [
+              "Tamang Heritage Trail is an exclusive cultural immersion program through the beautiful high country between Ganesh and Langtang Himal ranges, situated on ancient and present caravan and salt trade routes of Nepal to Tibet/China. The Tamang tribe is believed to have settled and migrated in northern Himalayan range of Nepal since ancient times. Brought to Kathmandu Valley by King Srong-sen Gampo of Tibet in 7th Century AD as cavalry division, they maintain traditions from Southern Tibet's Uichang region after migrating from inner Mongolia. This trek takes you along Nagthali ridge at 3,154m offering tremendous panorama of snow-clad peaks towards Ganesh Himal and Langtang Himal ranges. Experience serene forests with rhododendrons, pines, and fir trees, stunning when flowers bloom in spring. Enjoy refreshing natural hot springs and immerse yourself in local customs while finishing at Syabrubesi."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude: 3,154m (Nagthali Ridge) - moderate elevation with minimal AMS risk",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March-May (Spring rhododendrons), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Ancient caravan and salt trade routes - centuries-old cultural heritage",
+                "icon": "culture",
+                "order": 2
+              },
+              {
+                "text": "Deep immersion in Tamang culture, traditions, and timeless way of life",
+                "icon": "achievement",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrival in Kathmandu & Rest",
+          "description": "Arrive at Tribhuwan International Airport. EverTrek Nepal representative welcomes and transfers to Thamel district hotel. Rest and prepare for cultural trek.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day arrival",
+          "distance": "Airport to hotel",
+          "meals": "Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Syabrubesi",
+          "description": "Early morning drive 120+ km to Syabrubesi gateway village. Follow Trishuli River valley through terraced farmlands and scenic Nepali towns.",
+          "accommodation": "Teahouse/Lodge",
+          "altitude": "1460m",
+          "duration": "7-8 hours",
+          "distance": "120 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Syabrubesi",
+          "latitude": 28.1628,
+          "longitude": 85.3378
+        },
+        {
+          "day": 3,
+          "title": "Trek Syabrubesi to Gatlang",
+          "description": "Trek to ancient Tamang village of Gatlang perched on hillside. Explore traditional architecture and local way of life maintained for centuries on caravan trade routes.",
+          "accommodation": "Teahouse/Homestay",
+          "altitude": "2020m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Gatlang",
+          "latitude": 28.1934,
+          "longitude": 85.3689
+        },
+        {
+          "day": 4,
+          "title": "Trek Gatlang to Nagthali",
+          "description": "Challenging ascent to Nagthali ridge at 3,154m offering tremendous panorama of Ganesh Himal and Langtang Himal ranges. Highest point of trek with spectacular mountain vistas.",
+          "accommodation": "Teahouse",
+          "altitude": "3154m",
+          "duration": "6-7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Nagthali",
+          "latitude": 28.2156,
+          "longitude": 85.3945
+        },
+        {
+          "day": 5,
+          "title": "Acclimatization Day - Nagthali Exploration",
+          "description": "Rest day at high point of trek. Explore Nagthali village, interact with locals, witness traditional Tamang lifestyle, learn about ancient caravan trade history.",
+          "accommodation": "Teahouse",
+          "altitude": "3154m",
+          "duration": "Day exploration",
+          "distance": "Local walking",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Nagthali",
+          "latitude": 28.2156,
+          "longitude": 85.3945
+        },
+        {
+          "day": 6,
+          "title": "Trek Nagthali to Briddhim",
+          "description": "Descend to Briddhim village, another traditional Tamang settlement. Immerse in local culture, taste traditional cuisine, observe daily life activities.",
+          "accommodation": "Teahouse/Homestay",
+          "altitude": "2520m",
+          "duration": "5-6 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Briddhim",
+          "latitude": 28.2089,
+          "longitude": 85.4234
+        },
+        {
+          "day": 7,
+          "title": "Trek Briddhim to Tatopani (Hot Springs)",
+          "description": "Trek through rhododendron and pine forests to Tatopani village famous for natural hot springs. Relax in refreshing thermal waters after days of trekking.",
+          "accommodation": "Teahouse/Hot Spring Lodge",
+          "altitude": "1860m",
+          "duration": "5-6 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tatopani",
+          "latitude": 28.1945,
+          "longitude": 85.4678
+        },
+        {
+          "day": 8,
+          "title": "Trek Tatopani to Timure",
+          "description": "Trek through traditional Tamang settlements along ancient trade routes toward Tibet. Explore villages perched on hillsides with traditional architecture intact.",
+          "accommodation": "Teahouse",
+          "altitude": "2180m",
+          "duration": "5-6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Timure",
+          "latitude": 28.2234,
+          "longitude": 85.5123
+        },
+        {
+          "day": 9,
+          "title": "Trek Timure to Briddim via Lama Settlement",
+          "description": "Trek to lama settlements and Buddhist monasteries. Visit sacred sites and interact with monks. Observe Buddhist rituals and traditions intertwined with ancient Bon practices.",
+          "accommodation": "Teahouse",
+          "altitude": "2400m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Briddim Settlement",
+          "latitude": 28.2089,
+          "longitude": 85.4234
+        },
+        {
+          "day": 10,
+          "title": "Trek to Syabrubesi & Drive to Kathmandu",
+          "description": "Return trek to Syabrubesi village, starting and finishing point of trek. 7-hour drive back to Kathmandu. Celebration dinner with trekking team.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "4-5 hours trek + 7 hours drive",
+          "distance": "12 km trek + 120 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 11,
+          "title": "Departure Day",
+          "description": "Rest day in Kathmandu. Free time for shopping, cultural activities, or optional city tour based on flight schedule.",
+          "accommodation": "Hotel in Thamel, Kathmandu",
+          "altitude": "1337m",
+          "duration": "Full day",
+          "distance": "Local movements",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Timeless Tamang Culture - Indigenous Heritage",
+          "description": "Immerse in centuries-old Tamang traditions intertwined with Buddhism and nature worship reflecting indigenous Himalayan spirituality.\nLearn from Tamang tribe believed settled since ancient times, experiencing their unique customs, traditional attire, music, and way of life unchanged through millennia.",
+          "icon": "culture"
+        },
+        {
+          "title": "Ancient Caravan & Salt Trade Routes - Living History",
+          "description": "Trek ancient and present caravan and salt trade routes connecting Nepal to Tibet/China, following paths used for centuries.\nExperience traditional trade settlements and ancient pilgrim routes while understanding region's historical significance in Himalayan commerce.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Nagthali Ridge - Panoramic Mountain Sanctuary",
+          "description": "Trek to Nagthali ridge at 3,154m offering tremendous panorama of snow-clad peaks towards Ganesh Himal and Langtang Himal ranges.\nExperience the highest point with clear mountain vistas and pristine alpine environment.",
+          "icon": "scenary"
+        },
+        {
+          "title": "Natural Thermal Springs & Forest Immersion",
+          "description": "Relax in refreshing Tatopani natural hot springs after trekking, experiencing traditional Tamang wellness practices.\nTrek through serene rhododendron, pine, and fir forests stunning during spring bloom season.",
+          "icon": "achievement"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/tamang_heritage_trail.pdf",
+        "map_image_path": "trek_maps/tamang_heritage_map.jpg"
+      },
+      "cost": {
+        "title": "What's Included & What's Excluded",
+        "cost_inclusions": [
+          "Airport pickup and drop transportation",
+          "Experienced English-speaking trekking guide",
+          "Professional porters to carry luggage",
+          "All teahouse and homestay accommodations",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel accommodation in Kathmandu (nights before and after trek)",
+          "Natural hot springs access at Tatopani",
+          "Cultural orientation and village visits"
+        ],
+        "cost_exclusions": [
+          "International flights to/from Nepal",
+          "Nepal visa ($40 USD on arrival)",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Bottled water and beverages",
+          "Tips for guide and porters",
+          "Optional activities and souvenirs"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Tamang Heritage Trail is best done March-May (Spring for rhododendron blooms) and September-November (Autumn for clear skies). All prices are per person and vary by group size. Private group departures on your preferred dates available. Early booking recommended for peak seasons."
+      },
+      "departures": [
+        {
+          "start": "2026-03-07",
+          "end": "2026-03-17",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 11,
+          "id": "2026-03-07-001"
+        },
+        {
+          "start": "2026-03-21",
+          "end": "2026-03-31",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 9,
+          "id": "2026-03-21-001"
+        },
+        {
+          "start": "2026-04-04",
+          "end": "2026-04-14",
+          "status": "Limited",
+          "price": 579.0,
+          "seats_left": 4,
+          "id": "2026-04-04-001"
+        },
+        {
+          "start": "2026-04-18",
+          "end": "2026-04-28",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 13,
+          "id": "2026-04-18-001"
+        },
+        {
+          "start": "2026-05-02",
+          "end": "2026-05-12",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 10,
+          "id": "2026-05-02-001"
+        },
+        {
+          "start": "2026-09-11",
+          "end": "2026-09-21",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 14,
+          "id": "2026-09-11-001"
+        },
+        {
+          "start": "2026-09-25",
+          "end": "2026-10-05",
+          "status": "Available",
+          "price": 579.0,
+          "seats_left": 12,
+          "id": "2026-09-25-001"
+        },
+        {
+          "start": "2026-10-09",
+          "end": "2026-10-19",
+          "status": "Available",
+          "price": 479.0,
+          "seats_left": 11,
+          "id": "2026-10-09-001"
+        },
+        {
+          "start": "2026-10-23",
+          "end": "2026-11-02",
+          "status": "Available",
+          "price": 479.0,
+          "seats_left": 10,
+          "id": "2026-10-23-001"
+        },
+        {
+          "start": "2026-11-06",
+          "end": "2026-11-16",
+          "status": "Limited",
+          "price": 479.0,
+          "seats_left": 6,
+          "id": "2026-11-06-001"
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 729.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 579.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 479.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring rhododendron blooms spectacular in March-April"
+        },
+        {
+          "highlight": "Clear mountain views and stable weather in autumn"
+        },
+        {
+          "highlight": "Natural hot springs at Tatopani year-round"
+        },
+        {
+          "highlight": "Authentic Tamang cultural practices best experienced off-season"
+        }
+      ],
+      "booking_card": {
+        "base_price": 579.0,
+        "original_price": 729.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 20,
+        "badge_label": "Cultural Immersion",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 729.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 579.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 479.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Cultural Experience & Preparation",
+          "icon": "culture",
+          "order": 1,
+          "questions": [
+            {
+              "question": "What is the Tamang culture like?",
+              "answer": "Tamang people maintain centuries-old traditions intertwined with Buddhism and nature worship. They're known for their hospitality, unique language, traditional craftsmanship, distinct music, and distinctive lifestyle preserved through millennia.",
+              "order": 1
+            },
+            {
+              "question": "Is this trek suitable for first-timers?",
+              "answer": "Yes! Tamang Heritage Trail is moderate difficulty with lowest altitude of all regional treks (max 3,154m). Perfect for cultural immersion while remaining physically accessible.",
+              "order": 2
+            },
+            {
+              "question": "What are the natural hot springs like?",
+              "answer": "Tatopani (meaning 'hot water') offers refreshing natural thermal springs at 1,860m. A wonderful relaxation point after trekking days, reflecting traditional Tamang wellness practices.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/tamang_heritage_1.jpg",
+          "title": "Gatlang Village",
+          "caption": "Traditional Tamang village with ancient architecture.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/tamang_heritage_2.jpg",
+          "title": "Tamang Locals",
+          "caption": "Genuine cultural interactions with Tamang communities.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/tamang_heritage_3.jpg",
+          "title": "Natural Hot Springs",
+          "caption": "Tatopani thermal springs surrounded by forests.",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Moderate altitude with cultural immersion",
+        "background_image_path": "elevation_chart/tamang_heritage.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Kathmandu",
+            "elevation": 1337,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 4,
+            "title": "Nagthali",
+            "elevation": 3154,
+            "description": "Highest point",
+            "order": 2
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Tamang Heritage Trail emphasizes cultural immersion more than mountain views. Respect local customs, traditions, and seek permission before photographing local people or ceremonies.",
+            "Basic accommodations in homestays offer authentic experiences. Be prepared for simple facilities while enjoying genuine Tamang hospitality and traditional cuisine.",
+            "This trek supports local economic recovery and community development in remote Tamang villages."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Moderate fitness required - no previous trekking experience needed",
+              "icon": "fitness",
+              "order": 0
+            },
+            {
+              "text": "Homestays provide authentic cultural immersion",
+              "icon": "achievement",
+              "order": 1
+            },
+            {
+              "text": "Lowest altitude trek - minimal altitude sickness risk",
+              "icon": "achievement",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "similar_treks": [],
+      "cost_date_api_response": {
+        "departures_by_month": [],
+        "groupPrices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "label": "Solo Trekker",
+            "price": 729.0,
+            "size": 1
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "label": "2-4 People",
+            "price": 579.0,
+            "size": 4
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "label": "5-15 People",
+            "price": 479.0,
+            "size": 15
+          }
+        ],
+        "highlights": [
+          {
+            "highlight": "Ancient caravan trade routes on trails to Tibet"
+          },
+          {
+            "highlight": "Authentic Tamang culture and heritage life"
+          },
+          {
+            "highlight": "Nagthali ridge panoramas of Ganesh & Langtang Himal"
+          },
+          {
+            "highlight": "Tatopani natural hot springs relaxation"
+          }
+        ]
+      }
+    }
+  ]
+}

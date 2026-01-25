@@ -1,0 +1,455 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T21:38:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Mustang",
+      "slug": "mustang",
+      "short_label": "Jomsom, Lo Manthang",
+      "order": 1,
+      "marker_x": 52,
+      "marker_y": 65,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "lower-mustang-jomsom-muktinath-trek",
+      "title": "Lower Mustang Trek (Jomsom-Muktinath)",
+      "region_slug": "mustang",
+      "duration": "7 Days",
+      "trip_grade": "Easy to Moderate",
+      "start_point": "Pokhara",
+      "group_size": "1-15",
+      "max_altitude": "3800m",
+      "activity": "Trekking",
+      "short_description": "Popular trek through Kali Gandaki gorge with visits to sacred Muktinath Temple, traditional apple orchards, and Thakali villages. No restricted permit needed.",
+      "card_image_path": "trek_cards/lower_mustang_card.jpg",
+      "is_published": true,
+      "review_text": "Easy, accessible trek combining culture, pilgrimage, and stunning gorge scenery. Perfect for families and beginners. Muktinath is sacred site for Hindus and Buddhists.",
+      "rating": 4.7,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Lower Mustang Trek (Jomsom-Muktinath)",
+        "subtitle": "Sacred pilgrimage to Muktinath Temple through deepest gorge",
+        "image_path": "hero_images/lower_mustang_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "7",
+        "difficulty": "Easy to Moderate",
+        "location": "Jomsom, Muktinath, Kali Gandaki",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Lower Mustang Trek",
+            "articles": [
+              "The Lower Mustang Trek (Jomsom-Muktinath) is an accessible and culturally rich trek perfect for families, beginners, and pilgrims. This 7-day journey takes you through the Kali Gandaki gorge - the world's deepest gorge - to the sacred Muktinath Temple at 3,800m. Unlike Upper Mustang, no restricted permit is needed, making it very popular. Trek through traditional Thakali villages, apple orchards, and experience authentic Mustang culture. Muktinath is sacred for both Hindus (Temple of Vishnu) and Buddhists (108 water taps). The trek is shorter, easier, and can be extended with the famous Annapurna Circuit."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 3,800m (Muktinath Temple)",
+                "icon": "temple",
+                "order": 0
+              },
+              {
+                "text": "No restricted permit - only ACAP & TIMS required",
+                "icon": "permit",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March–May, September–November",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Perfect for families, beginners, and pilgrims",
+                "icon": "family",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Fly Kathmandu to Pokhara, then Pokhara to Jomsom",
+          "description": "Flight from Kathmandu to Pokhara (1 hour), then scenic flight from Pokhara to Jomsom over Annapurna range. Explore Jomsom town.",
+          "accommodation": "Hotel",
+          "altitude": "2720m",
+          "duration": "2-3 hours flight + exploration",
+          "distance": "Flights",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jomsom",
+          "latitude": 28.7833,
+          "longitude": 83.7367
+        },
+        {
+          "day": 2,
+          "title": "Trek from Jomsom to Marpha",
+          "description": "Trek along Kali Gandaki River through apple orchards. Visit traditional Thakali villages with Mustang architecture.",
+          "accommodation": "Teahouse",
+          "altitude": "2670m",
+          "duration": "4-5 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Marpha",
+          "latitude": 28.8167,
+          "longitude": 83.7733
+        },
+        {
+          "day": 3,
+          "title": "Trek from Marpha to Kagbeni",
+          "description": "Walk through river valley and Mustang region. Kagbeni is gateway to Upper Mustang (restricted zone begins here).",
+          "accommodation": "Teahouse",
+          "altitude": "2810m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kagbeni",
+          "latitude": 28.8133,
+          "longitude": 83.8367
+        },
+        {
+          "day": 4,
+          "title": "Trek from Kagbeni to Muktinath Temple",
+          "description": "Steady uphill trek to sacred Muktinath Temple (3,800m). Visit 108 water taps and pilgrimage sites.",
+          "accommodation": "Hotel",
+          "altitude": "3800m",
+          "duration": "6-7 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Muktinath",
+          "latitude": 28.8233,
+          "longitude": 83.8500
+        },
+        {
+          "day": 5,
+          "title": "Rest day at Muktinath - Pilgrimage & exploration",
+          "description": "Explore Muktinath Temple (sacred Hindu shrine), Kali Temple, and Buddhist monasteries. Visit 108 water springs.",
+          "accommodation": "Hotel",
+          "altitude": "3800m",
+          "duration": "Exploration day",
+          "distance": "Local walks",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Muktinath",
+          "latitude": 28.8233,
+          "longitude": 83.8500
+        },
+        {
+          "day": 6,
+          "title": "Trek from Muktinath to Jomsom",
+          "description": "Descend back to Jomsom through Kagbeni. Rest and prepare for return flight.",
+          "accommodation": "Hotel",
+          "altitude": "2720m",
+          "duration": "5-6 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jomsom",
+          "latitude": 28.7833,
+          "longitude": 83.7367
+        },
+        {
+          "day": 7,
+          "title": "Fly Jomsom to Pokhara, then Pokhara to Kathmandu",
+          "description": "Early flight from Jomsom to Pokhara, then flight back to Kathmandu. Trek completion.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "2 hours flight total",
+          "distance": "Flights",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Muktinath Temple",
+          "description": "Sacred pilgrimage site for both Hindus and Buddhists with 108 holy water springs. Temple of Lord Vishnu.",
+          "icon": "temple"
+        },
+        {
+          "title": "Kali Gandaki Gorge",
+          "description": "World's deepest gorge with dramatic geological formations and ancient trade routes.",
+          "icon": "gorge"
+        },
+        {
+          "title": "Thakali Villages",
+          "description": "Traditional Mustang villages with unique architecture, apple orchards, and authentic culture.",
+          "icon": "village"
+        },
+        {
+          "title": "Apple Orchards",
+          "description": "Famous Mustang apple farms and local markets showcasing regional agricultural heritage.",
+          "icon": "nature"
+        },
+        {
+          "title": "Mountain Views",
+          "description": "Stunning views of Dhaulagiri, Annapurna, and Nilgiri peaks from various trekking points.",
+          "icon": "mountain"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/lower_mustang_jomsom_muktinath.pdf",
+        "map_image_path": "trek_maps/lower_mustang_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced trekking guide",
+          "Porter support (1 porter per 2 trekkers)",
+          "ACAP permit (Annapurna Conservation Area Project)",
+          "TIMS card",
+          "Teahouse accommodation during trek",
+          "All meals (breakfast, lunch, dinner) during trek",
+          "Ground transportation Kathmandu-Pokhara-Jomsom-Kathmandu",
+          "Domestic flights (Kathmandu-Pokhara-Jomsom-Pokhara-Kathmandu)",
+          "Muktinath Temple entrance fee"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Personal trekking gear",
+          "Travel insurance",
+          "Extra expenses (drinks, snacks, tips)",
+          "Optional activities"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Lower Mustang operates year-round but spring and autumn offer best weather. This trek is very flexible and can be combined with Annapurna Circuit."
+      },
+      "departures": [
+        {
+          "start": "2026-03-05",
+          "end": "2026-03-11",
+          "status": "Available",
+          "price": 849.0,
+          "seats_left": 12
+        },
+        {
+          "start": "2026-04-10",
+          "end": "2026-04-16",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 15
+        },
+        {
+          "start": "2026-09-20",
+          "end": "2026-09-26",
+          "status": "Available",
+          "price": 899.0,
+          "seats_left": 14
+        },
+        {
+          "start": "2026-10-08",
+          "end": "2026-10-14",
+          "status": "Available",
+          "price": 849.0,
+          "seats_left": 13
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 999.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 849.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 749.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Clear mountain views, apple blossoms, warm days, mild nights"
+        },
+        {
+          "highlight": "Summer (June-Aug): Green valleys, occasional rain, lush landscapes, monsoon possible"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Crystal-clear visibility, stable weather, perfect trekking, peak season"
+        },
+        {
+          "highlight": "Winter (Dec-Feb): Fewer trekkers, cold at altitude, budget prices, possible snow"
+        }
+      ],
+      "booking_card": {
+        "base_price": 849.0,
+        "original_price": 999.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Family Friendly",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 999.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 849.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 749.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "General",
+          "icon": "general",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Lower Mustang Trek suitable for beginners?",
+              "answer": "Yes, absolutely. This is one of Nepal's most accessible and family-friendly treks. Maximum altitude is 3,800m (lower than Everest Base Camp). Graded Easy to Moderate.",
+              "order": 1
+            },
+            {
+              "question": "Why is it called 'Lower' Mustang?",
+              "answer": "Lower Mustang refers to the southern, more accessible part of Mustang (below Kagbeni). Upper Mustang (beyond Kagbeni) is the restricted walled kingdom requiring special permits.",
+              "order": 2
+            },
+            {
+              "question": "Can I trek solo?",
+              "answer": "Yes, unlike Upper Mustang, solo trekking is allowed. However, hiring a guide is recommended for safety and cultural insights.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Pilgrimage & Culture",
+          "icon": "temple",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What is Muktinath Temple?",
+              "answer": "Muktinath is a sacred pilgrimage site for Hindus (Temple of Lord Vishnu - fifth avatar) and Buddhists (sacred gateway). Features 108 water springs believed to have healing powers. Visited by thousands of pilgrims annually.",
+              "order": 1
+            },
+            {
+              "question": "What are the 108 water taps?",
+              "answer": "108 natural water springs flow from the mountain at Muktinath. Both Hindus and Buddhists believe bathing in these waters cleanses sins and brings salvation.",
+              "order": 2
+            },
+            {
+              "question": "Is this suitable for pilgrims?",
+              "answer": "Absolutely. Many pilgrims trek here for spiritual reasons. The trek combines physical adventure with spiritual significance, making it meaningful for believers.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/muktinath_temple.jpg",
+          "title": "Muktinath Temple",
+          "caption": "Sacred pilgrimage site with 108 holy water springs and Hindu shrines.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/kali_gandaki_gorge_lower.jpg",
+          "title": "Kali Gandaki Gorge",
+          "caption": "World's deepest gorge with stunning geological formations.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/mustang_apple_orchards.jpg",
+          "title": "Apple Orchards",
+          "caption": "Traditional Thakali apple farms in scenic valley.",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/thakali_village.jpg",
+          "title": "Thakali Village",
+          "caption": "Traditional architecture and village life in Mustang region.",
+          "order": 4
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression through Lower Mustang",
+        "background_image_path": "elevation_chart/lower_mustang.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Jomsom",
+            "elevation": 2720,
+            "description": "Trek starting point",
+            "order": 1
+          },
+          {
+            "day": 2,
+            "title": "Marpha",
+            "elevation": 2670,
+            "description": "Traditional Thakali village",
+            "order": 2
+          },
+          {
+            "day": 4,
+            "title": "Muktinath",
+            "elevation": 3800,
+            "description": "Sacred pilgrimage destination",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Lower Mustang doesn't require restricted area permit - much more accessible than Upper Mustang.",
+            "The strong Mustang winds occur in afternoons. Trek early in morning for best experience.",
+            "Muktinath can be visited as day trek from Jomsom (5 days total) or extended trek (7+ days).",
+            "Apple season (September-October) offers fresh local produce.",
+            "This trek can be combined with Annapurna Circuit for longer experience (16-20 days total)."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "No restricted permit needed - very accessible",
+              "icon": "check",
+              "order": 0
+            },
+            {
+              "text": "Perfect for families and first-time trekkers",
+              "icon": "family",
+              "order": 1
+            },
+            {
+              "text": "Can be shortened to 5 days or extended to 10+",
+              "icon": "flexible",
+              "order": 2
+            },
+            {
+              "text": "Pilgrimage destination for believers",
+              "icon": "temple",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

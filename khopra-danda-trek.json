@@ -1,0 +1,408 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:22:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Khopra Danda, Ghorepa Lake, Forests",
+      "order": 1,
+      "marker_x": 45,
+      "marker_y": 58,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "khopra-danda-trek",
+      "title": "Khopra Danda (Khopra Ridge) Trek",
+      "region_slug": "annapurna",
+      "duration": "7 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Pokhara",
+      "group_size": "1-15",
+      "max_altitude": "3660m",
+      "activity": "Trekking",
+      "short_description": "Remote ridge trek offering stunning panoramic views of Annapurna range, pristine alpine lakes, and authentic Gurung villages with fewer tourists than mainstream trails.",
+      "card_image_path": "trek_cards/khopra_danda_card.jpg",
+      "is_published": true,
+      "review_text": "Remote ridge trek with magical Ghorepa Lake and incredible mountain views. Perfect for trekkers seeking authentic experience away from crowds.",
+      "rating": 4.5,
+      "reviews": 67,
+      "hero_section": {
+        "title": "Khopra Danda Trek",
+        "subtitle": "Remote ridge trek with Ghorepa Lake and panoramic Annapurna views at 3,660m",
+        "image_path": "hero_images/khopra_danda_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "7",
+        "difficulty": "Moderate",
+        "location": "Annapurna Region - Khopra Ridge",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Khopra Danda Trek Overview",
+            "articles": [
+              "Khopra Danda (Khopra Ridge) Trek is a hidden gem offering authentic mountain experience away from the mainstream trekking circuit. This 7-day trek takes you through remote villages, pristine forests, and high alpine meadows to the scenic ridge of Khopra Danda at 3,660m. The trek culminates at the magical Ghorepa Lake - a pristine alpine lake surrounded by Annapurna peaks. The ridge offers panoramic 360-degree views of Annapurna I, II, III, Dhaulagiri, and Machhapuchhare. Unlike busy trekking routes, Khopra Danda remains relatively undiscovered, offering true wilderness experience with authentic Gurung village hospitality and minimal tourist infrastructure."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Remote undiscovered ridge trek - few tourists",
+                "icon": "peace",
+                "order": 0
+              },
+              {
+                "text": "Ghorepa Lake - magical alpine lake at 3,660m",
+                "icon": "lake",
+                "order": 1
+              },
+              {
+                "text": "Panoramic 360-degree mountain views",
+                "icon": "mountain",
+                "order": 2
+              },
+              {
+                "text": "Authentic Gurung villages with traditional hospitality",
+                "icon": "culture",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Pokhara from Kathmandu",
+          "description": "Drive or fly from Kathmandu to Pokhara. Rest and trek preparation.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "Travel day",
+          "distance": "200 km",
+          "meals": "Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 2,
+          "title": "Trek Pokhara to Lumle via Kaski",
+          "description": "Trek from Pokhara uphill through terraced farmlands and villages. Enter remote areas away from main trekking circuit.",
+          "accommodation": "Teahouse",
+          "altitude": "1450m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lumle",
+          "latitude": 28.3567,
+          "longitude": 83.7234
+        },
+        {
+          "day": 3,
+          "title": "Trek Lumle to Bhadare",
+          "description": "Trek through rhododendron forests and Gurung villages. Ascend steadily through pristine forest area.",
+          "accommodation": "Teahouse",
+          "altitude": "2100m",
+          "duration": "5-6 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bhadare",
+          "latitude": 28.3345,
+          "longitude": 83.7845
+        },
+        {
+          "day": 4,
+          "title": "Trek Bhadare to Khopra Danda",
+          "description": "Trek through alpine forests to Khopra Danda ridge. First panoramic views of Annapurna range.",
+          "accommodation": "Teahouse",
+          "altitude": "3660m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Khopra Danda",
+          "latitude": 28.3234,
+          "longitude": 83.8456
+        },
+        {
+          "day": 5,
+          "title": "Explore Khopra Danda & Trek to Ghorepa Lake",
+          "description": "Day trip from Khopra Danda to magical Ghorepa Lake (3,660m). Alpine lake surrounded by peaks. Return to Khopra Danda.",
+          "accommodation": "Teahouse",
+          "altitude": "3660m",
+          "duration": "5-6 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Khopra Danda",
+          "latitude": 28.3234,
+          "longitude": 83.8456
+        },
+        {
+          "day": 6,
+          "title": "Trek Khopra Danda to Lumle",
+          "description": "Descend through forests back to Lumle village.",
+          "accommodation": "Teahouse",
+          "altitude": "1450m",
+          "duration": "5-6 hours descent",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lumle",
+          "latitude": 28.3567,
+          "longitude": 83.7234
+        },
+        {
+          "day": 7,
+          "title": "Trek Lumle to Pokhara",
+          "description": "Descend to Pokhara. Trek completion celebration.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "4-5 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Ghorepa Lake - Magical Alpine Lake",
+          "description": "Visit pristine Ghorepa Lake at 3,660m surrounded by Annapurna peaks. Crystal-clear alpine waters reflect snow-capped mountains. Perfect for meditation and photography.",
+          "icon": "lake"
+        },
+        {
+          "title": "Khopra Danda Ridge - Panoramic Views",
+          "description": "Stand on Khopra Danda ridge with 360-degree panoramic views of Annapurna I, II, III, Dhaulagiri, and Machhapuchhare. Sunrise and sunset views are spectacular.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Remote Undiscovered Trek",
+          "description": "Trek remains relatively untouched by tourism. Authentic experience with minimal infrastructure and genuine local interactions.",
+          "icon": "peace"
+        },
+        {
+          "title": "Pristine Forest Ecosystem",
+          "description": "Trek through diverse ecosystems - from subtropical forests to alpine meadows. Rich biodiversity with wildlife and wildflower opportunities.",
+          "icon": "forest"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/khopra_danda.pdf",
+        "map_image_path": "trek_maps/khopra_danda_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced English-speaking trekking guide",
+          "Porter support for luggage",
+          "Annapurna Conservation Area permit",
+          "TIMS Card",
+          "All teahouse accommodations",
+          "All meals (breakfast, lunch, dinner)",
+          "Hotel in Pokhara",
+          "Transport from Pokhara to trailhead"
+        ],
+        "cost_exclusions": [
+          "Transport Kathmandu-Pokhara",
+          "Personal trekking gear",
+          "Travel and medical insurance",
+          "Tips for guide and porters",
+          "Extra beverages and snacks",
+          "Optional activities"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Khopra Danda Trek best March-May (spring) and September-November (autumn). Private departures available. Remote trek requires good physical fitness but moderate difficulty level."
+      },
+      "departures": [
+        {
+          "start": "2026-03-12",
+          "end": "2026-03-18",
+          "status": "Available",
+          "price": 745.0,
+          "seats_left": 6
+        },
+        {
+          "start": "2026-04-09",
+          "end": "2026-04-15",
+          "status": "Available",
+          "price": 745.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-09-19",
+          "end": "2026-09-25",
+          "status": "Available",
+          "price": 745.0,
+          "seats_left": 7
+        },
+        {
+          "start": "2026-10-16",
+          "end": "2026-10-22",
+          "status": "Available",
+          "price": 645.0,
+          "seats_left": 9
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 945.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 745.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 545.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendron blooms, stable weather"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Clear visibility, cooler temperatures"
+        }
+      ],
+      "booking_card": {
+        "base_price": 745.0,
+        "original_price": 945.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 21,
+        "badge_label": "Remote Ridge Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 945.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 745.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 545.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "About This Trek",
+          "icon": "info",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Why is Khopra Danda remote?",
+              "answer": "It's off the main trekking circuit. Fewer tourists know about it compared to Poon Hill. Teahouse infrastructure is minimal, keeping it authentic.",
+              "order": 1
+            },
+            {
+              "question": "What's special about Ghorepa Lake?",
+              "answer": "Pristine alpine lake at 3,660m with crystal-clear water reflecting surrounding peaks. Few trekkers visit. Perfect for meditation and photography.",
+              "order": 2
+            },
+            {
+              "question": "Is this trek difficult?",
+              "answer": "Moderate difficulty. Good fitness required but no technical climbing. Gradual ascent allows acclimatization.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/ghorepa_lake.jpg",
+          "title": "Ghorepa Lake",
+          "caption": "Pristine alpine lake surrounded by mountain peaks",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/khopra_ridge.jpg",
+          "title": "Khopra Danda Ridge",
+          "caption": "Panoramic 360-degree mountain views",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/khopra_forest.jpg",
+          "title": "Alpine Forests",
+          "caption": "Pristine forests during trek",
+          "order": 3
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "7-day trek to Khopra Danda ridge and Ghorepa Lake",
+        "background_image_path": "elevation_chart/khopra_danda.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Pokhara",
+            "elevation": 823,
+            "description": "Start",
+            "order": 1
+          },
+          {
+            "day": 4,
+            "title": "Khopra Danda",
+            "elevation": 3660,
+            "description": "Ridge and Ghorepa Lake",
+            "order": 2
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Why Choose Khopra Danda?",
+          "articles": [
+            "Remote undiscovered trek. Minimal tourism infrastructure means authentic experience with genuine local interactions.",
+            "Ghorepa Lake is a hidden gem - pristine alpine lake rarely visited by trekkers. Perfect for photography and meditation.",
+            "Panoramic ridge offers 360-degree mountain views. Sunrise and sunset from Khopra Danda are spectacular.",
+            "7 days provides good balance between physical challenge and mountain experience. Moderate difficulty suitable for fit trekkers."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Remote ridge trek away from crowds",
+              "icon": "peace",
+              "order": 0
+            },
+            {
+              "text": "Ghorepa Lake - hidden alpine treasure",
+              "icon": "lake",
+              "order": 1
+            },
+            {
+              "text": "Panoramic 360-degree mountain views",
+              "icon": "mountain",
+              "order": 2
+            },
+            {
+              "text": "Authentic experience with minimal crowds",
+              "icon": "culture",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}

@@ -1,0 +1,580 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-21T22:14:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Annapurna Circuit, Poon Hill",
+      "order": 1,
+      "marker_x": 45,
+      "marker_y": 58,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "annapurna-circuit-trek",
+      "title": "Annapurna Circuit Trek",
+      "region_slug": "annapurna",
+      "duration": "21 Days",
+      "trip_grade": "Challenging",
+      "start_point": "Besisahar",
+      "group_size": "1-15",
+      "max_altitude": "5416m",
+      "activity": "Trekking",
+      "short_description": "The world-famous trek circling Mt. Annapurna through diverse landscapes - tropical forests, rhododendron forests, high passes, and Himalayan villages with panoramic mountain vistas and cultural immersion.",
+      "card_image_path": "trek_cards/annapurna_circuit_card.jpg",
+      "is_published": true,
+      "review_text": "The most iconic trek in Nepal - complete circuit around Annapurna massif with diverse terrain, cultures, and ultimate high mountain experience.",
+      "rating": 4.8,
+      "reviews": 342,
+      "hero_section": {
+        "title": "Annapurna Circuit Trek",
+        "subtitle": "Complete circuit around Annapurna massif - World's most famous trek",
+        "image_path": "hero_images/annapurna_circuit_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "21",
+        "difficulty": "Challenging",
+        "location": "Annapurna Region",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Annapurna Circuit Trek Overview",
+            "articles": [
+              "The Annapurna Circuit is the world's most famous trekking route, circumnavigating the Annapurna Massif (8,091m). This 21-day challenging trek takes you through diverse ecosystems - from subtropical forests at 823m to the high Thorung La Pass at 5,416m. The circuit passes through authentic Gurung and Magar villages, ancient Buddhist monasteries, and pristine wilderness. You'll experience dramatic elevation changes, encounter local cultures, and witness stunning panoramic views of Annapurna I, II, III, IV, Dhaulagiri, Manaslu, and Machhapuchhare. The trek crosses three high passes (Thorung La being the highest) and includes stays in traditional teahouses throughout."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 5,416m (Thorung La Pass) - highest point",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Complete circuit around Annapurna Massif (8,091m)",
+                "icon": "achievement",
+                "order": 1
+              },
+              {
+                "text": "Best seasons: March-May (Spring), September-November (Autumn)",
+                "icon": "calendar",
+                "order": 2
+              },
+              {
+                "text": "Diverse landscapes - tropical to alpine ecosystems",
+                "icon": "landscape",
+                "order": 3
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Arrive Kathmandu",
+          "description": "Arrival in Kathmandu. Meet guide, prepare trekking equipment, acclimatization and cultural briefing.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Preparation day",
+          "distance": "Local",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 2,
+          "title": "Drive Kathmandu to Besisahar",
+          "description": "Drive 120 km east along Marsyangdi River to Besisahar - gateway to Annapurna Circuit.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "6 hours drive",
+          "distance": "120 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Besisahar",
+          "latitude": 28.1328,
+          "longitude": 84.7833
+        },
+        {
+          "day": 3,
+          "title": "Trek Besisahar to Bhulbhule",
+          "description": "Trek through agricultural lands and subtropical forests alongside Marsyangdi River valley.",
+          "accommodation": "Teahouse",
+          "altitude": "850m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bhulbhule",
+          "latitude": 28.1456,
+          "longitude": 84.8123
+        },
+        {
+          "day": 4,
+          "title": "Trek Bhulbhule to Bahundanda",
+          "description": "Trek through rhododendron forests and villages. Gradual ascent with river valley views.",
+          "accommodation": "Teahouse",
+          "altitude": "1310m",
+          "duration": "6-7 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Bahundanda",
+          "latitude": 28.1678,
+          "longitude": 84.8456
+        },
+        {
+          "day": 5,
+          "title": "Trek Bahundanda to Chame",
+          "description": "Trek through pine and oak forests. Enter restricted Annapurna Conservation Area. Marsyangdi River constantly in view.",
+          "accommodation": "Teahouse",
+          "altitude": "2040m",
+          "duration": "5-6 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chame",
+          "latitude": 28.2034,
+          "longitude": 84.8789
+        },
+        {
+          "day": 6,
+          "title": "Trek Chame to Pisang",
+          "description": "Ascend to high altitude. First mountain views. Everest and other peaks become visible on clear days.",
+          "accommodation": "Teahouse",
+          "altitude": "3200m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pisang",
+          "latitude": 28.2389,
+          "longitude": 84.9234
+        },
+        {
+          "day": 7,
+          "title": "Trek Pisang to Manang",
+          "description": "Trek to Manang village. High altitude acclimatization day at 3,540m. Explore ancient Tibetan monastery and village.",
+          "accommodation": "Teahouse",
+          "altitude": "3540m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Manang",
+          "latitude": 28.2678,
+          "longitude": 84.9645
+        },
+        {
+          "day": 8,
+          "title": "Acclimatization Day in Manang",
+          "description": "Rest day for acclimatization. Explore Manang village, Buddhist monastery, and surrounding high altitude landscapes.",
+          "accommodation": "Teahouse",
+          "altitude": "3540m",
+          "duration": "Full day exploration",
+          "distance": "Day walks",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Manang",
+          "latitude": 28.2678,
+          "longitude": 84.9645
+        },
+        {
+          "day": 9,
+          "title": "Trek Manang to Tanki Bhawan",
+          "description": "Ascend to higher altitude. Trek through sparse alpine vegetation with panoramic Himalayan views.",
+          "accommodation": "Teahouse",
+          "altitude": "3860m",
+          "duration": "4-5 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tanki Bhawan",
+          "latitude": 28.2834,
+          "longitude": 85.0012
+        },
+        {
+          "day": 10,
+          "title": "Trek Tanki Bhawan to Thorung High Camp",
+          "description": "Steep ascent to high camp at 4,570m. Prepare for Thorung La Pass crossing next day.",
+          "accommodation": "Teahouse",
+          "altitude": "4570m",
+          "duration": "4-5 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Thorung High Camp",
+          "latitude": 28.2945,
+          "longitude": 85.0234
+        },
+        {
+          "day": 11,
+          "title": "Trek Thorung High Camp to Thorung La to Muktinath",
+          "description": "Early morning crossing of Thorung La Pass (5,416m) - trek's most challenging section. Panoramic 360-degree views. Descend to sacred Muktinath Temple.",
+          "accommodation": "Teahouse",
+          "altitude": "3800m",
+          "duration": "7-8 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Muktinath",
+          "latitude": 28.8233,
+          "longitude": 83.85
+        },
+        {
+          "day": 12,
+          "title": "Trek Muktinath to Jomsom",
+          "description": "Descend to Jomsom. Trek through arid desert landscape unique to Lower Mustang.",
+          "accommodation": "Hotel",
+          "altitude": "2720m",
+          "duration": "5-6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Jomsom",
+          "latitude": 28.7833,
+          "longitude": 83.7367
+        },
+        {
+          "day": 13,
+          "title": "Trek Jomsom to Ghasa",
+          "description": "Trek along Kali Gandaki River gorge. Visit apple orchards and continue south.",
+          "accommodation": "Teahouse",
+          "altitude": "2010m",
+          "duration": "5-6 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghasa",
+          "latitude": 28.6912,
+          "longitude": 83.6234
+        },
+        {
+          "day": 14,
+          "title": "Trek Ghasa to Tatopani",
+          "description": "Trek through forests alongside Kali Gandaki River. Visit hot spring at Tatopani village.",
+          "accommodation": "Teahouse",
+          "altitude": "1190m",
+          "duration": "6-7 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tatopani",
+          "latitude": 28.5678,
+          "longitude": 83.4856
+        },
+        {
+          "day": 15,
+          "title": "Trek Tatopani to Ghorepani",
+          "description": "Steep ascent through rhododendron and oak forests to Ghorepani village. Poon Hill viewpoint nearby.",
+          "accommodation": "Teahouse",
+          "altitude": "2750m",
+          "duration": "6-7 hours",
+          "distance": "14 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghorepani",
+          "latitude": 28.4234,
+          "longitude": 83.4123
+        },
+        {
+          "day": 16,
+          "title": "Trek Ghorepani to Poon Hill to Ulleri",
+          "description": "Early morning hike to Poon Hill (3,210m) for sunrise over Annapurna and Dhaulagiri. Descend to Ulleri village.",
+          "accommodation": "Teahouse",
+          "altitude": "2000m",
+          "duration": "6-7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ulleri",
+          "latitude": 28.3456,
+          "longitude": 83.3945
+        },
+        {
+          "day": 17,
+          "title": "Trek Ulleri to Birethanti",
+          "description": "Descent through villages and forests to Birethanti village in Pokhara foothills.",
+          "accommodation": "Teahouse",
+          "altitude": "1050m",
+          "duration": "5-6 hours",
+          "distance": "13 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Birethanti",
+          "latitude": 28.2834,
+          "longitude": 83.3512
+        },
+        {
+          "day": 18,
+          "title": "Trek Birethanti to Pokhara",
+          "description": "Final trek to Pokhara. Drive from Birethanti to Pokhara city.",
+          "accommodation": "Hotel",
+          "altitude": "823m",
+          "duration": "3-4 hours trek + 1 hour drive",
+          "distance": "8 km trek + 25 km drive",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9863
+        },
+        {
+          "day": 19,
+          "title": "Drive Pokhara to Kathmandu",
+          "description": "Drive 200 km back to Kathmandu. Rest and celebration dinner.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "6-7 hours drive",
+          "distance": "200 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 20,
+          "title": "Rest Day in Kathmandu",
+          "description": "Rest in Kathmandu. Optional cultural tour or shopping.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Full day",
+          "distance": "Local",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        },
+        {
+          "day": 21,
+          "title": "Departure",
+          "description": "Transfer to airport for departure. Trek completion ceremony.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "Morning departure",
+          "distance": "Local",
+          "meals": "Breakfast",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.324
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Thorung La Pass - Iconic High Pass Crossing",
+          "description": "Cross the famous Thorung La Pass at 5,416m with 360-degree panoramic Himalayan views. This is the trek's most challenging and rewarding section.",
+          "icon": "achievement"
+        },
+        {
+          "title": "Complete Circuit Around Annapurna",
+          "description": "Circle the entire Annapurna Massif (8,091m) experiencing diverse ecosystems and cultures - truly the world's greatest trek.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Poon Hill Sunrise View",
+          "description": "Witness breathtaking sunrise over Annapurna, Dhaulagiri, and Machapuchare from Poon Hill (3,210m). Unforgettable mountain photography opportunity.",
+          "icon": "sunrise"
+        },
+        {
+          "title": "Diverse Landscapes & Cultures",
+          "description": "Trek through tropical forests, rhododendron forests, alpine zones, and desert landscapes. Meet Gurung, Magar, and Tibetan communities with unique traditions.",
+          "icon": "culture"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/annapurna_circuit.pdf",
+        "map_image_path": "trek_maps/annapurna_circuit_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced English-speaking trekking guide",
+          "Porter support for luggage",
+          "Annapurna Conservation Area Project (ACAP) permit",
+          "TIMS Card",
+          "All teahouse accommodations during trek",
+          "All meals during trek (breakfast, lunch, dinner)",
+          "Hotel in Kathmandu",
+          "Emergency support and first-aid assistance"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Nepal visa",
+          "Personal trekking gear",
+          "Travel and medical insurance",
+          "Tips for guide and porters",
+          "Extra beverages and snacks"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Annapurna Circuit is best March-May (Spring) and September-November (Autumn). All prices per person vary by group size. Private departures available on request."
+      },
+      "departures": [
+        {
+          "start": "2026-03-15",
+          "end": "2026-04-04",
+          "status": "Available",
+          "price": 1295.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-04-12",
+          "end": "2026-05-02",
+          "status": "Available",
+          "price": 1295.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-09-20",
+          "end": "2026-10-10",
+          "status": "Available",
+          "price": 1295.0,
+          "seats_left": 12
+        },
+        {
+          "start": "2026-10-18",
+          "end": "2026-11-07",
+          "status": "Available",
+          "price": 1195.0,
+          "seats_left": 9
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1495.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 1295.0
+        },
+        {
+          "label": "5-15 People",
+          "price": 1095.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Clear mountain views, rhododendron blooms"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Stable weather, crystal-clear visibility, peak season"
+        }
+      ],
+      "booking_card": {
+        "base_price": 1295.0,
+        "original_price": 1495.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": 13,
+        "badge_label": "World's Greatest Trek",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1495.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 1295.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 15,
+            "price": 1095.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "Trek Difficulty",
+          "icon": "hiking",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Annapurna Circuit suitable for beginners?",
+              "answer": "Annapurna Circuit is challenging. Previous trekking experience and good fitness essential. The Thorung La Pass crossing at 5,416m is demanding.",
+              "order": 1
+            },
+            {
+              "question": "What altitude experience required?",
+              "answer": "Minimum EBC trek or equivalent. The high altitude and pass crossing require excellent acclimatization skills.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/annapurna_circuit_1.jpg",
+          "title": "Thorung La Pass",
+          "caption": "Famous pass at 5,416m with panoramic views",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/annapurna_circuit_2.jpg",
+          "title": "Poon Hill Sunrise",
+          "caption": "Breathtaking sunrise over Annapurna range",
+          "order": 2
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "21-day complete circuit with high pass crossing",
+        "background_image_path": "elevation_chart/annapurna_circuit.jpg",
+        "points": [
+          {
+            "day": 2,
+            "title": "Besisahar",
+            "elevation": 823,
+            "description": "Trek start",
+            "order": 1
+          },
+          {
+            "day": 11,
+            "title": "Thorung La Pass",
+            "elevation": 5416,
+            "description": "Highest point",
+            "order": 2
+          },
+          {
+            "day": 18,
+            "title": "Pokhara",
+            "elevation": 823,
+            "description": "Trek end",
+            "order": 3
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Information",
+          "articles": [
+            "Annapurna Circuit is physically demanding with high altitude exposure. Proper acclimatization and slow pace are essential.",
+            "Thorung La Pass is sometimes blocked by snow in winter. Spring and autumn are recommended seasons.",
+            "Travel insurance with altitude coverage is mandatory."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Challenging high-altitude trek (5,416m pass)",
+              "icon": "warning",
+              "order": 0
+            },
+            {
+              "text": "Best seasons: March-May, September-November",
+              "icon": "calendar",
+              "order": 1
+            },
+            {
+              "text": "Complete circuit around Annapurna Massif",
+              "icon": "achievement",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}
