@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>EverTrek AI | Himalayan Guide</title>
+</head>
+<body class="bg-slate-900 h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden h-[80vh]">
+        <div class="bg-blue-700 p-4 text-white flex items-center gap-3">
+            <div class="bg-white/20 p-2 rounded-full"><i class="fas fa-mountain"></i></div>
+            <div>
+                <h1 class="font-bold">EverTrek AI Consultant</h1>
+                <p class="text-xs text-blue-100">Direct Database Access: 21 Treks Loaded</p>
+            </div>
+        </div>
+
+        <div id="chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50">
+            <div class="flex flex-col items-start">
+                <div class="bg-white border p-3 rounded-2xl rounded-bl-none shadow-sm max-w-[80%] text-gray-700">
+                    Namaste! 🙏 I am your EverTrek consultant. Ask me anything about our trekking routes, costs, or itineraries.
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-white border-t flex gap-2">
+            <input id="user-input" type="text" placeholder="Ask about Everest, Annapurna, or pricing..." 
+                   class="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="send()" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-all font-bold">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const input = document.getElementById('user-input');
+
+        async function send() {
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            // Add User Bubble
+            chatBox.innerHTML += `<div class="flex flex-col items-end"><div class="bg-blue-600 text-white p-3 rounded-2xl rounded-br-none shadow-md max-w-[80%]">${msg}</div></div>`;
+            input.value = "";
+            chatBox.scrollTo(0, chatBox.scrollHeight);
+
+            // Fetch AI Response
+            const res = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: msg})
+            });
+            const data = await res.json();
+
+            // Add AI Bubble
+            chatBox.innerHTML += `<div class="flex flex-col items-start"><div class="bg-white border p-3 rounded-2xl rounded-bl-none shadow-sm max-w-[80%] text-gray-800">${data.reply}</div></div>`;
+            chatBox.scrollTo(0, chatBox.scrollHeight);
+        }
+
+        // Allow Enter Key
+        input.addEventListener("keypress", (e) => { if(e.key === "Enter") send(); });
+    </script>
+</body>
+</html>

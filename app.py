@@ -1,109 +1,74 @@
-import streamlit as st
-import json
-import random
-import nltk
-import time
-import os
-from nltk.stem import WordNetLemmatizer
-# Import the fuzzy matching tool
-from rapidfuzz import process, fuzz
+from flask import Flask, render_template, request, jsonify
+from google import genai
+from google.genai import types
 
-# --- INITIAL SETUP ---
-lemmatizer = WordNetLemmatizer()
-nltk.download('punkt')
-nltk.download('punkt_tab')
-nltk.download('wordnet')
+app = Flask(__name__)
 
-# --- SMART LOADER ---
-all_treks = []
-found_files = []
-base_path = os.path.dirname(os.path.abspath(__file__))
+API_KEY = "AIzaSyAoBOPoYQEpdm1u_zlAqsDZTILZRB7EHiE"
+STORE_ID = "fileSearchStores/nepaltrekknowledgebase-k2gkrxzec5qa"
+client = genai.Client(api_key=API_KEY)
 
-for filename in os.listdir(base_path):
-    if filename.endswith('.json'):
-        try:
-            with open(os.path.join(base_path, filename), 'r', encoding='utf-8') as f:
-                file_data = json.load(f)
-                if 'treks' in file_data:
-                    all_treks.extend(file_data['treks'])
-                    found_files.append(filename)
-        except Exception as e:
-            st.error(f"Error loading {filename}: {e}")
+# This dictionary will store history for the current session
+# In a real app, you'd use a database, but this works for a project!
+sessions = {}
 
-def get_response(user_input):
-    if not all_treks:
-        return "Namaste! I don't see any trek data. Please check your JSON files."
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-    user_input = user_input.lower()
-    
-    # 1. SMART SEARCH FOR TREK TITLES
-    trek_options = {}
-    for trek in all_treks:
-        trek_options[trek['title'].lower()] = trek
-        trek_options[trek['slug'].replace("-", " ")] = trek
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_msg = data.get("message")
+    session_id = "default_user" # You can make this dynamic later
 
-    # FIX: Using partial_ratio (lowercase) for newer rapidfuzz versions
-    title_match = process.extractOne(user_input, trek_options.keys(), scorer=fuzz.partial_ratio)
-    
-    if title_match and title_match[1] > 80:
-        trek = trek_options[title_match[0]]
-        return f"**{trek['title']}**\n\n{trek['short_description']}\n\n" \
-               f"* **Duration:** {trek['duration']}\n" \
-               f"* **Max Altitude:** {trek['max_altitude']}\n" \
-               f"* **Difficulty:** {trek['trip_grade']}"
+    # Initialize history if new session
+    if session_id not in sessions:
+        sessions[session_id] = []
 
-    # 2. SEARCH INSIDE FAQS
-    all_questions = []
-    question_map = {}
-    for trek in all_treks:
-        for category in trek.get('faq_categories', []):
-            for qna in category.get('questions', []):
-                all_questions.append(qna['question'])
-                question_map[qna['question']] = qna['answer']
+    try:
+        # 1. Add User message to history
+        sessions[session_id].append(types.Content(role="user", parts=[types.Part(text=user_msg)]))
 
-    if all_questions:
-        # FIX: Using WRatio
-        faq_match = process.extractOne(user_input, all_questions, scorer=fuzz.WRatio)
-        if faq_match and faq_match[1] > 70:
-            return question_map[faq_match[0]]
+        # 2. Call Gemini with History + File Search
+    # --- CALL GEMINI WITH ENFORCED STRUCTURE ---
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=sessions[session_id],
+            config=types.GenerateContentConfig(
+                tools=[types.Tool(file_search=types.FileSearch(file_search_store_names=[STORE_ID]))],
+                system_instruction=(
+                    "You are EverTrek AI. Use ONLY the provided files. "
+                    "NEVER write long paragraphs. You must format your output as follows:\n\n"
+                    "## [Trek Name]\n"
+                    "**Quick Overview:** (1 sentence summary)\n\n"
+                    "### 📋 Key Details\n"
+                    "* **Duration:** \n"
+                    "* **Max Altitude:** \n"
+                    "* **Difficulty:** \n"
+                    "* **Best Season:** \n\n"
+                    "### 💰 Pricing (Per Person)\n"
+                    "| Group Size | Cost |\n"
+                    "| :--- | :--- |\n"
+                    "| 1 Person | ... |\n"
+                    "| 2-4 People | ... |\n\n"
+                    "### 🗓️ Upcoming Departures (2026)\n"
+                    "(List dates as bullet points with availability)\n\n"
+                    "Keep answers brief and visually clean."
+                ),
+                temperature=0.1
+            )
+        )
+        
+        bot_reply = response.text
+        
+        # 3. Add Bot reply to history so it remembers for the NEXT turn
+        sessions[session_id].append(types.Content(role="model", parts=[types.Part(text=bot_reply)]))
 
-    # 3. FALLBACKS
-    if any(word in user_input for word in ["cost", "price", "include", "exclusion"]):
-        trek = all_treks[0]
-        inc = "\n- ".join(trek['cost']['cost_inclusions'][:5])
-        return f"Our treks generally include:\n- {inc}\n\nWould you like the specific price for a certain date?"
+        return jsonify({"reply": bot_reply})
 
-    return "Namaste! I'm not quite sure. Try asking about 'Everest Panorama', 'difficulty', or 'what is included'."
+    except Exception as e:
+        return jsonify({"reply": f"Error: {str(e)}"})
 
-# --- THE WEB INTERFACE ---
-st.set_page_config(page_title="Nepal Trekking Expert", page_icon="🏔️")
-st.title("🏔️ Nepal Trekking Expert")
-
-# Sidebar
-st.sidebar.title("Bot Status")
-if found_files:
-    st.sidebar.success(f"✅ Loaded {len(all_treks)} Treks")
-    with st.sidebar.expander("See Data Files"):
-        for f in found_files:
-            st.sidebar.write(f"📄 {f}")
-else:
-    st.sidebar.error("❌ No Trek Data Found")
-
-# Chat History
-if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Namaste! 🙏 I am your Nepal Trekking expert. How can I help you plan your adventure today?"}]
-
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-if prompt := st.chat_input("Ask me about a trek..."):
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-    response = get_response(prompt)
-
-    with st.chat_message("assistant"):
-        st.markdown(response)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+if __name__ == '__main__':
+    app.run(debug=True)
