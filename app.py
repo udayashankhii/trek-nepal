@@ -1,11 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 from google import genai
 from google.genai import types
+import os
+from dotenv import load_dotenv
+from google import genai
+
+# This command finds the .env file and loads the variables
+load_dotenv() 
 
 app = Flask(__name__)
 
-API_KEY = ""
-STORE_ID = ""
+# Now we pull the key from the 'environment' instead of hardcoding it
+API_KEY = os.getenv("GEMINI_API_KEY")
+STORE_ID = "fileSearchStores/nepaltrekknowledgebase-6ebw7jg7x1oq"
 client = genai.Client(api_key=API_KEY)
 
 # This dictionary will store history for the current session
@@ -71,4 +78,4 @@ def chat():
         return jsonify({"reply": f"Error: {str(e)}"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) #force refresh lai rakhya vayena

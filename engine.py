@@ -3,9 +3,9 @@ from google.genai import types
 
 class TrekEngine:
     def __init__(self):
-        self.client = genai.Client(api_key="YOUR_ACTUAL_API_KEY")
+        self.client = genai.Client(api_key="GEMINI_API_KEY")
         # Use the STORE_ID printed from the setup script
-        self.store_id = "fileSearchStores/your-unique-id-here"
+        self.store_id = "fileSearchStores/nepaltrekknowledgebase-6ebw7jg7x1oq"
 
     def get_ai_reply(self, user_input):
         try:

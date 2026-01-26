@@ -1,10 +1,12 @@
 import os
 import time
 from google import genai
+from dotenv import load_dotenv
 
+load_dotenv()
 # CONFIG
-API_KEY = "YOUR_ACTUAL_API_KEY"
-client = genai.Client(api_key="")
+API_KEY = os.getenv("GEMINI_API_KEY")  # Replace with your actual API key or use environment variable
+client = genai.Client(api_key=API_KEY)
 
 def setup():
     try:
@@ -13,7 +15,7 @@ def setup():
         store = client.file_search_stores.create(
             config={'display_name': 'NepalTrekKnowledgeBase'}
         )
-        print(f"✅ Created Store: {store.name}")
+        print(f" Created Store: {store.name}")
         
         # 2. Upload all 21 JSON files
         data_path = './data'
@@ -36,7 +38,7 @@ def setup():
                     time.sleep(3)
                     op = client.operations.get(op) 
                 
-                print(f"   ✅ {filename} is ready!")
+                print(f"   {filename} is ready!")
                 
         print("\n DATABASE FULLY SYNCED!")
         print(f"USE THIS STORE_ID IN app.py: {store.name}")
