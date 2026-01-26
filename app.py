@@ -4,8 +4,8 @@ from google.genai import types
 
 app = Flask(__name__)
 
-API_KEY = "AIzaSyAoBOPoYQEpdm1u_zlAqsDZTILZRB7EHiE"
-STORE_ID = "fileSearchStores/nepaltrekknowledgebase-k2gkrxzec5qa"
+API_KEY = ""
+STORE_ID = ""
 client = genai.Client(api_key=API_KEY)
 
 # This dictionary will store history for the current session

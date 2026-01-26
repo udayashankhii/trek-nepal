@@ -4,7 +4,7 @@ from google import genai
 
 # CONFIG
 API_KEY = "YOUR_ACTUAL_API_KEY"
-client = genai.Client(api_key="AIzaSyAoBOPoYQEpdm1u_zlAqsDZTILZRB7EHiE")
+client = genai.Client(api_key="")
 
 def setup():
     try:
@@ -20,7 +20,7 @@ def setup():
         for filename in os.listdir(data_path):
             if filename.endswith('.json'):
                 file_path = os.path.join(data_path, filename)
-                print(f"📤 Uploading {filename}...")
+                print(f" Uploading {filename}...")
                 
                 # We catch the initial operation object
                 op = client.file_search_stores.upload_to_file_search_store(
