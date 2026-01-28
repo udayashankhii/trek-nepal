@@ -11,6 +11,7 @@ import {
 } from "../api/service/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
 
+import SEO from "../components/common/SEO";
 import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
 import HeroSection from "./trekkingpage/Hero.jsx";
 import TrekHighlights from "./trekkingpage/TrekHighlights.jsx";
@@ -104,12 +105,8 @@ export default function TrekDetailPage() {
   const trekName =
     trek?.hero?.title || trek?.trek?.title || trek?.title || "Trek Detail";
 
-  // Update document title
-  useEffect(() => {
-    if (trekName && trekName !== "Trek Detail") {
-      document.title = `${trekName} | Nepal Trekking`;
-    }
-  }, [trekName]);
+  // Document title handled by SEO component
+
 
   // ✅ Preload Google Maps when user clicks "View Map"
   useEffect(() => {
@@ -315,7 +312,7 @@ export default function TrekDetailPage() {
   // ✅ 1. FLATTEN departures_by_month structure
   let rawDepartures = [];
   if (costDatesData.departures_by_month && Array.isArray(costDatesData.departures_by_month)) {
-    rawDepartures = costDatesData.departures_by_month.flatMap(monthGroup => 
+    rawDepartures = costDatesData.departures_by_month.flatMap(monthGroup =>
       Array.isArray(monthGroup.departures) ? monthGroup.departures : []
     );
   } else if (costDatesData.departures && Array.isArray(costDatesData.departures)) {
@@ -355,7 +352,7 @@ export default function TrekDetailPage() {
   // ✅ 3. EXTRACT highlights
   let dateHighlights = [];
   if (costDatesData.highlights && Array.isArray(costDatesData.highlights)) {
-    dateHighlights = costDatesData.highlights.map(h => 
+    dateHighlights = costDatesData.highlights.map(h =>
       typeof h === "string" ? h : (h.highlight || h.text || "")
     ).filter(Boolean);
   } else if (trek.date_highlights && Array.isArray(trek.date_highlights)) {
@@ -388,8 +385,36 @@ export default function TrekDetailPage() {
     reviews: reviews.length,
   };
 
+
+  const seoSchema = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    "name": trekName,
+    "description": hero.subtitle || `Enjoy the ${trekName} in Nepal.`,
+    "image": hero.imageUrl || flat.card_image_url,
+    "touristType": [activity || "Trekking"],
+    "itinerary": flat.itinerary.map(day => ({
+      "@type": "ItineraryItem",
+      "name": `Day ${day.day}: ${day.title}`,
+      "description": day.description
+    })),
+    "offers": {
+      "@type": "Offer",
+      "price": bookingCardData?.base_price || bookingCard.base_price,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
+      <SEO
+        title={trekName}
+        description={hero.subtitle || `Book your ${trekName} with EverTrek Nepal. Verified reviews, best price guarantee, and expert guides.`}
+        image={hero.imageUrl || flat.card_image_url}
+        keywords={`${trekName}, trekking in nepal, ${region}, ${activity}`}
+        schema={seoSchema}
+      />
       <HeroSection
         title={hero.title || trekName}
         subtitle={hero.subtitle}

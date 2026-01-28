@@ -18,6 +18,7 @@ import SocialShareSidebar from "./SocialShare";
 import OptimizedImage from "./OptimizedImage";
 import ImageGallery from "./ImageGallery";
 import mockBlogPosts from "./mockPost";
+import SEO from "../components/common/SEO";
 
 // Reading Progress Component
 const ReadingProgress = React.memo(({ progress }) => (
@@ -269,8 +270,31 @@ const BlogDetail = ({
     );
   }
 
+  const seoSchema = enhancedBlog ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": enhancedBlog.title,
+    "image": [enhancedBlog.featuredImage?.url || enhancedBlog.image],
+    "datePublished": enhancedBlog.publishDate,
+    "author": {
+      "@type": "Organization",
+      "name": "EverTrek Nepal"
+    },
+    "description": enhancedBlog.metaDescription
+  } : null;
+
   return (
     <div className="min-h-screen bg-white">
+      {enhancedBlog && (
+        <SEO
+          title={enhancedBlog.title}
+          description={enhancedBlog.metaDescription || enhancedBlog.description}
+          image={enhancedBlog.featuredImage?.url || enhancedBlog.image}
+          keywords={`blog, nepal, ${enhancedBlog.category}, ${enhancedBlog.tags?.join(', ')}`}
+          type="article"
+          schema={seoSchema}
+        />
+      )}
       <ReadingProgress progress={state.readingProgress} />
 
       {/* Back Button */}
@@ -397,11 +421,10 @@ const BlogDetail = ({
 
                 <button
                   onClick={handleBookmarkToggle}
-                  className={`flex items-center justify-center gap-2 px-8 py-4 font-semibold rounded-full border-2 transition-all duration-300 transform hover:-translate-y-1 ${
-                    state.isBookmarked
-                      ? "bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-orange-300"
-                  }`}
+                  className={`flex items-center justify-center gap-2 px-8 py-4 font-semibold rounded-full border-2 transition-all duration-300 transform hover:-translate-y-1 ${state.isBookmarked
+                    ? "bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-orange-300"
+                    }`}
                 >
                   {state.isBookmarked ? (
                     <BookmarkSolidIcon className="w-5 h-5" />

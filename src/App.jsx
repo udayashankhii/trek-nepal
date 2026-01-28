@@ -8,6 +8,7 @@ import {
   Navigate,
   useLocation, // ← added
 } from "react-router-dom";
+import SEO from "./components/common/SEO";
 import Home from "./home/Home";
 
 import Footer from "./home/Footer";
@@ -80,6 +81,7 @@ import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
   <><BreadcrumbVisibilityProvider>
+    <SEO />
     {/* <ImprovedNavbar /> */}
     <Navbar />
     <main className="min-h-[calc(100vh-8rem)]">
@@ -196,13 +198,13 @@ const App = () => (
         <Route path="/everest/:trekId" element={<TrekDetailPage />} />
         <Route path="/about-us/*" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
-            <Route
+        <Route
           path="/customize-trip/success/:requestId"
           element={<CustomizeTripSuccess />}
         />
         <Route path="/trek-overview" element={<TrekOverview />} />
 
-            <Route
+        <Route
           path="/trek-booking"
           element={
             <RequireAuth>
@@ -219,7 +221,7 @@ const App = () => (
           }
         />
 
-            <Route
+        <Route
           path="/payment/success"
           element={
             <RequireAuth>
@@ -227,23 +229,23 @@ const App = () => (
             </RequireAuth>
           }
         />
-<Route
-  path="/bookings"
-  element={
-    <RequireAuth>
-      <MyBookingsPage />
-    </RequireAuth>
-  }
-/>
+        <Route
+          path="/bookings"
+          element={
+            <RequireAuth>
+              <MyBookingsPage />
+            </RequireAuth>
+          }
+        />
 
-<Route
-  path="/bookings/:bookingRef"
-  element={
-    <RequireAuth>
-      <BookingDetailPage />
-    </RequireAuth>
-  }
-/>
+        <Route
+          path="/bookings/:bookingRef"
+          element={
+            <RequireAuth>
+              <BookingDetailPage />
+            </RequireAuth>
+          }
+        />
 
 
         <Route path="/blog" element={<BlogPage />} />
