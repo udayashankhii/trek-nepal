@@ -258,6 +258,50 @@ class WeatherAnalyzer:
         if not self.month or not self.day:
             return None
         
+        # Create target date
+        try:
+            target_date = datetime(2026, self.month, self.day)
+        except ValueError:
+            return None
+        
+        # ===================================================================
+        # STRATEGY: Try OpenMeteo first, fall back to ML model
+        # ===================================================================
+        from openmeteo_service import OpenMeteoService
+        
+        # Check if date is within OpenMeteo forecast range (next 16 days)
+        days_ahead = (target_date - datetime.now()).days
+        
+        if OpenMeteoService.is_forecast_available(target_date):
+            print(f"\n🌐 Date is {days_ahead} days ahead - within OpenMeteo range!")
+            print(f"🌐 Trying OpenMeteo API for real-time forecast...")
+            
+            # For single day or ranges, try to get forecast
+            if self.is_range or "week" in self.user_message or "month" in self.user_message:
+                # Multi-day trek - get forecast for sampled days
+                forecasts = OpenMeteoService.get_multi_day_forecast(
+                    self.trek_name, target_date, self.trek_duration
+                )
+            else:
+                # Single day forecast
+                forecast = OpenMeteoService.get_forecast(self.trek_name, target_date)
+                forecasts = [forecast] if forecast else None
+            
+            # If OpenMeteo succeeded, use it!
+            if forecasts:
+                print(f"✅ SUCCESS! Using OpenMeteo real-time forecast")
+                return self._analyze_predictions(forecasts, source="OpenMeteo")
+            else:
+                print(f"❌ OpenMeteo API failed or returned no data")
+                print(f"⚠️  Reason: API might be unavailable, network issue, or invalid coordinates")
+                print(f"⚠️  Falling back to ML model with historical data...")
+        else:
+            print(f"\n📅 Date is {days_ahead} days ahead (beyond 16-day forecast range)")
+            print(f"🤖 Using ML model with historical weather patterns...")
+        
+        # ===================================================================
+        # FALLBACK: Use ML model with historical data
+        # ===================================================================
         predictions = []
         
         # For ranges or trek duration questions, check multiple days
@@ -265,7 +309,7 @@ class WeatherAnalyzer:
             # Sample every 3 days throughout the trek
             for i in range(0, self.trek_duration, 3):
                 try:
-                    current_date = datetime(2026, self.month, self.day) + timedelta(days=i)
+                    current_date = target_date + timedelta(days=i)
                     pred = get_trek_safety(self.trek_name, current_date.month, current_date.day)
                     if pred:
                         predictions.append(pred)
@@ -281,10 +325,10 @@ class WeatherAnalyzer:
         if not predictions:
             return None
         
-        # Analyze predictions
-        return self._analyze_predictions(predictions)
+        # Analyze predictions from ML model
+        return self._analyze_predictions(predictions, source="ML Model")
     
-    def _analyze_predictions(self, predictions):
+    def _analyze_predictions(self, predictions, source="ML Model"):
         """Analyze multiple day predictions and return summary"""
         safe_count = sum(1 for p in predictions if p['label'] == 'Safe')
         caution_count = sum(1 for p in predictions if p['label'] == 'Caution')
@@ -315,7 +359,8 @@ class WeatherAnalyzer:
             'total_days_checked': total,
             'avg_temp': round(avg_temp, 1),
             'avg_wind': round(avg_wind, 1),
-            'avg_rain': round(avg_rain, 1)
+            'avg_rain': round(avg_rain, 1),
+            'source': source  # Track data source
         }
     
     def get_context_for_gemini(self):
@@ -336,24 +381,29 @@ class WeatherAnalyzer:
         # Print debug info to terminal
         self._print_debug(result)
         
-        # Create context for Gemini
+        # Create context for Gemini with source indicator
+        data_type = "real-time forecast" if result['source'] == "OpenMeteo" else "historical ML predictions"
+        
         context = (
-            f"\n\n[CRITICAL SAFETY DATA]: For {result['trek_name']} starting around "
-            f"{result['month']}/{result['day']}, the Machine Learning model analyzed "
+            f"\n\n[CRITICAL SAFETY DATA from {result['source']}]: For {result['trek_name']} starting around "
+            f"{result['month']}/{result['day']}, the {data_type} analyzed "
             f"{result['total_days_checked']} days and predicts: {result['overall_status']}. "
             f"Breakdown: {result['safe_days']} Safe days, {result['caution_days']} Caution days, "
             f"{result['dangerous_days']} Dangerous days. "
             f"Average Stats: Temp {result['avg_temp']}°C, Wind {result['avg_wind']} km/h, "
             f"Rain {result['avg_rain']}mm. "
-            f"YOU MUST provide specific safety advice based on this {result['duration']}-day trek analysis.\n\n"
+            f"YOU MUST provide specific safety advice based on this {result['duration']}-day trek analysis. "
+            f"{'This is a REAL-TIME forecast from OpenMeteo.' if result['source'] == 'OpenMeteo' else 'This is based on historical weather patterns.'}\n\n"
         )
         
         return context
     
     def _print_debug(self, result):
         """Print debug information to terminal"""
+        source_emoji = "🌐" if result['source'] == "OpenMeteo" else "🤖"
+        
         print(f"\n{'='*60}")
-        print(f"🤖 DEBUG: XGBoost Predictions for {result['trek_name']}")
+        print(f"{source_emoji} {result['source']} Predictions for {result['trek_name']}")
         print(f"📅 Period: Starting {result['month']}/{result['day']} ({result['duration']} days)")
         print(f"🎯 Overall Status: {result['overall_status']}")
         print(f"📊 Breakdown: Safe={result['safe_days']}, Caution={result['caution_days']}, Dangerous={result['dangerous_days']}")

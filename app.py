@@ -5,16 +5,11 @@ import os
 from dotenv import load_dotenv
 from weather_analyzer import WeatherAnalyzer  # Import our new analyzer
 
-from flask_cors import CORS  # <--- The import
-
-app = Flask(__name__)
-CORS(app)
-
 load_dotenv() 
 app = Flask(__name__)
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-STORE_ID = "fileSearchStores/nepaltrekknowledgebase-cux8ql1m10u9"
+STORE_ID = "fileSearchStores/nepaltrekknowledgebase-6ebw7jg7x1oq"
 client = genai.Client(api_key=API_KEY)
 
 sessions = {}
@@ -53,11 +48,12 @@ def chat():
                 system_instruction=(
                     "You are EverTrek AI. Use ONLY the provided files.\n\n"
                     "PRIORITY: If [CRITICAL SAFETY DATA] is provided, you MUST use that specific "
-                    "Machine Learning prediction as your primary safety advice for that date.\n\n"
+                    "data as your primary safety advice for that date.\n\n"
                     + system_context +  # Inject weather data here
                     "RESPONSE RULES:\n"
                     "1. If asked about SAFETY/WEATHER for a specific date:\n"
-                    "   - Give ONLY the ML prediction: 'Status: [Safe/Moderate/Risky], Temp: X°C, Wind: Y km/h'\n"
+                    "   - ALWAYS mention the data source: 'Based on [real-time OpenMeteo forecast/historical ML predictions]'\n"
+                    "   - Give the status, temperature, and wind speed\n"
                     "   - Add 1-2 sentences of specific advice for that date\n"
                     "   - DO NOT include full trek details, pricing, or itinerary\n\n"
                     "2. If asked about PRICE/COST:\n"
