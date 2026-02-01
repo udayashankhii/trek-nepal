@@ -5,11 +5,16 @@ import os
 from dotenv import load_dotenv
 from weather_analyzer import WeatherAnalyzer  # Import our new analyzer
 
+from flask_cors import CORS  # <--- The import
+
+app = Flask(__name__)
+CORS(app)
+
 load_dotenv() 
 app = Flask(__name__)
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-STORE_ID = "fileSearchStores/nepaltrekknowledgebase-6ebw7jg7x1oq"
+STORE_ID = "fileSearchStores/nepaltrekknowledgebase-cux8ql1m10u9"
 client = genai.Client(api_key=API_KEY)
 
 sessions = {}

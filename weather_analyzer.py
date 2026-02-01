@@ -325,9 +325,12 @@ class WeatherAnalyzer:
         if not result:
             # If no ML data available, provide general seasonal guidance
             return (
-                f"\n\n[SEASONAL GUIDANCE]: While specific ML predictions are not available for {self.trek_name}, "
-                f"provide general trekking advice for {self.month}/{self.day} based on typical Himalayan "
-                f"weather patterns for this season. Mention that specific historical data is limited for this trek.\n\n"
+                f"\n\n[SEASONAL GUIDANCE]: Historical weather data is not available for "
+                f"{self.trek_name} on {self.month}/{self.day}. This could be due to limited "
+                f"data for this specific date or trek. Provide general trekking advice based on "
+                f"typical Himalayan weather patterns for this season. Be honest that you don't "
+                f"have specific ML predictions for this date, but offer helpful seasonal insights. "
+                f"DO NOT make up specific temperature or wind numbers.\n\n"
             )
         
         # Print debug info to terminal

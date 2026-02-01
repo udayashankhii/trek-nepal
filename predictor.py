@@ -2,16 +2,19 @@ import pandas as pd
 import joblib
 import os
 
-# Load the model and the data
-model = joblib.load('trek_safety_model.pkl')
-df = pd.read_csv('data/weatherData2.txt') 
+# ===================================================================
+# PERFORMANCE OPTIMIZATION: Load model and data ONCE when module loads
+# This prevents reloading the .pkl and .txt file on every prediction
+# ===================================================================
+MODEL = joblib.load('trek_safety_model.pkl')
+TREK_DATA = pd.read_csv('data/weatherData3.txt')
 
 def get_trek_safety(trek_name, month, day):
     """Get weather safety prediction for a specific trek and date"""
     # 1. Filter historical data for this specific day
-    history = df[(df['trek_name'] == trek_name) & 
-                 (df['month'] == month) & 
-                 (df['day'] == day)]
+    history = TREK_DATA[(TREK_DATA['trek_name'] == trek_name) & 
+                        (TREK_DATA['month'] == month) & 
+                        (TREK_DATA['day'] == day)]
     
     if history.empty:
         return None
@@ -27,8 +30,8 @@ def get_trek_safety(trek_name, month, day):
     # Create a single row of average data to feed the model
     input_data = history[features].mean().to_frame().T
     
-    # 3. Predict!
-    prediction = model.predict(input_data)[0]
+    # 3. Predict using the pre-loaded model!
+    prediction = MODEL.predict(input_data)[0]
     
     # Map the number back to text (updated labels)
     labels = {0: "Dangerous", 1: "Caution", 2: "Safe"}

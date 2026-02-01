@@ -1,0 +1,568 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-14T16:27:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Annapurna",
+      "slug": "annapurna",
+      "short_label": "Pokhara, Base Camp, Circuit",
+      "order": 2,
+      "marker_x": 52,
+      "marker_y": 48,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "annapurna-base-camp-trek",
+      "title": "Annapurna Base Camp Trek",
+      "region_slug": "annapurna",
+      "duration": "12 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Pokhara",
+      "group_size": "1-12",
+      "max_altitude": "4130m",
+      "activity": "Trekking",
+      "short_description": "Trek to the stunning amphitheatre of Annapurna Base Camp surrounded by towering peaks and magnificent mountain vistas.",
+      "card_image_path": "trek_cards/abc_card.jpg",
+      "is_published": true,
+      "review_text": "One of Nepal's most rewarding base camp treks with incredible Himalayan scenery.",
+      "rating": 5.0,
+      "reviews": 1,
+      "hero_section": {
+        "title": "Annapurna Base Camp Trek",
+        "subtitle": "Best Himalayan views in the Annapurna region",
+        "image_path": "hero_images/abc_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "12",
+        "difficulty": "Moderate",
+        "location": "Pokhara Annapurna",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Annapurna Base Camp",
+            "articles": [
+              "The Annapurna Base Camp Trek is a beautiful journey through rhododendron forests, terraced fields, and charming villages to reach the stunning amphitheatre of Annapurna Base Camp. This trek offers breathtaking 360-degree views of peaks including Annapurna I, Machapuchare, and Hiunchuli, making it one of Nepal's most rewarding trekking experiences."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 4,130m (Annapurna Base Camp)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March–May, Sept–Nov",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Perfect for moderate-level trekkers",
+                "icon": "hiking",
+                "order": 2
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Drive from Kathmandu to Pokhara",
+          "description": "Scenic drive through valleys and forests to Pokhara, the lake city of Nepal.",
+          "accommodation": "Hotel",
+          "altitude": "822m",
+          "duration": "6–7 hours",
+          "distance": "200 km",
+          "meals": "Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9856
+        },
+        {
+          "day": 2,
+          "title": "Drive to Naya Pul and trek to Birethanti",
+          "description": "Drive to Naya Pul and begin trekking through traditional villages and rice terraces.",
+          "accommodation": "Teahouse",
+          "altitude": "1010m",
+          "duration": "4–5 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Birethanti",
+          "latitude": 28.3333,
+          "longitude": 83.8667
+        },
+        {
+          "day": 3,
+          "title": "Trek to Ghandruk",
+          "description": "Trek uphill through beautiful forest and terraced landscape to reach the Gurung village of Ghandruk.",
+          "accommodation": "Teahouse",
+          "altitude": "1940m",
+          "duration": "5–6 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Ghandruk",
+          "latitude": 28.3667,
+          "longitude": 83.8333
+        },
+        {
+          "day": 4,
+          "title": "Trek to Chomes",
+          "description": "Gradual ascent through rhododendron and oak forests with stunning mountain views.",
+          "accommodation": "Teahouse",
+          "altitude": "2660m",
+          "duration": "5–6 hours",
+          "distance": "10 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Chomes",
+          "latitude": 28.4,
+          "longitude": 83.8
+        },
+        {
+          "day": 5,
+          "title": "Trek to Deorali and Tadapani",
+          "description": "Trek through dense rhododendron forests with glimpses of Machapuchare (Fishtail) peak.",
+          "accommodation": "Teahouse",
+          "altitude": "2630m",
+          "duration": "5–6 hours",
+          "distance": "9 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Tadapani",
+          "latitude": 28.4167,
+          "longitude": 83.75
+        },
+        {
+          "day": 6,
+          "title": "Trek to Bhandar and Sinuwa",
+          "description": "Trek through pine forests and open hillsides with panoramic views of the Annapurna range.",
+          "accommodation": "Teahouse",
+          "altitude": "2360m",
+          "duration": "5–6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Sinuwa",
+          "latitude": 28.4333,
+          "longitude": 83.7167
+        },
+        {
+          "day": 7,
+          "title": "Trek to Samrung and Deurali",
+          "description": "Trek through rhododendron and bamboo forests with Machapuchare getting closer.",
+          "accommodation": "Teahouse",
+          "altitude": "3200m",
+          "duration": "6–7 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Deurali",
+          "latitude": 28.45,
+          "longitude": 83.6667
+        },
+        {
+          "day": 8,
+          "title": "Trek to Machapuchare Base Camp",
+          "description": "Trek through alpine meadows to Machapuchare Base Camp with stunning early views of the base camp.",
+          "accommodation": "Teahouse",
+          "altitude": "3450m",
+          "duration": "4–5 hours",
+          "distance": "6 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Machapuchare Base Camp",
+          "latitude": 28.4667,
+          "longitude": 83.6667
+        },
+        {
+          "day": 9,
+          "title": "Trek to Annapurna Base Camp",
+          "description": "Final trek to the stunning amphitheatre of Annapurna Base Camp surrounded by magnificent peaks.",
+          "accommodation": "Teahouse",
+          "altitude": "4130m",
+          "duration": "3–4 hours",
+          "distance": "5 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Annapurna Base Camp",
+          "latitude": 28.5167,
+          "longitude": 83.6667
+        },
+        {
+          "day": 10,
+          "title": "Acclimatization day and sunrise hike",
+          "description": "Rest day at ABC with optional sunrise hike for better acclimatization and mountain photography.",
+          "accommodation": "Teahouse",
+          "altitude": "4130m",
+          "duration": "Rest day with optional hike",
+          "distance": "Optional 3–4 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Annapurna Base Camp",
+          "latitude": 28.5167,
+          "longitude": 83.6667
+        },
+        {
+          "day": 11,
+          "title": "Trek back to Machapuchare Base Camp and Samrung",
+          "description": "Begin descent with final views of Annapurna and surrounding peaks.",
+          "accommodation": "Teahouse",
+          "altitude": "3200m",
+          "duration": "5–6 hours",
+          "distance": "11 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Samrung",
+          "latitude": 28.4333,
+          "longitude": 83.75
+        },
+        {
+          "day": 12,
+          "title": "Trek to Pokhara and departure",
+          "description": "Trek down to Naya Pul and drive back to Pokhara or Kathmandu.",
+          "accommodation": "Hotel",
+          "altitude": "822m",
+          "duration": "6–7 hours",
+          "distance": "20 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Pokhara",
+          "latitude": 28.2096,
+          "longitude": 83.9856
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Annapurna Base Camp Amphitheatre",
+          "description": "360-degree panoramic views of Annapurna I, Annapurna South, Machapuchare, and Hiunchuli.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Machapuchare (Fishtail)",
+          "description": "Iconic sacred peak with stunning reflection views throughout the trek.",
+          "icon": "peak"
+        },
+        {
+          "title": "Rhododendron Forests",
+          "description": "Beautiful wildflower forests, especially vibrant during spring season.",
+          "icon": "forest"
+        },
+        {
+          "title": "Traditional Villages",
+          "description": "Experience authentic Gurung culture and hospitality in remote villages.",
+          "icon": "village"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/abc.pdf",
+        "map_image_path": "trek_maps/abc_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced trekking guide and porter",
+          "TIMS card and Annapurna Conservation Area permit",
+          "Teahouse accommodation during trek",
+          "All meals (breakfast, lunch, dinner) during trek",
+          "Ground transportation to/from Pokhara"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Extra expenses (drinks, snacks, tips, laundry)"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Choose your preferred dates and group size. Prices vary seasonally."
+      },
+      "departures": [
+        {
+          "start": "2026-03-10",
+          "end": "2026-03-21",
+          "status": "Available",
+          "price": 1299.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-04-15",
+          "end": "2026-04-26",
+          "status": "Available",
+          "price": 1349.0,
+          "seats_left": 5
+        },
+        {
+          "start": "2026-09-20",
+          "end": "2026-10-01",
+          "status": "Available",
+          "price": 1349.0,
+          "seats_left": 7
+        },
+        {
+          "start": "2026-10-10",
+          "end": "2026-10-21",
+          "status": "Available",
+          "price": 1299.0,
+          "seats_left": 10
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1399.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 1299.0
+        },
+        {
+          "label": "5-12 People",
+          "price": 1199.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Best visibility in March, April, October, November"
+        },
+        {
+          "highlight": "Spring offers rhododendron flowers; Autumn gives clear skies"
+        },
+        {
+          "highlight": "Avoid monsoon (June-August) and winter (December-February)"
+        }
+      ],
+      "booking_card": {
+        "base_price": 1299.0,
+        "original_price": 1499.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Popular",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1399.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 1299.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 12,
+            "price": 1199.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "General",
+          "icon": "general",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Annapurna Base Camp Trek suitable for beginners?",
+              "answer": "Yes, it is suitable for people with good fitness levels. The trek is graded moderate and doesn't require technical climbing skills.",
+              "order": 1
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Spring (March-May) and Autumn (September-November) offer the best weather, visibility, and conditions.",
+              "order": 2
+            },
+            {
+              "question": "How physically fit do I need to be?",
+              "answer": "You need good overall fitness with regular walking or hiking experience. The trek involves 5-7 hours of walking daily.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Altitude & Safety",
+          "icon": "safety",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What about altitude sickness?",
+              "answer": "The maximum altitude is 4,130m, which is moderate. Proper acclimatization, hydration, and gradual ascent help prevent altitude sickness.",
+              "order": 1
+            },
+            {
+              "question": "Do I need travel insurance?",
+              "answer": "Yes, comprehensive travel insurance covering trekking up to 4,500m and medical evacuation is recommended.",
+              "order": 2
+            },
+            {
+              "question": "What should I pack?",
+              "answer": "Pack warm clothing, rain gear, good trekking boots, sun protection, and a sleeping bag. Detailed packing list provided upon booking.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Accommodation & Meals",
+          "icon": "accommodation",
+          "order": 3,
+          "questions": [
+            {
+              "question": "What type of accommodation will we have?",
+              "answer": "Comfortable teahouses with basic amenities. Most have heating stoves, toilets, and hot water buckets.",
+              "order": 1
+            },
+            {
+              "question": "What are the meals like?",
+              "answer": "All meals are provided during the trek, including local Nepali cuisine and international options. Special dietary requirements can be accommodated with advance notice.",
+              "order": 2
+            },
+            {
+              "question": "Are there shower facilities?",
+              "answer": "Most teahouses have basic hot shower facilities. In remote areas, hot water buckets are provided.",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/abc_base_camp.jpg",
+          "title": "Annapurna Base Camp",
+          "caption": "Stunning amphitheatre of peaks at the base camp.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/abc_machapuchare.jpg",
+          "title": "Machapuchare Peak",
+          "caption": "Sacred fishtail peak with pristine snow.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/abc_rhododendron.jpg",
+          "title": "Rhododendron Forests",
+          "caption": "Colorful rhododendron flowers in spring.",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/abc_village.jpg",
+          "title": "Traditional Gurung Village",
+          "caption": "Authentic village life and culture.",
+          "order": 4
+        },
+        {
+          "image_path": "trek_gallery/abc_sunrise.jpg",
+          "title": "Sunrise at Base Camp",
+          "caption": "Golden hour views of the Annapurna range.",
+          "order": 5
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression throughout the trek",
+        "background_image_path": "elevation_chart/abc.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Pokhara",
+            "elevation": 822,
+            "description": "Starting point",
+            "order": 1
+          },
+          {
+            "day": 3,
+            "title": "Ghandruk",
+            "elevation": 1940,
+            "description": "Traditional Gurung village",
+            "order": 2
+          },
+          {
+            "day": 5,
+            "title": "Tadapani",
+            "elevation": 2630,
+            "description": "Mountain views start",
+            "order": 3
+          },
+          {
+            "day": 7,
+            "title": "Deurali",
+            "elevation": 3200,
+            "description": "Alpine zone",
+            "order": 4
+          },
+          {
+            "day": 8,
+            "title": "Machapuchare Base Camp",
+            "elevation": 3450,
+            "description": "Gateway to ABC",
+            "order": 5
+          },
+          {
+            "day": 9,
+            "title": "Annapurna Base Camp",
+            "elevation": 4130,
+            "description": "Highest point",
+            "order": 6
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Carry warm layers and rain protection as weather can change rapidly in the mountains.",
+            "The trek involves daily walks of 5-7 hours at increasing altitude. Proper pacing and hydration are essential.",
+            "Teahouses operate on a first-come, first-served basis during peak seasons. Early booking is recommended.",
+            "Mobile network coverage is intermittent in higher regions."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Altitude awareness is important",
+              "icon": "info",
+              "order": 1
+            },
+            {
+              "text": "Acclimatization day at ABC recommended",
+              "icon": "rest",
+              "order": 2
+            },
+            {
+              "text": "Permits included in package price",
+              "icon": "check",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": [
+        {
+          "slug": "tilicho-lake-trek",
+          "title": "Tilicho Lake Trek",
+          "image_path": "trek_cards/tilicho_lake_card.jpg",
+          "days": 14,
+          "rating": 4.7,
+          "reviews": 0,
+          "price": "1399.00",
+          "badge": "ADVENTURE",
+          "link": "/treks/tilicho-lake-trek"
+        },
+        {
+          "slug": "annapurna-circuit-trek",
+          "title": "Annapurna Circuit Trek",
+          "image_path": "trek_cards/annapurna_circuit_card.jpg",
+          "days": 16,
+          "rating": 4.8,
+          "reviews": 2,
+          "price": "1299.00",
+          "badge": "CLASSIC",
+          "link": "/treks/annapurna-circuit-trek"
+        }
+      ]
+    }
+  ]
+}

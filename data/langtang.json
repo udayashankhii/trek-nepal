@@ -1,0 +1,519 @@
+{
+  "meta": {
+    "schema_version": "2.0",
+    "format": "trek_import",
+    "mode": "replace_nested",
+    "generated_by": "admin_panel",
+    "generated_at": "2026-01-14T16:48:00+05:45",
+    "generator_version": "1.0.0"
+  },
+  "regions": [
+    {
+      "name": "Langtang",
+      "slug": "langtang",
+      "short_label": "Kathmandu, Langtang Valley, Gosainkund",
+      "order": 3,
+      "marker_x": 45,
+      "marker_y": 55,
+      "cover_path": ""
+    }
+  ],
+  "treks": [
+    {
+      "slug": "langtang-valley-trek",
+      "title": "Langtang Valley Trek",
+      "region_slug": "langtang",
+      "duration": "8 Days",
+      "trip_grade": "Moderate",
+      "start_point": "Syabrubesi",
+      "group_size": "1-12",
+      "max_altitude": "4984m",
+      "activity": "Trekking",
+      "short_description": "Trek through the pristine Langtang Valley to Kyanjin Gompa, summiting Tserko Ri for panoramic Himalayan views including Langtang Lirung and Tibet's snow peaks.",
+      "card_image_path": "trek_cards/langtang_valley_card.jpg",
+      "is_published": true,
+      "review_text": "A scenic and accessible trek through Tibetan-influenced villages with stunning mountain vistas and authentic cultural experiences.",
+      "rating": 4.8,
+      "reviews": 0,
+      "hero_section": {
+        "title": "Langtang Valley Trek",
+        "subtitle": "Scenic trek through Tibetan culture and high peaks",
+        "image_path": "hero_images/langtang_valley_hero.png",
+        "season": "Spring & Autumn",
+        "duration": "8",
+        "difficulty": "Moderate",
+        "location": "Langtang Nuwakot",
+        "cta_label": "Book This Trek",
+        "cta_link": ""
+      },
+      "overview": {
+        "sections": [
+          {
+            "heading": "Trek Overview of Langtang Valley Trek",
+            "articles": [
+              "The Langtang Valley Trek is one of Nepal's most accessible high-altitude treks, perfect for those seeking Himalayan grandeur without extreme difficulty. This 8-day journey takes you from subtropical forests near Kathmandu through traditional Tamang and Tibetan villages to the remote Kyanjin Gompa at 3,870m. Summit Tserko Ri at 4,984m for breathtaking 360-degree views of the Langtang Himalayan range, with clear views of Langtang Lirung, Gang Chhenpo, and distant peaks in Tibet."
+            ],
+            "order": 0,
+            "bullets": [
+              {
+                "text": "Max altitude 4,984m (Tserko Ri Summit)",
+                "icon": "mountain",
+                "order": 0
+              },
+              {
+                "text": "Best seasons: March–May, Sept–Nov",
+                "icon": "calendar",
+                "order": 1
+              },
+              {
+                "text": "Perfect for moderate-level trekkers",
+                "icon": "hiking",
+                "order": 2
+              }
+            ]
+          }
+        ]
+      },
+      "itinerary_days": [
+        {
+          "day": 1,
+          "title": "Drive from Kathmandu to Syabrubesi",
+          "description": "Drive through scenic foothills and villages to reach Syabrubesi, the gateway to Langtang Valley. Journey time about 7 hours.",
+          "accommodation": "Hotel",
+          "altitude": "1503m",
+          "duration": "6–7 hours",
+          "distance": "120 km",
+          "meals": "Dinner",
+          "place_name": "Syabrubesi",
+          "latitude": 28.1333,
+          "longitude": 85.2667
+        },
+        {
+          "day": 2,
+          "title": "Trek to Sherpagaon",
+          "description": "Begin trekking through lush forests and Tamang villages. Gradual ascent with views of surrounding hills.",
+          "accommodation": "Teahouse",
+          "altitude": "2563m",
+          "duration": "6–7 hours",
+          "distance": "15 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Sherpagaon",
+          "latitude": 28.1667,
+          "longitude": 85.2833
+        },
+        {
+          "day": 3,
+          "title": "Trek to Langtang Village",
+          "description": "Trek through rhododendron and conifer forests. Enter the main Langtang Valley with first views of Langtang Lirung.",
+          "accommodation": "Teahouse",
+          "altitude": "3430m",
+          "duration": "5–6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Langtang Village",
+          "latitude": 28.2167,
+          "longitude": 85.2667
+        },
+        {
+          "day": 4,
+          "title": "Trek to Kyanjin Gompa",
+          "description": "Trek through open valley with stunning views of Langtang Lirung, Langtang II, and Gang Chhenpo. Reach the remote Kyanjin Gompa monastery.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m",
+          "duration": "4–5 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2500,
+          "longitude": 85.2833
+        },
+        {
+          "day": 5,
+          "title": "Hike to Tserko Ri Summit",
+          "description": "Early morning ascent to Tserko Ri (4,984m) for 360-degree panoramic views of the Langtang range and Tibet. Return to Kyanjin Gompa.",
+          "accommodation": "Teahouse",
+          "altitude": "4984m",
+          "duration": "5–6 hours",
+          "distance": "8 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2500,
+          "longitude": 85.2833
+        },
+        {
+          "day": 6,
+          "title": "Rest day at Kyanjin Gompa",
+          "description": "Acclimatization day with optional activities: visit local cheese factory, hike to Kyanjin Ri (4,773m), or explore the valley.",
+          "accommodation": "Teahouse",
+          "altitude": "3870m",
+          "duration": "Rest day with optional hikes",
+          "distance": "Optional 4–5 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kyanjin Gompa",
+          "latitude": 28.2500,
+          "longitude": 85.2833
+        },
+        {
+          "day": 7,
+          "title": "Trek to Lama Hotel",
+          "description": "Descend through forests back to Lama Hotel with views of the valley behind.",
+          "accommodation": "Teahouse",
+          "altitude": "2470m",
+          "duration": "5–6 hours",
+          "distance": "12 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Lama Hotel",
+          "latitude": 28.1500,
+          "longitude": 85.3333
+        },
+        {
+          "day": 8,
+          "title": "Trek to Syabrubesi and drive to Kathmandu",
+          "description": "Final trek to Syabrubesi then drive back to Kathmandu. Arrive in evening.",
+          "accommodation": "Hotel",
+          "altitude": "1340m",
+          "duration": "6–7 hours",
+          "distance": "120 km",
+          "meals": "Breakfast, Lunch, Dinner",
+          "place_name": "Kathmandu",
+          "latitude": 27.7172,
+          "longitude": 85.3240
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Tserko Ri Summit",
+          "description": "360-degree panoramic views of Langtang Himalayan range at 4,984m.",
+          "icon": "peak"
+        },
+        {
+          "title": "Langtang Lirung",
+          "description": "Stunning 7,246m sacred peak dominating the valley landscape.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Tibetan Culture",
+          "description": "Experience authentic Tibetan-influenced villages, monasteries, and yak herding traditions.",
+          "icon": "village"
+        },
+        {
+          "title": "Kyanjin Gompa Monastery",
+          "description": "Ancient Buddhist monastery and cheese factory in the remote valley.",
+          "icon": "temple"
+        },
+        {
+          "title": "Alpine Wildlife",
+          "description": "Spot Himalayan blue sheep, musk deer, and red-billed choughs.",
+          "icon": "wildlife"
+        }
+      ],
+      "action": {
+        "pdf_path": "trek_pdfs/langtang_valley.pdf",
+        "map_image_path": "trek_maps/langtang_valley_map.jpg"
+      },
+      "cost": {
+        "title": "Cost Includes / Excludes",
+        "cost_inclusions": [
+          "Experienced trekking guide",
+          "Porter support (1 porter per 2 trekkers)",
+          "TIMS card and Langtang National Park permit",
+          "Teahouse accommodation during trek",
+          "All meals (breakfast, lunch, dinner) during trek",
+          "Ground transportation Kathmandu-Syabrubesi-Kathmandu"
+        ],
+        "cost_exclusions": [
+          "International flights",
+          "Personal trekking gear and equipment",
+          "Travel and medical insurance",
+          "Extra expenses (drinks, snacks, tips, souvenirs)",
+          "Cheese tasting at Kyanjin (optional, paid separately)"
+        ]
+      },
+      "cost_and_date_section": {
+        "intro_text": "Choose your preferred dates. This accessible trek operates year-round but spring and autumn offer the best weather and visibility."
+      },
+      "departures": [
+        {
+          "start": "2026-03-08",
+          "end": "2026-03-15",
+          "status": "Available",
+          "price": 999.0,
+          "seats_left": 10
+        },
+        {
+          "start": "2026-04-12",
+          "end": "2026-04-19",
+          "status": "Available",
+          "price": 1049.0,
+          "seats_left": 8
+        },
+        {
+          "start": "2026-09-15",
+          "end": "2026-09-22",
+          "status": "Available",
+          "price": 1049.0,
+          "seats_left": 9
+        },
+        {
+          "start": "2026-10-12",
+          "end": "2026-10-19",
+          "status": "Available",
+          "price": 999.0,
+          "seats_left": 12
+        }
+      ],
+      "group_prices": [
+        {
+          "label": "1 Person",
+          "price": 1149.0
+        },
+        {
+          "label": "2-4 People",
+          "price": 999.0
+        },
+        {
+          "label": "5-12 People",
+          "price": 899.0
+        }
+      ],
+      "date_highlights": [
+        {
+          "highlight": "Spring (March-May): Rhododendrons blooming, clear mountain views"
+        },
+        {
+          "highlight": "Summer (June-Aug): Green valleys, occasional rain, fewer crowds"
+        },
+        {
+          "highlight": "Autumn (Sept-Nov): Crystal-clear visibility, stable weather, best for summiting Tserko Ri"
+        },
+        {
+          "highlight": "Winter (Dec-Feb): Snow possible at high elevations, fewer trekkers, budget prices"
+        }
+      ],
+      "booking_card": {
+        "base_price": 999.0,
+        "original_price": 1199.0,
+        "pricing_mode": "original_and_save",
+        "savings_percentage": null,
+        "badge_label": "Family Friendly",
+        "secure_payment": true,
+        "no_hidden_fees": true,
+        "free_cancellation": true,
+        "support_24_7": true,
+        "trusted_reviews": true,
+        "group_prices": [
+          {
+            "min_size": 1,
+            "max_size": 1,
+            "price": 1149.0
+          },
+          {
+            "min_size": 2,
+            "max_size": 4,
+            "price": 999.0
+          },
+          {
+            "min_size": 5,
+            "max_size": 12,
+            "price": 899.0
+          }
+        ]
+      },
+      "faq_categories": [
+        {
+          "title": "General",
+          "icon": "general",
+          "order": 1,
+          "questions": [
+            {
+              "question": "Is Langtang Valley Trek suitable for beginners?",
+              "answer": "Yes, it is ideal for trekkers with moderate fitness. The trek is graded moderate and offers a good introduction to high-altitude trekking without extreme technical difficulty.",
+              "order": 1
+            },
+            {
+              "question": "What is the best time to trek?",
+              "answer": "Spring (March-May) and Autumn (September-November) are best. Spring offers blooming rhododendrons; autumn provides crystal-clear visibility. Summer is green but wetter; winter is cold but less crowded.",
+              "order": 2
+            },
+            {
+              "question": "How accessible is the trek from Kathmandu?",
+              "answer": "Very accessible! Only 7 hours drive from Kathmandu to Syabrubesi. Perfect for those with limited time who want high-altitude trekking near the capital.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Altitude & Culture",
+          "icon": "safety",
+          "order": 2,
+          "questions": [
+            {
+              "question": "What about altitude sickness?",
+              "answer": "The maximum altitude is 4,984m on Tserko Ri. Altitude sickness is possible but manageable with proper acclimatization, gradual ascent, and hydration. Acclimatization days included.",
+              "order": 1
+            },
+            {
+              "question": "What is the culture like?",
+              "answer": "The Langtang Valley is home to Tamang and Tibetan communities. You'll experience traditional yak herding, Buddhist monasteries, local cheese production, and authentic mountain hospitality.",
+              "order": 2
+            },
+            {
+              "question": "Can I visit the Kyanjin cheese factory?",
+              "answer": "Yes! Kyanjin Gompa has a traditional yak cheese and butter factory. During your rest day, you can visit and sample local products (small fee charged separately).",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Practical Information",
+          "icon": "accommodation",
+          "order": 3,
+          "questions": [
+            {
+              "question": "What type of accommodation will we have?",
+              "answer": "Simple but comfortable teahouses with basic amenities. Most have heating stoves (essential at high altitude), toilets, and hot water buckets.",
+              "order": 1
+            },
+            {
+              "question": "What are the meals like?",
+              "answer": "All meals are provided including local Nepali cuisine and international options. Dal bhat (rice and lentils), momos, noodles, and eggs are common. Special dietary requirements can be accommodated.",
+              "order": 2
+            },
+            {
+              "question": "How much cash do I need to bring?",
+              "answer": "The trek price covers all meals and accommodation. Bring extra cash for tips, optional activities, and drinks. ATMs are available only in Kathmandu and Syabrubesi. Teahouses on the trail don't accept cards.",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "title": "Wildlife & Nature",
+          "icon": "wildlife",
+          "order": 4,
+          "questions": [
+            {
+              "question": "What wildlife can I see?",
+              "answer": "Himalayan blue sheep (bharal), musk deer, red-billed choughs, and occasionally snow leopards (rare). The valley is part of Langtang National Park with diverse alpine ecosystems.",
+              "order": 1
+            },
+            {
+              "question": "What vegetation will I see?",
+              "answer": "Lower regions: subtropical forests and rhododendrons. Mid-altitude: conifer and bamboo forests. Upper regions: alpine meadows and sparse vegetation. Spring brings colorful wildflowers.",
+              "order": 2
+            }
+          ]
+        }
+      ],
+      "gallery_images": [
+        {
+          "image_path": "trek_gallery/langtang_tserko_ri.jpg",
+          "title": "Tserko Ri Summit",
+          "caption": "360-degree panoramic views from the highest point at 4,984m.",
+          "order": 1
+        },
+        {
+          "image_path": "trek_gallery/langtang_lirung.jpg",
+          "title": "Langtang Lirung Peak",
+          "caption": "Majestic 7,246m peak dominating the valley.",
+          "order": 2
+        },
+        {
+          "image_path": "trek_gallery/langtang_kyanjin_gompa.jpg",
+          "title": "Kyanjin Gompa Monastery",
+          "caption": "Ancient Buddhist monastery with cheese factory.",
+          "order": 3
+        },
+        {
+          "image_path": "trek_gallery/langtang_village.jpg",
+          "title": "Langtang Village",
+          "caption": "Traditional Tibetan-style stone houses with mountain backdrop.",
+          "order": 4
+        },
+        {
+          "image_path": "trek_gallery/langtang_yak_herds.jpg",
+          "title": "Yak Herding",
+          "caption": "Local yaks grazing in alpine meadows.",
+          "order": 5
+        }
+      ],
+      "elevation_chart": {
+        "title": "Elevation Profile",
+        "subtitle": "Altitude progression throughout the trek",
+        "background_image_path": "elevation_chart/langtang_valley.jpg",
+        "points": [
+          {
+            "day": 1,
+            "title": "Syabrubesi",
+            "elevation": 1503,
+            "description": "Starting point from Kathmandu",
+            "order": 1
+          },
+          {
+            "day": 2,
+            "title": "Sherpagaon",
+            "elevation": 2563,
+            "description": "First day trek",
+            "order": 2
+          },
+          {
+            "day": 3,
+            "title": "Langtang Village",
+            "elevation": 3430,
+            "description": "Enter main valley",
+            "order": 3
+          },
+          {
+            "day": 4,
+            "title": "Kyanjin Gompa",
+            "elevation": 3870,
+            "description": "Valley hub with monastery",
+            "order": 4
+          },
+          {
+            "day": 5,
+            "title": "Tserko Ri Summit",
+            "elevation": 4984,
+            "description": "Highest point with best views",
+            "order": 5
+          }
+        ]
+      },
+      "additional_info_sections": [
+        {
+          "heading": "Important Notes",
+          "articles": [
+            "Carry warm layers and rain protection. Weather can change rapidly in the mountains, especially in monsoon and winter.",
+            "This trek is very accessible - perfect for first-time high-altitude trekkers and families with teenage children.",
+            "The quick drive from Kathmandu means less acclimatization time compared to other treks. Take it easy on the first day.",
+            "Langtang was significantly impacted by the 2015 earthquake but has recovered well. Local tourism supports community rebuilding.",
+            "Mobile network is intermittent. Plan communication accordingly."
+          ],
+          "order": 0,
+          "bullets": [
+            {
+              "text": "Closest high-altitude trek to Kathmandu",
+              "icon": "location",
+              "order": 0
+            },
+            {
+              "text": "Rest day at Kyanjin Gompa for acclimatization",
+              "icon": "rest",
+              "order": 1
+            },
+            {
+              "text": "Permits and guide included in package price",
+              "icon": "check",
+              "order": 2
+            },
+            {
+              "text": "Travel insurance recommended (not mandatory)",
+              "icon": "info",
+              "order": 3
+            }
+          ]
+        }
+      ],
+      "similar_treks": []
+    }
+  ]
+}
