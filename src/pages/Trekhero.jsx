@@ -8,10 +8,11 @@ export default function TrekHero({
   backgroundImage,
   ctaText,
   ctaLink,
+  heightClass = "min-h-screen",
 }) {
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center text-white bg-cover bg-center bg-no-repeat"
+      className={`relative ${heightClass} flex items-center justify-center text-white bg-center bg-no-repeat`}
       style={{
         backgroundImage: `url("${backgroundImage}")`,
         backgroundSize: "cover",

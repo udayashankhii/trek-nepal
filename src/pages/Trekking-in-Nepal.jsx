@@ -13,16 +13,17 @@ export default function TrekkingInNepalPage() {
     // or use your router's navigate function
   };
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-50-screen bg-gray-50">
       {/* Hero Section */}
       <TrekHero
         title="Trekking in Nepal"
         subtitle="Discover the majestic Himalayas with our expert-guided treks"
         backgroundImage="/trekkinginnepal.jpg"
         ctaText="View Packages"
-        ctaLink="/treks"
+        ctaLink="/treks/everest"
         ctaDisabled={ctaClicked}
         onCtaClick={handleCtaClick}
+        heightClass="min-h-[50vh]"
       />
 
       {/* Trekking in Nepal Overview */}

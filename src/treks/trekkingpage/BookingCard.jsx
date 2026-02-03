@@ -59,9 +59,13 @@ function BookingCard({
 
   // Handler for booking - uses trek_slug consistently
   const handleBookNowClick = () => {
+    if (onBookNow) {
+      onBookNow();
+      return;
+    }
     const slug = trekSlug || trekId;
     if (slug) {
-        navigate(`/trek-booking?trekSlug=${slug}`);
+      navigate(`/trek-booking?trekSlug=${slug}`);
     }
   };
 
@@ -98,7 +102,7 @@ function BookingCard({
               Save {savings}%
             </p>
           )}
-          <p className="text-xs text-slate-500 mt-1">Per person</p>
+          <p className="text-xs text-slate-500 mt-1">Per person For Groups</p>
         </div>
         <span className="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg text-xs font-semibold uppercase tracking-wide">
           {badgeLabel}
@@ -119,12 +123,11 @@ function BookingCard({
               <span>Group Discount Available</span>
             </div>
             <ChevronDown
-              className={`w-4 h-4 text-slate-500 transform transition-transform duration-200 ${
-                showPrices ? "rotate-180" : ""
-              }`}
+              className={`w-4 h-4 text-slate-500 transform transition-transform duration-200 ${showPrices ? "rotate-180" : ""
+                }`}
             />
           </button>
-          
+
           {showPrices && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
@@ -146,8 +149,8 @@ function BookingCard({
                 </thead>
                 <tbody>
                   {groups.map((g, idx) => (
-                    <tr 
-                      key={idx} 
+                    <tr
+                      key={idx}
                       className="border-t border-slate-200 hover:bg-slate-50 transition-colors"
                     >
                       <td className="px-3 py-2 text-slate-700">

@@ -29,7 +29,6 @@ const getCategoryIcon = (name = "") => {
   if (lower.includes("tip")) return "💡";
   return "📝";
 };
-
 const slugify = (value = "") =>
   value
     .toString()
@@ -207,9 +206,9 @@ const buildDetailPost = (post = {}) => {
   const derivedSections =
     rawContent?.blocks && Array.isArray(rawContent.blocks)
       ? buildContentFromBlocks(
-          rawContent,
-          normalized.description || normalized.metaDescription
-        )
+        rawContent,
+        normalized.description || normalized.metaDescription
+      )
       : rawContent?.sections
         ? rawContent
         : buildContentFromBlocks({}, normalized.description);
@@ -247,14 +246,16 @@ const HeroSection = React.memo(({ onImageLoad }) => {
     setImageState((prev) => ({ ...prev, error: true, loaded: true }));
   }, []);
 
+  const navigate = useNavigate();
   return (
-    <section className="relative min-h-[60vh] md:h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[40vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden">
+
       <div className="absolute inset-0 z-0">
+
         {!imageState.error ? (
           <div
-            className={`absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110 transition-opacity duration-700 ${
-              imageState.loaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 bg-cover bg-center bg-scroll md:bg-fixed transform scale-110 transition-opacity duration-700 ${imageState.loaded ? "opacity-100" : "opacity-0"
+              }`}
             style={{
               backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
             }}
@@ -289,7 +290,10 @@ const HeroSection = React.memo(({ onImageLoad }) => {
           <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
             Explore Stories
           </button>
-          <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-orange-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full">
+          <button
+            onClick={() => navigate('/trekking-in-nepal')}
+            className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-orange-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full"
+          >
             Plan Your Trek
           </button>
         </div>
@@ -314,11 +318,10 @@ const CategoryFilter = React.memo(
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
               disabled={disabled}
-              className={`px-3 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-300 flex items-center gap-2 font-medium text-sm md:text-base ${
-                selectedCategory === category.id
-                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105 border-transparent"
-                  : "bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 border-gray-200 hover:border-orange-300"
-              } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`px-3 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-300 flex items-center gap-2 font-medium text-sm md:text-base ${selectedCategory === category.id
+                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105 border-transparent"
+                : "bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 border-gray-200 hover:border-orange-300"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               aria-pressed={selectedCategory === category.id}
             >
               <span className="text-base md:text-lg" aria-hidden="true">
@@ -415,7 +418,6 @@ const BlogPage = ({ currentUser }) => {
     posts: [],
     categories: DEFAULT_CATEGORIES,
     selectedCategory: "all",
-    searchQuery: "",
     selectedPost: null,
     showDetail: false,
     loading: true,
@@ -473,10 +475,10 @@ const BlogPage = ({ currentUser }) => {
         const items = Array.isArray(data?.results) ? data.results : data;
         const mapped = Array.isArray(items)
           ? items.map((category) => ({
-              id: category.slug || slugify(category.name),
-              name: category.name,
-              icon: getCategoryIcon(category.name),
-            }))
+            id: category.slug || slugify(category.name),
+            name: category.name,
+            icon: getCategoryIcon(category.name),
+          }))
           : [];
 
         safeSetState((prev) => ({
@@ -494,15 +496,7 @@ const BlogPage = ({ currentUser }) => {
     loadCategories();
   }, [safeSetState]);
 
-  useEffect(() => {
-    const search = searchParams.get("search") || "";
-    if (search) {
-      safeSetState((prev) => ({
-        ...prev,
-        searchQuery: search,
-      }));
-    }
-  }, [searchParams, safeSetState]);
+
 
   useEffect(() => {
     if (!slug) {
@@ -559,7 +553,6 @@ const BlogPage = ({ currentUser }) => {
     };
   }, []);
 
-  // Memoized filtered posts
   const filteredPosts = useMemo(() => {
     if (!Array.isArray(state.posts) || !state.posts.length) return [];
     let scoped = state.posts;
@@ -572,26 +565,8 @@ const BlogPage = ({ currentUser }) => {
       );
     }
 
-    const query = state.searchQuery.trim().toLowerCase();
-    if (!query) return scoped;
-
-    return scoped.filter((post) => {
-      const haystack = [
-        post.title,
-        post.subtitle,
-        post.metaTitle,
-        post.metaDescription,
-        post.description,
-        post.category,
-        post.region,
-        ...(post.tags || []),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(query);
-    });
-  }, [state.posts, state.selectedCategory, state.searchQuery]);
+    return scoped;
+  }, [state.posts, state.selectedCategory]);
 
   // Enhanced load more posts
   const loadMorePosts = useCallback(async () => {
@@ -640,13 +615,7 @@ const BlogPage = ({ currentUser }) => {
     [state.loading, safeSetState]
   );
 
-  const handleSearchChange = useCallback((event) => {
-    const value = event.target.value;
-    safeSetState((prev) => ({
-      ...prev,
-      searchQuery: value,
-    }));
-  }, [safeSetState]);
+
 
 
   // Handle post click with URL navigation
@@ -681,12 +650,12 @@ const BlogPage = ({ currentUser }) => {
         posts: prev.posts.map((post) =>
           post.id === postId
             ? {
-                ...post,
-                isLiked,
-                likes: isLiked
-                  ? (post.likes || 0) + 1
-                  : Math.max((post.likes || 0) - 1, 0),
-              }
+              ...post,
+              isLiked,
+              likes: isLiked
+                ? (post.likes || 0) + 1
+                : Math.max((post.likes || 0) - 1, 0),
+            }
             : post
         ),
       }));
@@ -833,20 +802,8 @@ const BlogPage = ({ currentUser }) => {
                   Stories, routes, costs, and insider trekking tips
                 </h2>
                 <p className="text-gray-600 mt-3 max-w-2xl leading-relaxed">
-                  Search by destination, tag, or keyword to find the exact trek guidance you need.
+                  Browse by category to find the perfect guide for your next adventure.
                 </p>
-              </div>
-              <div className="w-full lg:max-w-sm">
-                <div className="flex items-center gap-3 rounded-full border border-gray-200 px-4 py-3 shadow-sm bg-gray-50">
-                  <span className="text-gray-400">🔍</span>
-                  <input
-                    type="text"
-                    value={state.searchQuery}
-                    onChange={handleSearchChange}
-                    placeholder="Search treks, permits, seasons..."
-                    className="w-full bg-transparent text-sm text-gray-700 outline-none"
-                  />
-                </div>
               </div>
             </div>
 
@@ -855,11 +812,10 @@ const BlogPage = ({ currentUser }) => {
                 <button
                   key={category.id}
                   onClick={() => handleCategoryChange(category.id)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                    state.selectedCategory === category.id
-                      ? "bg-orange-500 text-white shadow"
-                      : "bg-gray-100 text-gray-600 hover:bg-orange-100 hover:text-orange-700"
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${state.selectedCategory === category.id
+                    ? "bg-orange-500 text-white shadow"
+                    : "bg-gray-100 text-gray-600 hover:bg-orange-100 hover:text-orange-700"
+                    }`}
                 >
                   {category.name}
                 </button>

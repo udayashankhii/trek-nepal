@@ -46,6 +46,20 @@ export default function SinglePageBookingForm() {
     bookingForm.accepted
   );
 
+  // ✅ Initialize dates from URL params
+  useEffect(() => {
+    const s = searchParams.get("startDate") || searchParams.get("date");
+    const e = searchParams.get("endDate");
+
+    if (s) {
+      bookingForm.setStartDate(s);
+      // Force end date if provided (overriding auto-calc)
+      if (e) {
+        setTimeout(() => bookingForm.setEndDate(e), 100);
+      }
+    }
+  }, [searchParams]);
+
   // Quote State
   const [quote, setQuote] = useState(null);
   const [quoteLoading, setQuoteLoading] = useState(false);

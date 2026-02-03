@@ -207,7 +207,7 @@ export default function TrekDetailPage() {
     });
   }, []);
 
-  const handleBookNow = () => navigate(`/trek-booking?trekSlug=${slug}`);
+
 
   const scrollToDates = () =>
     datesRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -371,6 +371,18 @@ export default function TrekDetailPage() {
   };
   const routeGeojsonUrl = actionData.routeGeojson || routeGeojsonBySlug[slug];
 
+  // ✅ Auto-select first available date for "Book Now"
+  const handleBookNow = () => {
+    const firstAvailable = departures.find((d) => d.status === "Available");
+    if (firstAvailable) {
+      navigate(
+        `/trek-booking?trekSlug=${slug}&startDate=${firstAvailable.start}&endDate=${firstAvailable.end}`
+      );
+    } else {
+      navigate(`/trek-booking?trekSlug=${slug}`);
+    }
+  };
+
   // ✅ Prepare trek metadata for export
   const trekMetadata = {
     title: trekName,
@@ -533,7 +545,9 @@ export default function TrekDetailPage() {
           trekName={trekName}
           trekId={slug}
           onBookDate={(date) =>
-            navigate(`/trek-booking?trekSlug=${slug}&date=${date.start}`)
+            navigate(
+              `/trek-booking?trekSlug=${slug}&startDate=${date.start}&endDate=${date.end}`
+            )
           }
         />
       </div>
