@@ -158,9 +158,9 @@ export default function TrekRouteMap({
           if (!isMounted) return;
 
           if (!result?.success || !result.path?.length) {
-            console.warn(
-              "⚠️ Route generation failed, using straight-line fallback"
-            );
+            // console.warn(
+            //   "⚠️ Route generation failed, using straight-line fallback"
+            // );
 
             // Fallback: Draw straight lines between all points
             const fallbackPath = markersToDisplay.map((p) => p.position);
@@ -197,7 +197,7 @@ export default function TrekRouteMap({
           // Show status based on routing quality
           if (result.failedSegments > 0) {
             setDirectionsStatus(
-              `⚠️ ${result.failedSegments} segment(s) using straight-line fallback`
+              // `⚠️ ${result.failedSegments} segment(s) using straight-line fallback`
             );
           } else {
             setDirectionsStatus("✅ Complete Google route generated");
@@ -370,7 +370,7 @@ export default function TrekRouteMap({
 
       {/* Map Controls */}
       <MapControls
-        mapType={mapType}
+        // mapType={mapType}
         setMapType={setMapType}
         selectedDayIndex={selectedDayIndex}
         setSelectedDayIndex={setSelectedDayIndex}

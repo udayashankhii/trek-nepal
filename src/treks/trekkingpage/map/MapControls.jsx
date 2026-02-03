@@ -34,7 +34,6 @@ export function MapControls({
   const [exporting, setExporting] = useState(false);
 
   // Map type options
-  const mapTypeOptions = ["roadmap", "terrain", "satellite"];
 
   // Handle day selection
   const handleDaySelect = (dayIndex) => {
@@ -166,41 +165,24 @@ export function MapControls({
   };
 
   // Get map type icon
-  const getMapTypeIcon = (type) => {
-    switch (type) {
-      case "roadmap":
-        return <MapIcon className="w-4 h-4 inline mr-1" />;
-      case "terrain":
-        return "🏔️";
-      case "satellite":
-        return "🛰️";
-      default:
-        return "";
-    }
-  };
+  // const getMapTypeIcon = (type) => {
+  //   switch (type) {
+  //     case "roadmap":
+  //       return <MapIcon className="w-4 h-4 inline mr-1" />;
+  //     case "terrain":
+  //       return "🏔️";
+  //     case "satellite":
+  //       return "🛰️";
+  //     default:
+  //       return "";
+  //   }
+  // };
 
   return (
     <div className="space-y-3">
       {/* First Row: Map Type + Day Selector + Reset */}
       <div className="flex items-center gap-2 flex-wrap">
-        {/* Map Type Selector */}
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-          {mapTypeOptions.map((type) => (
-            <button
-              key={type}
-              onClick={() => setMapType(type)}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                mapType === type
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-              title={`Switch to ${type} view`}
-            >
-              {getMapTypeIcon(type)}
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </button>
-          ))}
-        </div>
+        
 
         {/* Day Selector Dropdown */}
         <div className="relative">

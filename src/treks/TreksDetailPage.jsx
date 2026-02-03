@@ -188,9 +188,8 @@ export default function TrekDetailPage() {
 
           if (elevationPoints.length > 0) {
             elevationChart = {
-              title: `${
-                trekResult.title || trekResult.trek?.title || "Trek"
-              } - Elevation Profile`,
+              title: `${trekResult.title || trekResult.trek?.title || "Trek"
+                } - Elevation Profile`,
               subtitle: "Daily altitude changes throughout your trek",
               points: elevationPoints,
             };
@@ -499,13 +498,20 @@ export default function TrekDetailPage() {
           />
 
           {flat.overview && (
-            <section className="py-10 bg-white rounded-lg shadow-sm">
-              <TrekOverview overview={flat.overview} />
-            </section>
+            <TrekOverview
+              overview={{
+                ...flat.overview,
+                // If we have separate highlights component, don't show bullets in overview
+                sections: (flat.overview.sections || []).map(s => ({
+                  ...s,
+                  bullets: trekHighlights.length > 0 ? [] : s.bullets
+                }))
+              }}
+            />
           )}
 
           {trekHighlights.length > 0 && (
-            <TrekHighlights highlights={trekHighlights} />
+            <TrekHighlights highlights={trekHighlights} variant="card" />
           )}
 
           <CostInclusions
@@ -637,6 +643,27 @@ export default function TrekDetailPage() {
           type={exportNotification.type}
         />
       )}
+
+      {/* Mobile Sticky Booking Footer */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
+          <div>
+            <p className="text-xs text-slate-500 uppercase tracking-wide">From</p>
+            <div className="flex items-baseline gap-2">
+              <span className="text-xl font-bold text-slate-900">
+                ${(bookingCardData?.base_price || bookingCard.base_price || 0).toLocaleString()}
+              </span>
+              {/* Optional: show original price if space permits or relevant */}
+            </div>
+          </div>
+          <button
+            onClick={handleBookNow}
+            className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 px-6 rounded-lg font-semibold shadow-lg hover:from-emerald-700 hover:to-teal-700 transition-all active:scale-95 text-center"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

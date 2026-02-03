@@ -279,7 +279,7 @@ const HeroSection = React.memo(({ onImageLoad }) => {
 
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 drop-shadow-2xl">
-          ETrek Nepal
+          EverTrek Nepal
         </h1>
         <p className="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
           Discover the majestic Himalayas through our adventure stories, expert
