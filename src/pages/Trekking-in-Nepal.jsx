@@ -9,7 +9,7 @@ export default function TrekkingInNepalPage() {
   const handleCtaClick = () => {
     setCtaClicked(true);
     // Navigate or perform your action here, e.g.:
-    window.location.href = "/treks";
+    window.location.href = "/treks/everest";
     // or use your router's navigate function
   };
   return (

@@ -1,13 +1,17 @@
-// src/pages/TrekDetailPage.jsx
+
+
+
+
+// src/treks/TrekDetailPage.jsx
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   fetchTrek,
   fetchSimilarTreks,
   fetchTrekReviews,
   fetchTrekBookingCard,
   fetchTrekElevationChart,
-  fetchTrekCostAndDates
+  fetchTrekCostAndDates,
 } from "../api/service/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
 
@@ -50,7 +54,9 @@ function MapLoadingSpinner() {
 function ExportNotification({ message, type = "success" }) {
   const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
   return (
-    <div className={`fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in-out z-50`}>
+    <div
+      className={`fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in-out z-50`}
+    >
       <span className="text-lg">{type === "success" ? "✓" : "✗"}</span>
       <span>{message}</span>
     </div>
@@ -70,10 +76,8 @@ function transformItineraryToElevation(itineraryDays) {
   return itineraryDays.map((day) => {
     // Parse altitude string: "1,337m" or "3,870m" → 1337 or 3870
     const altitudeStr = day.altitude || "0m";
-    const elevation = parseInt(
-      altitudeStr.replace(/,/g, "").replace(/m/g, "").trim(),
-      10
-    ) || 0;
+    const elevation =
+      parseInt(altitudeStr.replace(/,/g, "").replace(/m/g, "").trim(), 10) || 0;
 
     return {
       day: day.day,
@@ -87,6 +91,8 @@ function transformItineraryToElevation(itineraryDays) {
 export default function TrekDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const openedOnceRef = useRef(false);
 
   const [trek, setTrek] = useState(null);
   const [similarTreks, setSimilarTreks] = useState([]);
@@ -104,9 +110,6 @@ export default function TrekDetailPage() {
 
   const trekName =
     trek?.hero?.title || trek?.trek?.title || trek?.title || "Trek Detail";
-
-  // Document title handled by SEO component
-
 
   // ✅ Preload Google Maps when user clicks "View Map"
   useEffect(() => {
@@ -147,12 +150,24 @@ export default function TrekDetailPage() {
         ]);
 
         // Extract fulfilled values
-        const trekResult = trekData.status === "fulfilled" ? trekData.value : null;
-        const apiElevationChart = elevationChartData.status === "fulfilled" ? elevationChartData.value : null;
-        const similar = similarData.status === "fulfilled" ? similarData.value : [];
-        const reviews = reviewsData.status === "fulfilled" ? reviewsData.value : { results: [] };
-        const bookingCard = bookingCardResult.status === "fulfilled" ? bookingCardResult.value : null;
-        const costDates = costDatesData.status === "fulfilled" ? costDatesData.value : null;
+        const trekResult =
+          trekData.status === "fulfilled" ? trekData.value : null;
+        const apiElevationChart =
+          elevationChartData.status === "fulfilled"
+            ? elevationChartData.value
+            : null;
+        const similar =
+          similarData.status === "fulfilled" ? similarData.value : [];
+        const reviews =
+          reviewsData.status === "fulfilled"
+            ? reviewsData.value
+            : { results: [] };
+        const bookingCard =
+          bookingCardResult.status === "fulfilled"
+            ? bookingCardResult.value
+            : null;
+        const costDates =
+          costDatesData.status === "fulfilled" ? costDatesData.value : null;
 
         if (!trekResult) {
           throw new Error("Trek not found");
@@ -162,22 +177,37 @@ export default function TrekDetailPage() {
         let elevationChart = apiElevationChart;
 
         // ✅ PRIORITY 2: Transform itinerary_days if API chart doesn't exist or is empty
-        if (!elevationChart || !elevationChart.points || elevationChart.points.length === 0) {
-          const itineraryData = trekResult.itinerary_days || trekResult.itinerary || [];
+        if (
+          !elevationChart ||
+          !elevationChart.points ||
+          elevationChart.points.length === 0
+        ) {
+          const itineraryData =
+            trekResult.itinerary_days || trekResult.itinerary || [];
           const elevationPoints = transformItineraryToElevation(itineraryData);
 
           if (elevationPoints.length > 0) {
             elevationChart = {
-              title: `${trekResult.title || trekResult.trek?.title || "Trek"} - Elevation Profile`,
+              title: `${
+                trekResult.title || trekResult.trek?.title || "Trek"
+              } - Elevation Profile`,
               subtitle: "Daily altitude changes throughout your trek",
               points: elevationPoints,
             };
-            console.log("✅ Elevation chart created from itinerary_days:", elevationPoints.length, "points");
+            console.log(
+              "✅ Elevation chart created from itinerary_days:",
+              elevationPoints.length,
+              "points"
+            );
           } else {
             console.warn("⚠️ No elevation data available from API or itinerary");
           }
         } else {
-          console.log("✅ Using API elevation chart:", apiElevationChart.points?.length, "points");
+          console.log(
+            "✅ Using API elevation chart:",
+            apiElevationChart.points?.length,
+            "points"
+          );
         }
 
         // ✅ Merge all data into trek object
@@ -207,13 +237,18 @@ export default function TrekDetailPage() {
     });
   }, []);
 
-
+  // ✅ If navigated here with { state: { openMap: true } }, auto-open map section once
+  useEffect(() => {
+    if (!openedOnceRef.current && location.state?.openMap) {
+      openedOnceRef.current = true;
+      setShowMap(true);
+    }
+  }, [location.state]);
 
   const scrollToDates = () =>
     datesRef.current?.scrollIntoView({ behavior: "smooth" });
 
-  const scrollToMap = () =>
-    mapRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToMap = () => mapRef.current?.scrollIntoView({ behavior: "smooth" });
 
   const scrollToReviews = () =>
     reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -224,8 +259,10 @@ export default function TrekDetailPage() {
     }
   }, [showMap]);
 
+  // Keep it (even if not used elsewhere yet)
   const handleViewMap = () => {
-    setShowMap((prev) => !prev);
+    setShowMap(true);
+    scrollToMap();
   };
 
   // ✅ Handle export completion with notification
@@ -311,8 +348,11 @@ export default function TrekDetailPage() {
 
   // ✅ 1. FLATTEN departures_by_month structure
   let rawDepartures = [];
-  if (costDatesData.departures_by_month && Array.isArray(costDatesData.departures_by_month)) {
-    rawDepartures = costDatesData.departures_by_month.flatMap(monthGroup =>
+  if (
+    costDatesData.departures_by_month &&
+    Array.isArray(costDatesData.departures_by_month)
+  ) {
+    rawDepartures = costDatesData.departures_by_month.flatMap((monthGroup) =>
       Array.isArray(monthGroup.departures) ? monthGroup.departures : []
     );
   } else if (costDatesData.departures && Array.isArray(costDatesData.departures)) {
@@ -341,9 +381,14 @@ export default function TrekDetailPage() {
   }
 
   const groupPrices = rawGroupPrices.map((gp) => {
-    const price = typeof gp.price === "string" ? parseFloat(gp.price) : Number(gp.price || 0);
+    const price =
+      typeof gp.price === "string" ? parseFloat(gp.price) : Number(gp.price || 0);
     return {
-      label: gp.label || (gp.min_size && gp.max_size ? `${gp.min_size}–${gp.max_size} pax` : `${gp.size || 1} Person`),
+      label:
+        gp.label ||
+        (gp.min_size && gp.max_size
+          ? `${gp.min_size}–${gp.max_size} pax`
+          : `${gp.size || 1} Person`),
       price: price,
       size: gp.max_size || gp.size || gp.min_size || 1,
     };
@@ -352,9 +397,9 @@ export default function TrekDetailPage() {
   // ✅ 3. EXTRACT highlights
   let dateHighlights = [];
   if (costDatesData.highlights && Array.isArray(costDatesData.highlights)) {
-    dateHighlights = costDatesData.highlights.map(h =>
-      typeof h === "string" ? h : (h.highlight || h.text || "")
-    ).filter(Boolean);
+    dateHighlights = costDatesData.highlights
+      .map((h) => (typeof h === "string" ? h : h.highlight || h.text || ""))
+      .filter(Boolean);
   } else if (trek.date_highlights && Array.isArray(trek.date_highlights)) {
     dateHighlights = trek.date_highlights;
   }
@@ -364,7 +409,8 @@ export default function TrekDetailPage() {
 
   // ✅ UPDATED: Check for elevation data properly
   const elevationChartData = trek.elevation_chart?.points || [];
-  const hasElevationData = Array.isArray(elevationChartData) && elevationChartData.length > 0;
+  const hasElevationData =
+    Array.isArray(elevationChartData) && elevationChartData.length > 0;
 
   const routeGeojsonBySlug = {
     "annapurna-base-camp-trek": "/routes/annapurna-base-camp.geojson",
@@ -397,36 +443,39 @@ export default function TrekDetailPage() {
     reviews: reviews.length,
   };
 
-
   const seoSchema = {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
-    "name": trekName,
-    "description": hero.subtitle || `Enjoy the ${trekName} in Nepal.`,
-    "image": hero.imageUrl || flat.card_image_url,
-    "touristType": [activity || "Trekking"],
-    "itinerary": flat.itinerary.map(day => ({
+    name: trekName,
+    description: hero.subtitle || `Enjoy the ${trekName} in Nepal.`,
+    image: hero.imageUrl || flat.card_image_url,
+    touristType: [activity || "Trekking"],
+    itinerary: flat.itinerary.map((day) => ({
       "@type": "ItineraryItem",
-      "name": `Day ${day.day}: ${day.title}`,
-      "description": day.description
+      name: `Day ${day.day}: ${day.title}`,
+      description: day.description,
     })),
-    "offers": {
+    offers: {
       "@type": "Offer",
-      "price": bookingCardData?.base_price || bookingCard.base_price,
-      "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock"
-    }
+      price: bookingCardData?.base_price || bookingCard.base_price,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
   };
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <SEO
         title={trekName}
-        description={hero.subtitle || `Book your ${trekName} with EverTrek Nepal. Verified reviews, best price guarantee, and expert guides.`}
+        description={
+          hero.subtitle ||
+          `Book your ${trekName} with EverTrek Nepal. Verified reviews, best price guarantee, and expert guides.`
+        }
         image={hero.imageUrl || flat.card_image_url}
         keywords={`${trekName}, trekking in nepal, ${region}, ${activity}`}
         schema={seoSchema}
       />
+
       <HeroSection
         title={hero.title || trekName}
         subtitle={hero.subtitle}
@@ -477,21 +526,16 @@ export default function TrekDetailPage() {
               trekSlug={slug}
               trekName={trekName}
               basePrice={
-                parseFloat(
-                  bookingCardData?.base_price || bookingCard.base_price
-                ) || 0
+                parseFloat(bookingCardData?.base_price || bookingCard.base_price) ||
+                0
               }
               original={
                 parseFloat(
                   bookingCardData?.original_price || bookingCard.original_price
                 ) || 0
               }
-              groups={
-                bookingCardData?.group_prices || bookingCard.group_prices || []
-              }
-              badgeLabel={
-                bookingCardData?.badge_label || bookingCard.badge_label
-              }
+              groups={bookingCardData?.group_prices || bookingCard.group_prices || []}
+              badgeLabel={bookingCardData?.badge_label || bookingCard.badge_label}
               securePayment={
                 bookingCardData?.secure_payment ?? bookingCard.secure_payment
               }
@@ -502,9 +546,7 @@ export default function TrekDetailPage() {
                 bookingCardData?.free_cancellation ??
                 bookingCard.free_cancellation
               }
-              support247={
-                bookingCardData?.support_24_7 ?? bookingCard.support_24_7
-              }
+              support247={bookingCardData?.support_24_7 ?? bookingCard.support_24_7}
               trustedReviews={
                 bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews
               }
@@ -518,15 +560,9 @@ export default function TrekDetailPage() {
       <TrekAddInfo sections={infoSections} />
 
       <div className="py-8">
-        <TrekGallery
-          images={gallery}
-          trekName={trekName}
-          showTitle
-          minImages={1}
-        />
+        <TrekGallery images={gallery} trekName={trekName} showTitle minImages={1} />
       </div>
 
-      {/* ✅ UPDATED: Elevation Chart with proper data handling */}
       {hasElevationData && (
         <ElevationChart
           elevationData={elevationChartData}
@@ -555,10 +591,7 @@ export default function TrekDetailPage() {
       {/* ✅ Map section with export */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <TrekActions
-            trekId={flat.public_id}
-            pdfUrl={actionData.pdfUrl || trek.pdfUrl}
-          />
+          <TrekActions trekId={flat.public_id} pdfUrl={actionData.pdfUrl || trek.pdfUrl} />
 
           <div ref={mapRef} className="mt-12">
             <Suspense fallback={<MapLoadingSpinner />}>
@@ -580,9 +613,7 @@ export default function TrekDetailPage() {
           reviews={trekReviews.length > 0 ? trekReviews : reviews}
           trekName={trekName}
           averageRating={rating}
-          totalReviews={
-            trekReviews.length > 0 ? trekReviews.length : reviews.length
-          }
+          totalReviews={trekReviews.length > 0 ? trekReviews.length : reviews.length}
           autoPlay
           showStats
         />
@@ -600,7 +631,6 @@ export default function TrekDetailPage() {
         />
       </div>
 
-      {/* ✅ Export notification */}
       {exportNotification && (
         <ExportNotification
           message={exportNotification.message}
