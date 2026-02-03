@@ -298,10 +298,7 @@ export default function Profile() {
                   <p className="text-lg sm:text-xl font-bold text-[#1F7A63]">0</p>
                   <p className="text-xs text-gray-600">Reviews</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-lg sm:text-xl font-bold text-[#1F7A63]">0</p>
-                  <p className="text-xs text-gray-600">Saved</p>
-                </div>
+            
               </div>
 
               {/* Member Since */}
@@ -598,128 +595,7 @@ export default function Profile() {
               </form>
             </div>
 
-            {/* My Bookings Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="px-6 sm:px-8 py-5 sm:py-6 border-b border-gray-100">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900">My Bookings</h3>
-              </div>
-              <div className="p-6">
-                {bookingsLoading ? (
-                  <div className="text-center py-4"><Loader2 className="w-6 h-6 animate-spin mx-auto text-gray-400" /></div>
-                ) : bookings.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>No bookings yet.</p>
-                    <button onClick={() => navigate('/trekking-in-nepal')} className="mt-2 text-[#1F7A63] font-medium hover:underline">Explore Treks</button>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {bookings.map((booking) => (
-                      <div key={booking.booking_ref} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-colors">
-                        <div className="mb-4 sm:mb-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-bold text-gray-900">{booking.trek_title || booking.trek_slug}</span>
-                            <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${booking.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                              }`}>
-                              {booking.status?.toUpperCase() || 'PENDING'}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-500 flex items-center gap-2">
-                            <Calendar className="w-3 h-3" />
-                            {booking.start_date}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">Ref: {booking.booking_ref}</p>
-                        </div>
-                        <button
-                          onClick={() => navigate(`/bookings/${booking.booking_ref}`)}
-                          className="w-full sm:w-auto px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
-                        >
-                          View Details
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Additional Settings Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {/* Security Card */}
-              <button
-                onClick={() => navigate("/settings/security")}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6
-                         hover:shadow-md transition-all text-left group"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-50 
-                                  flex items-center justify-center">
-                      <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
-                        Security
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-500">
-                        Password & security
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 
-                                         transition-colors" />
-                </div>
-              </button>
-
-              {/* Notifications Card */}
-              <button
-                onClick={() => navigate("/settings/notifications")}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6
-                         hover:shadow-md transition-all text-left group"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-purple-50 
-                                  flex items-center justify-center">
-                      <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
-                        Notifications
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-500">
-                        Manage preferences
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 
-                                         transition-colors" />
-                </div>
-              </button>
-
-              {/* Language Card */}
-              <button
-                onClick={() => navigate("/settings/language")}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6
-                         hover:shadow-md transition-all text-left group"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-green-50 
-                                  flex items-center justify-center">
-                      <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
-                        Language
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-500">English (US)</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 
-                                         transition-colors" />
-                </div>
-              </button>
-            </div>
+        
           </div>
         </div>
       </div>

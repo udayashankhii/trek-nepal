@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { forgotPassword, resetPassword as resetPasswordRequest } from "../../api/auth/auth.api.js";
+import {
+  forgotPassword,
+  resetPassword as resetPasswordRequest,
+} from "../../api/auth/auth.api.js";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -9,11 +12,14 @@ export default function ForgotPassword() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
+  // STEP 1: Request reset code
   const requestCode = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       await forgotPassword({ email });
       toast.success("Reset code sent to your email ✅");
@@ -25,14 +31,20 @@ export default function ForgotPassword() {
     }
   };
 
+  // STEP 2: Reset password
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await resetPasswordRequest({ email, otp, new_password: newPassword });
 
-      toast.success("Password reset successful ✅");
-      navigate("/");
+    try {
+      await resetPasswordRequest({
+        email,
+        otp,
+        new_password: newPassword,
+      });
+
+      toast.success("Password reset successful. Please login ✅");
+      navigate("/login"); // 👈 force login
     } catch (err) {
       toast.error(err.message || "Failed to reset password");
     } finally {
@@ -46,6 +58,7 @@ export default function ForgotPassword() {
         <h2 className="text-2xl font-bold text-center text-[#0F2A44] mb-4">
           Reset Password
         </h2>
+
         <p className="text-center text-sm text-gray-500 mb-6">
           {step === 1
             ? "Enter your email to receive a reset code."
@@ -53,6 +66,7 @@ export default function ForgotPassword() {
         </p>
 
         {step === 1 ? (
+          // ===== STEP 1 FORM =====
           <form onSubmit={requestCode} className="space-y-4">
             <input
               type="email"
@@ -62,6 +76,7 @@ export default function ForgotPassword() {
               required
               className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#1F7A63] focus:outline-none"
             />
+
             <button
               type="submit"
               disabled={loading}
@@ -71,6 +86,7 @@ export default function ForgotPassword() {
             </button>
           </form>
         ) : (
+          // ===== STEP 2 FORM =====
           <form onSubmit={handleResetPassword} className="space-y-4">
             <input
               type="text"
@@ -79,8 +95,11 @@ export default function ForgotPassword() {
               onChange={(e) => setOtp(e.target.value)}
               required
               maxLength={6}
+              inputMode="numeric"
+              pattern="[0-9]{6}"
               className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#1F7A63] focus:outline-none text-center tracking-widest"
             />
+
             <input
               type="password"
               placeholder="New password"
@@ -89,6 +108,7 @@ export default function ForgotPassword() {
               required
               className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#1F7A63] focus:outline-none"
             />
+
             <button
               type="submit"
               disabled={loading}
