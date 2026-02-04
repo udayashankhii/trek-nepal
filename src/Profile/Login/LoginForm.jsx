@@ -1,12 +1,14 @@
-// src/components/Login/LoginForm.jsx
+
+
+// src/Profile/Login/LoginForm.jsx
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginButton from "./GoogleLoginButton";
-import { Link } from "react-router-dom";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { login } from "../../api/auth/auth.api.js";
+import { useAuth } from "../../api/auth/AuthContext"; // ✅ ADD THIS
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -14,15 +16,20 @@ export default function LoginForm({ onClose, onSuccess }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  
   const navigate = useNavigate();
   const location = useLocation();
-  const nextPath = new URLSearchParams(location.search).get("next") || "/";
+  const { login: authLogin } = useAuth(); // ✅ ADD THIS
+  
+  const backgroundLocation = location.state?.backgroundLocation;
+  const nextPath = backgroundLocation?.pathname || 
+                   new URLSearchParams(location.search).get("next") || 
+                   "/";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
-    // Clear specific field error on input
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -57,23 +64,31 @@ export default function LoginForm({ onClose, onSuccess }) {
     setErrors({});
 
     try {
-      await login({ 
+      // ✅ Call your API - it saves tokens to localStorage
+      const data = await login({ 
         email: formData.email.trim(), 
         password: formData.password 
       });
 
       toast.success("Welcome to EverTrek Nepal 🌄");
 
+      // ✅ UPDATE AUTH CONTEXT - triggers navbar re-render
+      authLogin(data.user);
+
+      // Call success callbacks
       if (onSuccess) {
         onSuccess();
-      } else if (onClose) {
+      }
+      
+      if (onClose) {
         onClose();
       }
 
+      // ✅ Navigate without reload
       setTimeout(() => {
-        navigate(nextPath);
-        window.location.reload();
-      }, 500);
+        navigate(nextPath, { replace: true });
+      }, 300);
+      
     } catch (err) {
       console.error("Login error:", err);
       const errorMessage = err.message || "Login failed. Please check your credentials.";
@@ -87,15 +102,21 @@ export default function LoginForm({ onClose, onSuccess }) {
   const handleRegisterClick = (e) => {
     e.preventDefault();
     if (onClose) onClose();
-    navigate("/register");
+    navigate("/register", {
+      state: { backgroundLocation }
+    });
+  };
+
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    if (onClose) onClose();
+    navigate("/forgot-password");
   };
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      {/* Mobile-first responsive container with proper padding */}
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10">
         
-        {/* Header Section - Responsive sizing */}
         <div className="text-center mb-4 sm:mb-6">
           <img
             src="/log.webp"
@@ -114,7 +135,6 @@ export default function LoginForm({ onClose, onSuccess }) {
           </p>
         </div>
 
-        {/* Form Error Alert - Full width on mobile */}
         {errors.form && (
           <div 
             role="alert"
@@ -126,14 +146,12 @@ export default function LoginForm({ onClose, onSuccess }) {
           </div>
         )}
 
-        {/* Login Form - Mobile optimized */}
         <form 
           onSubmit={handleLogin} 
           className="space-y-3 sm:space-y-4" 
           noValidate
           aria-label="Login form"
         >
-          {/* Email Field - Touch-friendly input */}
           <div>
             <label htmlFor="email" className="sr-only">
               Email address
@@ -182,7 +200,6 @@ export default function LoginForm({ onClose, onSuccess }) {
             )}
           </div>
 
-          {/* Password Field - Touch-friendly input */}
           <div>
             <label htmlFor="password" className="sr-only">
               Password
@@ -231,21 +248,19 @@ export default function LoginForm({ onClose, onSuccess }) {
             )}
           </div>
 
-          {/* Forgot Password Link - Touch-friendly */}
           <div className="text-right">
-            <Link
-              to="/forgot-password"
-              onClick={onClose}
+            <button
+              type="button"
+              onClick={handleForgotPasswordClick}
               className="text-xs sm:text-sm text-[#1F7A63] font-semibold 
                          hover:underline focus:underline focus:outline-none 
                          transition-colors inline-block py-1"
               tabIndex={0}
             >
               Forgot password?
-            </Link>
+            </button>
           </div>
 
-          {/* Submit Button - Touch-optimized (44px minimum) */}
           <button
             type="submit"
             disabled={loading}
@@ -272,21 +287,18 @@ export default function LoginForm({ onClose, onSuccess }) {
           </button>
         </form>
 
-        {/* Divider - Responsive spacing */}
         <div className="my-4 sm:my-5 md:my-6 flex items-center">
           <div className="flex-1 border-t border-gray-200" aria-hidden="true"></div>
           <span className="px-3 sm:px-4 text-xs sm:text-sm text-gray-400">OR</span>
           <div className="flex-1 border-t border-gray-200" aria-hidden="true"></div>
         </div>
 
-        {/* Google Login - Touch-optimized */}
-        <GoogleLoginButton onSuccess={onSuccess} />
+        <GoogleLoginButton onSuccess={onSuccess} onClose={onClose} />
 
-        {/* Register Link - Touch-friendly */}
         <p className="text-center mt-4 sm:mt-5 md:mt-6 text-xs sm:text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <Link
-            to="/register"
+          <button
+            type="button"
             onClick={handleRegisterClick}
             className="text-[#1F7A63] font-semibold hover:underline 
                        focus:underline focus:outline-none transition-colors 
@@ -294,7 +306,7 @@ export default function LoginForm({ onClose, onSuccess }) {
             tabIndex={0}
           >
             Register
-          </Link>
+          </button>
         </p>
       </div>
     </GoogleOAuthProvider>

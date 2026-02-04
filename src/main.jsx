@@ -7,10 +7,10 @@ import App from "./App.jsx";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import { SWRConfig } from "swr";
 import axiosInstance from "./api/service/axiosInstance";
+import { AuthProvider } from "./api/auth/AuthContext"; // ✅ ADD THIS
 
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 
-// ✅ create the root first
 const container = document.getElementById("root");
 const root = createRoot(container);
 
@@ -26,7 +26,9 @@ root.render(
         }}
       >
         <ErrorBoundary>
-          <App />
+          <AuthProvider> {/* ✅ ADD THIS WRAPPER */}
+            <App />
+          </AuthProvider> {/* ✅ ADD THIS CLOSING TAG */}
         </ErrorBoundary>
       </SWRConfig>
     </HelmetProvider>
