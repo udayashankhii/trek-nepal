@@ -72,6 +72,7 @@ import PaymentPage from "./Book/TrekBooking/PaymentPage";
 import PaymentSuccessPage from "./Book/TrekBooking/PaymentSuccessPage";
 import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
 import LoginModal from "./Model/LoginModal.jsx";
+import { useAuth } from "./api/auth/AuthContext";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -89,11 +90,32 @@ const Layout = () => (
   </>
 );
 
+// In App.jsx - update RequireAuth
 const RequireAuth = ({ children }) => {
   const location = useLocation();
-  const token = getAccessToken();
+  const { isLoading } = useAuth(); // ✅ Use context for loading state
+  const token = getAccessToken(); // ✅ Check token for auth
+
+  console.log('🛡️ RequireAuth check:', { 
+    path: location.pathname, 
+    hasToken: !!token, 
+    isLoading 
+  });
+
+  // ✅ Wait for auth to initialize (prevents flash of redirect)
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!token) {
+    console.log('🚫 No token, redirecting to login');
     return (
       <Navigate
         to="/login"
@@ -102,12 +124,18 @@ const RequireAuth = ({ children }) => {
       />
     );
   }
+
+  console.log('✅ Token found, rendering protected content');
   return children;
 };
+
 
 const AppRoutes = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
+  
+  // ✅ Don't show modal if we're already at the target page
+  const showModal = backgroundLocation && location.pathname === '/login';
 
   return (
     <>
@@ -266,7 +294,7 @@ const AppRoutes = () => {
       {/* Modal routes - rendered on top of background */}
       {backgroundLocation && (
         <Routes>
-          <Route path="/login" element={<LoginModal />} />
+         <Route path="/login" element={<LoginModal />} />
         </Routes>
       )}
     </>

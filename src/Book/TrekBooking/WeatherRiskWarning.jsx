@@ -92,7 +92,7 @@ export default function WeatherRiskWarning({
           <Info className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-sm font-medium text-gray-700">
-              Weather prediction temporarily unavailable
+              Weather prediction available only 16 days in advance
             </p>
             <p className="text-xs text-gray-600 mt-1">
               {riskError}. You can still proceed with your booking.

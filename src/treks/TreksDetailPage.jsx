@@ -14,6 +14,7 @@ import {
   fetchTrekCostAndDates,
 } from "../api/service/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
+import { getAccessToken } from "../api/auth/auth.api.js";
 
 import SEO from "../components/common/SEO";
 import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
@@ -417,16 +418,69 @@ export default function TrekDetailPage() {
   const routeGeojsonUrl = actionData.routeGeojson || routeGeojsonBySlug[slug];
 
   // ✅ Auto-select first available date for "Book Now"
-  const handleBookNow = () => {
-    const firstAvailable = departures.find((d) => d.status === "Available");
-    if (firstAvailable) {
-      navigate(
-        `/trek-booking?trekSlug=${slug}&startDate=${firstAvailable.start}&endDate=${firstAvailable.end}`
-      );
-    } else {
-      navigate(`/trek-booking?trekSlug=${slug}`);
-    }
-  };
+ // ✅ UPDATED: Better booking flow with auth check
+// const handleBookNow = () => {
+//   const isAuthenticated = !!getAccessToken();
+//   const firstAvailable = departures.find((d) => d.status === "Available");
+  
+//   // ✅ Build booking URL with dates if available
+//   const bookingParams = new URLSearchParams({ trekSlug: slug });
+//   if (firstAvailable) {
+//     bookingParams.set('startDate', firstAvailable.start);
+//     bookingParams.set('endDate', firstAvailable.end);
+//   }
+//   const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
+  
+//   if (isAuthenticated) {
+//     // ✅ User logged in - go directly to booking
+//     navigate(bookingUrl);
+//   } else {
+//     // ✅ User not logged in - show login modal with booking page as background
+//     navigate('/login', {
+//       state: {
+//         backgroundLocation: {
+//           pathname: '/trek-booking',
+//           search: `?${bookingParams.toString()}`
+//         }
+//       }
+//     });
+//   }
+// };
+
+// ✅ IMPROVED: Accept optional date parameter from DatesAndPrice
+const handleBookNow = (selectedDate = null) => {
+  const isAuthenticated = !!getAccessToken();
+  
+  // ✅ Use passed date or find first available
+  const bookingDate = selectedDate || departures.find((d) => d.status === "Available");
+  
+  // ✅ Build booking URL with dates if available
+  const bookingParams = new URLSearchParams({ trekSlug: slug });
+  if (bookingDate) {
+    bookingParams.set('startDate', bookingDate.start);
+    bookingParams.set('endDate', bookingDate.end);
+  }
+  const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
+  
+  if (isAuthenticated) {
+    // ✅ User logged in - go directly to booking
+    navigate(bookingUrl);
+  } else {
+    // ✅ User not logged in - show login modal with booking page as background
+    navigate('/login', {
+      state: {
+        backgroundLocation: {
+          pathname: '/trek-booking',
+          search: `?${bookingParams.toString()}`
+        }
+      }
+    });
+  }
+};
+
+
+
+
 
   // ✅ Prepare trek metadata for export
   const trekMetadata = {
@@ -580,18 +634,16 @@ export default function TrekDetailPage() {
       )}
 
       <div className="py-8" ref={datesRef}>
-        <DatesAndPrice
-          dates={departures}
-          groupPrices={groupPrices}
-          highlights={dateHighlights}
-          trekName={trekName}
-          trekId={slug}
-          onBookDate={(date) =>
-            navigate(
-              `/trek-booking?trekSlug=${slug}&startDate=${date.start}&endDate=${date.end}`
-            )
-          }
-        />
+       // ✅ In the DatesAndPrice component call - line ~520
+<DatesAndPrice
+  dates={departures}
+  groupPrices={groupPrices}
+  highlights={dateHighlights}
+  trekName={trekName}
+  trekId={slug}
+  onBookDate={(date) => handleBookNow(date)} // ✅ Pass date directly
+/>
+
       </div>
 
       {/* ✅ Map section with export */}

@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { login } from "../../api/auth/auth.api.js";
-import { useAuth } from "../../api/auth/AuthContext"; // ✅ ADD THIS
+import { useAuth } from "../../api/auth/AuthContext";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -19,12 +19,13 @@ export default function LoginForm({ onClose, onSuccess }) {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const { login: authLogin } = useAuth(); // ✅ ADD THIS
+  const { login: authLogin } = useAuth();
   
   const backgroundLocation = location.state?.backgroundLocation;
   const nextPath = backgroundLocation?.pathname || 
                    new URLSearchParams(location.search).get("next") || 
                    "/";
+  const nextSearch = backgroundLocation?.search || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,50 +55,43 @@ export default function LoginForm({ onClose, onSuccess }) {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+// src/Profile/Login/LoginForm.jsx
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  if (!validateForm()) return;
 
-    if (!validateForm()) return;
+  setLoading(true);
+  setErrors({});
 
-    setLoading(true);
-    setErrors({});
+  try {
+    const data = await login({ 
+      email: formData.email.trim(), 
+      password: formData.password 
+    });
 
-    try {
-      // ✅ Call your API - it saves tokens to localStorage
-      const data = await login({ 
-        email: formData.email.trim(), 
-        password: formData.password 
-      });
+    console.log('✅ Login API successful, token saved');
+    authLogin(data.user);
+    
+    // ✅ Show success message
+    toast.success("Welcome to EverTrek Nepal 🌄");
 
-      toast.success("Welcome to EverTrek Nepal 🌄");
+    // ✅ Build return URL
+    const returnUrl = nextPath + nextSearch;
+    console.log('✅ Redirecting to:', returnUrl);
 
-      // ✅ UPDATE AUTH CONTEXT - triggers navbar re-render
-      authLogin(data.user);
+    // ✅ IMMEDIATE REDIRECT - No delay
+    window.location.href = returnUrl;
+    
+  } catch (err) {
+    console.error("Login error:", err);
+    const errorMessage = err.message || "Login failed. Please check your credentials.";
+    toast.error(errorMessage);
+    setErrors({ form: errorMessage });
+    setLoading(false);
+  }
+};
 
-      // Call success callbacks
-      if (onSuccess) {
-        onSuccess();
-      }
-      
-      if (onClose) {
-        onClose();
-      }
-
-      // ✅ Navigate without reload
-      setTimeout(() => {
-        navigate(nextPath, { replace: true });
-      }, 300);
-      
-    } catch (err) {
-      console.error("Login error:", err);
-      const errorMessage = err.message || "Login failed. Please check your credentials.";
-      toast.error(errorMessage);
-      setErrors({ form: errorMessage });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
@@ -256,6 +250,7 @@ export default function LoginForm({ onClose, onSuccess }) {
                          hover:underline focus:underline focus:outline-none 
                          transition-colors inline-block py-1"
               tabIndex={0}
+              disabled={loading}
             >
               Forgot password?
             </button>
@@ -304,6 +299,7 @@ export default function LoginForm({ onClose, onSuccess }) {
                        focus:underline focus:outline-none transition-colors 
                        inline-block py-1"
             tabIndex={0}
+            disabled={loading}
           >
             Register
           </button>
