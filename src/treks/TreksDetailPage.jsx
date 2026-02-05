@@ -418,65 +418,65 @@ export default function TrekDetailPage() {
   const routeGeojsonUrl = actionData.routeGeojson || routeGeojsonBySlug[slug];
 
   // ✅ Auto-select first available date for "Book Now"
- // ✅ UPDATED: Better booking flow with auth check
-// const handleBookNow = () => {
-//   const isAuthenticated = !!getAccessToken();
-//   const firstAvailable = departures.find((d) => d.status === "Available");
-  
-//   // ✅ Build booking URL with dates if available
-//   const bookingParams = new URLSearchParams({ trekSlug: slug });
-//   if (firstAvailable) {
-//     bookingParams.set('startDate', firstAvailable.start);
-//     bookingParams.set('endDate', firstAvailable.end);
-//   }
-//   const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
-  
-//   if (isAuthenticated) {
-//     // ✅ User logged in - go directly to booking
-//     navigate(bookingUrl);
-//   } else {
-//     // ✅ User not logged in - show login modal with booking page as background
-//     navigate('/login', {
-//       state: {
-//         backgroundLocation: {
-//           pathname: '/trek-booking',
-//           search: `?${bookingParams.toString()}`
-//         }
-//       }
-//     });
-//   }
-// };
+  // ✅ UPDATED: Better booking flow with auth check
+  // const handleBookNow = () => {
+  //   const isAuthenticated = !!getAccessToken();
+  //   const firstAvailable = departures.find((d) => d.status === "Available");
 
-// ✅ IMPROVED: Accept optional date parameter from DatesAndPrice
-const handleBookNow = (selectedDate = null) => {
-  const isAuthenticated = !!getAccessToken();
-  
-  // ✅ Use passed date or find first available
-  const bookingDate = selectedDate || departures.find((d) => d.status === "Available");
-  
-  // ✅ Build booking URL with dates if available
-  const bookingParams = new URLSearchParams({ trekSlug: slug });
-  if (bookingDate) {
-    bookingParams.set('startDate', bookingDate.start);
-    bookingParams.set('endDate', bookingDate.end);
-  }
-  const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
-  
-  if (isAuthenticated) {
-    // ✅ User logged in - go directly to booking
-    navigate(bookingUrl);
-  } else {
-    // ✅ User not logged in - show login modal with booking page as background
-    navigate('/login', {
-      state: {
-        backgroundLocation: {
-          pathname: '/trek-booking',
-          search: `?${bookingParams.toString()}`
+  //   // ✅ Build booking URL with dates if available
+  //   const bookingParams = new URLSearchParams({ trekSlug: slug });
+  //   if (firstAvailable) {
+  //     bookingParams.set('startDate', firstAvailable.start);
+  //     bookingParams.set('endDate', firstAvailable.end);
+  //   }
+  //   const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
+
+  //   if (isAuthenticated) {
+  //     // ✅ User logged in - go directly to booking
+  //     navigate(bookingUrl);
+  //   } else {
+  //     // ✅ User not logged in - show login modal with booking page as background
+  //     navigate('/login', {
+  //       state: {
+  //         backgroundLocation: {
+  //           pathname: '/trek-booking',
+  //           search: `?${bookingParams.toString()}`
+  //         }
+  //       }
+  //     });
+  //   }
+  // };
+
+  // ✅ IMPROVED: Accept optional date parameter from DatesAndPrice
+  const handleBookNow = (selectedDate = null) => {
+    const isAuthenticated = !!getAccessToken();
+
+    // ✅ Use passed date or find first available
+    const bookingDate = selectedDate || departures.find((d) => d.status === "Available");
+
+    // ✅ Build booking URL with dates if available
+    const bookingParams = new URLSearchParams({ trekSlug: slug });
+    if (bookingDate && bookingDate.start && bookingDate.end) {
+      bookingParams.set('startDate', bookingDate.start);
+      bookingParams.set('endDate', bookingDate.end);
+    }
+    const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
+
+    if (isAuthenticated) {
+      // ✅ User logged in - go directly to booking
+      navigate(bookingUrl);
+    } else {
+      // ✅ User not logged in - show login modal with booking page as background
+      navigate('/login', {
+        state: {
+          backgroundLocation: {
+            pathname: '/trek-booking',
+            search: `?${bookingParams.toString()}`
+          }
         }
-      }
-    });
-  }
-};
+      });
+    }
+  };
 
 
 
@@ -538,7 +538,7 @@ const handleBookNow = (selectedDate = null) => {
         difficulty={hero.difficulty}
         location={hero.location}
         ctaLabel={hero.cta_label}
-        onBookNow={hero.cta_link ? () => navigate(hero.cta_link) : handleBookNow}
+        onBookNow={hero.cta_link ? () => navigate(hero.cta_link) : () => handleBookNow()}
         onInquiry={() => navigate(`/contact-us`)}
       />
 
@@ -635,14 +635,14 @@ const handleBookNow = (selectedDate = null) => {
 
       <div className="py-8" ref={datesRef}>
        // ✅ In the DatesAndPrice component call - line ~520
-<DatesAndPrice
-  dates={departures}
-  groupPrices={groupPrices}
-  highlights={dateHighlights}
-  trekName={trekName}
-  trekId={slug}
-  onBookDate={(date) => handleBookNow(date)} // ✅ Pass date directly
-/>
+        <DatesAndPrice
+          dates={departures}
+          groupPrices={groupPrices}
+          highlights={dateHighlights}
+          trekName={trekName}
+          trekId={slug}
+          onBookDate={(date) => handleBookNow(date)} // ✅ Pass date directly
+        />
 
       </div>
 

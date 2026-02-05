@@ -57,9 +57,13 @@ export function useBookingForm(trek, hero) {
       const durationSource = trek?.duration || hero?.duration;
       const days = parseDurationDays(durationSource);
       const start = new Date(startDate);
-      const end = new Date(start);
-      end.setDate(start.getDate() + days);
-      setEndDate(end.toISOString().split("T")[0]);
+      if (!isNaN(start.getTime())) {
+        const end = new Date(start);
+        end.setDate(start.getDate() + days);
+        setEndDate(end.toISOString().split("T")[0]);
+      } else {
+        setEndDate("");
+      }
     } else {
       setEndDate("");
     }

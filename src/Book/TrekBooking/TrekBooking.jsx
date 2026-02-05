@@ -28,7 +28,7 @@ import { getAccessToken } from "../../api/auth/auth.api.js"; // ✅ Import to ch
 export default function SinglePageBookingForm() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-const navigate = useNavigate(); // ✅ Add this
+  const navigate = useNavigate(); // ✅ Add this
 
   // ✅ Check authentication on component mount
   // useEffect(() => {
@@ -74,7 +74,7 @@ const navigate = useNavigate(); // ✅ Add this
   const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
   // ✅ Initialize dates from URL params
- 
+
 
   // ✅ Initialize dates from URL params
   useEffect(() => {
@@ -83,7 +83,7 @@ const navigate = useNavigate(); // ✅ Add this
 
     console.log('📅 Initializing dates from URL:', { startDate: s, endDate: e });
 
-    if (s) {
+    if (s && s !== 'null' && s !== 'undefined') {
       bookingForm.setStartDate(s);
       if (e) {
         setTimeout(() => bookingForm.setEndDate(e), 100);
@@ -152,15 +152,15 @@ const navigate = useNavigate(); // ✅ Add this
 
       try {
         // Extract elevation from max_altitude (e.g., "5,545m" -> 5545)
-        const elevationStr = 
-          trek.max_altitude || 
-          trek.hero?.max_altitude || 
-          bookingCardData?.max_altitude || 
-          hero?.max_altitude || 
+        const elevationStr =
+          trek.max_altitude ||
+          trek.hero?.max_altitude ||
+          bookingCardData?.max_altitude ||
+          hero?.max_altitude ||
           '0m';
-        
+
         const elevation = parseInt(
-          elevationStr.replace(/,/g, '').replace(/m/g, '').trim(), 
+          elevationStr.replace(/,/g, '').replace(/m/g, '').trim(),
           10
         ) || 5000; // Default fallback
 
@@ -216,10 +216,10 @@ const navigate = useNavigate(); // ✅ Add this
 
     return parseFloat(
       bookingCardData?.base_price ||
-        trek?.booking_card?.base_price ||
-        trek?.base_price ||
-        trek?.price ||
-        1000
+      trek?.booking_card?.base_price ||
+      trek?.base_price ||
+      trek?.price ||
+      1000
     );
   }, [loading, bookingCardData, trek, quote]);
 
@@ -239,10 +239,10 @@ const navigate = useNavigate(); // ✅ Add this
       e.preventDefault();
 
       // Check if high-risk conditions require acknowledgment
-      const isDangerousConditions = 
-        riskPrediction && 
-        (riskPrediction.overall_risk === 'DANGER' || 
-         riskPrediction.dangerous_days > 0);
+      const isDangerousConditions =
+        riskPrediction &&
+        (riskPrediction.overall_risk === 'DANGER' ||
+          riskPrediction.dangerous_days > 0);
 
       if (isDangerousConditions && !riskAcknowledged) {
         alert('Please acknowledge the weather risk warning before proceeding.');
@@ -251,20 +251,20 @@ const navigate = useNavigate(); // ✅ Add this
 
       // Proceed with normal booking
       bookingForm.handleBookingSubmit(
-        e, 
-        validation.formValid, 
-        totalPrice, 
-        trekSlug, 
+        e,
+        validation.formValid,
+        totalPrice,
+        trekSlug,
         currency
       );
     },
     [
-      bookingForm, 
-      validation.formValid, 
-      totalPrice, 
-      trekSlug, 
-      currency, 
-      riskPrediction, 
+      bookingForm,
+      validation.formValid,
+      totalPrice,
+      trekSlug,
+      currency,
+      riskPrediction,
       riskAcknowledged
     ]
   );

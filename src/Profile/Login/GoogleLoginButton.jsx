@@ -14,9 +14,9 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
   const { login: authLogin } = useAuth(); // ✅ ADD THIS - Get login from context
 
   const backgroundLocation = location.state?.backgroundLocation;
-  const nextPath = backgroundLocation?.pathname || 
-                   new URLSearchParams(location.search).get("next") || 
-                   "/";
+  const nextPath = backgroundLocation?.pathname ||
+    new URLSearchParams(location.search).get("next") ||
+    "/";
 
   const handleSuccess = async (credentialResponse) => {
     const googleToken = credentialResponse.credential;
@@ -26,9 +26,9 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
       // ✅ Call your API - it saves tokens to localStorage
       const data = await googleLogin({ token: googleToken });
 
-      toast.success("Logged in with Google ✅", { 
-        position: "top-center", 
-        autoClose: 2000 
+      toast.success("Logged in with Google ✅", {
+        position: "top-center",
+        autoClose: 2000
       });
 
       // ✅ UPDATE AUTH CONTEXT - This triggers navbar update
@@ -37,8 +37,9 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
       // Call success callbacks
       if (onSuccess) {
         onSuccess();
+        return; // ✅ Let parent handle navigation if onSuccess is provided
       }
-      
+
       if (onClose) {
         onClose();
       }
@@ -50,8 +51,8 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
 
     } catch (err) {
       console.error("Google login error:", err);
-      toast.error(err.message || "Google login failed", { 
-        position: "top-center" 
+      toast.error(err.message || "Google login failed", {
+        position: "top-center"
       });
     } finally {
       setGoogleLoading(false);

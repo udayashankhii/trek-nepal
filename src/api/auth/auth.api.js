@@ -34,8 +34,21 @@ const parseResponse = async (res) => {
   return data;
 };
 
-export const setAuthTokens = ({ access, refresh, user, role }) => {
-  if (access) localStorage.setItem(ACCESS_TOKEN_KEY, access);
+export const setAuthTokens = (data) => {
+  console.log("🔐 Setting auth tokens:", Object.keys(data));
+  const access = data.access || data.accessToken || data.token;
+  const refresh = data.refresh || data.refreshToken;
+  const user = data.user;
+  const role = data.role;
+
+  if (access) {
+    localStorage.setItem(ACCESS_TOKEN_KEY, access);
+    console.log("✅ Access token saved");
+  } else {
+    console.error("❌ No access token found in response:", data);
+    throw new Error("Authentication failed: No access token received from server.");
+  }
+
   if (refresh) localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
   if (role) localStorage.setItem(ROLE_KEY, role);
   if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));

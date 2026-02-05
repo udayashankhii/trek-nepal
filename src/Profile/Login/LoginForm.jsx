@@ -16,21 +16,21 @@ export default function LoginForm({ onClose, onSuccess }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const { login: authLogin } = useAuth();
-  
+
   const backgroundLocation = location.state?.backgroundLocation;
-  const nextPath = backgroundLocation?.pathname || 
-                   new URLSearchParams(location.search).get("next") || 
-                   "/";
+  const nextPath = backgroundLocation?.pathname ||
+    new URLSearchParams(location.search).get("next") ||
+    "/";
   const nextSearch = backgroundLocation?.search || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -55,42 +55,44 @@ export default function LoginForm({ onClose, onSuccess }) {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-// src/Profile/Login/LoginForm.jsx
-const handleLogin = async (e) => {
-  e.preventDefault();
+  // src/Profile/Login/LoginForm.jsx
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  setLoading(true);
-  setErrors({});
+    setLoading(true);
+    setErrors({});
 
-  try {
-    const data = await login({ 
-      email: formData.email.trim(), 
-      password: formData.password 
-    });
+    try {
+      const data = await login({
+        email: formData.email.trim(),
+        password: formData.password
+      });
 
-    console.log('✅ Login API successful, token saved');
-    authLogin(data.user);
-    
-    // ✅ Show success message
-    toast.success("Welcome to EverTrek Nepal 🌄");
+      console.log('✅ Login API successful, token saved');
+      authLogin(data.user);
 
-    // ✅ Build return URL
-    const returnUrl = nextPath + nextSearch;
-    console.log('✅ Redirecting to:', returnUrl);
+      // ✅ Show success message
+      toast.success("Welcome to EverTrek Nepal 🌄");
 
-    // ✅ IMMEDIATE REDIRECT - No delay
-    window.location.href = returnUrl;
-    
-  } catch (err) {
-    console.error("Login error:", err);
-    const errorMessage = err.message || "Login failed. Please check your credentials.";
-    toast.error(errorMessage);
-    setErrors({ form: errorMessage });
-    setLoading(false);
-  }
-};
+      // ✅ Handle navigation via onSuccess (preferred) or fallback
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        // Fallback for standalone usage
+        const returnUrl = nextPath + nextSearch;
+        window.location.href = returnUrl;
+      }
+
+    } catch (err) {
+      console.error("Login error:", err);
+      const errorMessage = err.message || "Login failed. Please check your credentials.";
+      toast.error(errorMessage);
+      setErrors({ form: errorMessage });
+      setLoading(false);
+    }
+  };
 
 
   const handleRegisterClick = (e) => {
@@ -110,7 +112,7 @@ const handleLogin = async (e) => {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10">
-        
+
         <div className="text-center mb-4 sm:mb-6">
           <img
             src="/log.webp"
@@ -130,7 +132,7 @@ const handleLogin = async (e) => {
         </div>
 
         {errors.form && (
-          <div 
+          <div
             role="alert"
             className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg bg-red-50 border border-red-200"
           >
@@ -140,9 +142,9 @@ const handleLogin = async (e) => {
           </div>
         )}
 
-        <form 
-          onSubmit={handleLogin} 
-          className="space-y-3 sm:space-y-4" 
+        <form
+          onSubmit={handleLogin}
+          className="space-y-3 sm:space-y-4"
           noValidate
           aria-label="Login form"
         >
@@ -151,9 +153,9 @@ const handleLogin = async (e) => {
               Email address
             </label>
             <div className="relative">
-              <Mail 
+              <Mail
                 className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 
-                           w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" 
+                           w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none"
                 aria-hidden="true"
               />
               <input
@@ -184,7 +186,7 @@ const handleLogin = async (e) => {
               />
             </div>
             {errors.email && (
-              <p 
+              <p
                 id="email-error"
                 role="alert"
                 className="mt-1 text-xs sm:text-sm text-red-500"
@@ -199,9 +201,9 @@ const handleLogin = async (e) => {
               Password
             </label>
             <div className="relative">
-              <Lock 
+              <Lock
                 className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 
-                           w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" 
+                           w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none"
                 aria-hidden="true"
               />
               <input
@@ -232,7 +234,7 @@ const handleLogin = async (e) => {
               />
             </div>
             {errors.password && (
-              <p 
+              <p
                 id="password-error"
                 role="alert"
                 className="mt-1 text-xs sm:text-sm text-red-500"

@@ -71,7 +71,9 @@ axiosInstance.interceptors.response.use(
         // No refresh token - redirect to login
         isRefreshing = false;
         localStorage.clear();
-        window.location.href = "/login";
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = "/login";
+        }
         return Promise.reject(error);
       }
 
