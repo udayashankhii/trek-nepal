@@ -1,1 +1,19 @@
+# --- Python Environments ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Python Caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Django/Flask Specifics ---
+db.sqlite3
+*.log
+local_settings.py
+instance/
 .env
+
+
