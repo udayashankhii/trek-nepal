@@ -1,10 +1,12 @@
 
 
+
 import React, { useState, useEffect } from "react";
-import { FiMapPin, FiStar, FiCalendar } from "react-icons/fi";
+import { FiMapPin, FiStar, FiCalendar, FiAlertCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useMouseTracking, useIntersectionObserver } from "./animationUtils";
-import { Mountain } from "lucide-react";
+import { Mountain, CloudRain, CloudSnow, Cloud, Sun } from "lucide-react";
+import { fetchWeatherData } from "../../api/service/weatherService";
 
 const heroSlides = [
   {
@@ -15,6 +17,7 @@ const heroSlides = [
       "Journey to the base of the world's highest peak through stunning Sherpa villages and ancient monasteries.",
     image: "/everest.jpeg",
     trekUrl: "/treks/everest/everest-base-camp-trek-classic",
+    locationKey: "everest",
     stats: {
       elevation: "5,364m",
       duration: "14 days",
@@ -22,16 +25,6 @@ const heroSlides = [
     },
     particles: 150,
     bgGradient: "from-blue-900 to-indigo-900",
-    weather: {
-      temperature: "-5°C",
-      location: "Base Camp",
-      condition: "Clear Sky",
-      remark: "Perfect for trekking",
-      visibility: "10km",
-      wind: "15 km/h",
-      isVisible: true,
-      animationDelay: "1.2s",
-    },
   },
   {
     id: 2,
@@ -41,19 +34,10 @@ const heroSlides = [
       "Experience diverse landscapes from subtropical forests to high mountain deserts in this legendary circuit.",
     image: "/annapurna.jpeg",
     trekUrl: "/treks/annapurna/annapurna-circuit-trek",
+    locationKey: "annapurna",
     stats: { elevation: "5,416m", duration: "16 days", difficulty: "Moderate" },
     particles: 120,
     bgGradient: "from-purple-900 to-pink-900",
-    weather: {
-      temperature: "2°C",
-      location: "Thorong La",
-      condition: "Partly Cloudy",
-      remark: "Carry layers",
-      visibility: "8km",
-      wind: "10 km/h",
-      isVisible: true,
-      animationDelay: "1.2s",
-    },
   },
   {
     id: 3,
@@ -63,6 +47,7 @@ const heroSlides = [
       "Discover untouched mountain wilderness and authentic Tibetan culture in this remote Himalayan region.",
     image: "/annapurna.jpeg",
     trekUrl: "/treks/manaslu/manaslu-circuit-trek",
+    locationKey: "manaslu",
     stats: {
       elevation: "5,106m",
       duration: "12 days",
@@ -70,16 +55,6 @@ const heroSlides = [
     },
     particles: 180,
     bgGradient: "from-emerald-900 to-teal-900",
-    weather: {
-      temperature: "-3°C",
-      location: "Larke Pass",
-      condition: "Snow Showers",
-      remark: "Crampons advised",
-      visibility: "5km",
-      wind: "20 km/h",
-      isVisible: true,
-      animationDelay: "1.2s",
-    },
   },
   {
     id: 4,
@@ -89,19 +64,10 @@ const heroSlides = [
       "Trek through pristine forests and traditional Tamang villages beneath towering Himalayan peaks.",
     image: "/moutainimage.avif",
     trekUrl: "/treks/langtang/langtang-valley-trek",
+    locationKey: "langtang",
     stats: { elevation: "4,984m", duration: "8 days", difficulty: "Easy" },
     particles: 100,
     bgGradient: "from-orange-900 to-red-900",
-    weather: {
-      temperature: "4°C",
-      location: "Kyanjin Gompa",
-      condition: "Sunny",
-      remark: "Excellent views",
-      visibility: "12km",
-      wind: "8 km/h",
-      isVisible: true,
-      animationDelay: "1.2s",
-    },
   },
 ];
 
@@ -142,65 +108,166 @@ const StatCard = ({ icon: Icon, label, value, delay, isVisible }) => (
   </div>
 );
 
+// Weather icon component based on severity
+const WeatherIcon = ({ severity, className = "w-6 h-6" }) => {
+  const icons = {
+    clear: Sun,
+    partly_cloudy: Cloud,
+    cloudy: Cloud,
+    rain: CloudRain,
+    snow: CloudSnow,
+    thunderstorm: CloudRain,
+    drizzle: CloudRain,
+    fog: Cloud,
+    freezing: CloudSnow,
+  };
+
+  const Icon = icons[severity] || Cloud;
+  return <Icon className={className} />;
+};
+
 const WeatherWidget = ({
   isVisible,
-  temperature = "--",
-  location = "",
-  condition = "",
-  remark = "",
-  visibility = "--",
-  wind = "--",
+  weatherData,
+  isLoading,
+  hasError,
   animationDelay = "1.2s",
-}) => (
-  <div
-    className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
-                rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
-                transition-all duration-700
-                ${
-                  isVisible
-                    ? "animate-[slideInRight_0.8s_ease-out_forwards]"
-                    : "opacity-0"
-                }`}
-    style={{ animationDelay }}
-  >
-    <h4 className="text-white font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
-      <FiCalendar className="mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
-      Current Conditions
-    </h4>
-
-    <div className="flex items-center justify-between">
-      <div>
-        <div className="text-white text-2xl sm:text-3xl font-bold">
-          {temperature}
+}) => {
+  if (isLoading) {
+    return (
+      <div
+        className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
+                    rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
+                    transition-all duration-700
+                    ${
+                      isVisible
+                        ? "animate-[slideInRight_0.8s_ease-out_forwards]"
+                        : "opacity-0"
+                    }`}
+        style={{ animationDelay }}
+      >
+        <div className="flex items-center justify-center h-32">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
-        <div className="text-white/70 text-xs sm:text-sm">{location}</div>
+      </div>
+    );
+  }
+
+  const {
+    temperature = "--",
+    location = "",
+    condition = "",
+    remark = "",
+    visibility = "--",
+    wind = "--",
+    severity = "clear",
+    error = false,
+  } = weatherData || {};
+
+  return (
+    <div
+      className={`bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg 
+                  rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 
+                  transition-all duration-700
+                  ${
+                    isVisible
+                      ? "animate-[slideInRight_0.8s_ease-out_forwards]"
+                      : "opacity-0"
+                  }`}
+      style={{ animationDelay }}
+    >
+      <h4 className="text-white font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+        <FiCalendar className="mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
+        Current Conditions
+        {error && (
+          <FiAlertCircle className="ml-2 text-yellow-400 w-4 h-4" title="Using cached or fallback data" />
+        )}
+      </h4>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <WeatherIcon 
+            severity={severity} 
+            className="text-white w-8 h-8 sm:w-10 sm:h-10" 
+          />
+          <div>
+            <div className="text-white text-2xl sm:text-3xl font-bold">
+              {temperature}
+            </div>
+            <div className="text-white/70 text-xs sm:text-sm">{location}</div>
+          </div>
+        </div>
+
+        <div className="text-right">
+          <div className="text-white/90 text-xs sm:text-sm font-medium">
+            {condition}
+          </div>
+          <div className={`text-xs sm:text-sm font-medium ${
+            remark.includes("Dangerous") || remark.includes("Extreme")
+              ? "text-red-400"
+              : remark.includes("Perfect") || remark.includes("Good")
+              ? "text-emerald-400"
+              : "text-amber-400"
+          }`}>
+            {remark}
+          </div>
+        </div>
       </div>
 
-      <div className="text-right">
-        <div className="text-white/90 text-xs sm:text-sm font-medium">
-          {condition}
-        </div>
-        <div className="text-emerald-400 text-xs sm:text-sm">{remark}</div>
+      <div className="mt-3 sm:mt-4 flex items-center justify-between text-xs text-white/60">
+        <span>Visibility: {visibility}</span>
+        <span>Wind: {wind}</span>
       </div>
-    </div>
 
-    <div className="mt-3 sm:mt-4 flex items-center justify-between text-xs text-white/60">
-      <span>Visibility: {visibility}</span>
-      <span>Wind: {wind}</span>
+      {error && (
+        <div className="mt-2 text-xs text-yellow-400/80 flex items-center">
+          <FiAlertCircle className="mr-1 w-3 h-3" />
+          Real-time data temporarily unavailable
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export default function EnhancedHeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [weatherData, setWeatherData] = useState({});
+  const [weatherLoading, setWeatherLoading] = useState({});
 
   const [mouseRef, mousePosition] = useMouseTracking();
   const [heroRef, isVisible] = useIntersectionObserver();
 
   const navigate = useNavigate();
 
+  // Fetch weather data for current slide
+  useEffect(() => {
+    const currentSlideData = heroSlides[currentSlide];
+    const locationKey = currentSlideData.locationKey;
+
+    // Skip if already loaded or loading
+    if (weatherData[locationKey] || weatherLoading[locationKey]) {
+      return;
+    }
+
+    // Set loading state
+    setWeatherLoading((prev) => ({ ...prev, [locationKey]: true }));
+
+    // Fetch weather data
+    fetchWeatherData(locationKey)
+      .then((data) => {
+        setWeatherData((prev) => ({ ...prev, [locationKey]: data }));
+      })
+      .catch((error) => {
+        console.error(`Failed to fetch weather for ${locationKey}:`, error);
+      })
+      .finally(() => {
+        setWeatherLoading((prev) => ({ ...prev, [locationKey]: false }));
+      });
+  }, [currentSlide]);
+
+  // Generate particles
   useEffect(() => {
     const currentSlideData = heroSlides[currentSlide];
     const newParticles = Array.from({ length: currentSlideData.particles }).map(
@@ -217,6 +284,7 @@ export default function EnhancedHeroSection() {
     setParticles(newParticles);
   }, [currentSlide]);
 
+  // Auto-advance slides
   useEffect(() => {
     setIsLoaded(true);
     const interval = setInterval(() => {
@@ -227,6 +295,9 @@ export default function EnhancedHeroSection() {
   }, []);
 
   const currentSlideData = heroSlides[currentSlide];
+  const currentLocationKey = currentSlideData.locationKey;
+  const currentWeather = weatherData[currentLocationKey];
+  const isWeatherLoading = weatherLoading[currentLocationKey];
 
   const handleDiscover = () => {
     if (!currentSlideData?.trekUrl) return;
@@ -235,7 +306,6 @@ export default function EnhancedHeroSection() {
 
   const handleViewMap = () => {
     if (!currentSlideData?.trekUrl) return;
-    // TrekDetailPage must read this state and auto-scroll to map
     navigate(currentSlideData.trekUrl, { state: { openMap: true } });
   };
 
@@ -415,13 +485,25 @@ export default function EnhancedHeroSection() {
 
           <WeatherWidget
             isVisible={isVisible}
-            {...(currentSlideData.weather || {})}
+            weatherData={currentWeather}
+            isLoading={isWeatherLoading}
+            hasError={currentWeather?.error}
+            animationDelay="1.2s"
           />
         </div>
       </div>
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
 
 // import React, { useState, useEffect } from "react";
 // import { FiMapPin, FiStar, FiCalendar } from "react-icons/fi";
