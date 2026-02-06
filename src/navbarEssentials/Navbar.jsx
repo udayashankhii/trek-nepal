@@ -125,7 +125,7 @@ export default function Navbar() {
             href="tel:+9779801000000"
             className="underline hover:text-yellow-100 ml-1"
           >
-            +977 9801-000000
+            +977  980-1234567
           </a>
         </span>
         <div className="flex items-center gap-2">

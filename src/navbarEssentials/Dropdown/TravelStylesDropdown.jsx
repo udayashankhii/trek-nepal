@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 // Update route paths as needed to match your app routes!
 const travelStyles = [
   { name: "Tours", route: "/travel-styles", icon: "🏛️", description: "Cultural tours & city exploration" },
-  { name: "Jungle Safari", route: "/travel-activities/jungle-safari", icon: "🦏", description: "Chitwan & Bardia wildlife experiences" },
-  { name: "Bike Rental", route: "/bike-rental", icon: "🚴", description: "Explore Nepal on two wheels" },
-];``
+  // { name: "Jungle Safari", route: "/travel-activities/jungle-safari", icon: "🦏", description: "Chitwan & Bardia wildlife experiences" },
+  // { name: "Bike Rental", route: "/bike-rental", icon: "🚴", description: "Explore Nepal on two wheels" },
+];
 
 
 const TravelStylesDropdown = ({ onNavigate }) => (

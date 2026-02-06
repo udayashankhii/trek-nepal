@@ -11,12 +11,12 @@ const MONTHS = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-const DEFAULT_GROUP_PRICES = [
-  { label: "1 Person", price: 1190, size: 1 },
-  { label: "2 - 4 Person", price: 1090, size: 4 },
-  { label: "5 - 7 Person", price: 1020, size: 7 },
-  { label: "8 - 12 Person", price: 990, size: 12 },
-];
+// const DEFAULT_GROUP_PRICES = [
+//   { label: "1 Person", price: 1190, size: 1 },
+//   { label: "2 - 4 Person", price: 1090, size: 4 },
+//   { label: "5 - 7 Person", price: 1020, size: 7 },
+//   { label: "8 - 12 Person", price: 990, size: 12 },
+// ];
 
 const DEFAULT_HIGHLIGHTS = [
   "Top-Tier Safety Measures for Peace of Mind",
@@ -344,7 +344,7 @@ const DatesAndPrice = forwardRef(
                               US${departure.price.toLocaleString()}
                             </span>
                           </div>
-                          <div className="text-sm text-gray-600">per person</div>
+                          <div className="text-sm text-gray-600">per person for groups</div>
                         </div>
                         <button
                           onClick={() => handleBooking(departure)}
@@ -387,12 +387,7 @@ const DatesAndPrice = forwardRef(
             {/* Highlights */}
             {highlights.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="font-bold text-lg mb-1 text-gray-900">
-                  27,000+ Happy Travelers
-                </div>
-                <div className="text-blue-700 font-bold mb-4 text-sm">
-                  52% plus repeated travelers
-                </div>
+          
                 <ul className="space-y-2">
                   {highlights.map((highlight, index) => (
                     <li

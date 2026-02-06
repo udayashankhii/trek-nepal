@@ -1,469 +1,681 @@
-// src/trekkingpage/ElevationChart.jsx
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { motion } from "framer-motion";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  Label,
-} from "recharts";
-import {
-  ArrowsPointingOutIcon,
-  ChartBarIcon,
-} from "@heroicons/react/24/outline";
+// src/treks/trekkingpage/ElevationChart.jsx
+import React, { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Mountain, TrendingUp, TrendingDown, Activity, Maximize2, X } from "lucide-react";
 
+/**
+ * Professional Elevation Chart Component
+ * Displays day-by-day trek elevation with interactive features
+ */
 export default function ElevationChart({
-  title = "Elevation Profile",
-  subtitle = "Day-by-day altitude progression",
   elevationData = [],
-  trekName,
-  showFullscreen = true,
+  title = "Elevation Profile",
+  subtitle = "",
+  trekName = "",
+  showFullscreen = false,
+  className = "",
 }) {
-  const data = Array.isArray(elevationData) ? elevationData : [];
-  if (data.length === 0) return null;
-
-  const [activePoint, setActivePoint] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [hoveredStat, setHoveredStat] = useState(null);
   const chartRef = useRef(null);
+  const svgRef = useRef(null);
 
-  // Calculate comprehensive statistics
-  const stats = useMemo(() => {
-    const elevations = data.map((d) => d.elevation || 0);
-    const max = Math.max(...elevations);
-    const min = Math.min(...elevations);
-    
-    let totalAscent = 0;
-    let totalDescent = 0;
-    
-    for (let i = 1; i < data.length; i++) {
-      const diff = data[i].elevation - data[i - 1].elevation;
-      if (diff > 0) totalAscent += diff;
-      else totalDescent += Math.abs(diff);
-    }
+  // Calculate chart metrics
+  const metrics = calculateMetrics(elevationData);
 
-    return {
-      max,
-      min,
-      totalAscent: Math.round(totalAscent),
-      totalDescent: Math.round(totalDescent),
-      highestPoint: data.find((d) => d.elevation === max),
-    };
-  }, [data]);
+  if (!elevationData || elevationData.length === 0) {
+    return null;
+  }
 
-  // Fullscreen handlers
-  const toggleFullscreen = () => {
-    if (!chartRef.current) return;
-    if (!isFullscreen) {
-      chartRef.current.requestFullscreen?.() || chartRef.current.webkitRequestFullscreen?.();
-    } else {
-      document.exitFullscreen?.() || document.webkitExitFullscreen?.();
-    }
-  };
-
-  useEffect(() => {
-    const handleFSChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", handleFSChange);
-    return () => document.removeEventListener("fullscreenchange", handleFSChange);
-  }, []);
-
-  // Premium Tooltip Component
-  const PremiumTooltip = ({ active, payload }) => {
-    if (!active || !payload?.[0]) return null;
-
-    const { day, title: dayTitle, elevation, description } = payload[0].payload;
-    const prevDay = data[day - 2];
-    const elevationChange = prevDay ? elevation - prevDay.elevation : 0;
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-        className="bg-white/98 backdrop-blur-2xl shadow-2xl rounded-2xl p-5 border border-gray-200/50 max-w-sm"
-        style={{ boxShadow: '0 20px 60px -10px rgba(0, 0, 0, 0.2)' }}
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              Day {day}
-            </p>
-            <h4 className="text-lg font-bold text-gray-900">
-              {dayTitle}
-            </h4>
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-br from-blue-50 to-sky-50 rounded-xl border border-blue-100">
-            <ChartBarIcon className="h-4 w-4 text-blue-600" />
-            <span className="text-base font-extrabold text-blue-700">
-              {elevation.toLocaleString()}m
-            </span>
-          </div>
-        </div>
-        
-        {elevationChange !== 0 && (
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
-            elevationChange > 0 
-              ? 'bg-emerald-50 border border-emerald-200' 
-              : 'bg-orange-50 border border-orange-200'
-          }`}>
-            <span className="text-xs font-semibold text-gray-600">
-              {elevationChange > 0 ? 'Ascent' : 'Descent'}:
-            </span>
-            <span className={`text-sm font-bold ${
-              elevationChange > 0 ? 'text-emerald-700' : 'text-orange-700'
-            }`}>
-              {elevationChange > 0 ? '+' : ''}{elevationChange.toLocaleString()}m
-            </span>
-          </div>
-        )}
-        
-        {description && (
-          <p className="text-xs text-gray-600 mt-3 leading-relaxed pt-3 border-t border-gray-100">
-            {description}
-          </p>
-        )}
-      </motion.div>
-    );
-  };
-
-  // Chart domain with smart padding
-  const yDomain = [
-    Math.floor(stats.min / 500) * 500 - 300,
-    Math.ceil(stats.max / 500) * 500 + 300,
-  ];
+  const handleFullscreen = () => setIsFullscreen(!isFullscreen);
 
   return (
-    <motion.section
-      ref={chartRef}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="relative bg-white rounded-3xl shadow-xl overflow-hidden my-20 mx-auto w-full max-w-7xl border border-gray-100"
-    >
-      {/* Premium Header */}
-      <div className="relative px-8 sm:px-12 pt-10 pb-8 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.05),transparent_50%)]" />
-        
-        <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div className="flex-1">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100/60 rounded-full mb-4"
-            >
-              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide">
-                Trek Analysis
-              </span>
-            </motion.div>
-            
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 tracking-tight"
-            >
-              {title}
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-base text-gray-600 font-medium"
-            >
-              {subtitle}
-              {trekName && (
-                <span className="text-gray-800 font-semibold"> · {trekName}</span>
+    <>
+      {/* Main Chart Container */}
+      <section 
+        ref={chartRef}
+        className={`bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm ${className}`}
+      >
+        {/* Header */}
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 sm:gap-2.5 mb-1">
+                <Mountain className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">
+                  {title}
+                </h2>
+              </div>
+              {subtitle && (
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">{subtitle}</p>
               )}
-            </motion.p>
+            </div>
+            {showFullscreen && (
+              <button
+                onClick={handleFullscreen}
+                className="ml-2 sm:ml-4 p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+                aria-label="View fullscreen"
+              >
+                <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+              </button>
+            )}
           </div>
-
-          {showFullscreen && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ delay: 0.5 }}
-              onClick={toggleFullscreen}
-              className="inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 border border-blue-400/20"
-            >
-              <ArrowsPointingOutIcon className="h-5 w-5" />
-              <span className="text-sm">{isFullscreen ? "Exit Fullscreen" : "Fullscreen View"}</span>
-            </motion.button>
-          )}
         </div>
-      </div>
 
-      {/* Premium Stats Grid */}
-      <div className="px-8 sm:px-12 py-8 bg-gradient-to-br from-gray-50/80 via-white to-gray-50/80 border-y border-gray-100">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <PremiumStatCard
-            label="Highest Point"
-            value={stats.max.toLocaleString()}
-            unit="m"
-            subtext={stats.highestPoint?.title}
-            icon="🏔️"
-            gradient="from-blue-500 to-cyan-500"
-            delay={0.1}
-            onHover={() => setHoveredStat('max')}
-            onLeave={() => setHoveredStat(null)}
-            isActive={hoveredStat === 'max'}
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-br from-blue-50 to-teal-50">
+          <StatCard
+            icon={<Mountain className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
+            label="Max Altitude"
+            value={`${metrics.maxElevation.toLocaleString()}m`}
+            subtext={`Day ${metrics.maxDay}`}
+            color="text-blue-600"
           />
-          <PremiumStatCard
+          <StatCard
+            icon={<TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
             label="Total Ascent"
-            value={stats.totalAscent.toLocaleString()}
-            unit="m"
-            subtext="Cumulative elevation gain"
-            icon="📈"
-            gradient="from-emerald-500 to-green-500"
-            delay={0.2}
-            onHover={() => setHoveredStat('ascent')}
-            onLeave={() => setHoveredStat(null)}
-            isActive={hoveredStat === 'ascent'}
+            value={`${metrics.totalAscent.toLocaleString()}m`}
+            subtext={`${metrics.ascentDays} days`}
+            color="text-green-600"
           />
-          <PremiumStatCard
+          <StatCard
+            icon={<TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
             label="Total Descent"
-            value={stats.totalDescent.toLocaleString()}
-            unit="m"
-            subtext="Cumulative elevation loss"
-            icon="📉"
-            gradient="from-orange-500 to-amber-500"
-            delay={0.3}
-            onHover={() => setHoveredStat('descent')}
-            onLeave={() => setHoveredStat(null)}
-            isActive={hoveredStat === 'descent'}
+            value={`${metrics.totalDescent.toLocaleString()}m`}
+            subtext={`${metrics.descentDays} days`}
+            color="text-orange-600"
           />
-          <PremiumStatCard
-            label="Trek Duration"
-            value={data.length}
-            unit="Days"
-            subtext="Complete journey"
-            icon="⏱️"
-            gradient="from-purple-500 to-indigo-500"
-            delay={0.4}
-            onHover={() => setHoveredStat('duration')}
-            onLeave={() => setHoveredStat(null)}
-            isActive={hoveredStat === 'duration'}
+          <StatCard
+            icon={<Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
+            label="Avg Altitude"
+            value={`${metrics.avgElevation.toLocaleString()}m`}
+            subtext={`${elevationData.length} days`}
+            color="text-purple-600"
           />
         </div>
-      </div>
 
-      {/* Premium Chart Container */}
-      <div className="px-8 sm:px-12 py-10 bg-white">
-        <div className="relative h-[500px] sm:h-[600px] bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100 shadow-inner">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={data}
-              margin={{ top: 40, right: 50, left: 20, bottom: 80 }}
-              onMouseMove={(e) => e?.activePayload && setActivePoint(e.activePayload[0].payload)}
-              onMouseLeave={() => setActivePoint(null)}
-            >
-              <defs>
-                {/* Premium Multi-Stop Gradient */}
-                <linearGradient id="premiumElevation" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.9} />
-                  <stop offset="30%" stopColor="#60a5fa" stopOpacity={0.6} />
-                  <stop offset="60%" stopColor="#93c5fd" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#dbeafe" stopOpacity={0.1} />
-                </linearGradient>
-                
-                {/* Shadow Filter */}
-                <filter id="premiumShadow">
-                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.15" />
-                </filter>
-              </defs>
+        {/* Chart Area */}
+        <div className="px-4 sm:px-6 py-4 sm:py-6">
+          <ElevationSVGChart
+            data={elevationData}
+            metrics={metrics}
+            hoveredPoint={hoveredPoint}
+            setHoveredPoint={setHoveredPoint}
+            svgRef={svgRef}
+          />
+        </div>
 
-              <CartesianGrid
-                strokeDasharray="3 3"
+        {/* Tooltip */}
+        {hoveredPoint && (
+          <div className="px-4 sm:px-6 pb-4 sm:pb-5">
+            <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-lg p-3 sm:p-4 shadow-lg">
+              <div className="flex items-start justify-between gap-3 sm:gap-4">
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5 sm:mb-1">
+                    <span className="px-2 py-0.5 bg-white/20 rounded text-xs font-semibold">
+                      Day {hoveredPoint.day}
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium text-gray-300">
+                      {hoveredPoint.title}
+                    </span>
+                  </div>
+                  <div className="text-xl sm:text-2xl font-bold mb-1.5 sm:mb-2">
+                    {hoveredPoint.elevation.toLocaleString()} meters
+                  </div>
+                  {hoveredPoint.change !== 0 && (
+                    <div className={`flex items-center gap-1.5 text-xs sm:text-sm ${
+                      hoveredPoint.change > 0 ? 'text-green-400' : 'text-orange-400'
+                    }`}>
+                      {hoveredPoint.change > 0 ? (
+                        <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      ) : (
+                        <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      )}
+                      <span>
+                        {Math.abs(hoveredPoint.change).toLocaleString()}m{' '}
+                        {hoveredPoint.change > 0 ? 'ascent' : 'descent'} from previous day
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {hoveredPoint.description && (
+                <p className="text-xs sm:text-sm text-gray-300 mt-2 sm:mt-3 leading-relaxed">
+                  {hoveredPoint.description}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <FullscreenChart
+          data={elevationData}
+          metrics={metrics}
+          title={title}
+          trekName={trekName}
+          onClose={handleFullscreen}
+        />
+      )}
+    </>
+  );
+}
+
+/**
+ * Main SVG Chart Component - FIXED: Shows ALL days on x-axis
+ */
+function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRef }) {
+  const [dimensions, setDimensions] = useState({ width: 800, height: 450 });
+  const containerRef = useRef(null);
+
+  // Responsive sizing
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        // Increased height for better label spacing
+        setDimensions({ width, height: Math.min(450, Math.max(350, width * 0.5)) });
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const { width, height } = dimensions;
+  // Increased bottom padding to accommodate ALL day labels
+  const padding = { 
+    top: 30, 
+    right: 50, 
+    bottom: 80,  // ✅ Increased for day labels
+    left: 60 
+  };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+
+  // Scale calculations
+  const minElevation = Math.floor(metrics.minElevation / 100) * 100;
+  const maxElevation = Math.ceil(metrics.maxElevation / 100) * 100;
+  const elevationRange = maxElevation - minElevation;
+
+  const xScale = (index) => (index / (data.length - 1)) * chartWidth + padding.left;
+  const yScale = (elevation) => 
+    height - padding.bottom - ((elevation - minElevation) / elevationRange) * chartHeight;
+
+  // Generate path
+  const pathData = data.map((point, index) => {
+    const x = xScale(index);
+    const y = yScale(point.elevation);
+    return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+  }).join(' ');
+
+  // Area fill path
+  const areaPath = `${pathData} L ${xScale(data.length - 1)} ${height - padding.bottom} L ${padding.left} ${height - padding.bottom} Z`;
+
+  // Y-axis ticks
+  const yTicks = 6;
+  const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => 
+    minElevation + (elevationRange / yTicks) * i
+  );
+
+  // ✅ Calculate if labels should be angled based on number of days
+  const shouldAngleLabels = data.length > 7;
+  const labelRotation = shouldAngleLabels ? -45 : 0;
+
+  return (
+    <div ref={containerRef} className="w-full">
+      <svg
+        ref={svgRef}
+        width={width}
+        height={height}
+        className="w-full"
+        style={{ maxHeight: '500px' }}
+      >
+        {/* Grid lines */}
+        <g className="grid">
+          {yTickValues.map((tick) => {
+            const y = yScale(tick);
+            return (
+              <line
+                key={tick}
+                x1={padding.left}
+                y1={y}
+                x2={width - padding.right}
+                y2={y}
                 stroke="#e5e7eb"
-                strokeOpacity={0.5}
-                vertical={false}
+                strokeWidth="1"
+                strokeDasharray="4,4"
+              />
+            );
+          })}
+        </g>
+
+        {/* Area fill with gradient */}
+        <defs>
+          <linearGradient id="elevationGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+        <path
+          d={areaPath}
+          fill="url(#elevationGradient)"
+        />
+
+        {/* Main line */}
+        <path
+          d={pathData}
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* Data points */}
+        {data.map((point, index) => {
+          const x = xScale(index);
+          const y = yScale(point.elevation);
+          const isHovered = hoveredPoint?.day === point.day;
+          const isMaxPoint = point.elevation === metrics.maxElevation;
+
+          return (
+            <g key={point.day}>
+              {/* Invisible larger circle for easier hovering */}
+              <circle
+                cx={x}
+                cy={y}
+                r={12}
+                fill="transparent"
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredPoint({
+                  ...point,
+                  change: index > 0 ? point.elevation - data[index - 1].elevation : 0
+                })}
+                onMouseLeave={() => setHoveredPoint(null)}
               />
 
-              <XAxis
-                dataKey="day"
-                tick={{ fill: "#6b7280", fontSize: 14, fontWeight: 600 }}
-                tickMargin={20}
-                axisLine={{ stroke: "#d1d5db", strokeWidth: 2 }}
-                tickLine={false}
-              >
-                <Label
-                  value="TREK DAYS"
-                  position="bottom"
-                  offset={30}
-                  style={{
-                    fill: "#374151",
-                    fontWeight: 700,
-                    fontSize: 12,
-                    letterSpacing: "0.1em",
-                  }}
-                />
-              </XAxis>
-
-              <YAxis
-                domain={yDomain}
-                tick={{ fill: "#6b7280", fontSize: 14, fontWeight: 600 }}
-                tickFormatter={(m) => `${(m / 1000).toFixed(1)}k`}
-                width={80}
-                axisLine={{ stroke: "#d1d5db", strokeWidth: 2 }}
-                tickLine={false}
-              >
-                <Label
-                  value="ELEVATION (METERS)"
-                  angle={-90}
-                  position="insideLeft"
-                  offset={15}
-                  style={{
-                    fill: "#374151",
-                    fontWeight: 700,
-                    fontSize: 12,
-                    letterSpacing: "0.1em",
-                  }}
-                />
-              </YAxis>
-
-              <Tooltip
-                content={<PremiumTooltip />}
-                cursor={{
-                  stroke: "#3b82f6",
-                  strokeWidth: 2,
-                  strokeDasharray: "6 4",
+              {/* Visible point circle */}
+              <circle
+                cx={x}
+                cy={y}
+                r={isHovered ? 7 : isMaxPoint ? 6 : 4.5}
+                fill={isMaxPoint ? "#ef4444" : "#3b82f6"}
+                stroke="white"
+                strokeWidth="2.5"
+                className="cursor-pointer transition-all pointer-events-none"
+                style={{
+                  filter: isHovered ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' : 'none'
                 }}
               />
 
-              {/* Main Elevation Area */}
-              <Area
-                type="monotone"
-                dataKey="elevation"
-                stroke="#2563eb"
-                strokeWidth={4}
-                fill="url(#premiumElevation)"
-                animationDuration={2500}
-                animationEasing="ease-out"
-                filter="url(#premiumShadow)"
-              />
+              {/* ✅ FIXED: Day labels - SHOW ALL DAYS */}
+              <text
+                x={x}
+                y={height - padding.bottom + 20}
+                textAnchor={shouldAngleLabels ? "end" : "middle"}
+                dominantBaseline="middle"
+                className="text-[10px] sm:text-xs fill-gray-600 font-medium pointer-events-none"
+                transform={shouldAngleLabels ? `rotate(${labelRotation}, ${x}, ${height - padding.bottom + 20})` : ''}
+              >
+                D{point.day}
+              </text>
 
-              {/* Peak Marker */}
-              {stats.highestPoint && (
-                <ReferenceLine
-                  x={stats.highestPoint.day}
-                  stroke="#3b82f6"
-                  strokeWidth={3}
-                  strokeDasharray="8 4"
+              {/* Elevation value below each point (optional, for clarity) */}
+              {(isMaxPoint || isHovered) && (
+                <text
+                  x={x}
+                  y={y - 15}
+                  textAnchor="middle"
+                  className="text-[9px] sm:text-[10px] fill-gray-700 font-semibold pointer-events-none"
+                  style={{ textShadow: '0 0 3px white' }}
                 >
-                  <Label
-                    value={`🏔️ Peak: ${stats.highestPoint.elevation.toLocaleString()}m`}
-                    position="top"
-                    fill="#1e40af"
-                    fontSize={14}
-                    fontWeight={700}
-                    offset={20}
+                  {point.elevation.toLocaleString()}m
+                </text>
+              )}
+
+              {/* Peak marker */}
+              {isMaxPoint && (
+                <>
+                  <line
+                    x1={x}
+                    y1={y - 25}
+                    x2={x}
+                    y2={y - 45}
+                    stroke="#ef4444"
+                    strokeWidth="2"
+                    className="pointer-events-none"
                   />
-                </ReferenceLine>
+                  <text
+                    x={x}
+                    y={y - 50}
+                    textAnchor="middle"
+                    className="text-[10px] sm:text-xs fill-red-600 font-bold pointer-events-none"
+                  >
+                    Peak
+                  </text>
+                </>
               )}
+            </g>
+          );
+        })}
 
-              {/* Active Point Marker */}
-              {activePoint && (
-                <ReferenceLine
-                  x={activePoint.day}
-                  stroke="#f59e0b"
-                  strokeWidth={3}
-                  strokeDasharray="5 5"
-                />
-              )}
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+        {/* Y-axis */}
+        <line
+          x1={padding.left}
+          y1={padding.top}
+          x2={padding.left}
+          y2={height - padding.bottom}
+          stroke="#6b7280"
+          strokeWidth="2"
+        />
 
-      {/* Premium Legend */}
-      <div className="px-8 sm:px-12 pb-10 bg-white">
-        <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
-          <LegendItem icon="📊" label="Elevation Profile" color="bg-gradient-to-r from-blue-500 to-blue-600" />
-          <LegendItem icon="🎯" label="Current Position" color="bg-orange-500" dashed />
-          <LegendItem icon="⛰️" label="Peak Point" color="bg-blue-600" dashed />
-          <LegendItem icon="📈" label="Ascending Path" color="bg-gradient-to-r from-emerald-400 to-green-500" />
-        </div>
-      </div>
-    </motion.section>
+        {/* Y-axis labels */}
+        {yTickValues.map((tick) => {
+          const y = yScale(tick);
+          return (
+            <text
+              key={tick}
+              x={padding.left - 12}
+              y={y}
+              textAnchor="end"
+              dominantBaseline="middle"
+              className="text-[10px] sm:text-xs fill-gray-600 font-medium"
+            >
+              {tick.toLocaleString()}m
+            </text>
+          );
+        })}
+
+        {/* X-axis */}
+        <line
+          x1={padding.left}
+          y1={height - padding.bottom}
+          x2={width - padding.right}
+          y2={height - padding.bottom}
+          stroke="#6b7280"
+          strokeWidth="2"
+        />
+
+        {/* Axis labels */}
+        <text
+          x={width / 2}
+          y={height - 15}
+          textAnchor="middle"
+          className="text-xs sm:text-sm fill-gray-700 font-semibold"
+        >
+          Trek Days
+        </text>
+        <text
+          x={padding.left - 45}
+          y={height / 2}
+          textAnchor="middle"
+          className="text-xs sm:text-sm fill-gray-700 font-semibold"
+          transform={`rotate(-90, ${padding.left - 45}, ${height / 2})`}
+        >
+          Elevation (meters)
+        </text>
+      </svg>
+    </div>
   );
 }
 
-// Premium Stat Card Component
-function PremiumStatCard({ label, value, unit, subtext, icon, gradient, delay, onHover, onLeave, isActive }) {
+/**
+ * Statistics Card Component
+ */
+function StatCard({ icon, label, value, subtext, color }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -8, scale: 1.03 }}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      className={`relative bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 overflow-hidden group ${
-        isActive ? 'border-blue-400 ring-4 ring-blue-100' : 'border-gray-100'
-      }`}
-    >
-      {/* Background Gradient on Hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-      
-      <div className="relative">
-        <div className="flex items-start justify-between mb-3">
-          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-            {icon}
+    <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 hover:shadow-md transition-shadow">
+      <div className={`flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 ${color}`}>
+        {icon}
+        <span className="text-[10px] sm:text-xs font-medium text-gray-600 uppercase tracking-wide">
+          {label}
+        </span>
+      </div>
+      <div className="text-lg sm:text-2xl font-bold text-gray-900 mb-0.5">
+        {value}
+      </div>
+      {subtext && (
+        <div className="text-[10px] sm:text-xs text-gray-500">
+          {subtext}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Fullscreen Chart Modal
+ */
+function FullscreenChart({ data, metrics, title, trekName, onClose }) {
+  useEffect(() => {
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-7xl max-h-[95vh] overflow-auto animate-in slide-in-from-bottom duration-300">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{title}</h2>
+            {trekName && (
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">{trekName}</p>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+            aria-label="Close fullscreen"
+          >
+            <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
+          </button>
+        </div>
+
+        <div className="p-4 sm:p-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <StatCard
+              icon={<Mountain className="w-4 h-4" />}
+              label="Max Altitude"
+              value={`${metrics.maxElevation.toLocaleString()}m`}
+              subtext={`Day ${metrics.maxDay}`}
+              color="text-blue-600"
+            />
+            <StatCard
+              icon={<TrendingUp className="w-4 h-4" />}
+              label="Total Ascent"
+              value={`${metrics.totalAscent.toLocaleString()}m`}
+              subtext={`${metrics.ascentDays} days`}
+              color="text-green-600"
+            />
+            <StatCard
+              icon={<TrendingDown className="w-4 h-4" />}
+              label="Total Descent"
+              value={`${metrics.totalDescent.toLocaleString()}m`}
+              subtext={`${metrics.descentDays} days`}
+              color="text-orange-600"
+            />
+            <StatCard
+              icon={<Activity className="w-4 h-4" />}
+              label="Avg Altitude"
+              value={`${metrics.avgElevation.toLocaleString()}m`}
+              subtext={`${data.length} days`}
+              color="text-purple-600"
+            />
+          </div>
+
+          <div className="bg-gray-50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+            <ElevationSVGChart
+              data={data}
+              metrics={metrics}
+              hoveredPoint={null}
+              setHoveredPoint={() => {}}
+              svgRef={null}
+            />
+          </div>
+
+          {/* Day-by-day breakdown table */}
+          <div className="mt-4 sm:mt-6 overflow-x-auto rounded-lg border border-gray-200">
+            <table className="w-full text-xs sm:text-sm">
+              <thead className="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-left font-semibold text-gray-700">Day</th>
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-left font-semibold text-gray-700">Location</th>
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-right font-semibold text-gray-700">Elevation</th>
+                  <th className="px-3 sm:px-4 py-2 sm:py-3 text-right font-semibold text-gray-700">Change</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {data.map((point, index) => {
+                  const change = index > 0 ? point.elevation - data[index - 1].elevation : 0;
+                  const isMaxPoint = point.elevation === metrics.maxElevation;
+                  return (
+                    <tr key={point.day} className={`hover:bg-gray-50 transition-colors ${isMaxPoint ? 'bg-red-50' : ''}`}>
+                      <td className="px-3 sm:px-4 py-2 sm:py-3 font-medium text-gray-900 whitespace-nowrap">
+                        Day {point.day}
+                        {isMaxPoint && (
+                          <span className="ml-2 text-[10px] px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-semibold">
+                            PEAK
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-3 text-gray-700">
+                        {point.title}
+                      </td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-3 text-right font-semibold text-gray-900 whitespace-nowrap">
+                        {point.elevation.toLocaleString()}m
+                      </td>
+                      <td className={`px-3 sm:px-4 py-2 sm:py-3 text-right font-medium whitespace-nowrap ${
+                        change > 0 ? 'text-green-600' : change < 0 ? 'text-orange-600' : 'text-gray-400'
+                      }`}>
+                        {change !== 0 && (
+                          <span className="inline-flex items-center justify-end gap-1">
+                            {change > 0 ? (
+                              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
+                            ) : (
+                              <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4" />
+                            )}
+                            {change > 0 ? '+' : ''}{change.toLocaleString()}m
+                          </span>
+                        )}
+                        {change === 0 && '—'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
-        
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
-          {label}
-        </p>
-        
-        <div className="flex items-baseline gap-1 mb-1">
-          <p className="text-3xl font-extrabold text-gray-900">
-            {value}
-          </p>
-          <span className="text-lg font-bold text-gray-500">
-            {unit}
-          </span>
-        </div>
-        
-        {subtext && (
-          <p className="text-xs text-gray-600 truncate mt-1 font-medium">
-            {subtext}
-          </p>
-        )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Premium Legend Item
-function LegendItem({ icon, label, color, dashed }) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-default"
-    >
-      <span className="text-lg">{icon}</span>
-      {dashed ? (
-        <div className="flex gap-1">
-          {[...Array(3)].map((_, i) => (
-            <span key={i} className={`w-1.5 h-1.5 rounded-full ${color}`} />
-          ))}
-        </div>
-      ) : (
-        <span className={`block w-10 h-3 rounded-full ${color} shadow-sm`} />
-      )}
-      <span className="text-sm font-semibold text-gray-700">{label}</span>
-    </motion.div>
-  );
+/**
+ * Calculate elevation metrics
+ */
+function calculateMetrics(data) {
+  if (!data || data.length === 0) {
+    return {
+      minElevation: 0,
+      maxElevation: 0,
+      avgElevation: 0,
+      totalAscent: 0,
+      totalDescent: 0,
+      maxDay: 1,
+      ascentDays: 0,
+      descentDays: 0,
+    };
+  }
+
+  let minElevation = Infinity;
+  let maxElevation = -Infinity;
+  let totalElevation = 0;
+  let totalAscent = 0;
+  let totalDescent = 0;
+  let maxDay = 1;
+  let ascentDays = 0;
+  let descentDays = 0;
+
+  data.forEach((point, index) => {
+    const elevation = point.elevation;
+
+    totalElevation += elevation;
+
+    if (elevation < minElevation) minElevation = elevation;
+    if (elevation > maxElevation) {
+      maxElevation = elevation;
+      maxDay = point.day;
+    }
+
+    if (index > 0) {
+      const change = elevation - data[index - 1].elevation;
+      if (change > 0) {
+        totalAscent += change;
+        ascentDays++;
+      } else if (change < 0) {
+        totalDescent += Math.abs(change);
+        descentDays++;
+      }
+    }
+  });
+
+  return {
+    minElevation: Math.round(minElevation),
+    maxElevation: Math.round(maxElevation),
+    avgElevation: Math.round(totalElevation / data.length),
+    totalAscent: Math.round(totalAscent),
+    totalDescent: Math.round(totalDescent),
+    maxDay,
+    ascentDays,
+    descentDays,
+  };
 }
+
+// PropTypes
+ElevationChart.propTypes = {
+  elevationData: PropTypes.arrayOf(
+    PropTypes.shape({
+      day: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      elevation: PropTypes.number.isRequired,
+      description: PropTypes.string,
+    })
+  ).isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  trekName: PropTypes.string,
+  showFullscreen: PropTypes.bool,
+  className: PropTypes.string,
+};
+
+StatCard.propTypes = {
+  icon: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  subtext: PropTypes.string,
+  color: PropTypes.string.isRequired,
+};
+
+ElevationSVGChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  metrics: PropTypes.object.isRequired,
+  hoveredPoint: PropTypes.object,
+  setHoveredPoint: PropTypes.func.isRequired,
+  svgRef: PropTypes.object,
+};
+
+FullscreenChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  metrics: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  trekName: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+};
