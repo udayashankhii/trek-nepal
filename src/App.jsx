@@ -97,10 +97,10 @@ const RequireAuth = ({ children }) => {
   const { isLoading } = useAuth(); // ✅ Use context for loading state
   const token = getAccessToken(); // ✅ Check token for auth
 
-  console.log('🛡️ RequireAuth check:', { 
-    path: location.pathname, 
-    hasToken: !!token, 
-    isLoading 
+  console.log('🛡️ RequireAuth check:', {
+    path: location.pathname,
+    hasToken: !!token,
+    isLoading
   });
 
   // ✅ Wait for auth to initialize (prevents flash of redirect)
@@ -134,7 +134,7 @@ const RequireAuth = ({ children }) => {
 const AppRoutes = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
-  
+
   // ✅ Don't show modal if we're already at the target page
   const showModal = backgroundLocation && location.pathname === '/login';
 
@@ -296,7 +296,7 @@ const AppRoutes = () => {
       {/* Modal routes - rendered on top of background */}
       {backgroundLocation && (
         <Routes>
-         <Route path="/login" element={<LoginModal />} />
+          <Route path="/login" element={<LoginModal />} />
         </Routes>
       )}
     </>

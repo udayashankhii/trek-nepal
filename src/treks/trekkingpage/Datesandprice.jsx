@@ -191,11 +191,10 @@ const DatesAndPrice = forwardRef(
                   aria-selected={selectedTab === "group"}
                   aria-controls="group-content"
                   onClick={() => setSelectedTab("group")}
-                  className={`px-6 py-2 rounded font-semibold flex items-center gap-2 transition-colors ${
-                    selectedTab === "group"
+                  className={`px-6 py-2 rounded font-semibold flex items-center gap-2 transition-colors ${selectedTab === "group"
                       ? "bg-blue-900 text-white"
                       : "bg-white border border-blue-900 text-blue-900 hover:bg-blue-50"
-                  }`}
+                    }`}
                 >
                   <Users className="w-4 h-4" aria-hidden="true" />
                   Group Joining
@@ -261,11 +260,10 @@ const DatesAndPrice = forwardRef(
                       onClick={() => handleMonthSelect(index)}
                       disabled={!isAvailable}
                       aria-pressed={isSelected}
-                      className={`px-4 py-2 rounded font-semibold transition-colors ${
-                        isSelected
+                      className={`px-4 py-2 rounded font-semibold transition-colors ${isSelected
                           ? "bg-blue-900 text-white"
                           : "bg-white text-gray-700 hover:bg-gray-50"
-                      } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""}`}
+                        } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {month}
                     </button>
@@ -324,13 +322,12 @@ const DatesAndPrice = forwardRef(
                         </div>
                         <div>
                           <span
-                            className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
-                              departure.status.toLowerCase() === "guaranteed"
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${departure.status.toLowerCase() === "guaranteed"
                                 ? "bg-green-100 text-green-700"
                                 : departure.status.toLowerCase() === "limited"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-blue-100 text-blue-700"
-                            }`}
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}
                           >
                             {departure.status}
                           </span>
@@ -387,7 +384,7 @@ const DatesAndPrice = forwardRef(
             {/* Highlights */}
             {highlights.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
-          
+
                 <ul className="space-y-2">
                   {highlights.map((highlight, index) => (
                     <li
@@ -409,7 +406,7 @@ const DatesAndPrice = forwardRef(
               onClick={handleCustomizeTrek}
               className="w-full bg-blue-900 text-white py-4 rounded-lg font-semibold shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-lg"
             >
-              Plan your own Trip to Nepal →
+              Design your custom Trip to Nepal →
             </button>
           </aside>
         </div>

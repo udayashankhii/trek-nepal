@@ -1,7 +1,6 @@
 
 
 
-
 // src/treks/TrekDetailPage.jsx
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
@@ -12,6 +11,7 @@ import {
   fetchTrekBookingCard,
   fetchTrekElevationChart,
   fetchTrekCostAndDates,
+  fetchTrekActions, // ✅ ADD THIS IMPORT
 } from "../api/service/trekService.js";
 import { loadGoogleMaps } from "../utils/mapHelpers.js";
 import { getAccessToken } from "../api/auth/auth.api.js";
@@ -36,11 +36,10 @@ import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
 import StickyBox from "react-sticky-box";
 import { Loader2 } from "lucide-react";
 import TrekErrorPage from "./TrekErrorPage.jsx";
+import TrekDetailSkeleton from "./trekkingpage/TrekDetailSkeleton.jsx";
 
-// ✅ Lazy load map component
 const TrekRouteMap = lazy(() => import("./trekkingpage/map/TrekRouteMap.jsx"));
 
-// ✅ Map loading component
 function MapLoadingSpinner() {
   return (
     <div className="flex flex-col items-center justify-center p-12 bg-white rounded-xl shadow-lg w-full">
@@ -51,7 +50,6 @@ function MapLoadingSpinner() {
   );
 }
 
-// ✅ Export notification toast
 function ExportNotification({ message, type = "success" }) {
   const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
   return (
@@ -64,18 +62,12 @@ function ExportNotification({ message, type = "success" }) {
   );
 }
 
-/**
- * ✅ Transform itinerary_days altitude data to elevation chart format
- * Converts "1,337m" string → 1337 number
- * Handles various altitude formats and extracts numeric elevation
- */
 function transformItineraryToElevation(itineraryDays) {
   if (!Array.isArray(itineraryDays) || itineraryDays.length === 0) {
     return [];
   }
 
   return itineraryDays.map((day) => {
-    // Parse altitude string: "1,337m" or "3,870m" → 1337 or 3870
     const altitudeStr = day.altitude || "0m";
     const elevation =
       parseInt(altitudeStr.replace(/,/g, "").replace(/m/g, "").trim(), 10) || 0;
@@ -83,7 +75,7 @@ function transformItineraryToElevation(itineraryDays) {
     return {
       day: day.day,
       title: day.title || `Day ${day.day}`,
-      elevation: elevation, // Now a number
+      elevation: elevation,
       description: day.description ? day.description.substring(0, 150) : "",
     };
   });
@@ -93,12 +85,14 @@ export default function TrekDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const openedOnceRef = useRef(false);
+  const [openedOnceRef, setOpenedOnceRef] = useState(false); // Using state instead of ref for some logic if needed, but keeping original ref logic where possible
+  const openedOnceRefObj = useRef(false);
 
   const [trek, setTrek] = useState(null);
   const [similarTreks, setSimilarTreks] = useState([]);
   const [trekReviews, setTrekReviews] = useState([]);
   const [bookingCardData, setBookingCardData] = useState(null);
+  const [trekActions, setTrekActions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showMap, setShowMap] = useState(false);
@@ -109,10 +103,6 @@ export default function TrekDetailPage() {
   const mapRef = useRef(null);
   const reviewsRef = useRef(null);
 
-  const trekName =
-    trek?.hero?.title || trek?.trek?.title || trek?.title || "Trek Detail";
-
-  // ✅ Preload Google Maps when user clicks "View Map"
   useEffect(() => {
     if (showMap && !mapReady) {
       loadGoogleMaps()
@@ -126,16 +116,17 @@ export default function TrekDetailPage() {
     }
   }, [showMap, mapReady]);
 
-  // ✅ UPDATED: Fetch all trek data and transform elevation data
+  // ✅ FIXED: Correct Promise.allSettled array order
   useEffect(() => {
     const loadTrekData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // ✅ Fetch all data in parallel
+        // ✅ Fetch all data in parallel with correct order
         const [
           trekData,
+          actionsData, // ✅ ADDED: Actions result
           elevationChartData,
           similarData,
           reviewsData,
@@ -143,6 +134,7 @@ export default function TrekDetailPage() {
           costDatesData,
         ] = await Promise.allSettled([
           fetchTrek(slug),
+          fetchTrekActions(slug), // ✅ This is now the 2nd item
           fetchTrekElevationChart(slug),
           fetchSimilarTreks(slug, 3),
           fetchTrekReviews(slug),
@@ -153,6 +145,8 @@ export default function TrekDetailPage() {
         // Extract fulfilled values
         const trekResult =
           trekData.status === "fulfilled" ? trekData.value : null;
+        const actions =
+          actionsData.status === "fulfilled" ? actionsData.value : null; // ✅ ADDED
         const apiElevationChart =
           elevationChartData.status === "fulfilled"
             ? elevationChartData.value
@@ -174,10 +168,9 @@ export default function TrekDetailPage() {
           throw new Error("Trek not found");
         }
 
-        // ✅ PRIORITY 1: Use API elevation chart if available
+        // Handle elevation chart
         let elevationChart = apiElevationChart;
 
-        // ✅ PRIORITY 2: Transform itinerary_days if API chart doesn't exist or is empty
         if (
           !elevationChart ||
           !elevationChart.points ||
@@ -194,20 +187,7 @@ export default function TrekDetailPage() {
               subtitle: "Daily altitude changes throughout your trek",
               points: elevationPoints,
             };
-            console.log(
-              "✅ Elevation chart created from itinerary_days:",
-              elevationPoints.length,
-              "points"
-            );
-          } else {
-            console.warn("⚠️ No elevation data available from API or itinerary");
           }
-        } else {
-          console.log(
-            "✅ Using API elevation chart:",
-            apiElevationChart.points?.length,
-            "points"
-          );
         }
 
         // ✅ Merge all data into trek object
@@ -219,6 +199,7 @@ export default function TrekDetailPage() {
         setSimilarTreks(similar);
         setTrekReviews(reviews?.results || []);
         setBookingCardData(bookingCard);
+        setTrekActions(actions);
       } catch (err) {
         console.error("Error loading trek data:", err);
         setError(err.message || "Failed to load trek details");
@@ -230,17 +211,15 @@ export default function TrekDetailPage() {
     if (slug) loadTrekData();
   }, [slug]);
 
-  // Preload Google Maps in background
   useEffect(() => {
     loadGoogleMaps().catch((err) => {
       console.warn("Background Google Maps preload failed:", err);
     });
   }, []);
 
-  // ✅ If navigated here with { state: { openMap: true } }, auto-open map section once
   useEffect(() => {
-    if (!openedOnceRef.current && location.state?.openMap) {
-      openedOnceRef.current = true;
+    if (!openedOnceRefObj.current && location.state?.openMap) {
+      openedOnceRefObj.current = true;
       setShowMap(true);
     }
   }, [location.state]);
@@ -248,7 +227,8 @@ export default function TrekDetailPage() {
   const scrollToDates = () =>
     datesRef.current?.scrollIntoView({ behavior: "smooth" });
 
-  const scrollToMap = () => mapRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToMap = () =>
+    mapRef.current?.scrollIntoView({ behavior: "smooth" });
 
   const scrollToReviews = () =>
     reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -259,13 +239,11 @@ export default function TrekDetailPage() {
     }
   }, [showMap]);
 
-  // Keep it (even if not used elsewhere yet)
   const handleViewMap = () => {
     setShowMap(true);
     scrollToMap();
   };
 
-  // ✅ Handle export completion with notification
   const handleExportComplete = (result) => {
     setExportNotification({
       message: result.message,
@@ -273,7 +251,6 @@ export default function TrekDetailPage() {
     });
   };
 
-  // ✅ Auto-hide notification after 4 seconds
   useEffect(() => {
     if (exportNotification) {
       const timer = setTimeout(() => setExportNotification(null), 4000);
@@ -281,14 +258,38 @@ export default function TrekDetailPage() {
     }
   }, [exportNotification]);
 
+  const handleBookNow = (selectedDate = null) => {
+    const isAuthenticated = !!getAccessToken();
+    const bookingDate =
+      selectedDate || departures.find((d) => d.status === "Available");
+
+    const bookingParams = new URLSearchParams({ trekSlug: slug });
+    if (bookingDate && bookingDate.start && bookingDate.end) {
+      bookingParams.set("startDate", bookingDate.start);
+      bookingParams.set("endDate", bookingDate.end);
+    }
+    const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
+
+    if (isAuthenticated) {
+      navigate(bookingUrl);
+    } else {
+      navigate("/login", {
+        state: {
+          backgroundLocation: location,
+          next: bookingUrl,
+        },
+      });
+    }
+  };
+
+  const trekName = trek?.hero?.title || trek?.trek?.title || trek?.title || (loading ? "" : "Trek Detail");
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading trek details...</p>
-        </div>
-      </div>
+      <>
+        <SEO title={trekName} />
+        <TrekDetailSkeleton />
+      </>
     );
   }
 
@@ -296,7 +297,6 @@ export default function TrekDetailPage() {
     return <TrekErrorPage error={error} />;
   }
 
-  // Flatten API shape
   const flat = {
     ...trek,
     ...(trek.trek || {}),
@@ -343,10 +343,8 @@ export default function TrekDetailPage() {
     activity: activity || trek.trek?.activity,
   };
 
-  // ✅ CORRECTED: Extract cost and dates data
   const costDatesData = trek.cost_dates_data || trek.cost_dates || {};
 
-  // ✅ 1. FLATTEN departures_by_month structure
   let rawDepartures = [];
   if (
     costDatesData.departures_by_month &&
@@ -355,7 +353,10 @@ export default function TrekDetailPage() {
     rawDepartures = costDatesData.departures_by_month.flatMap((monthGroup) =>
       Array.isArray(monthGroup.departures) ? monthGroup.departures : []
     );
-  } else if (costDatesData.departures && Array.isArray(costDatesData.departures)) {
+  } else if (
+    costDatesData.departures &&
+    Array.isArray(costDatesData.departures)
+  ) {
     rawDepartures = costDatesData.departures;
   } else if (trek.departures && Array.isArray(trek.departures)) {
     rawDepartures = trek.departures;
@@ -370,19 +371,29 @@ export default function TrekDetailPage() {
     seats_left: dep.seats_left || null,
   }));
 
-  // ✅ 2. HANDLE both camelCase and snake_case for groupPrices
   let rawGroupPrices = [];
-  if (costDatesData.group_prices && Array.isArray(costDatesData.group_prices)) {
+  if (
+    costDatesData.group_prices &&
+    Array.isArray(costDatesData.group_prices)
+  ) {
     rawGroupPrices = costDatesData.group_prices;
-  } else if (costDatesData.groupPrices && Array.isArray(costDatesData.groupPrices)) {
+  } else if (
+    costDatesData.groupPrices &&
+    Array.isArray(costDatesData.groupPrices)
+  ) {
     rawGroupPrices = costDatesData.groupPrices;
-  } else if (bookingCard.group_prices && Array.isArray(bookingCard.group_prices)) {
+  } else if (
+    bookingCard.group_prices &&
+    Array.isArray(bookingCard.group_prices)
+  ) {
     rawGroupPrices = bookingCard.group_prices;
   }
 
   const groupPrices = rawGroupPrices.map((gp) => {
     const price =
-      typeof gp.price === "string" ? parseFloat(gp.price) : Number(gp.price || 0);
+      typeof gp.price === "string"
+        ? parseFloat(gp.price)
+        : Number(gp.price || 0);
     return {
       label:
         gp.label ||
@@ -394,7 +405,6 @@ export default function TrekDetailPage() {
     };
   });
 
-  // ✅ 3. EXTRACT highlights
   let dateHighlights = [];
   if (costDatesData.highlights && Array.isArray(costDatesData.highlights)) {
     dateHighlights = costDatesData.highlights
@@ -405,83 +415,14 @@ export default function TrekDetailPage() {
   }
 
   const infoSections = trek.additional_info || [];
-  const actionData = trek.actions || {};
 
-  // ✅ UPDATED: Check for elevation data properly
   const elevationChartData = trek.elevation_chart?.points || [];
   const hasElevationData =
     Array.isArray(elevationChartData) && elevationChartData.length > 0;
 
-  const routeGeojsonBySlug = {
-    "annapurna-base-camp-trek": "/routes/annapurna-base-camp.geojson",
-  };
-  const routeGeojsonUrl = actionData.routeGeojson || routeGeojsonBySlug[slug];
+  // ✅ Use trekActions for route geojson
+  const routeGeojsonUrl = trekActions?.routeGeojson;
 
-  // ✅ Auto-select first available date for "Book Now"
-  // ✅ UPDATED: Better booking flow with auth check
-  // const handleBookNow = () => {
-  //   const isAuthenticated = !!getAccessToken();
-  //   const firstAvailable = departures.find((d) => d.status === "Available");
-
-  //   // ✅ Build booking URL with dates if available
-  //   const bookingParams = new URLSearchParams({ trekSlug: slug });
-  //   if (firstAvailable) {
-  //     bookingParams.set('startDate', firstAvailable.start);
-  //     bookingParams.set('endDate', firstAvailable.end);
-  //   }
-  //   const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
-
-  //   if (isAuthenticated) {
-  //     // ✅ User logged in - go directly to booking
-  //     navigate(bookingUrl);
-  //   } else {
-  //     // ✅ User not logged in - show login modal with booking page as background
-  //     navigate('/login', {
-  //       state: {
-  //         backgroundLocation: {
-  //           pathname: '/trek-booking',
-  //           search: `?${bookingParams.toString()}`
-  //         }
-  //       }
-  //     });
-  //   }
-  // };
-
-  // ✅ IMPROVED: Accept optional date parameter from DatesAndPrice
-  const handleBookNow = (selectedDate = null) => {
-    const isAuthenticated = !!getAccessToken();
-
-    // ✅ Use passed date or find first available
-    const bookingDate = selectedDate || departures.find((d) => d.status === "Available");
-
-    // ✅ Build booking URL with dates if available
-    const bookingParams = new URLSearchParams({ trekSlug: slug });
-    if (bookingDate && bookingDate.start && bookingDate.end) {
-      bookingParams.set('startDate', bookingDate.start);
-      bookingParams.set('endDate', bookingDate.end);
-    }
-    const bookingUrl = `/trek-booking?${bookingParams.toString()}`;
-
-    if (isAuthenticated) {
-      // ✅ User logged in - go directly to booking
-      navigate(bookingUrl);
-    } else {
-      // ✅ User not logged in - show login modal with CURRENT page as background
-      // This ensures that clicking 'cancel' returns user to this trek page, avoiding loops
-      navigate('/login', {
-        state: {
-          backgroundLocation: location,
-          next: bookingUrl
-        }
-      });
-    }
-  };
-
-
-
-
-
-  // ✅ Prepare trek metadata for export
   const trekMetadata = {
     title: trekName,
     slug,
@@ -537,7 +478,9 @@ export default function TrekDetailPage() {
         difficulty={hero.difficulty}
         location={hero.location}
         ctaLabel={hero.cta_label}
-        onBookNow={hero.cta_link ? () => navigate(hero.cta_link) : () => handleBookNow()}
+        onBookNow={
+          hero.cta_link ? () => navigate(hero.cta_link) : () => handleBookNow()
+        }
         onInquiry={() => navigate(`/contact-us`)}
       />
 
@@ -554,11 +497,10 @@ export default function TrekDetailPage() {
             <TrekOverview
               overview={{
                 ...flat.overview,
-                // If we have separate highlights component, don't show bullets in overview
-                sections: (flat.overview.sections || []).map(s => ({
+                sections: (flat.overview.sections || []).map((s) => ({
                   ...s,
-                  bullets: trekHighlights.length > 0 ? [] : s.bullets
-                }))
+                  bullets: trekHighlights.length > 0 ? [] : s.bullets,
+                })),
               }}
             />
           )}
@@ -585,16 +527,23 @@ export default function TrekDetailPage() {
               trekSlug={slug}
               trekName={trekName}
               basePrice={
-                parseFloat(bookingCardData?.base_price || bookingCard.base_price) ||
-                0
+                parseFloat(
+                  bookingCardData?.base_price || bookingCard.base_price
+                ) || 0
               }
               original={
                 parseFloat(
                   bookingCardData?.original_price || bookingCard.original_price
                 ) || 0
               }
-              groups={bookingCardData?.group_prices || bookingCard.group_prices || []}
-              badgeLabel={bookingCardData?.badge_label || bookingCard.badge_label}
+              groups={
+                bookingCardData?.group_prices ||
+                bookingCard.group_prices ||
+                []
+              }
+              badgeLabel={
+                bookingCardData?.badge_label || bookingCard.badge_label
+              }
               securePayment={
                 bookingCardData?.secure_payment ?? bookingCard.secure_payment
               }
@@ -605,7 +554,9 @@ export default function TrekDetailPage() {
                 bookingCardData?.free_cancellation ??
                 bookingCard.free_cancellation
               }
-              support247={bookingCardData?.support_24_7 ?? bookingCard.support_24_7}
+              support247={
+                bookingCardData?.support_24_7 ?? bookingCard.support_24_7
+              }
               trustedReviews={
                 bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews
               }
@@ -619,42 +570,47 @@ export default function TrekDetailPage() {
       <TrekAddInfo sections={infoSections} />
 
       <div className="py-8">
-        <TrekGallery images={gallery} trekName={trekName} showTitle minImages={1} />
+        <TrekGallery
+          images={gallery}
+          trekName={trekName}
+          showTitle
+          minImages={1}
+        />
       </div>
 
       {hasElevationData && (
         <ElevationChart
           elevationData={elevationChartData}
           title={trek.elevation_chart?.title || "Elevation Profile"}
-          subtitle={trek.elevation_chart?.subtitle || "Trek elevation overview"}
+          subtitle={
+            trek.elevation_chart?.subtitle || "Trek elevation overview"
+          }
           trekName={trekName}
           showFullscreen
         />
       )}
 
       <div className="py-8" ref={datesRef}>
-        {/* // ✅ In the DatesAndPrice component call - line ~520 */}
         <DatesAndPrice
           dates={departures}
           groupPrices={groupPrices}
           highlights={dateHighlights}
           trekName={trekName}
           trekId={slug}
-          onBookDate={(date) => handleBookNow(date)} // ✅ Pass date directly
+          onBookDate={(date) => handleBookNow(date)}
         />
-
       </div>
 
-      {/* ✅ Map section with export */}
-      {/* ✅ Map section with export */}
+      {/* ✅ Map section with actions */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <TrekActions
             trekId={flat.public_id}
-            trekSlug={slug}  // ✅ NEW: Pass slug
-            trekName={trekName}  // ✅ NEW: Pass name
-            pdfUrl={actionData.pdfUrl || trek.pdfUrl}
-            preferredDates={departures.filter(d => d.status === "Available")}  // ✅ NEW: Pass available dates
+            trekSlug={slug}
+            trekName={trekName}
+            // pdfUrl={trekActions?.pdfUrl} // ✅ From API
+            mapImage={trekActions?.mapImage} // ✅ From API
+            preferredDates={departures.filter((d) => d.status === "Available")}
           />
 
           <div ref={mapRef} className="mt-12">
@@ -663,8 +619,8 @@ export default function TrekDetailPage() {
                 itinerary={flat.itinerary}
                 trekName={trekName}
                 trekMetadata={trekMetadata}
-                fallbackMapImage={actionData.mapImage || trek.mapImage}
-                routeGeojsonUrl={routeGeojsonUrl}
+                fallbackMapImage={trekActions?.mapImage} // ✅ From API
+                routeGeojsonUrl={routeGeojsonUrl} // ✅ From API
                 onExportComplete={handleExportComplete}
               />
             </Suspense>
@@ -677,7 +633,9 @@ export default function TrekDetailPage() {
           reviews={trekReviews.length > 0 ? trekReviews : reviews}
           trekName={trekName}
           averageRating={rating}
-          totalReviews={trekReviews.length > 0 ? trekReviews.length : reviews.length}
+          totalReviews={
+            trekReviews.length > 0 ? trekReviews.length : reviews.length
+          }
           autoPlay
           showStats
         />
@@ -706,12 +664,18 @@ export default function TrekDetailPage() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wide">From</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wide">
+              From
+            </p>
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-bold text-slate-900">
-                ${(bookingCardData?.base_price || bookingCard.base_price || 0).toLocaleString()}
+                $
+                {(
+                  bookingCardData?.base_price ||
+                  bookingCard.base_price ||
+                  0
+                ).toLocaleString()}
               </span>
-              {/* Optional: show original price if space permits or relevant */}
             </div>
           </div>
           <button

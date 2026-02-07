@@ -8,10 +8,13 @@ import FeaturedTreksGrid from "./FeaturedTreks";
 import MountainHomePage from "./Hero/AdvancedMountainHomePage";
 import ImprovedNavbar from "../navbarEssentials/Navbar";
 import HomeFeaturedTreks from "./FeaturedTreks";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SEO from "../components/common/SEO";
+
 export default function Home() {
   return (
     <>
+      <SEO />
       {/* Advanced Mountain Home Page without search props */}
       <MountainHomePage />
 
@@ -62,7 +65,7 @@ export default function Home() {
 
           {/* Enhanced Featured Trek Grid */}
           <div className="relative">
-            <HomeFeaturedTreks/>
+            <HomeFeaturedTreks />
           </div>
         </div>
       </section>
@@ -156,46 +159,46 @@ const WhyChooseUsSection = () => {
 const CallToActionSection = () => {
   const navigate = useNavigate();
   return (
-<section className="relative py-24 bg-sky-50 overflow-hidden">
-  {/* subtle texture */}
-  <div className="absolute inset-0 bg-[url('/mountain-pattern.svg')] opacity-[0.06]" />
+    <section className="relative py-24 bg-sky-50 overflow-hidden">
+      {/* subtle texture */}
+      <div className="absolute inset-0 bg-[url('/mountain-pattern.svg')] opacity-[0.06]" />
 
-  <div className="relative max-w-3xl mx-auto text-center px-6">
-    <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
-      Ready for your next{" "}
-      <span className="text-sky-600">adventure?</span>
-    </h2>
+      <div className="relative max-w-3xl mx-auto text-center px-6">
+        <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 leading-tight">
+          Ready for your next{" "}
+          <span className="text-sky-600">adventure?</span>
+        </h2>
 
-    <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-      Explore Nepal’s most iconic trekking routes with trusted local guides and
-      thoughtfully crafted itineraries.
-    </p>
+        <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+          Explore Nepal’s most iconic trekking routes with trusted local guides and
+          thoughtfully crafted itineraries.
+        </p>
 
-    <div className="mt-10">
-      <button
-        onClick={() => navigate("/trekking-in-nepal")}
-        className="inline-flex items-center gap-3 px-8 py-4 rounded-xl
+        <div className="mt-10">
+          <button
+            onClick={() => navigate("/trekking-in-nepal")}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl
                    bg-sky-600 text-white font-semibold
                    hover:bg-sky-500 transition-colors"
-      >
-        Start your journey
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 7l5 5m0 0l-5 5m5-5H6"
-          />
-        </svg>
-      </button>
-    </div>
-  </div>
-</section>
+          >
+            Start your journey
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
 
 
 

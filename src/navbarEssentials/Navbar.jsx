@@ -23,6 +23,51 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const containerRef = useRef(null);
+  const [trekName, setTrekName] = useState("");
+
+  // Update trek name based on document title
+  useEffect(() => {
+    const updateTrekName = () => {
+      const isTrekPage = location.pathname.includes("/treks/") ||
+        location.pathname.includes("/everest/") ||
+        location.pathname.includes("/annapurna/") ||
+        location.pathname.includes("/manaslu/") ||
+        location.pathname.includes("/mustang/") ||
+        location.pathname.includes("/langtang/");
+
+      if (isTrekPage) {
+        const title = document.title;
+        const name = title.includes("|") ? title.split("|")[0].trim() : title.trim();
+
+        if (name && name !== "Trek Detail" && name !== "EverTrek Nepal" && name !== "") {
+          setTrekName(name);
+        } else {
+          setTrekName(""); // Clear if it's a generic or loading title
+        }
+      } else {
+        setTrekName("");
+      }
+    };
+
+    // Use MutationObserver to watch for title changes (Helmet async updates)
+    const titleElement = document.querySelector('title');
+    let observer;
+
+    if (titleElement) {
+      observer = new MutationObserver(updateTrekName);
+      observer.observe(titleElement, { childList: true, characterData: true, subtree: true });
+    }
+
+    updateTrekName();
+
+    // Fallback timer
+    const timer = setTimeout(updateTrekName, 500);
+
+    return () => {
+      if (observer) observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, [location.pathname]);
 
 
   const isTrekkingSection =
@@ -144,12 +189,19 @@ export default function Navbar() {
       <nav className="bg-green-50 border-b border-gray-200">
         <div className="flex items-center justify-between py-4 px-4 lg:px-10">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center group">
             <img
               src="/evertreknepallogo.webp"
-              alt="EverTrek Nepal Logo"
-              className="h-20 object-contain"
+              // alt="EverTrek Nepal Logo"
+              className="h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105"
             />
+            {trekName && (
+              <div className="hidden sm:flex items-center ml-2 border-l-2 border-yellow-500 pl-3 py-1">
+                <span className="text-sm md:text-base lg:text-lg font-bold text-[#062c5b] uppercase tracking-tight line-clamp-1">
+                  {trekName}
+                </span>
+              </div>
+            )}
           </Link>
 
 
@@ -356,8 +408,8 @@ export default function Navbar() {
                 {/* Dropdown Content with smooth transition */}
                 <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveDropdown === "trekking"
-                      ? "max-h-[2000px] opacity-100 mt-3"
-                      : "max-h-0 opacity-0"
+                    ? "max-h-[2000px] opacity-100 mt-3"
+                    : "max-h-0 opacity-0"
                     }`}
                 >
                   <div className="pl-4 pr-2">
@@ -389,8 +441,8 @@ export default function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveDropdown === "travelstyles"
-                      ? "max-h-[1000px] opacity-100 mt-3"
-                      : "max-h-0 opacity-0"
+                    ? "max-h-[1000px] opacity-100 mt-3"
+                    : "max-h-0 opacity-0"
                     }`}
                 >
                   <div className="pl-4">
@@ -421,8 +473,8 @@ export default function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveDropdown === "info"
-                      ? "max-h-[1000px] opacity-100 mt-3"
-                      : "max-h-0 opacity-0"
+                    ? "max-h-[1000px] opacity-100 mt-3"
+                    : "max-h-0 opacity-0"
                     }`}
                 >
                   <div className="pl-4">
@@ -474,8 +526,8 @@ export default function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveDropdown === "about"
-                      ? "max-h-[600px] opacity-100 mt-3"
-                      : "max-h-0 opacity-0"
+                    ? "max-h-[600px] opacity-100 mt-3"
+                    : "max-h-0 opacity-0"
                     }`}
                 >
                   <div className="pl-4">
