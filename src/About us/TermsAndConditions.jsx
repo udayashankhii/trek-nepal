@@ -72,7 +72,7 @@ export default function TermsAndConditions() {
             <ul className="list-disc pl-6 space-y-2">
               <li>All bookings must be made through our official website or authorized agents</li>
               <li>A booking is confirmed only after receiving the initial deposit payment</li>
-              <li>You will receive a booking confirmation email within 24-48 hours</li>
+              <li>You will receive a booking confirmation email within 24 hours</li>
               <li>Minimum age requirement: 16 years (with parental consent for minors)</li>
             </ul>
 
@@ -82,7 +82,7 @@ export default function TermsAndConditions() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>You have completed the booking form with accurate information</li>
-              <li>You have paid the required deposit (typically 20% of total cost)</li>
+              <li>You have paid the required deposit (typically 100% of total cost)</li>
               <li>You have received written confirmation from EverTrek Nepal</li>
             </ul>
 
@@ -96,9 +96,9 @@ export default function TermsAndConditions() {
           <Section id="payment" icon={CreditCard} title="3. Payment Terms">
             <h4 className="font-semibold text-gray-900 mt-4 mb-2">3.1 Payment Schedule</h4>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Deposit:</strong> 20% of total trek cost due at booking</li>
-              <li><strong>Final Payment:</strong> Remaining 80% due 30 days before trek departure</li>
-              <li><strong>Last-Minute Bookings:</strong> Full payment required for bookings made less than 30 days before departure</li>
+              <li><strong>Deposit:</strong> 100% of total trek cost due at booking</li>
+             
+            
             </ul>
 
             <h4 className="font-semibold text-gray-900 mt-4 mb-2">3.2 Accepted Payment Methods</h4>
@@ -106,7 +106,7 @@ export default function TermsAndConditions() {
               <li>Credit/Debit Cards (Visa, Mastercard, American Express)</li>
               <li>Bank Transfer</li>
               <li>PayPal</li>
-              <li>Khalti (for Nepal-based customers)</li>
+            
             </ul>
 
             <h4 className="font-semibold text-gray-900 mt-4 mb-2">3.3 Currency</h4>
@@ -319,22 +319,7 @@ export default function TermsAndConditions() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-6">
-            <Link
-              to="/"
-              className="flex-1 bg-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-indigo-700 transition flex items-center justify-center gap-2"
-            >
-              <Home className="w-5 h-5" />
-              Return to Home
-            </Link>
-            <Link
-              to="/treks"
-              className="flex-1 bg-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-purple-700 transition flex items-center justify-center gap-2"
-            >
-              <Mountain className="w-5 h-5" />
-              Browse Treks
-            </Link>
-          </div>
+      
         </div>
       </div>
     </div>

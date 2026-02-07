@@ -73,7 +73,7 @@ import PaymentSuccessPage from "./Book/TrekBooking/PaymentSuccessPage";
 import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
 import LoginModal from "./Model/LoginModal.jsx";
 import { useAuth } from "./api/auth/AuthContext";
-import TermsAndConditions from "./pages/TermsAndConditions";
+import TermsAndConditions from "./About us/TermsAndConditions";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (

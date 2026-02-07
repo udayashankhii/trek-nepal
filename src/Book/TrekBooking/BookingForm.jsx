@@ -545,7 +545,7 @@ export function TermsAndSubmitSection({
           <span className="text-sm text-gray-700 group-hover:text-gray-900 transition">
             I agree to the{" "}
             <a
-              href="/terms"
+              href="/terms-and-conditions"
               className="text-indigo-600 underline hover:text-indigo-800 font-medium"
               target="_blank"
               rel="noopener noreferrer"
@@ -554,7 +554,7 @@ export function TermsAndSubmitSection({
             </a>{" "}
             and{" "}
             <a
-              href="/privacy"
+              href="/about-us/privacy-policy"
               className="text-indigo-600 underline hover:text-indigo-800 font-medium"
               target="_blank"
               rel="noopener noreferrer"
