@@ -23,12 +23,12 @@ warnings.filterwarnings('ignore')
 # NUMPY COMPATIBILITY CHECK
 # ============================================================================
 numpy_version = tuple(map(int, np.__version__.split('.')[:2]))
-print(f"🔍 NumPy version: {np.__version__}")
 
 if numpy_version < (1, 23):
     print("⚠️  WARNING: NumPy < 1.23 detected.")
     print("    Your models may have compatibility issues.")
     print("    Recommended: pip install --upgrade numpy>=1.23.0")
+
 
 # Import joblib after numpy check
 import joblib
@@ -123,9 +123,6 @@ class ModelEnsemble:
     
     def __init__(self, model_path: str = MODEL_PATH):
         """Load all models and preprocessing artifacts"""
-        print("🔄 Loading models and artifacts...")
-        print(f"📂 Model path: {model_path}")
-        
         # Verify path exists
         if not os.path.exists(model_path):
             raise RuntimeError(f"Model path does not exist: {model_path}")
@@ -143,22 +140,18 @@ class ModelEnsemble:
         # Try loading each model
         for model_name in model_files:
             model_file = os.path.join(model_path, f"{model_name}.pkl")
-            print(f"  Loading {model_name}...")
             
             try:
                 model = joblib.load(model_file)
                 self.models[model_name] = model
-                print(f"    ✅ {model_name} loaded successfully")
             except Exception as e:
                 error_msg = str(e)
                 self.failed_models.append(model_name)
-                print(f"    ⚠️  {model_name} failed: {error_msg[:80]}")
                 
                 # Check if it's a numpy compatibility issue
                 if "PCG64" in error_msg or "BitGenerator" in error_msg:
-                    print(f"    💡 Tip: This is a numpy version issue.")
-                    print(f"       Your models need numpy>=1.23.0")
-                    print(f"       Run: pip install --upgrade numpy>=1.23.0")
+                    print(f"⚠️  {model_name} failed: numpy compatibility issue detected")
+                    print(f"    Recommended: pip install --upgrade numpy>=1.23.0")
         
         # Check if we have at least one working model
         if len(self.models) == 0:
@@ -167,16 +160,13 @@ class ModelEnsemble:
                 f"All failed. Check numpy version and model compatibility."
             )
         elif len(self.failed_models) > 0:
-            print(f"⚠️  Warning: {len(self.failed_models)} models failed to load: {self.failed_models}")
-            print(f"✅ Continuing with {len(self.models)} working models: {list(self.models.keys())}")
+            print(f"⚠️  {len(self.failed_models)} models failed, continuing with {len(self.models)}")
         
         # Load preprocessing artifacts
         try:
-            print("  Loading preprocessing artifacts...")
             self.scaler = joblib.load(os.path.join(model_path, "scaler.pkl"))
             self.label_encoder = joblib.load(os.path.join(model_path, "label_encoder.pkl"))
             self.feature_columns = joblib.load(os.path.join(model_path, "feature_columns.pkl"))
-            print(f"✅ Loaded {len(self.models)} models and preprocessing artifacts")
         except Exception as e:
             raise RuntimeError(f"Failed to load preprocessing artifacts: {str(e)}")
     
@@ -235,6 +225,17 @@ class ModelEnsemble:
 # ============================================================================
 # WEATHER DATA FETCHING
 # ============================================================================
+class DayLocation(BaseModel):
+    day: int
+    date: str  # YYYY-MM-DD
+    latitude: float
+    longitude: float
+    elevation: float
+    place_name: Optional[str]
+
+class TrekItineraryPredictionRequest(BaseModel):
+    trek_id: str
+    days: List[DayLocation]
 
 class WeatherFetcher:
     """Fetch weather data from Open-Meteo API (historical and forecast)"""
