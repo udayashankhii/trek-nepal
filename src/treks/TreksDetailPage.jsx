@@ -466,13 +466,12 @@ export default function TrekDetailPage() {
       // ✅ User logged in - go directly to booking
       navigate(bookingUrl);
     } else {
-      // ✅ User not logged in - show login modal with booking page as background
+      // ✅ User not logged in - show login modal with CURRENT page as background
+      // This ensures that clicking 'cancel' returns user to this trek page, avoiding loops
       navigate('/login', {
         state: {
-          backgroundLocation: {
-            pathname: '/trek-booking',
-            search: `?${bookingParams.toString()}`
-          }
+          backgroundLocation: location,
+          next: bookingUrl
         }
       });
     }
@@ -634,7 +633,7 @@ export default function TrekDetailPage() {
       )}
 
       <div className="py-8" ref={datesRef}>
-       {/* // ✅ In the DatesAndPrice component call - line ~520 */}
+        {/* // ✅ In the DatesAndPrice component call - line ~520 */}
         <DatesAndPrice
           dates={departures}
           groupPrices={groupPrices}
@@ -647,31 +646,31 @@ export default function TrekDetailPage() {
       </div>
 
       {/* ✅ Map section with export */}
-{/* ✅ Map section with export */}
-<div className="py-12 bg-white">
-  <div className="max-w-7xl mx-auto px-4">
-    <TrekActions 
-      trekId={flat.public_id} 
-      trekSlug={slug}  // ✅ NEW: Pass slug
-      trekName={trekName}  // ✅ NEW: Pass name
-      pdfUrl={actionData.pdfUrl || trek.pdfUrl}
-      preferredDates={departures.filter(d => d.status === "Available")}  // ✅ NEW: Pass available dates
-    />
+      {/* ✅ Map section with export */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <TrekActions
+            trekId={flat.public_id}
+            trekSlug={slug}  // ✅ NEW: Pass slug
+            trekName={trekName}  // ✅ NEW: Pass name
+            pdfUrl={actionData.pdfUrl || trek.pdfUrl}
+            preferredDates={departures.filter(d => d.status === "Available")}  // ✅ NEW: Pass available dates
+          />
 
-    <div ref={mapRef} className="mt-12">
-      <Suspense fallback={<MapLoadingSpinner />}>
-        <TrekRouteMap
-          itinerary={flat.itinerary}
-          trekName={trekName}
-          trekMetadata={trekMetadata}
-          fallbackMapImage={actionData.mapImage || trek.mapImage}
-          routeGeojsonUrl={routeGeojsonUrl}
-          onExportComplete={handleExportComplete}
-        />
-      </Suspense>
-    </div>
-  </div>
-</div>
+          <div ref={mapRef} className="mt-12">
+            <Suspense fallback={<MapLoadingSpinner />}>
+              <TrekRouteMap
+                itinerary={flat.itinerary}
+                trekName={trekName}
+                trekMetadata={trekMetadata}
+                fallbackMapImage={actionData.mapImage || trek.mapImage}
+                routeGeojsonUrl={routeGeojsonUrl}
+                onExportComplete={handleExportComplete}
+              />
+            </Suspense>
+          </div>
+        </div>
+      </div>
 
       <div className="py-8 bg-gray-100" ref={reviewsRef}>
         <ReviewsSlider
