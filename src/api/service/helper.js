@@ -2,6 +2,40 @@ import axiosInstance from "./axiosInstance";
 import { cacheManager } from "../../cache/CacheManager";
 import { requestDeduplicator } from "../../cache/RequestDeduplicator";
 
+
+/**
+ * ✅ FIXED: Add 1 day to end date to correct API off-by-one error
+ * 
+ * The backend API returns end dates that are 1 day short due to exclusive
+ * date range calculation. This function corrects it for inclusive date counting.
+ * 
+ * Example:
+ * - API returns: Mar 9 → Mar 18 (10 days, exclusive end)
+ * - We correct to: Mar 9 → Mar 19 (11 days, inclusive end)
+ */
+export const correctEndDate = (endDateStr) => {
+  if (!endDateStr) return endDateStr;
+
+  try {
+    // ✅ Use UTC midnight to prevent toISOString from shifting dates
+    const date = new Date(endDateStr + "T00:00:00Z");
+    if (isNaN(date.getTime())) return endDateStr;
+
+    // Add 1 day to convert from exclusive to inclusive end date
+    date.setUTCDate(date.getUTCDate() + 1);
+
+    const corrected = date.toISOString().split("T")[0];
+
+    console.log(`📅 Date correction: ${endDateStr} → ${corrected}`);
+
+    return corrected;
+  } catch (error) {
+    console.error("Error correcting end date:", error);
+    return endDateStr;
+  }
+};
+
+
 /**
  * Normalize API response to array format
  */
@@ -15,6 +49,7 @@ export const normalizeArray = (data, key = null) => {
   }
   return [];
 };
+
 
 /**
  * Generic API GET request with caching and deduplication
@@ -31,11 +66,11 @@ export const apiGet = async (endpoint, params = {}, useCache = true) => {
     try {
       const response = await axiosInstance.get(endpoint, { params });
       const data = response.data;
-      
+
       if (useCache) {
         cacheManager.set(cacheKey, data);
       }
-      
+
       return data;
     } catch (error) {
       console.error(`API Error [${endpoint}]:`, error.message);
@@ -44,8 +79,9 @@ export const apiGet = async (endpoint, params = {}, useCache = true) => {
   });
 };
 
+
 /**
- * Transform cost and dates response to flat structure
+ * ✅ UPDATED: Transform cost and dates response with corrected end dates
  */
 export const transformCostDatesResponse = (data) => {
   if (!data || typeof data !== 'object') {
@@ -55,12 +91,31 @@ export const transformCostDatesResponse = (data) => {
   // Flatten departures_by_month into single array
   let departures = [];
   if (data.departures_by_month && Array.isArray(data.departures_by_month)) {
-    departures = data.departures_by_month.flatMap(monthGroup => 
+    departures = data.departures_by_month.flatMap(monthGroup =>
       Array.isArray(monthGroup.departures) ? monthGroup.departures : []
     );
   } else if (data.departures && Array.isArray(data.departures)) {
     departures = data.departures;
   }
+
+  // ✅ CRITICAL FIX: Correct end dates for all departures
+  departures = departures.map(dep => {
+    // Handle both snake_case and camelCase
+    const endDate = dep.end || dep.end_date || dep.endDate;
+    const startDate = dep.start || dep.start_date || dep.startDate;
+
+    // Apply date correction to end date
+    const correctedEnd = correctEndDate(endDate);
+
+    return {
+      ...dep,
+      start: startDate,
+      end: correctedEnd,  // ✅ Use corrected end date
+      // Keep original field names for compatibility
+      end_date: correctedEnd,
+      start_date: startDate,
+    };
+  });
 
   // Handle both camelCase and snake_case for groupPrices
   let groupPrices = [];
@@ -79,7 +134,7 @@ export const transformCostDatesResponse = (data) => {
   // Extract highlights from objects if needed
   let highlights = [];
   if (data.highlights && Array.isArray(data.highlights)) {
-    highlights = data.highlights.map(h => 
+    highlights = data.highlights.map(h =>
       typeof h === 'string' ? h : (h.highlight || h.text || '')
     ).filter(Boolean);
   }

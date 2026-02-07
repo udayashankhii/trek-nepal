@@ -384,6 +384,11 @@ export const fetchTrekBookingData = async (trekSlug) => {
       difficulty: flat.trek_grade || flat.trip_grade || flat.difficulty,
       region: flat.region_name || flat.region,
       booking_card: bookingCardData,
+      
+      // ✅ ADDED: Include itinerary data for weather prediction
+      itinerary_days: flat.itinerary_days || trek.itinerary_days || flat.itinerary || trek.itinerary || [],
+      itinerary: flat.itinerary || trek.itinerary || flat.itinerary_days || trek.itinerary_days || [],
+      max_altitude: flat.max_altitude || flat.maximum_altitude || trek.max_altitude,
     };
 
     return {
@@ -397,6 +402,7 @@ export const fetchTrekBookingData = async (trekSlug) => {
     throw error;
   }
 };
+
 
 export const fetchCompleteTrekData = async (trekSlug) => {
   try {
@@ -435,7 +441,6 @@ export const fetchCompleteTrekData = async (trekSlug) => {
 // ============================================
 // FILTERS & STATS
 // ============================================
-
 export const fetchTrekFilters = async () => {
   try {
     return await apiGet("/treks/filters/");

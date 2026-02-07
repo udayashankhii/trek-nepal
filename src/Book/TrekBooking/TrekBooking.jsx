@@ -1,7 +1,3 @@
-
-
-
-
 // src/pages/BookingPage/SinglePageBookingForm.jsx
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
@@ -16,35 +12,45 @@ import {
   TermsAndSubmitSection,
 } from "./BookingForm.jsx";
 import PricingSidebar from "./PricingSidebar.jsx";
-import WeatherRiskWarning from "./WeatherRiskWarning.jsx"; // ⭐ NEW
+import WeatherRiskWarning from "./WeatherRiskWarning.jsx";
 import { getBookingQuote } from "../../api/service/bookingServices.js";
-import { getTrekRiskPrediction } from "../../api/service/trekRisk.js"; // ⭐ NEW
+import { getTrekRiskByItinerary } from "../../api/service/trekRisk.js";
 
 import { useBookingForm } from "../../hooks/useBookingForm.js";
 import { useFormValidation } from "../../hooks/useFormValidation.js";
 import { fetchTrekBookingData } from "../../api/service/trekService.js";
-import { getAccessToken } from "../../api/auth/auth.api.js"; // ✅ Import to check auth on mount
+
+/**
+ * ✅ Check if trek dates are within weather forecast range (16 days)
+ */
+function checkWeatherForecastAvailability(startDate, durationDays) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const start = new Date(startDate);
+  const lastTrekDay = new Date(start);
+  lastTrekDay.setDate(start.getDate() + durationDays - 1);
+  
+  const maxForecastDate = new Date(today);
+  maxForecastDate.setDate(today.getDate() + 16);
+  
+  const isWithinRange = lastTrekDay <= maxForecastDate;
+  const daysOutOfRange = Math.ceil((lastTrekDay - maxForecastDate) / (1000 * 60 * 60 * 24));
+  
+  return {
+    isWithinRange,
+    daysOutOfRange: Math.max(0, daysOutOfRange),
+    lastTrekDate: lastTrekDay.toISOString().split('T')[0],
+    maxForecastDate: maxForecastDate.toISOString().split('T')[0]
+  };
+}
 
 export default function SinglePageBookingForm() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const navigate = useNavigate(); // ✅ Add this
+  const navigate = useNavigate();
 
-  // ✅ Check authentication on component mount
-  // useEffect(() => {
-  //   const token = getAccessToken();
-  //   if (!token) {
-  //     console.log('⚠️ No auth token found, redirecting to login');
-  //     navigate('/login', {
-  //       state: {
-  //         backgroundLocation: location
-  //       },
-  //       replace: true
-  //     });
-  //   }
-  // }, [location, navigate]);
-
-  // ✅ Get trek slug from URL params
+  // Get trek slug from URL params
   const trekSlug =
     searchParams.get("trekSlug") ||
     searchParams.get("trekslug") ||
@@ -59,7 +65,7 @@ export default function SinglePageBookingForm() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Hooks
+  // Hooks
   const bookingForm = useBookingForm(trek, hero);
   const validation = useFormValidation(
     bookingForm.lead,
@@ -67,35 +73,75 @@ export default function SinglePageBookingForm() {
     bookingForm.travellers,
     bookingForm.accepted
   );
-  // ⭐ NEW: Weather Risk Prediction State
+
+  // Weather Risk Prediction State
   const [riskPrediction, setRiskPrediction] = useState(null);
   const [riskLoading, setRiskLoading] = useState(false);
   const [riskError, setRiskError] = useState(null);
   const [riskAcknowledged, setRiskAcknowledged] = useState(false);
 
-  // ✅ Initialize dates from URL params
-
-
-  // ✅ Initialize dates from URL params
-  useEffect(() => {
-    const s = searchParams.get("startDate") || searchParams.get("date");
-    const e = searchParams.get("endDate");
-
-    console.log('📅 Initializing dates from URL:', { startDate: s, endDate: e });
-
-    if (s && s !== 'null' && s !== 'undefined') {
-      bookingForm.setStartDate(s);
-      if (e) {
-        setTimeout(() => bookingForm.setEndDate(e), 100);
-      }
-    }
-  }, [searchParams]); // ✅ Only depend on searchParams, not bookingForm methods
-
-
   // Quote State
   const [quote, setQuote] = useState(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState(null);
+
+  // ✅ Initialize dates from URL params
+  useEffect(() => {
+    const s = searchParams.get("startDate") || searchParams.get("date");
+
+    console.log("📅 Initializing start date from URL:", { startDate: s });
+
+    if (s && s !== "null" && s !== "undefined") {
+      bookingForm.setStartDate(s);
+    }
+  }, [searchParams]);
+
+  // Fetch Main Trek Data
+  useEffect(() => {
+    if (!trekSlug) {
+      setError("Trek not specified");
+      setLoading(false);
+      return;
+    }
+
+    let mounted = true;
+    const controller = new AbortController();
+
+    setLoading(true);
+    setError(null);
+
+    fetchTrekBookingData(trekSlug)
+      .then((result) => {
+        if (!mounted) return;
+        if (!result || !result.trek) throw new Error("Invalid trek data");
+
+        console.log("📦 Trek data loaded:", {
+          name: result.trek?.name,
+          hasItineraryDays: !!result.trek?.itinerary_days,
+          hasItinerary: !!result.trek?.itinerary,
+          itineraryLength:
+            result.trek?.itinerary_days?.length ||
+            result.trek?.itinerary?.length,
+        });
+
+        setHero(result.hero || {});
+        setTrek(result.trek || {});
+        setBookingCardData(result.bookingCard || {});
+        setHighlights(result.highlights || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        console.error("Failed to load trek booking data:", err);
+        setError(err.message || "Failed to load trek details");
+        setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+      controller.abort();
+    };
+  }, [trekSlug]);
 
   // Fetch Quote
   useEffect(() => {
@@ -135,10 +181,14 @@ export default function SinglePageBookingForm() {
     };
   }, [trekSlug, bookingForm.travellers]);
 
-  // ⭐ NEW: Fetch Weather Risk Prediction when dates change
+  // ✅ Fetch Weather Risk Prediction with 16-day validation
   useEffect(() => {
-    // Only fetch if we have all required data
     if (!trekSlug || !bookingForm.startDate || !trek) {
+      console.log("⚠️ Waiting for trek data...", {
+        hasTrekSlug: !!trekSlug,
+        hasStartDate: !!bookingForm.startDate,
+        hasTrek: !!trek,
+      });
       return;
     }
 
@@ -146,51 +196,65 @@ export default function SinglePageBookingForm() {
     const controller = new AbortController();
 
     const fetchRiskPrediction = async () => {
-      setRiskLoading(true);
-      setRiskError(null);
-      setRiskAcknowledged(false); // Reset acknowledgment on date change
+      const itineraryData = trek?.itinerary_days || trek?.itinerary;
 
-      try {
-        // Extract elevation from max_altitude (e.g., "5,545m" -> 5545)
-        const elevationStr =
-          trek.max_altitude ||
-          trek.hero?.max_altitude ||
-          bookingCardData?.max_altitude ||
-          hero?.max_altitude ||
-          '0m';
+      if (!itineraryData || itineraryData.length === 0) {
+        console.log("⚠️ No itinerary data available");
+        setRiskError("Trek itinerary data not available");
+        return;
+      }
 
-        const elevation = parseInt(
-          elevationStr.replace(/,/g, '').replace(/m/g, '').trim(),
-          10
-        ) || 5000; // Default fallback
+      // ✅ NEW: Check if dates are within 16-day forecast window
+      const forecastCheck = checkWeatherForecastAvailability(
+        bookingForm.startDate,
+        itineraryData.length
+      );
 
-        // Get latitude (add to trek data or use Nepal average)
-        const latitude = trek.latitude || 27.99;
-
-        console.log('🔍 Fetching risk prediction:', {
-          trekSlug,
-          latitude,
-          elevation,
-          dateStart: bookingForm.startDate,
-          dateEnd: bookingForm.endDate || bookingForm.startDate
+      if (!forecastCheck.isWithinRange) {
+        console.log("⚠️ Trek dates beyond 16-day forecast range:", {
+          startDate: bookingForm.startDate,
+          lastTrekDate: forecastCheck.lastTrekDate,
+          daysOutOfRange: forecastCheck.daysOutOfRange,
         });
 
-        const prediction = await getTrekRiskPrediction({
+        const endDateFormatted = new Date(forecastCheck.lastTrekDate).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+
+        setRiskError(
+          `Weather forecasts are only available for the next 16 days `
+        );
+        return;
+      }
+
+      setRiskLoading(true);
+      setRiskError(null);
+      setRiskAcknowledged(false);
+
+      try {
+        console.log("🔍 Fetching day-by-day weather predictions:", {
           trekSlug,
-          latitude,
-          elevation,
-          dateStart: bookingForm.startDate,
-          dateEnd: bookingForm.endDate || bookingForm.startDate,
+          startDate: bookingForm.startDate,
+          itineraryLength: itineraryData.length,
+          withinForecastWindow: true,
+        });
+
+        const prediction = await getTrekRiskByItinerary({
+          trekSlug: trek.slug || trekSlug,
+          itineraryDays: itineraryData,
+          startDate: bookingForm.startDate,
         });
 
         if (active && !controller.signal.aborted) {
           setRiskPrediction(prediction);
-          console.log('✅ Risk prediction received:', prediction.overall_risk);
+          console.log("✅ Risk prediction received:", prediction.overall_risk);
         }
       } catch (err) {
         if (active && !controller.signal.aborted) {
-          console.error('❌ Failed to fetch risk prediction:', err);
-          setRiskError(err.message || 'Weather prediction unavailable');
+          console.error("❌ Failed to fetch risk prediction:", err);
+          setRiskError(err.message || "Weather prediction unavailable");
         }
       } finally {
         if (active) {
@@ -199,7 +263,6 @@ export default function SinglePageBookingForm() {
       }
     };
 
-    // Debounce to avoid excessive API calls when user is selecting dates
     const timeoutId = setTimeout(fetchRiskPrediction, 800);
 
     return () => {
@@ -207,7 +270,7 @@ export default function SinglePageBookingForm() {
       controller.abort();
       clearTimeout(timeoutId);
     };
-  }, [trekSlug, bookingForm.startDate, bookingForm.endDate, trek, bookingCardData, hero]);
+  }, [trekSlug, bookingForm.startDate, trek]);
 
   // Calculate prices
   const basePrice = useMemo(() => {
@@ -216,10 +279,10 @@ export default function SinglePageBookingForm() {
 
     return parseFloat(
       bookingCardData?.base_price ||
-      trek?.booking_card?.base_price ||
-      trek?.base_price ||
-      trek?.price ||
-      1000
+        trek?.booking_card?.base_price ||
+        trek?.base_price ||
+        trek?.price ||
+        1000
     );
   }, [loading, bookingCardData, trek, quote]);
 
@@ -229,27 +292,25 @@ export default function SinglePageBookingForm() {
   }, [quote, basePrice, bookingForm.travellers]);
 
   const baseTotal = basePrice * bookingForm.travellers;
-  const initialPayment = +(totalPrice * 0.20).toFixed(2);
+  const initialPayment = +(totalPrice * 0.2).toFixed(2);
   const dueAmount = +(totalPrice - initialPayment).toFixed(2);
   const currency = quote?.currency || trek?.currency || "USD";
 
-  // ⭐ UPDATED: Enhanced form submission with risk check
+  // ✅ Enhanced form submission with risk check
   const handleFormSubmit = useCallback(
     (e) => {
       e.preventDefault();
 
-      // Check if high-risk conditions require acknowledgment
       const isDangerousConditions =
         riskPrediction &&
-        (riskPrediction.overall_risk === 'DANGER' ||
+        (riskPrediction.overall_risk === "DANGER" ||
           riskPrediction.dangerous_days > 0);
 
       if (isDangerousConditions && !riskAcknowledged) {
-        alert('Please acknowledge the weather risk warning before proceeding.');
+        alert("Please acknowledge the weather risk warning before proceeding.");
         return;
       }
 
-      // Proceed with normal booking
       bookingForm.handleBookingSubmit(
         e,
         validation.formValid,
@@ -265,47 +326,9 @@ export default function SinglePageBookingForm() {
       trekSlug,
       currency,
       riskPrediction,
-      riskAcknowledged
+      riskAcknowledged,
     ]
   );
-
-  // Fetch Main Trek Data
-  useEffect(() => {
-    if (!trekSlug) {
-      setError("Trek not specified");
-      setLoading(false);
-      return;
-    }
-
-    let mounted = true;
-    const controller = new AbortController();
-
-    setLoading(true);
-    setError(null);
-
-    fetchTrekBookingData(trekSlug)
-      .then((result) => {
-        if (!mounted) return;
-        if (!result || !result.trek) throw new Error("Invalid trek data");
-
-        setHero(result.hero || {});
-        setTrek(result.trek || {});
-        setBookingCardData(result.bookingCard || {});
-        setHighlights(result.highlights || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (!mounted) return;
-        console.error("Failed to load trek booking data:", err);
-        setError(err.message || "Failed to load trek details");
-        setLoading(false);
-      });
-
-    return () => {
-      mounted = false;
-      controller.abort();
-    };
-  }, [trekSlug]);
 
   if (loading) {
     return (
@@ -343,7 +366,6 @@ export default function SinglePageBookingForm() {
 
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* LEFT: Form */}
           <div className="lg:col-span-2">
             <form
               onSubmit={handleFormSubmit}
@@ -351,24 +373,32 @@ export default function SinglePageBookingForm() {
             >
               <div className="p-8 space-y-8">
                 <FormHeader
-                  title={`Book ${trek.name || "Your Trek"}`}
+                  title={`Book ${trek.name || trek.title || "Your Trek"}`}
                   subtitle="Complete your booking in one simple form"
                 />
 
-                <TripDetailsSection
-                  startDate={bookingForm.startDate}
-                  setStartDate={bookingForm.setStartDate}
-                  endDate={bookingForm.endDate}
-                  travellers={bookingForm.travellers}
-                  setTravellers={bookingForm.setTravellers}
-                  duration={hero?.duration || trek.duration || "N/A"}
-                />
+    
 
-                {/* ⭐ NEW: Weather Risk Warning Component */}
+{/* // Pass departures to TripDetailsSection */}
+<TripDetailsSection
+  startDate={bookingForm.startDate}
+  setStartDate={bookingForm.setStartDate}
+  endDate={bookingForm.endDate}
+  setEndDate={bookingForm.setEndDate}
+  travellers={bookingForm.travellers}
+  setTravellers={bookingForm.setTravellers}
+  duration={hero?.duration || trek.duration || "N/A"}
+  departures={trek?.departures || []} // ✅ NEW: Pass departures from API
+  handleDepartureSelect={bookingForm.handleDepartureSelect} // ✅ NEW
+  selectedDeparture={bookingForm.selectedDeparture} // ✅ NEW
+/>
+
+
                 <WeatherRiskWarning
                   riskPrediction={riskPrediction}
                   riskLoading={riskLoading}
                   riskError={riskError}
+                  itineraryDays={trek?.itinerary_days || trek?.itinerary}
                   riskAcknowledged={riskAcknowledged}
                   onAcknowledge={setRiskAcknowledged}
                   startDate={bookingForm.startDate}
@@ -387,13 +417,12 @@ export default function SinglePageBookingForm() {
                   changePreferences={bookingForm.changePreferences}
                 />
 
-                <TravelTimesSection
-                  departureTime={bookingForm.departureTime}
-                  setDepartureTime={bookingForm.setDepartureTime}
-                  returnTime={bookingForm.returnTime}
-                  setReturnTime={bookingForm.setReturnTime}
-                  formatNepalTime={bookingForm.formatNepalTime}
-                />
+           <TravelTimesSection
+  departureTime={bookingForm.departureTime}
+  setDepartureTime={bookingForm.setDepartureTime}
+  returnTime={bookingForm.returnTime}
+  setReturnTime={bookingForm.setReturnTime}
+/>
 
                 <TermsAndSubmitSection
                   accepted={bookingForm.accepted}
@@ -405,7 +434,6 @@ export default function SinglePageBookingForm() {
             </form>
           </div>
 
-          {/* RIGHT: Sidebar */}
           <div className="lg:col-span-1">
             <PricingSidebar
               trek={trek}
@@ -426,3 +454,25 @@ export default function SinglePageBookingForm() {
     </div>
   );
 }
+
+
+
+
+  // ✅ Check authentication on component mount
+  // useEffect(() => {
+  //   const token = getAccessToken();
+  //   if (!token) {
+  //     console.log('⚠️ No auth token found, redirecting to login');
+  //     navigate('/login', {
+  //       state: {
+  //         backgroundLocation: location
+  //       },
+  //       replace: true
+  //     });
+  //   }
+  // }, [location, navigate]);
+
+  
+
+
+

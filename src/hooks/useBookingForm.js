@@ -5,20 +5,16 @@ import { toast } from "react-toastify";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { createBooking, createBookingIntent } from "../api/service/bookingServices.js";
+import { correctEndDate } from "../api/service/helper.js";
 
 countries.registerLocale(enLocale);
-
-function parseDurationDays(duration) {
-  if (!duration) return 16;
-  const m = String(duration).match(/\d+/);
-  return m ? parseInt(m[0], 10) : 16;
-}
 
 export function useBookingForm(trek, hero) {
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedDeparture, setSelectedDeparture] = useState(null); // ✅ Track selected departure
   const [travellers, setTravellers] = useState(1);
   const [departureTime, setDepartureTime] = useState("");
   const [returnTime, setReturnTime] = useState("");
@@ -51,23 +47,7 @@ export function useBookingForm(trek, hero) {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, []);
 
-  // Auto-calculate end date
-  useEffect(() => {
-    if (startDate) {
-      const durationSource = trek?.duration || hero?.duration;
-      const days = parseDurationDays(durationSource);
-      const start = new Date(startDate);
-      if (!isNaN(start.getTime())) {
-        const end = new Date(start);
-        end.setDate(start.getDate() + days);
-        setEndDate(end.toISOString().split("T")[0]);
-      } else {
-        setEndDate("");
-      }
-    } else {
-      setEndDate("");
-    }
-  }, [startDate, trek?.duration, hero?.duration]);
+  // ✅ NO DATE CALCULATION - removed useEffect that calculated endDate
 
   // Pre-fill from localStorage
   useEffect(() => {
@@ -110,6 +90,16 @@ export function useBookingForm(trek, hero) {
     });
   };
 
+  // ✅ NEW: Handle departure selection from dropdown
+  const handleDepartureSelect = (departure) => {
+    // ✅ CORRECT the date HERE before setting state
+    const correctedEnd = correctEndDate(departure.end);
+
+    setStartDate(departure.start);
+    setEndDate(correctedEnd);  // ✅ Use corrected date
+  };
+
+
   const handleBookingSubmit = async (e, formValid, totalPrice, trekSlug, currency = "USD") => {
     e.preventDefault();
 
@@ -123,18 +113,22 @@ export function useBookingForm(trek, hero) {
       return;
     }
 
+    // ✅ Validate dates are set
+    if (!startDate || !endDate) {
+      toast.error("Please select departure dates.");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      // ✅ Ensure phone has country code
       let phoneNumber = lead.phone.trim();
       if (!phoneNumber.startsWith('+')) {
-        phoneNumber = `+977${phoneNumber}`; // Add Nepal country code if missing
+        phoneNumber = `+977${phoneNumber}`;
       }
 
       console.log("📤 Creating booking intent...");
 
-      // ✅ Create booking intent (without departure field - it expects ID not date)
       const intent = await createBookingIntent({
         trekSlug,
         partySize: travellers,
@@ -144,12 +138,14 @@ export function useBookingForm(trek, hero) {
 
       console.log("✅ Intent created:", intent);
 
-      // ✅ Prepare lead name
       const leadName = `${lead.title} ${lead.firstName} ${lead.lastName}`.trim();
 
-      console.log("📤 Creating booking...");
+      console.log("📤 Creating booking with dates from API:", {
+        startDate,
+        endDate,
+        departureId: selectedDeparture?.id,
+      });
 
-      // ✅ Create booking with all details
       const booking = await createBooking({
         trekSlug,
         bookingIntent: intent.booking_id,
@@ -172,8 +168,6 @@ export function useBookingForm(trek, hero) {
         comments: preferences.comments || "",
         departureTime: departureTime || null,
         returnTime: returnTime || null,
-        // Don't send totalAmount - let the backend compute it to avoid mismatch
-        // totalAmount: totalPrice,
         currency,
         notes: preferences.comments || preferences.specialRequests || "",
         metadata: {
@@ -189,13 +183,12 @@ export function useBookingForm(trek, hero) {
           comments: preferences.comments,
           departure_time: departureTime,
           return_time: returnTime,
+          departure_id: selectedDeparture?.id, // ✅ Send departure ID if available
         },
       });
 
       console.log("✅ Booking created successfully:", booking);
-      console.log("📋 booking_ref:", booking.booking_ref);
 
-      // ✅ Navigate to payment page with all required data
       navigate("/payment", {
         replace: true,
         state: {
@@ -221,7 +214,6 @@ export function useBookingForm(trek, hero) {
       const message = error.message || "Unable to start booking. Please try again.";
       toast.error(message);
 
-      // Handle authentication errors
       if (
         message.toLowerCase().includes("session expired") ||
         message.toLowerCase().includes("login required") ||
@@ -229,7 +221,6 @@ export function useBookingForm(trek, hero) {
       ) {
         const next = encodeURIComponent(`/trek-booking?trekSlug=${trekSlug}`);
         navigate(`/login?next=${next}`, { replace: true });
-
       }
     } finally {
       setSubmitting(false);
@@ -240,6 +231,9 @@ export function useBookingForm(trek, hero) {
     startDate,
     setStartDate,
     endDate,
+    setEndDate, // ✅ Still expose this for manual date input
+    selectedDeparture,
+    handleDepartureSelect, // ✅ NEW: Expose departure handler
     travellers,
     setTravellers,
     departureTime,

@@ -7,6 +7,7 @@ const aboutItems = [
   { label: "How to Make a Payment", path: "/about-us/how-to-make-a-payment" },
   { label: "Privacy Policy", path: "/about-us/privacy-policy" },
   { label: "Legal Documents", path: "/about-us/legal-documents" },
+  { label: "Terms and Conditions", path: "/terms-and-conditions" },
 ];
 
 export default function AboutUsDropdown({ isOpen }) {

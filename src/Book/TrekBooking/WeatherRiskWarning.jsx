@@ -12,7 +12,8 @@ import {
   Eye,
   ChevronDown,
   ChevronUp,
-  Info
+  Info,
+  MapPin  // ✅ ADDED
 } from 'lucide-react';
 
 const RISK_CONFIG = {
@@ -58,6 +59,7 @@ export default function WeatherRiskWarning({
   riskPrediction, 
   riskLoading, 
   riskError,
+  itineraryDays,  // ✅ ADDED
   riskAcknowledged,
   onAcknowledge,
   startDate,
@@ -84,7 +86,7 @@ export default function WeatherRiskWarning({
     );
   }
 
-  // Error state (non-critical - show subtle warning)
+  // Error state
   if (riskError && !riskLoading) {
     return (
       <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
@@ -214,13 +216,20 @@ export default function WeatherRiskWarning({
         )}
       </div>
 
-      {/* Daily Predictions */}
+      {/* ✅ UPDATED: Daily Predictions with itinerary */}
       {expanded && riskPrediction.predictions && (
         <div className="border-t-2 border-gray-200 bg-white p-6">
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {riskPrediction.predictions.map((pred, idx) => (
-              <DailyForecastRow key={idx} prediction={pred} />
-            ))}
+            {riskPrediction.predictions.map((pred, idx) => {
+              const dayInfo = itineraryDays ? itineraryDays[idx] : null;
+              return (
+                <DailyForecastRow 
+                  key={idx} 
+                  prediction={pred}
+                  dayInfo={dayInfo}
+                />
+              );
+            })}
           </div>
         </div>
       )}
@@ -238,28 +247,59 @@ function StatBadge({ label, count, color }) {
   );
 }
 
-function DailyForecastRow({ prediction }) {
+// ✅ UPDATED: Now accepts dayInfo
+function DailyForecastRow({ prediction, dayInfo }) {
   const config = RISK_CONFIG[prediction.risk_level] || RISK_CONFIG.SAFE;
   const RiskIcon = config.icon;
   const weather = prediction.weather_data;
 
   return (
     <div className={`flex items-start gap-3 p-4 rounded-lg border-2 ${config.borderColor} ${config.bgColor}`}>
-      <RiskIcon className={`h-5 w-5 ${config.color} flex-shrink-0 mt-0.5`} />
+      <RiskIcon className={`h-5 w-5 ${config.color} flex-shrink-0 mt-0.5` } />
       
       <div className="flex-1 min-w-0">
+        {/* ✅ UPDATED: Day and Location Header */}
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-bold text-gray-900">
-            {new Date(prediction.date).toLocaleDateString('en-US', { 
-              weekday: 'short', 
-              month: 'short', 
-              day: 'numeric' 
-            })}
-          </p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              {(prediction.day || dayInfo?.day) && (
+                <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-gray-200 text-gray-700 rounded-full">
+                  {prediction.day || dayInfo.day}
+                </span>
+              )}
+              
+              <p className="text-sm font-bold text-gray-900">
+                {prediction.place_name || dayInfo?.place_name || new Date(prediction.date).toLocaleDateString('en-US', { 
+                  weekday: 'short', 
+                  month: 'short', 
+                  day: 'numeric' 
+                })}
+              </p>
+            </div>
+            
+            <p className="text-xs text-gray-600 mt-1">
+              {new Date(prediction.date).toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+              })}
+            </p>
+          </div>
+          
           <span className={`text-xs font-bold px-2 py-1 rounded ${config.badgeColor}`}>
             {prediction.risk_level}
           </span>
         </div>
+
+        {/* ✅ ADDED: Elevation display */}
+        {(prediction.elevation || dayInfo?.altitude) && (
+          <div className="flex items-center gap-1.5 mb-2">
+            <MapPin className="h-3.5 w-3.5 text-gray-500" />
+            <span className="text-xs text-gray-600 font-medium">
+              Elevation: {prediction.elevation ? `${prediction.elevation}m` : dayInfo.altitude}
+            </span>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-gray-700">
           <div className="flex items-center gap-1.5">

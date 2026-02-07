@@ -5,28 +5,28 @@ const OPEN_METEO_BASE_URL = "https://api.open-meteo.com/v1/forecast";
 export const TREK_LOCATIONS = {
   everest: {
     name: "Everest Base Camp",
-    latitude: 27.9881,
-    longitude: 86.925,
+    latitude: 28.0028,
+    longitude: 86.8528,
     elevation: 5364, // meters
     timezone: "Asia/Kathmandu",
   },
   annapurna: {
     name: "Thorong La Pass",
-    latitude: 28.7659,
-    longitude: 83.9204,
+    latitude: 28.7944,
+    longitude: 83.9377,
     elevation: 5416,
     timezone: "Asia/Kathmandu",
   },
   manaslu: {
     name: "Larke Pass",
-    latitude: 28.68,
-    longitude: 84.57,
+    latitude: 28.6631,
+    longitude: 84.6186,
     elevation: 5106,
     timezone: "Asia/Kathmandu",
   },
   langtang: {
     name: "Kyanjin Gompa",
-    latitude: 28.2096,
+    latitude: 28.2166,
     longitude: 85.5667,
     elevation: 3870,
     timezone: "Asia/Kathmandu",
@@ -68,39 +68,39 @@ const WMO_WEATHER_CODES = {
 // Generate trekking recommendations based on weather conditions
 const getTrekkingRemark = (weatherCode, temperature, windSpeed) => {
   const weather = WMO_WEATHER_CODES[weatherCode] || WMO_WEATHER_CODES[0];
-  
+
   if (weather.severity === "thunderstorm") {
     return "Dangerous - Avoid trekking";
   }
-  
+
   if (weather.severity === "snow" && windSpeed > 25) {
     return "Blizzard conditions";
   }
-  
+
   if (weather.severity === "snow") {
     return "Crampons advised";
   }
-  
+
   if (weather.severity === "freezing") {
     return "Extreme cold warning";
   }
-  
+
   if (weather.severity === "rain") {
     return "Carry waterproof gear";
   }
-  
+
   if (weather.severity === "fog") {
     return "Limited visibility";
   }
-  
+
   if (weather.severity === "cloudy" || weather.severity === "partly_cloudy") {
     return "Carry layers";
   }
-  
+
   if (temperature > -10 && windSpeed < 15) {
     return "Perfect for trekking";
   }
-  
+
   return "Good conditions";
 };
 
@@ -173,6 +173,7 @@ export async function fetchWeatherData(locationKey) {
       hourly: "visibility",
       timezone: location.timezone,
       forecast_days: 1,
+      models: "gem_seamless", // Use GEM model for better high-altitude accuracy
     });
 
     const response = await fetch(`${OPEN_METEO_BASE_URL}?${params}`);
@@ -187,13 +188,13 @@ export async function fetchWeatherData(locationKey) {
     const current = data.current;
     const weatherCode = current.weather_code;
     const weatherInfo = WMO_WEATHER_CODES[weatherCode] || WMO_WEATHER_CODES[0];
-    
+
     // Get average visibility from hourly data
     const avgVisibility = data.hourly?.visibility?.length
       ? Math.round(
-          data.hourly.visibility.reduce((a, b) => a + (b || 0), 0) /
-            data.hourly.visibility.filter(v => v !== null).length
-        )
+        data.hourly.visibility.reduce((a, b) => a + (b || 0), 0) /
+        data.hourly.visibility.filter(v => v !== null).length
+      )
       : 10000;
 
     const weatherData = {
@@ -223,7 +224,7 @@ export async function fetchWeatherData(locationKey) {
     return weatherData;
   } catch (error) {
     console.error(`Error fetching weather for ${locationKey}:`, error);
-    
+
     // Return fallback data on error
     return {
       temperature: "--°C",
