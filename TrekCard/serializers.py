@@ -132,6 +132,73 @@ class TrekInfoSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(img.url) if request else img.url
         return None
 
+
+class HomeBestTrekSerializer(serializers.ModelSerializer):
+    badge = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    original_price = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TrekInfo
+        fields = [
+            "title",
+            "slug",
+            "duration",
+            "trip_grade",
+            "rating",
+            "reviews",
+            "badge",
+            "image",
+            "price",
+            "original_price",
+            "description",
+        ]
+
+    def get_badge(self, obj):
+        if getattr(obj, "booking_card", None) and obj.booking_card.badge_label:
+            return obj.booking_card.badge_label
+        if obj.trip_grade:
+            return obj.trip_grade
+        return "Best Trek"
+
+    def _normalize_price(self, value):
+        if value is None:
+            return None
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def get_price(self, obj):
+        if getattr(obj, "booking_card", None) and obj.booking_card.base_price:
+            return self._normalize_price(obj.booking_card.base_price)
+        return None
+
+    def get_original_price(self, obj):
+        if getattr(obj, "booking_card", None) and obj.booking_card.original_price:
+            return self._normalize_price(obj.booking_card.original_price)
+        return None
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        image = None
+        if getattr(obj, "hero_section", None) and obj.hero_section.image:
+            image = obj.hero_section.image
+        elif getattr(obj, "booking_card", None) and getattr(obj.booking_card, "image", None):
+            image = obj.booking_card.image
+        if image and hasattr(image, "url"):
+            return request.build_absolute_uri(image.url) if request else image.url
+        return "/fallback.jpg"
+
+    def get_description(self, obj):
+        if obj.review_text:
+            return obj.review_text
+        if getattr(obj, "hero_section", None) and obj.hero_section.subtitle:
+            return obj.hero_section.subtitle
+        return "Tailored transport, permits, and support crew included. Share your dates and we will craft the final itinerary."
+
 # -------------------------------------------------------
 # Itinerary / Highlights
 # -------------------------------------------------------

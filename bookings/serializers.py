@@ -266,6 +266,29 @@ class BookingBillingDetailsSerializer(serializers.ModelSerializer):
         ]
 
 
+class BookingHistorySerializer(serializers.ModelSerializer):
+    trek_title = serializers.CharField(source="trek.title", read_only=True)
+    trek_slug = serializers.CharField(source="trek.slug", read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = [
+            "public_id",
+            "booking_ref",
+            "trek_title",
+            "trek_slug",
+            "party_size",
+            "start_date",
+            "end_date",
+            "total_amount",
+            "currency",
+            "status",
+            "paid_at",
+            "created_at",
+            "updated_at",
+        ]
+
+
 
 class PaymentIntentSerializer(serializers.Serializer):
     client_secret = serializers.CharField()

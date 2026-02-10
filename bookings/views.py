@@ -77,6 +77,7 @@ from .services import calculate_booking_pricing, generate_receipt_pdf, send_book
 from .serializers import (
     BookingCreateSerializer,
     BookingBillingDetailsSerializer,
+    BookingHistorySerializer,
     BookingQuoteSerializer,
     BookingSerializer,
     PaymentIntentSerializer,
@@ -101,6 +102,17 @@ class BookingCreateAPIView(generics.CreateAPIView):
             booking.booking_intent.save(update_fields=["status"])
         output = BookingSerializer(booking).data
         return response.Response(output, status=status.HTTP_201_CREATED)
+
+
+class BookingHistoryAPIView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = BookingHistorySerializer
+
+    def get_queryset(self):
+        qs = Booking.objects.select_related("trek").order_by("-created_at")
+        if self.request.user.is_staff:
+            return qs
+        return qs.filter(user=self.request.user)
 
 
 class BookingDetailAPIView(generics.RetrieveAPIView):

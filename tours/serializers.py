@@ -2,7 +2,13 @@ from rest_framework import serializers
 
 from travel_styles.models import TravelStyle
 
+<<<<<<< Updated upstream
 from .models import (
+=======
+from TrekCard.models import TrekInfo
+from .models import (
+    HomeFeaturedTour,
+>>>>>>> Stashed changes
     Tour,
     TourOverview,
     TourItineraryDay,
@@ -68,6 +74,163 @@ class TourListSerializer(serializers.ModelSerializer):
         ]
 
 
+<<<<<<< Updated upstream
+=======
+class HomeFeaturedTripSerializer(serializers.ModelSerializer):
+    entry_type = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    slug = serializers.SerializerMethodField()
+    duration = serializers.SerializerMethodField()
+    badge = serializers.SerializerMethodField()
+    tagline = serializers.SerializerMethodField()
+    short_description = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    old_price = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
+    reviews_count = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = HomeFeaturedTour
+        fields = [
+            "order",
+            "entry_type",
+            "title",
+            "name",
+            "slug",
+            "duration",
+            "badge",
+            "tagline",
+            "short_description",
+            "price",
+            "old_price",
+            "rating",
+            "reviews_count",
+            "image_url",
+            "image",
+        ]
+
+    def _booking_card(self, trek: TrekInfo):
+        return getattr(trek, "booking_card", None)
+
+    def _format_price(self, value):
+        if value is None:
+            return None
+        if isinstance(value, (int, float)):
+            return value
+        return float(value)
+
+    def _resolve_trek_image(self, trek: TrekInfo):
+        hero = getattr(trek, "hero_section", None)
+        if hero and getattr(hero, "image", None):
+            return hero.image.url if hero.image else None
+        card = self._booking_card(trek)
+        if card and getattr(card, "image", None):
+            return card.image.url
+        return None
+
+    def _absolute_url(self, request, url):
+        if not url or not request:
+            return url
+        if url.startswith("http://") or url.startswith("https://"):
+            return url
+        return request.build_absolute_uri(url)
+
+    def get_entry_type(self, obj):
+        if obj.trek_id:
+            return "trek"
+        return "tour"
+
+    def get_title(self, obj):
+        target = obj.trek or obj.tour
+        return target.title if target else None
+
+    def get_name(self, obj):
+        return self.get_title(obj)
+
+    def get_slug(self, obj):
+        target = obj.trek or obj.tour
+        return target.slug if target else None
+
+    def get_duration(self, obj):
+        if obj.trek:
+            return obj.trek.duration
+        if obj.tour:
+            return obj.tour.duration
+        return None
+
+    def get_badge(self, obj):
+        if obj.trek:
+            card = self._booking_card(obj.trek)
+            if card and getattr(card, "badge_label", None):
+                return card.badge_label
+            if obj.trek.trip_grade:
+                return obj.trek.trip_grade
+            return "Best Trek"
+        return obj.tour.badge if obj.tour else None
+
+    def get_tagline(self, obj):
+        if obj.tour:
+            return obj.tour.tagline
+        if obj.trek:
+            return obj.trek.trip_grade
+        return None
+
+    def get_short_description(self, obj):
+        if obj.tour:
+            return obj.tour.short_description
+        if obj.trek:
+            return obj.trek.review_text or obj.trek.trip_grade
+        return None
+
+    def get_price(self, obj):
+        if obj.tour and obj.tour.price is not None:
+            return self._format_price(obj.tour.price)
+        if obj.trek:
+            card = self._booking_card(obj.trek)
+            if card and card.base_price is not None:
+                return self._format_price(card.base_price)
+        return None
+
+    def get_old_price(self, obj):
+        if obj.tour and obj.tour.old_price is not None:
+            return self._format_price(obj.tour.old_price)
+        if obj.trek:
+            card = self._booking_card(obj.trek)
+            if card and card.original_price is not None:
+                return self._format_price(card.original_price)
+        return None
+
+    def get_rating(self, obj):
+        if obj.tour:
+            return obj.tour.rating
+        if obj.trek:
+            return obj.trek.rating
+        return None
+
+    def get_reviews_count(self, obj):
+        if obj.tour:
+            return obj.tour.reviews_count
+        if obj.trek:
+            return obj.trek.reviews
+        return None
+
+    def get_image_url(self, obj):
+        request = self.context.get("request")
+        url = None
+        if obj.tour:
+            url = obj.tour.image_url
+        elif obj.trek:
+            url = self._resolve_trek_image(obj.trek)
+        return self._absolute_url(request, url)
+
+    def get_image(self, obj):
+        return self.get_image_url(obj)
+
+
+>>>>>>> Stashed changes
 class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour

@@ -4,6 +4,7 @@ from .views import (
     BookingBillingDetailsAPIView,
     BookingCreateAPIView,
     BookingDetailAPIView,
+    BookingHistoryAPIView,
     BookingQuoteAPIView,
     CreateCheckoutSessionAPIView,
     CreatePaymentIntentAPIView,
@@ -16,6 +17,7 @@ from .views import (
 urlpatterns = [
     path("", BookingCreateAPIView.as_view(), name="booking-create"),
     path("quote/", BookingQuoteAPIView.as_view(), name="booking-quote"),
+    path("history/", BookingHistoryAPIView.as_view(), name="booking-history"),
     path("<str:booking_ref>/", BookingDetailAPIView.as_view(), name="booking-detail"),
     path("<str:booking_ref>/billing-details/", BookingBillingDetailsAPIView.as_view(), name="booking-billing-details"),
     path("<str:booking_ref>/payment-intent/", CreatePaymentIntentAPIView.as_view(), name="booking-payment-intent"),

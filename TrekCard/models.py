@@ -566,3 +566,30 @@ def sync_trek_rating(sender, instance: TrekReview, **kwargs):
     trek.rating = float(agg["avg"] or 0.0)
     trek.reviews = int(agg["cnt"] or 0)
     trek.save(update_fields=["rating", "reviews"])
+
+
+class HomeBestTrek(models.Model):
+    trek = models.OneToOneField(
+        TrekInfo,
+        on_delete=models.CASCADE,
+        related_name="home_best_entry",
+        help_text="Select the trek to showcase under Best Treks in Nepal.",
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="Lower numbers appear earlier in the Best Treks grid.",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Keep this slot active on the homepage.",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Home best trek"
+        verbose_name_plural = "Home best treks"
+        ordering = ["order", "-trek__rating", "-trek__reviews"]
+
+    def __str__(self) -> str:
+        return f"Best Trek · {self.trek.title}"

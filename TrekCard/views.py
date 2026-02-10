@@ -11,7 +11,7 @@ from .models import (
     Region,TrekInfo, TrekOverview, TrekItineraryDay, TrekHighlight, TrekAction, Cost,
     TrekCostAndDateSection, TrekFAQCategory, TrekGalleryImage, TrekHeroSection,
     TrekElevationChart, TrekBookingCard, TrekAdditionalInfoSection, BookingIntent,
-    TrekDeparture, SimilarTrek, TrekReview,
+    TrekDeparture, SimilarTrek, TrekReview, HomeBestTrek,
 )
 
 from .serializers import (
@@ -20,6 +20,7 @@ from .serializers import (
     TrekGalleryImageSerializer, TrekHeroSectionSerializer, TrekElevationChartSerializer,
     TrekBookingCardSerializer, TrekAdditionalInfoSectionSerializer, BookingIntentSerializer,
     TrekDetailSerializer, SimilarTrekCardSerializer, TrekReviewSerializer,NavRegionWithTreksSerializer,
+    HomeBestTrekSerializer,
 )
 
 
@@ -118,6 +119,18 @@ class TrekInfoListAPIView(generics.ListAPIView):
             qs = qs.filter(title__icontains=q)
 
         return qs
+
+
+class HomeBestTrekListAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = HomeBestTrekSerializer
+
+    def get_queryset(self):
+        return (
+            TrekInfo.objects.select_related("region", "hero_section", "booking_card")
+            .filter(home_best_entry__is_active=True)
+            .order_by("home_best_entry__order", "-rating", "-reviews")
+        )
 
 
 class TrekInfoDetailAPIView(generics.RetrieveAPIView):

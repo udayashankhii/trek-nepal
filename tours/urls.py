@@ -19,12 +19,22 @@ from .views import (
     TourSimilarAPIView,
     TourReviewsAPIView,
     TourSitemapAPIView,
+<<<<<<< Updated upstream
+=======
+    FeaturedTourListAPIView,
+    HomeFeaturedTripListAPIView,
+>>>>>>> Stashed changes
 )
 
 
 app_name = "tours"
 
 urlpatterns = [
+<<<<<<< Updated upstream
+=======
+    path("home/featured-trips/", HomeFeaturedTripListAPIView.as_view(), name="home-featured-trips"),
+    path("tours/featured/", FeaturedTourListAPIView.as_view(), name="tour-featured"),
+>>>>>>> Stashed changes
     path("tours/", TourListAPIView.as_view(), name="tour-list"),
     path("tours/sitemap/", TourSitemapAPIView.as_view(), name="tour-sitemap"),
     path("tours/<slug:tour_slug>/", TourDetailAPIView.as_view(), name="tour-detail"),

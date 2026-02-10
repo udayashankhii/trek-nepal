@@ -4,6 +4,10 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 
 from .models import (
+<<<<<<< Updated upstream
+=======
+    HomeFeaturedTour,
+>>>>>>> Stashed changes
     Tour,
     TourOverview,
     TourItineraryDay,
@@ -38,9 +42,29 @@ from .serializers import (
     TourKeyInfoSerializer,
     TourBookingCardSerializer,
     SimilarTourCardSerializer,
+<<<<<<< Updated upstream
 )
 
 
+=======
+    HomeFeaturedTripSerializer,
+)
+
+
+class HomeFeaturedTripListAPIView(generics.ListAPIView):
+    serializer_class = HomeFeaturedTripSerializer
+
+    def get_queryset(self):
+        return (
+            HomeFeaturedTour.objects.filter(
+                is_active=True,
+            )
+            .select_related("tour", "trek")
+            .order_by("order")
+        )
+
+
+>>>>>>> Stashed changes
 def tour_full_queryset():
     return (
         Tour.objects.select_related("overview", "cost", "seo")
@@ -111,6 +135,25 @@ class TourListAPIView(generics.ListCreateAPIView):
         return TourListSerializer
 
 
+<<<<<<< Updated upstream
+=======
+class FeaturedTourListAPIView(generics.ListAPIView):
+    serializer_class = TourListSerializer
+
+    def get_queryset(self):
+        base_qs = Tour.objects.filter(
+            is_published=True,
+            home_featured_entry__is_active=True,
+        ).distinct()
+
+        return (
+            base_qs.select_related("primary_style")
+            .prefetch_related("travel_styles")
+            .order_by("home_featured_entry__order", "-rating", "-reviews_count")
+        )
+
+
+>>>>>>> Stashed changes
 
 class TourDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = "tour_slug"

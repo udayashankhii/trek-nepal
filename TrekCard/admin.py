@@ -13,7 +13,7 @@ from .models import (
     TrekFAQCategory, TrekFAQ, TrekGalleryImage, TrekHeroSection,
     TrekElevationChart, TrekElevationPoint, TrekBookingCard, TrekBookingGroupPrice,
     TrekAdditionalInfoSection, TrekAdditionalInfoBullet,
-    SimilarTrek, TrekReview, ReviewSource,
+    SimilarTrek, TrekReview, ReviewSource, HomeBestTrek,
 )
 
 # =========================================================
@@ -496,3 +496,11 @@ class TrekReviewAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
     autocomplete_fields = ("trek",)
     radio_fields = {"source": admin.HORIZONTAL}
+
+
+@admin.register(HomeBestTrek)
+class HomeBestTrekAdmin(admin.ModelAdmin):
+    list_display = ("trek", "order", "is_active", "created_at")
+    list_editable = ("order", "is_active")
+    search_fields = ("trek__title", "trek__slug")
+    ordering = ("order", "trek__title")

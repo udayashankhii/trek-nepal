@@ -2,11 +2,20 @@ from __future__ import annotations
 
 import uuid
 
+<<<<<<< Updated upstream
+=======
+from django.core.exceptions import ValidationError
+>>>>>>> Stashed changes
 from django.db import models
 from django.utils.text import slugify
 
 from travel_styles.models import TravelStyle
 
+<<<<<<< Updated upstream
+=======
+from TrekCard.models import TrekInfo
+
+>>>>>>> Stashed changes
 
 def unique_slugify(instance, value: str, slug_field_name: str = "slug", max_length: int = 80) -> str:
     base_slug = slugify(value)[:max_length].strip("-")
@@ -254,3 +263,65 @@ class TourReview(models.Model):
 
     def __str__(self) -> str:
         return f"Review · {self.tour.title} · {self.author_name}"
+<<<<<<< Updated upstream
+=======
+
+
+class HomeFeaturedTour(models.Model):
+    tour = models.OneToOneField(
+        Tour,
+        on_delete=models.CASCADE,
+        related_name="home_featured_entry",
+        help_text="Link an existing tour to this featured slot (leave empty when featuring a trek)",
+        null=True,
+        blank=True,
+    )
+    trek = models.OneToOneField(
+        TrekInfo,
+        on_delete=models.CASCADE,
+        related_name="home_featured_entry",
+        help_text="Link a trek to this featured slot (leave empty when featuring a tour)",
+        null=True,
+        blank=True,
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="Lower numbers appear earlier in the featured list",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Toggle to hide/show the featured card without deleting",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Home featured trip"
+        verbose_name_plural = "Home featured trips"
+        ordering = ["order", "-tour__rating", "-tour__reviews_count"]
+        constraints = [
+            models.CheckConstraint(
+                check=(
+                    models.Q(tour__isnull=False, trek__isnull=True)
+                    | models.Q(tour__isnull=True, trek__isnull=False)
+                ),
+                name="home_featured_content_type_present",
+            )
+        ]
+
+    def clean(self):
+        if bool(self.tour_id) == bool(self.trek_id):
+            raise ValidationError("Exactly one of tour or trek must be set as a featured slot.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    @property
+    def target(self):
+        return self.tour or self.trek
+
+    def __str__(self) -> str:
+        target = self.target
+        return f"Home Feature · {target.title if target else 'Untitled'}"
+>>>>>>> Stashed changes

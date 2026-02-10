@@ -7,6 +7,7 @@ from .views import (
     RegionDetailAPIView,
     # Lists & key info
     TrekInfoListAPIView,
+    HomeBestTrekListAPIView,
     TrekInfoDetailAPIView,
 
     # One-shot full detail
@@ -49,6 +50,7 @@ urlpatterns = [
     # ----------------------------------------------------
     # Trek list & key info
     # ----------------------------------------------------
+    path("home/best-treks/", HomeBestTrekListAPIView.as_view(), name="home-best-treks"),
     path("treks/", TrekInfoListAPIView.as_view(), name="trek-list"),
     path("treks/<slug:trek_slug>/key-info/", TrekInfoDetailAPIView.as_view(), name="trek-info"),
 

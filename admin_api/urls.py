@@ -14,8 +14,14 @@ from admin_api.views.blog_taxonomy import (
     BlogCategoryAdminViewSet,
     BlogRegionAdminViewSet,
 )
+<<<<<<< Updated upstream
 from admin_api.views.tour_taxonomy import TourStyleListView
 from admin_api.views.travel_styles import TravelStyleAdminViewSet
+=======
+from admin_api.views.dashboard import DashboardStatsAPIView
+from admin_api.views.travel_styles import TravelStyleAdminViewSet
+from admin_api.views.tour_taxonomy import TourStyleListView
+>>>>>>> Stashed changes
 from admin_api.views.blog_importer import BlogFullImportView, BlogFullImportDetailView
 from admin_api.views.tour_importer import TourFullImportView, TourFullImportDetailView
 from admin_api.views.booking import BookingAdminViewSet
@@ -31,6 +37,10 @@ from admin_api.views.travel_styles_importer import (
     TravelStyleFullImportView,
 )
 from admin_api.views.customize_trip import CustomizeTripAdminViewSet
+<<<<<<< Updated upstream
+=======
+from admin_api.views.home import HomeBestTrekAdminViewSet, HomeFeaturedTourAdminViewSet
+>>>>>>> Stashed changes
 
 router = DefaultRouter()
 router.register(r"regions", RegionAdminViewSet, basename="admin-regions")
@@ -49,6 +59,11 @@ router.register(
     CustomizeTripAdminViewSet,
     basename="admin-customize-trip",
 )
+<<<<<<< Updated upstream
+=======
+router.register(r"home-best-treks", HomeBestTrekAdminViewSet, basename="home-best-treks")
+router.register(r"home-featured-tours", HomeFeaturedTourAdminViewSet, basename="home-featured-tours")
+>>>>>>> Stashed changes
 
 urlpatterns = [
     # --- Compatibility endpoints for existing Admin Frontend ---
@@ -127,4 +142,9 @@ urlpatterns = [
     # --- About pages bulk import ---
     # POST /api/admin/about-pages/import/full/
     path("about-pages/import/full/", AboutPageFullImportView.as_view(), name="admin-about-pages-import-full"),
+<<<<<<< Updated upstream
+=======
+
+    path("dashboard/stats/", DashboardStatsAPIView.as_view(), name="admin-dashboard-stats"),
+>>>>>>> Stashed changes
 ]
