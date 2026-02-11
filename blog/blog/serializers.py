@@ -15,7 +15,7 @@ from urllib.parse import quote
 from django.db import transaction
 from rest_framework import serializers
 
-from .models import Author, BlogPost, Category, Region
+from .models import Author, BlogInlineImage, BlogPost, Category, Region
 
 
 # -----------------------------
@@ -29,6 +29,18 @@ class CamelModelSerializer(serializers.ModelSerializer):
     We intentionally do NOT try to auto-convert keys globally.
     Explicit fields are clearer and safer for APIs.
     """
+
+
+def absolute_url(request, value):
+    if not value:
+        return None
+    url = getattr(value, "url", None) or value
+    if not url:
+        return None
+    url = str(url)
+    if url.startswith(("http://", "https://")):
+        return url
+    return request.build_absolute_uri(url) if request else url
 
 
 class CategorySerializer(CamelModelSerializer):
@@ -79,6 +91,20 @@ class AuthorSerializer(CamelModelSerializer):
         ]
 
 
+class BlogInlineImageSerializer(CamelModelSerializer):
+    url = serializers.SerializerMethodField()
+    alt = serializers.CharField(source="alt_text")
+    caption = serializers.CharField(allow_blank=True)
+    blockId = serializers.CharField(source="block_id", allow_blank=True)
+
+    class Meta:
+        model = BlogInlineImage
+        fields = ["id", "url", "alt", "caption", "blockId", "order"]
+
+    def get_url(self, obj: BlogInlineImage):
+        return absolute_url(self.context.get("request"), obj.image)
+
+
 class BlogPostBaseSerializer(CamelModelSerializer):
     # --- camelCase mappings ---
     contentType = serializers.CharField(source="content_type")
@@ -93,6 +119,8 @@ class BlogPostBaseSerializer(CamelModelSerializer):
     readTime = serializers.IntegerField(source="read_time", required=False)
 
     canonicalUrl = serializers.URLField(source="canonical_url", required=False, allow_blank=True)
+    thumbnailImage = serializers.SerializerMethodField()
+    featuredHeroImage = serializers.SerializerMethodField()
 
     featuredImage = serializers.JSONField(source="featured_image", required=False)
     imageFile = serializers.ImageField(source="image_file", required=False, allow_null=True)
@@ -143,6 +171,29 @@ class BlogPostBaseSerializer(CamelModelSerializer):
             "isBookmarked": bool(obj.is_bookmarked),
         }
 
+    def _absolute_url(self, value) -> str | None:
+        return absolute_url(self.context.get("request"), value)
+
+    def get_thumbnailImage(self, obj: BlogPost) -> dict[str, str] | None:
+        source = obj.image_file or obj.image
+        url = self._absolute_url(source)
+        if not url:
+            return None
+        return {"url": url, "alt": obj.image_alt or "", "caption": ""}
+
+    def get_featuredHeroImage(self, obj: BlogPost) -> dict[str, str] | None:
+        featured = obj.featured_image or {}
+        url_source = featured.get("url") or (obj.featured_image_file.url if obj.featured_image_file else "")
+        url = self._absolute_url(url_source)
+        if not url:
+            return None
+        return {
+            "url": url,
+            "alt": featured.get("alt") or obj.featured_image_alt or "",
+            "caption": featured.get("caption") or obj.featured_image_caption or "",
+            "credit": featured.get("credit") or obj.featured_image_credit or "",
+        }
+
 
 class BlogPostListSerializer(BlogPostBaseSerializer):
     """Lightweight serializer for listing cards."""
@@ -184,6 +235,7 @@ class BlogPostListSerializer(BlogPostBaseSerializer):
             "featuredImage",
             "imageFile",
             "featuredImageFile",
+            "thumbnailImage",
             "tags",
             "engagement",
             "flags",
@@ -213,6 +265,7 @@ class BlogPostSerializer(BlogPostBaseSerializer):
     # convenience: focus keyword is inside taxonomies
     focusKeyword = serializers.SerializerMethodField()
     shareLinks = serializers.SerializerMethodField()
+    inlineImages = BlogInlineImageSerializer(many=True, read_only=True)
 
     def get_focusKeyword(self, obj: BlogPost) -> str:
         try:
@@ -273,6 +326,8 @@ class BlogPostSerializer(BlogPostBaseSerializer):
             "featuredImage",
             "imageFile",
             "featuredImageFile",
+            "thumbnailImage",
+            "featuredHeroImage",
             "images",
             "focusKeyword",
             "shareLinks",
@@ -287,6 +342,7 @@ class BlogPostSerializer(BlogPostBaseSerializer):
             "seo",
             "schema",
             "editorial",
+            "inlineImages",
             "engagement",
             "flags",
         ]

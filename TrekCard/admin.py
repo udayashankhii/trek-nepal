@@ -152,7 +152,7 @@ class TrekFAQCategoryInline(nested_admin.NestedStackedInline):
 class TrekGalleryImageInline(nested_admin.NestedTabularInline):
     model = TrekGalleryImage
     extra = 1
-    fields = ("image", "title", "caption", "order")
+    fields = ("image", "title", "caption", "alt_text", "order")
     ordering = ("order", "id")
 
 
@@ -161,7 +161,11 @@ class TrekHeroSectionInline(nested_admin.NestedStackedInline):
     extra = 0
     max_num = 1
     show_change_link = True
-    fields = ("title", "subtitle", "image", "season", "duration", "difficulty", "location", "cta_label", "cta_link")
+    fields = (
+        "title", "subtitle", "image", "image_alt", "image_caption",
+        "season", "duration", "difficulty", "location",
+        "cta_label", "cta_link",
+    )
 
 
 class TrekElevationPointInline(nested_admin.NestedTabularInline):

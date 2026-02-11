@@ -332,10 +332,11 @@ class TrekFAQCategorySerializer(serializers.ModelSerializer):
 
 class TrekGalleryImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
+    altText = serializers.CharField(source="alt_text", allow_blank=True)
 
     class Meta:
         model = TrekGalleryImage
-        fields = ["id", "image_url", "title", "caption", "order"]
+        fields = ["id", "image_url", "title", "caption", "altText", "order"]
 
     def get_image_url(self, obj):
         return abs_url(self.context.get("request"), obj.image)
@@ -343,6 +344,8 @@ class TrekGalleryImageSerializer(serializers.ModelSerializer):
 
 class TrekHeroSectionSerializer(serializers.ModelSerializer):
     imageUrl = serializers.SerializerMethodField()
+    imageAlt = serializers.CharField(source="image_alt", allow_blank=True)
+    imageCaption = serializers.CharField(source="image_caption", allow_blank=True)
 
     class Meta:
         model = TrekHeroSection
@@ -350,6 +353,7 @@ class TrekHeroSectionSerializer(serializers.ModelSerializer):
             "title", "subtitle", "imageUrl", "season",
             "duration", "difficulty", "location",
             "cta_label", "cta_link",
+            "imageAlt", "imageCaption",
         ]
 
     def get_imageUrl(self, obj):

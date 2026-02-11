@@ -11,12 +11,14 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
+from Evertrek_Nepal.image_validators import ImageFileValidator
+
 
 # -----------------------------
 # Helpers (JSONField defaults)
 # -----------------------------
 def default_featured_image() -> dict:
-    return {"url": "", "alt": "", "caption": ""}
+    return {"url": "", "alt": "", "caption": "", "credit": ""}
 
 
 def default_images() -> list:
@@ -294,9 +296,43 @@ class BlogPost(TimeStampedModel):
 
     # Primary images (simple + flexible)
     image = models.URLField(blank=True)  # card/thumbnail
-    image_file = models.ImageField(upload_to="blog/images/", blank=True, null=True)
+    image_alt = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Alt text for the thumbnail/card image (recommended).",
+    )
+    image_file = models.ImageField(
+        upload_to="blog/images/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=4)],
+    )
     featured_image = models.JSONField(default=default_featured_image, blank=True)
-    featured_image_file = models.ImageField(upload_to="blog/featured/", blank=True, null=True)
+    featured_image_file = models.ImageField(
+        upload_to="blog/featured/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=5)],
+    )
+    featured_image_alt = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Alt text for the featured hero image (required for accessibility).",
+    )
+    featured_image_caption = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Optional caption displayed with the hero image.",
+    )
+    featured_image_credit = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Optional credit/source for the featured hero image.",
+    )
     images = models.JSONField(default=default_images, blank=True)
 
     # Rich, flexible fields (store your full JSON payload safely)
@@ -528,9 +564,17 @@ class BlogPost(TimeStampedModel):
         if self.image_file and not self.image:
             updates["image"] = self.image_file.url
         if self.featured_image_file:
-            fi = self.featured_image or {}
-            if not fi.get("url"):
-                updates["featured_image"] = {**fi, "url": self.featured_image_file.url}
+            featured_payload = dict(self.featured_image or default_featured_image())
+            featured_payload["url"] = self.featured_image_file.url
+        else:
+            featured_payload = dict(self.featured_image or default_featured_image())
+
+        featured_payload["alt"] = self.featured_image_alt
+        featured_payload["caption"] = self.featured_image_caption
+        featured_payload["credit"] = self.featured_image_credit
+
+        if featured_payload and featured_payload != (self.featured_image or default_featured_image()):
+            updates["featured_image"] = featured_payload
         if updates:
             BlogPost.objects.filter(pk=self.pk).update(**updates)
             for key, value in updates.items():
@@ -557,6 +601,33 @@ class BlogPost(TimeStampedModel):
             return share.get("shareUrl") or self.canonical_url or ""
         except Exception:
             return self.canonical_url or ""
+
+
+# -----------------------------
+# Inline images (content-level assets)
+class BlogInlineImage(TimeStampedModel):
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="inline_images")
+    image = models.ImageField(
+        upload_to="blog/inline/",
+        validators=[ImageFileValidator(max_mb=3)],
+    )
+    alt_text = models.CharField(
+        max_length=255,
+        help_text="Alt text (required) for inline images.",
+    )
+    caption = models.CharField(max_length=255, blank=True)
+    block_id = models.CharField(
+        max_length=140,
+        blank=True,
+        help_text="Optional content block or section identifier.",
+    )
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self) -> str:
+        return f"Inline image · {self.post.title} · {self.alt_text or self.image.name}"
 
 
 # -----------------------------

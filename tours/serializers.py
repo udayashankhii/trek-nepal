@@ -1,3 +1,5 @@
+from typing import Any
+
 from rest_framework import serializers
 
 from TrekCard.models import TrekInfo
@@ -13,12 +15,25 @@ from .models import (
     TourAdditionalInfoSection,
     TourGroupPrice,
     TourGalleryImage,
+    TourHeroImage,
     TourSEO,
     TourInternalLink,
     TourBacklink,
     SimilarTour,
     TourReview,
 )
+
+
+def abs_url(request, value: Any) -> str | None:
+    if not value:
+        return None
+    url = getattr(value, "url", None) or value
+    if not url:
+        return None
+    url = str(url)
+    if url.startswith(("http://", "https://")):
+        return url
+    return request.build_absolute_uri(url) if request else url
 class TravelStyleSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = TravelStyle
@@ -267,9 +282,33 @@ class TourGroupPriceSerializer(serializers.ModelSerializer):
 
 
 class TourGalleryImageSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    alt = serializers.CharField(source="alt_text", allow_blank=True)
+
     class Meta:
         model = TourGalleryImage
-        fields = ["image_url", "caption", "alt_text", "order"]
+        fields = ["url", "caption", "alt", "order"]
+
+    def get_url(self, obj):
+        request = self.context.get("request")
+        source = obj.image or obj.image_url
+        return abs_url(request, source)
+
+
+class TourHeroImageSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    alt = serializers.CharField(source="alt_text", allow_blank=True)
+    caption = serializers.CharField(allow_blank=True)
+    credit = serializers.CharField(allow_blank=True)
+
+    class Meta:
+        model = TourHeroImage
+        fields = ["url", "alt", "caption", "credit"]
+
+    def get_url(self, obj):
+        request = self.context.get("request")
+        source = obj.image or obj.image_url
+        return abs_url(request, source)
 
 
 class TourSEOSerializer(serializers.ModelSerializer):
@@ -348,6 +387,7 @@ class TourHeroSerializer(serializers.Serializer):
     subtitle = serializers.CharField(allow_blank=True, required=False)
     image_url = serializers.CharField(allow_blank=True, required=False)
     image = serializers.CharField(allow_blank=True, required=False)
+    heroImage = serializers.DictField(required=False, allow_null=True)
     location = serializers.CharField(allow_blank=True, required=False)
     badge = serializers.CharField(allow_blank=True, required=False)
     duration = serializers.CharField(allow_blank=True, required=False)
@@ -388,6 +428,7 @@ class TourDetailSerializer(serializers.ModelSerializer):
     longDescription = serializers.CharField(source="long_description", read_only=True)
     shortDescription = serializers.CharField(source="short_description", read_only=True)
     gallery = serializers.SerializerMethodField()
+    heroImage = serializers.SerializerMethodField()
     itineraryDays = TourItineraryDaySerializer(many=True, source="itinerary_days", read_only=True)
     additionalInfo = TourAdditionalInfoSectionSerializer(many=True, source="additional_info_sections", read_only=True)
     groupPrices = TourGroupPriceSerializer(many=True, source="group_prices", read_only=True)
@@ -457,6 +498,7 @@ class TourDetailSerializer(serializers.ModelSerializer):
             "groupPrices",
             "gallery_images",
             "gallery",
+            "heroImage",
             "seo",
             "internal_links",
             "backlinks",
@@ -465,4 +507,19 @@ class TourDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_gallery(self, obj):
-        return [img.image_url for img in obj.gallery_images.all()]
+        queryset = obj.gallery_images.all()
+        serializer = TourGalleryImageSerializer(queryset, many=True, context=self.context)
+        return serializer.data
+
+    def get_heroImage(self, obj):
+        hero = getattr(obj, "hero_image", None)
+        if hero and hero.image:
+            return TourHeroImageSerializer(hero, context=self.context).data
+        if obj.image_url:
+            return {
+                "url": abs_url(self.context.get("request"), obj.image_url),
+                "alt": obj.image_alt or "",
+                "caption": "",
+                "credit": "",
+            }
+        return None

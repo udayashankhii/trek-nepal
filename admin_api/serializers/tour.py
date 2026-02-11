@@ -11,6 +11,7 @@ from tours.models import (
     TourAdditionalInfoSection,
     TourGroupPrice,
     TourGalleryImage,
+    TourHeroImage,
     TourSEO,
     TourInternalLink,
     TourBacklink,
@@ -64,7 +65,13 @@ class TourGroupPriceSerializer(serializers.ModelSerializer):
 class TourGalleryImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourGalleryImage
-        fields = ["image_url", "caption", "alt_text", "order"]
+        fields = ["image", "caption", "alt_text", "order"]
+
+
+class TourHeroImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TourHeroImage
+        fields = ["image", "alt_text", "caption", "credit"]
 
 
 class TourSEOSerializer(serializers.ModelSerializer):
@@ -141,6 +148,7 @@ class TourFullAdminSerializer(serializers.ModelSerializer):
     additional_info_sections = TourAdditionalInfoSectionSerializer(many=True, read_only=True)
     group_prices = TourGroupPriceSerializer(many=True, read_only=True)
     gallery_images = TourGalleryImageSerializer(many=True, read_only=True)
+    hero_image = TourHeroImageSerializer(read_only=True)
     seo = TourSEOSerializer(read_only=True)
     internal_links = TourInternalLinkSerializer(many=True, read_only=True)
     backlinks = TourBacklinkSerializer(many=True, read_only=True)

@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
+from Evertrek_Nepal.image_validators import ImageFileValidator
+
 from TrekCard.models import TrekInfo
 from travel_styles.models import TravelStyle
 
@@ -30,6 +32,18 @@ class Tour(models.Model):
     short_description = models.TextField(blank=True)
     long_description = models.TextField(blank=True)
     image_url = models.URLField(blank=True)
+    image_alt = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Alt text for the listing/card image (recommended).",
+    )
+    image_file = models.ImageField(
+        upload_to="tour/cards/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=4)],
+    )
 
     duration = models.CharField(max_length=50, blank=True)
     group_size = models.PositiveIntegerField(null=True, blank=True)
@@ -79,6 +93,49 @@ class Tour(models.Model):
         if not self.slug and self.title:
             self.slug = unique_slugify(self, self.title, "slug", max_length=120)
         super().save(*args, **kwargs)
+
+        if self.image_file:
+            file_url = self.image_file.url
+            if file_url and self.image_url != file_url:
+                Tour.objects.filter(pk=self.pk).update(image_url=file_url)
+                self.image_url = file_url
+
+
+class TourHeroImage(models.Model):
+    tour = models.OneToOneField(Tour, on_delete=models.CASCADE, related_name="hero_image")
+    image = models.ImageField(
+        upload_to="tour/hero/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=5)],
+    )
+    image_url = models.URLField(blank=True, default="")
+    alt_text = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Alt text for the hero image (required for accessibility).",
+    )
+    caption = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Optional caption for the hero image.",
+    )
+    credit = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Optional credit/source for the hero image.",
+    )
+
+    class Meta:
+        verbose_name = "Tour Hero Image"
+        verbose_name_plural = "Tour Hero Images"
+
+    def __str__(self) -> str:
+        label = self.image.name if self.image else self.image_url
+        return f"Hero Image · {self.tour.title} · {label or 'untitled'}"
 
 
 class TourOverview(models.Model):
@@ -161,16 +218,29 @@ class TourGroupPrice(models.Model):
 
 class TourGalleryImage(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name="gallery_images")
-    image_url = models.URLField()
-    caption = models.CharField(max_length=255, blank=True)
-    alt_text = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(
+        upload_to="tour/gallery/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=3)],
+    )
+    image_url = models.URLField(blank=True, default="")
+    caption = models.CharField(max_length=255, blank=True, default="")
+    alt_text = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Alt text for gallery image (recommended).",
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["order"]
 
     def __str__(self) -> str:
-        return f"Gallery · {self.tour.title}"
+        label = self.caption or (self.image.name if self.image else "")
+        fallback = self.image_url or label or "untitled"
+        return f"Gallery · {self.tour.title} · {fallback}"
 
 
 class TourSEO(models.Model):

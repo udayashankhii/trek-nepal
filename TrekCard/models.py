@@ -5,6 +5,8 @@ import uuid
 from datetime import timedelta
 from typing import Optional
 
+from Evertrek_Nepal.image_validators import ImageFileValidator
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Avg, Count
@@ -326,23 +328,50 @@ class TrekFAQ(models.Model):
 
 class TrekGalleryImage(models.Model):
     trek = models.ForeignKey(TrekInfo, on_delete=models.CASCADE, related_name="gallery_images")
-    image = models.ImageField(upload_to="trek_gallery/")
+    image = models.ImageField(
+        upload_to="trek_gallery/",
+        validators=[ImageFileValidator(max_mb=3)],
+    )
     title = models.CharField(max_length=128, blank=True)
     caption = models.CharField(max_length=256, blank=True)
+    alt_text = models.CharField(
+        max_length=256,
+        blank=True,
+        default="",
+        help_text="Alt text (recommended) for accessibility and SEO.",
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["order", "id"]
 
     def __str__(self) -> str:
-        return f"{self.trek.title} · {self.title or self.image.name}"
+        label = self.title or self.image.name
+        return f"{self.trek.title} · {label}"
 
 
 class TrekHeroSection(models.Model):
     trek = models.OneToOneField(TrekInfo, on_delete=models.CASCADE, related_name="hero_section")
     title = models.CharField(max_length=255, blank=True, help_text="Main title")
     subtitle = models.CharField(max_length=512, blank=True, help_text="Subtitle/tagline")
-    image = models.ImageField(upload_to="hero_images/", blank=True, null=True)
+    image = models.ImageField(
+        upload_to="hero_images/",
+        blank=True,
+        null=True,
+        validators=[ImageFileValidator(max_mb=5)],
+    )
+    image_alt = models.CharField(
+        max_length=256,
+        blank=True,
+        default="",
+        help_text="Alt text for the hero image (SEO/accessibility).",
+    )
+    image_caption = models.CharField(
+        max_length=256,
+        blank=True,
+        default="",
+        help_text="Optional caption shown with the hero image.",
+    )
     season = models.CharField(max_length=100, blank=True)
     duration = models.CharField(max_length=100, blank=True)
     difficulty = models.CharField(max_length=100, blank=True)

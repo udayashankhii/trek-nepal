@@ -23,6 +23,18 @@ from .about_info import AboutPageAdminViewSet
 
 from .travel_styles import TravelStyleAdminViewSet
 from .customize_trip import CustomizeTripAdminViewSet
+from .media_uploads import (
+    TrekHeroUploadAPIView,
+    TrekGalleryUploadAPIView,
+    TrekGalleryDetailAPIView,
+    BlogThumbnailUploadAPIView,
+    BlogFeaturedUploadAPIView,
+    BlogInlineImageUploadAPIView,
+    BlogInlineImageDetailAPIView,
+    TourHeroUploadAPIView,
+    TourGalleryUploadAPIView,
+    TourGalleryDetailAPIView,
+)
 
 __all__ = [
     "RegionAdminViewSet",
@@ -44,4 +56,14 @@ __all__ = [
     "AboutPageAdminViewSet",
     "TravelStyleAdminViewSet",
     "CustomizeTripAdminViewSet",
+    "TrekHeroUploadAPIView",
+    "TrekGalleryUploadAPIView",
+    "BlogThumbnailUploadAPIView",
+    "BlogFeaturedUploadAPIView",
+    "BlogInlineImageUploadAPIView",
+    "TourHeroUploadAPIView",
+    "TourGalleryUploadAPIView",
+    "TrekGalleryDetailAPIView",
+    "TourGalleryDetailAPIView",
+    "BlogInlineImageDetailAPIView",
 ]

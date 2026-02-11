@@ -32,6 +32,18 @@ from admin_api.views.blog_importer import BlogFullImportView, BlogFullImportDeta
 from admin_api.views.customize_trip import CustomizeTripAdminViewSet
 from admin_api.views.dashboard import DashboardStatsAPIView
 from admin_api.views.home import HomeBestTrekAdminViewSet, HomeFeaturedTourAdminViewSet
+from admin_api.views.media_uploads import (
+    BlogFeaturedUploadAPIView,
+    BlogInlineImageDetailAPIView,
+    BlogInlineImageUploadAPIView,
+    BlogThumbnailUploadAPIView,
+    TourGalleryDetailAPIView,
+    TourGalleryUploadAPIView,
+    TourHeroUploadAPIView,
+    TrekGalleryDetailAPIView,
+    TrekGalleryUploadAPIView,
+    TrekHeroUploadAPIView,
+)
 from admin_api.views.tour_taxonomy import TourStyleListView
 
 router = DefaultRouter()
@@ -102,6 +114,58 @@ urlpatterns = [
         "blog/import/full/<slug:slug>/",
         BlogFullImportDetailView.as_view(),
         name="admin-blog-import-full-detail",
+    ),
+
+    # --- Media upload endpoints (hero/gallery/inline) ---
+    path(
+        "treks/<slug:trek_slug>/media/hero/",
+        TrekHeroUploadAPIView.as_view(),
+        name="admin-trek-hero-upload",
+    ),
+    path(
+        "treks/<slug:trek_slug>/media/gallery/",
+        TrekGalleryUploadAPIView.as_view(),
+        name="admin-trek-gallery-upload",
+    ),
+    path(
+        "tours/<slug:slug>/media/hero/",
+        TourHeroUploadAPIView.as_view(),
+        name="admin-tour-hero-upload",
+    ),
+    path(
+        "tours/<slug:slug>/media/gallery/",
+        TourGalleryUploadAPIView.as_view(),
+        name="admin-tour-gallery-upload",
+    ),
+    path(
+        "blog-posts/<slug:slug>/media/thumbnail/",
+        BlogThumbnailUploadAPIView.as_view(),
+        name="admin-blog-thumbnail-upload",
+    ),
+    path(
+        "blog-posts/<slug:slug>/media/featured/",
+        BlogFeaturedUploadAPIView.as_view(),
+        name="admin-blog-featured-upload",
+    ),
+    path(
+        "blog-posts/<slug:slug>/media/inline/",
+        BlogInlineImageUploadAPIView.as_view(),
+        name="admin-blog-inline-upload",
+    ),
+    path(
+        "blog-posts/<slug:slug>/media/inline/<int:pk>/",
+        BlogInlineImageDetailAPIView.as_view(),
+        name="admin-blog-inline-detail",
+    ),
+    path(
+        "treks/<slug:trek_slug>/media/gallery/<int:pk>/",
+        TrekGalleryDetailAPIView.as_view(),
+        name="admin-trek-gallery-detail",
+    ),
+    path(
+        "tours/<slug:slug>/media/gallery/<int:pk>/",
+        TourGalleryDetailAPIView.as_view(),
+        name="admin-tour-gallery-detail",
     ),
 
     # --- Travel info bulk import ---

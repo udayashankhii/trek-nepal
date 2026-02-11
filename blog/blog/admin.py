@@ -10,7 +10,7 @@ from django.db import models
 from django.utils.html import format_html
 from django.utils.text import Truncator
 
-from .models import Author, BlogPost, BlogPostSlugHistory, Category, Region
+from .models import Author, BlogInlineImage, BlogPost, BlogPostSlugHistory, Category, Region
 
 
 # -----------------------------
@@ -79,6 +79,14 @@ class BlogPostSlugHistoryInline(admin.TabularInline):
     fields = ("old_slug", "new_slug", "redirect_count", "created_at", "updated_at")
     readonly_fields = ("redirect_count", "created_at", "updated_at")
     show_change_link = True
+
+
+# -----------------------------
+class BlogInlineImageInline(admin.TabularInline):
+    model = BlogInlineImage
+    extra = 1
+    fields = ("image", "alt_text", "caption", "block_id", "order")
+    ordering = ("order",)
 
 
 # -----------------------------
@@ -204,7 +212,7 @@ class BlogPostAdmin(admin.ModelAdmin):
         "preview_card_image",
     )
 
-    inlines = [BlogPostSlugHistoryInline]
+    inlines = [BlogInlineImageInline, BlogPostSlugHistoryInline]
 
     fieldsets = (
         ("Publishing", {
@@ -234,8 +242,15 @@ class BlogPostAdmin(admin.ModelAdmin):
         }),
         ("Images", {
             "fields": (
-                ("image", "image_file", "preview_card_image"),
-                ("featured_image", "featured_image_file", "preview_featured_image"),
+                ("image", "image_file", "image_alt", "preview_card_image"),
+                (
+                    "featured_image",
+                    "featured_image_file",
+                    "featured_image_alt",
+                    "featured_image_caption",
+                    "featured_image_credit",
+                    "preview_featured_image",
+                ),
                 "images",
             )
         }),

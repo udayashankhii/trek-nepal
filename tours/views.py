@@ -30,6 +30,7 @@ from .serializers import (
     TourAdditionalInfoSectionSerializer,
     TourGroupPriceSerializer,
     TourGalleryImageSerializer,
+    TourHeroImageSerializer,
     TourSEOSerializer,
     TourInternalLinkSerializer,
     TourBacklinkSerializer,
@@ -40,6 +41,7 @@ from .serializers import (
     TourBookingCardSerializer,
     SimilarTourCardSerializer,
     HomeFeaturedTripSerializer,
+    abs_url,
 )
 
 
@@ -57,7 +59,7 @@ class HomeFeaturedTripListAPIView(generics.ListAPIView):
 
 def tour_full_queryset():
     return (
-        Tour.objects.select_related("overview", "cost", "seo")
+        Tour.objects.select_related("overview", "cost", "seo", "hero_image")
         .prefetch_related(
             "itinerary_days",
             "highlight_items",
@@ -160,17 +162,31 @@ class TourDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class TourHeroAPIView(views.APIView):
     def get(self, request, tour_slug):
-        tour = get_object_or_404(Tour.objects.select_related("overview"), slug=tour_slug, is_published=True)
+        tour = get_object_or_404(Tour.objects.select_related("overview", "hero_image"), slug=tour_slug, is_published=True)
         subtitle = ""
         if getattr(tour, "overview", None) and tour.overview.paragraphs:
             subtitle = str(tour.overview.paragraphs[0])
         elif tour.long_description:
             subtitle = tour.long_description
+
+        hero_data = None
+        hero = getattr(tour, "hero_image", None)
+        if hero and hero.image:
+            hero_data = TourHeroImageSerializer(hero, context={"request": request}).data
+        elif tour.image_url:
+            hero_data = {
+                "url": abs_url(request, tour.image_url),
+                "alt": tour.image_alt or "",
+                "caption": "",
+                "credit": "",
+            }
+
         data = {
             "title": tour.title,
             "subtitle": subtitle,
             "image_url": tour.image_url,
             "image": tour.image_url,
+            "heroImage": hero_data,
             "location": tour.location,
             "badge": tour.badge,
             "duration": tour.duration,
