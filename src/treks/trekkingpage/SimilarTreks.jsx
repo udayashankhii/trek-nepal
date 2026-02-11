@@ -198,7 +198,7 @@ export default function SimilarTreks({
         {exploreLink && (
           <div className="text-center">
             <Link
-              to={exploreLink}
+              to="/trekking-in-nepal"
               className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl"
             >
               <TrendingUp size={20} />

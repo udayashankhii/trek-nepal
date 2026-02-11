@@ -170,7 +170,7 @@ export async function fetchWeatherData(locationKey) {
         "wind_speed_10m",
         "wind_direction_10m",
       ].join(","),
-      hourly: "visibility",
+      // hourly: "visibility",
       timezone: location.timezone,
       forecast_days: 1,
       models: "gem_seamless", // Use GEM model for better high-altitude accuracy
@@ -190,12 +190,12 @@ export async function fetchWeatherData(locationKey) {
     const weatherInfo = WMO_WEATHER_CODES[weatherCode] || WMO_WEATHER_CODES[0];
 
     // Get average visibility from hourly data
-    const avgVisibility = data.hourly?.visibility?.length
-      ? Math.round(
-        data.hourly.visibility.reduce((a, b) => a + (b || 0), 0) /
-        data.hourly.visibility.filter(v => v !== null).length
-      )
-      : 10000;
+    // const avgVisibility = data.hourly?.visibility?.length
+    //   ? Math.round(
+    //     data.hourly.visibility.reduce((a, b) => a + (b || 0), 0) /
+    //     data.hourly.visibility.filter(v => v !== null).length
+    //   )
+    //   : 10000;
 
     const weatherData = {
       temperature: `${Math.round(current.temperature_2m)}°C`,
@@ -209,7 +209,7 @@ export async function fetchWeatherData(locationKey) {
         current.temperature_2m,
         current.wind_speed_10m
       ),
-      visibility: `${Math.round(avgVisibility / 1000)}km`,
+      // visibility: `${Math.round(avgVisibility / 1000)}km`,
       wind: `${Math.round(current.wind_speed_10m)} km/h`,
       windDirection: current.wind_direction_10m,
       humidity: `${current.relative_humidity_2m}%`,
@@ -234,7 +234,7 @@ export async function fetchWeatherData(locationKey) {
       weatherCode: 0,
       severity: "clear",
       remark: "Weather data unavailable",
-      visibility: "--km",
+      // visibility: "--km",
       wind: "-- km/h",
       windDirection: 0,
       humidity: "--%",

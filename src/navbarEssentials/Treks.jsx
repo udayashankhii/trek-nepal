@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import { fetchAllTreks } from "../api/service/trekService";
 import { Link } from "react-router-dom";
@@ -36,7 +37,6 @@ export default function Treks({ onNavigate, variant = "grid" }) {
   const [treksByRegion, setTreksByRegion] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  // For accordion mode, track expanded regions
   const [expandedRegions, setExpandedRegions] = useState(new Set());
 
   useEffect(() => {
@@ -73,7 +73,6 @@ export default function Treks({ onNavigate, variant = "grid" }) {
 
         setTreksByRegion(grouped);
 
-        // Auto-expand all for grid view, or just specific ones if needed
         if (variant === "grid") {
           setExpandedRegions(new Set(STATIC_REGIONS.map(r => r.name)));
         }
@@ -130,7 +129,10 @@ export default function Treks({ onNavigate, variant = "grid" }) {
     <div className="w-full">
       {/* GRID LAYOUT (Use when variant="grid") */}
       {variant === "grid" && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        // <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
+        <div className="grid gap-4 md:gap-5 
+  [grid-template-columns:repeat(auto-fit,minmax(170px,1fr))]">
+
           {STATIC_REGIONS.map((region) => {
             const list = treksByRegion[region.name] || [];
             return (
@@ -138,9 +140,9 @@ export default function Treks({ onNavigate, variant = "grid" }) {
                 {/* Region Header */}
                 <Link
                   to={`/treks/${region.slug}`}
-                  className={`flex-shrink-0 bg-white rounded-xl border border-gray-200 
+                  className="flex-shrink-0 bg-white rounded-xl border border-gray-200 
                              px-3 py-3 hover:shadow-md hover:border-yellow-500/30 transition-all duration-300
-                             group mb-3 relative overflow-hidden`}
+                             group mb-3 relative overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-500 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="flex items-center justify-between gap-2 pl-2">
@@ -172,7 +174,6 @@ export default function Treks({ onNavigate, variant = "grid" }) {
                                  rounded-lg p-2.5 transition-all duration-200 
                                  hover:shadow-sm relative"
                       >
-
                         <h4 className="text-sm font-medium text-gray-700 group-hover:text-gray-900 mb-1 leading-snug line-clamp-2">
                           {trek.title}
                         </h4>
@@ -204,7 +205,9 @@ export default function Treks({ onNavigate, variant = "grid" }) {
             return (
               <div
                 key={region.slug}
-                className={`bg-white rounded-xl border transition-colors duration-200 overflow-hidden ${isExpanded ? 'border-yellow-500/30 ring-1 ring-yellow-500/10' : 'border-gray-200'}`}
+                className={`bg-white rounded-xl border transition-colors duration-200 overflow-hidden ${
+                  isExpanded ? 'border-yellow-500/30 ring-1 ring-yellow-500/10' : 'border-gray-200'
+                }`}
               >
                 <button
                   onClick={() => toggleRegion(region.name)}
@@ -213,7 +216,9 @@ export default function Treks({ onNavigate, variant = "grid" }) {
                   type="button"
                 >
                   <div className="flex-1 text-left min-w-0">
-                    <h3 className={`text-sm font-bold uppercase tracking-wide truncate transition-colors ${isExpanded ? 'text-yellow-700' : 'text-gray-900'}`}>
+                    <h3 className={`text-sm font-bold uppercase tracking-wide truncate transition-colors ${
+                      isExpanded ? 'text-yellow-700' : 'text-gray-900'
+                    }`}>
                       {region.name}
                     </h3>
                     <p className="text-xs text-gray-500 mt-0.5">
@@ -224,8 +229,9 @@ export default function Treks({ onNavigate, variant = "grid" }) {
                 </button>
 
                 <div
-                  className={`transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
-                    }`}
+                  className={`transition-all duration-300 ease-in-out ${
+                    isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
                 >
                   <div className="px-3 pb-3 pt-1 space-y-2 border-t border-gray-100/50">
                     {list.length === 0 ? (
@@ -269,8 +275,9 @@ export default function Treks({ onNavigate, variant = "grid" }) {
 
 const ChevronIcon = ({ isOpen }) => (
   <svg
-    className={`w-5 h-5 transition-transform duration-300 text-gray-400 flex-shrink-0 ${isOpen ? 'rotate-180' : ''
-      }`}
+    className={`w-5 h-5 transition-transform duration-300 text-gray-400 flex-shrink-0 ${
+      isOpen ? 'rotate-180' : ''
+    }`}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

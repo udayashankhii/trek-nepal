@@ -11,7 +11,7 @@ export default function TopBar() {
         </a>
       </span>
       <div className="flex items-center gap-2">
-        <span>Best Treks for 2025!</span>
+        <span>Best Treks for 2026!</span>
         <Link
           to="/tourindex"
           className="text-sm bg-white text-yellow-600 px-3 py-1 rounded-full hover:bg-yellow-100 transition font-medium"

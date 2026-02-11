@@ -453,3 +453,16 @@ export const createBooking = async ({
 
   return parseResponse(res);
 };
+
+
+
+/**
+ * Fetch booking history for authenticated user
+ * GET /api/bookings/history/
+ */
+export async function fetchUserBookingHistory(options = {}) {
+  return makeBookingRequest("/history/", {
+    method: "GET",
+    signal: options.signal,
+  });
+}

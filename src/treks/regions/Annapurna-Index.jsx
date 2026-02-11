@@ -335,7 +335,7 @@ const AnnapurnaLuxuryPage = () => {
               Plan My Expedition
             </Link>
             <Link
-              to="/treks"
+              to="/trekking-in-nepal"
               className="inline-block px-10 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-full border-2 border-white/30 hover:bg-white/20 transition-all duration-300"
             >
               Explore All Treks
