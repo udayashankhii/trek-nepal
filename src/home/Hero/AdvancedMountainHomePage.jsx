@@ -25,7 +25,7 @@ export default function MountainHomePage({
 
       {/* Floating Action Button */}
       <div className="fixed bottom-8 right-8 z-50">
-       
+
       </div>
 
       {/* Loading Overlay */}
