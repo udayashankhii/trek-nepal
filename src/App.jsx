@@ -23,7 +23,6 @@ import CostAndDate from "./treks/trekkingpage/Datesandprice";
 import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
 import SinglePageBookingForm from "./Book/TrekBooking/TrekBooking";
-import ForgotPassword from "./Profile/Login/ForgetPassword";
 
 import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
 
@@ -74,6 +73,8 @@ import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
 import LoginModal from "./Model/LoginModal.jsx";
 import { useAuth } from "./api/auth/AuthContext";
 import TermsAndConditions from "./About us/TermsAndConditions";
+import Register from "./Profile/Login/RegisterForm.jsx";
+import ForgotPassword from "./Profile/Login/ForgetPassword";
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -284,7 +285,14 @@ const AppRoutes = () => {
             element={<TrekDetailPage />}
           />
 
-          <Route path="/register" element={<RegisterForm modal />} />
+          <Route path="/login" element={
+            <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-4">
+              <div className="w-full max-w-md bg-white rounded-2xl shadow-xl">
+                <LoginForm />
+              </div>
+            </div>
+          } />
+          <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile" element={<Profile />} />

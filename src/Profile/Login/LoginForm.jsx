@@ -9,6 +9,7 @@ import GoogleLoginButton from "./GoogleLoginButton";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { login } from "../../api/auth/auth.api.js";
 import { useAuth } from "../../api/auth/AuthContext";
+import { register } from "../../api/auth/auth.api.js";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -97,16 +98,15 @@ export default function LoginForm({ onClose, onSuccess }) {
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
-    if (onClose) onClose();
-    navigate("/register", {
-      state: { backgroundLocation }
-    });
+    // Navigate directly without calling onClose (which does navigate(-1) and conflicts)
+    // Don't pass backgroundLocation state — it causes AppRoutes to render the wrong page
+    navigate("/register", { replace: true });
   };
 
   const handleForgotPasswordClick = (e) => {
     e.preventDefault();
-    if (onClose) onClose();
-    navigate("/forgot-password");
+    // Navigate directly without calling onClose (which does navigate(-1) and conflicts)
+    navigate("/forgot-password", { replace: true });
   };
 
   return (
