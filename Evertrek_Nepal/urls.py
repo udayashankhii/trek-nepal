@@ -32,6 +32,7 @@ urlpatterns = [
     # ----------------------------------------------------
     path("api/", include("TrekCard.urls")),     # Trek data / booking / details
     path("api/", include("tours.urls")),
+    path("api/search/", include("search.urls")),
     path("api/", include("blog.blog.urls")),
     path("api/", include("travel_info.urls")),
     path("api/", include("about_info.urls")),

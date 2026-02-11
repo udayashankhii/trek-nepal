@@ -2,20 +2,12 @@ from __future__ import annotations
 
 import uuid
 
-<<<<<<< Updated upstream
-=======
 from django.core.exceptions import ValidationError
->>>>>>> Stashed changes
 from django.db import models
 from django.utils.text import slugify
 
-from travel_styles.models import TravelStyle
-
-<<<<<<< Updated upstream
-=======
 from TrekCard.models import TrekInfo
-
->>>>>>> Stashed changes
+from travel_styles.models import TravelStyle
 
 def unique_slugify(instance, value: str, slug_field_name: str = "slug", max_length: int = 80) -> str:
     base_slug = slugify(value)[:max_length].strip("-")
@@ -263,8 +255,6 @@ class TourReview(models.Model):
 
     def __str__(self) -> str:
         return f"Review · {self.tour.title} · {self.author_name}"
-<<<<<<< Updated upstream
-=======
 
 
 class HomeFeaturedTour(models.Model):
@@ -324,4 +314,3 @@ class HomeFeaturedTour(models.Model):
     def __str__(self) -> str:
         target = self.target
         return f"Home Feature · {target.title if target else 'Untitled'}"
->>>>>>> Stashed changes

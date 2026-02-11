@@ -1,14 +1,10 @@
 from rest_framework import serializers
 
+from TrekCard.models import TrekInfo
 from travel_styles.models import TravelStyle
 
-<<<<<<< Updated upstream
-from .models import (
-=======
-from TrekCard.models import TrekInfo
 from .models import (
     HomeFeaturedTour,
->>>>>>> Stashed changes
     Tour,
     TourOverview,
     TourItineraryDay,
@@ -74,8 +70,6 @@ class TourListSerializer(serializers.ModelSerializer):
         ]
 
 
-<<<<<<< Updated upstream
-=======
 class HomeFeaturedTripSerializer(serializers.ModelSerializer):
     entry_type = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
@@ -230,7 +224,6 @@ class HomeFeaturedTripSerializer(serializers.ModelSerializer):
         return self.get_image_url(obj)
 
 
->>>>>>> Stashed changes
 class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour

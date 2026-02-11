@@ -98,11 +98,7 @@ class TravelStyleAdminViewSet(ModelViewSet):
 
         return Response({"updated": len(serializer.validated_data["items"])})
 
-<<<<<<< Updated upstream
-    @action(detail=True, methods=["patch", "delete"], url_path="tours/(?P<tour_pk>[^/.]+)")
-=======
     @action(detail=True, methods=["patch", "delete"], url_path="tours/(?P<tour_pk>\\d+)")
->>>>>>> Stashed changes
     def manage_tour(self, request, slug=None, tour_pk=None):
         style = self.get_object()
         try:

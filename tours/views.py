@@ -4,10 +4,7 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 
 from .models import (
-<<<<<<< Updated upstream
-=======
     HomeFeaturedTour,
->>>>>>> Stashed changes
     Tour,
     TourOverview,
     TourItineraryDay,
@@ -42,11 +39,6 @@ from .serializers import (
     TourKeyInfoSerializer,
     TourBookingCardSerializer,
     SimilarTourCardSerializer,
-<<<<<<< Updated upstream
-)
-
-
-=======
     HomeFeaturedTripSerializer,
 )
 
@@ -63,8 +55,6 @@ class HomeFeaturedTripListAPIView(generics.ListAPIView):
             .order_by("order")
         )
 
-
->>>>>>> Stashed changes
 def tour_full_queryset():
     return (
         Tour.objects.select_related("overview", "cost", "seo")
@@ -135,8 +125,6 @@ class TourListAPIView(generics.ListCreateAPIView):
         return TourListSerializer
 
 
-<<<<<<< Updated upstream
-=======
 class FeaturedTourListAPIView(generics.ListAPIView):
     serializer_class = TourListSerializer
 
@@ -153,7 +141,6 @@ class FeaturedTourListAPIView(generics.ListAPIView):
         )
 
 
->>>>>>> Stashed changes
 
 class TourDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = "tour_slug"
