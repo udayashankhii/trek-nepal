@@ -1,6 +1,7 @@
 // src/treks/trekkingpage/TrekAction.jsx
-import React, { useState } from "react";
-import { Download, Sliders, CheckCircle, XCircle } from "lucide-react";
+import React from "react";
+// import { Download, Sliders, CheckCircle, XCircle } from "lucide-react";
+import { Sliders } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function TrekActions({
@@ -12,7 +13,7 @@ export default function TrekActions({
   preferredDates = [],
 }) {
   const navigate = useNavigate();
-  const [downloadStatus, setDownloadStatus] = useState(null); // 'success', 'error', null
+  // const [downloadStatus, setDownloadStatus] = useState(null); // 'success', 'error', null
 
   const handleCustomize = () => {
     const slug = trekSlug || trekId;
@@ -34,6 +35,7 @@ export default function TrekActions({
     });
   };
 
+  /*
   const handleDownloadPDF = async () => {
     if (!pdfUrl) {
       console.warn("⚠️ No PDF URL available");
@@ -69,11 +71,13 @@ export default function TrekActions({
       setTimeout(() => setDownloadStatus(null), 3000);
     }
   };
+  */
 
   return (
     <div className="relative">
       <div className="flex flex-wrap justify-center gap-4 my-8 px-4">
         {/* PDF Download Button */}
+        {/* PDF Download Button - Commented Out
         {pdfUrl ? (
           <button
             onClick={handleDownloadPDF}
@@ -91,6 +95,7 @@ export default function TrekActions({
             <span>PDF Not Available</span>
           </div>
         )}
+        */}
 
         {/* Customize Trek Button */}
         <button
@@ -103,6 +108,7 @@ export default function TrekActions({
       </div>
 
       {/* Download Status Notification */}
+      {/* Download Status Notification - Commented Out
       {downloadStatus && (
         <div
           className={`fixed bottom-20 right-4 z-50 flex items-center gap-3 px-6 py-3 rounded-lg shadow-2xl animate-slide-up ${
@@ -124,6 +130,7 @@ export default function TrekActions({
           )}
         </div>
       )}
+      */}
     </div>
   );
 }

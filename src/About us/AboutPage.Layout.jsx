@@ -1,13 +1,14 @@
+
+
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchAboutPage } from "../api/service/aboutInfoService";
 import HeroBreadcrumbs from "../components/Breadcrumb/HeroBreadcrumbs.jsx";
 import { useHideLayoutBreadcrumbs } from "../components/Breadcrumb/BreadcrumbVisibilityContext.jsx";
 
-const DEFAULT_HERO =
- <img src="/tours.jpg"
-  alt="Himalayan mountain landscape"
- />;
+// FIX: Changed from React element to string path
+const DEFAULT_HERO = "/tours.jpg";
 
 const renderParagraphs = (text) => {
   if (!text) return [];
@@ -581,19 +582,31 @@ const AboutPageLayout = ({ slug }) => {
         </script>
       )}
 
-      <section className="relative overflow-hidden bg-slate-950">
-        <div className="absolute inset-0">
+      {/* FIXED HERO SECTION - Better background image handling */}
+      <section className="relative overflow-hidden bg-slate-950 min-h-[60vh]">
+        {/* Background Image Layer with proper sizing */}
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
           <img
             src={page.hero_image_url || DEFAULT_HERO}
             alt={page.title}
-            className="h-[60vh] w-full object-cover"
+            className="w-full h-full object-cover"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-slate-900/30" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.25),transparent_55%)]" />
         </div>
-        <div className="relative z-10 min-h-[60vh] flex items-center">
-          <div className="max-w-6xl mx-auto px-6 py-16 text-white">
+        
+        {/* Gradient Overlays */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-slate-900/30"
+          style={{ zIndex: 2 }}
+        />
+        <div 
+          className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.25),transparent_55%)]"
+          style={{ zIndex: 3 }}
+        />
+        
+        {/* Content */}
+        <div className="relative min-h-[60vh] flex items-center" style={{ zIndex: 10 }}>
+          <div className="max-w-6xl mx-auto px-6 py-16 text-white w-full">
             <HeroBreadcrumbs breadcrumbs={breadcrumbs} className="mb-3" />
             <p className="text-xs uppercase tracking-[0.3em] text-emerald-200">
               {page.hero_badge || "EverTrek Nepal"}
@@ -629,7 +642,7 @@ const AboutPageLayout = ({ slug }) => {
                 {heroStats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-2xl border border-white/10 bg-white/10 p-4 text-center"
+                    className="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm p-4 text-center"
                   >
                     <p className="text-3xl font-semibold text-white">
                       {stat.value}

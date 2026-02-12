@@ -14,10 +14,10 @@
  * Get base URL from environment variables
  */
 const getBaseUrl = () => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || 
-                  import.meta.env.VITE_ADMIN_API_BASE_URL || 
-                  'http://localhost:8000';
-  
+  const baseUrl = import.meta.env.VITE_API_BASE_URL ||
+    import.meta.env.VITE_ADMIN_API_BASE_URL ||
+    'http://localhost:8000';
+
   // Remove trailing slash for consistency
   return baseUrl.replace(/\/$/, '');
 };
@@ -36,32 +36,32 @@ export const normalizeImageUrl = (url, throwOnInvalid = false) => {
   }
 
   const trimmedUrl = url.trim();
-  
+
   // Already absolute HTTP/HTTPS
   if (/^https?:\/\//i.test(trimmedUrl)) {
     return trimmedUrl;
   }
-  
+
   // Protocol-relative URL (//example.com/image.jpg)
   if (trimmedUrl.startsWith('//')) {
     return `https:${trimmedUrl}`;
   }
-  
+
   // Relative URL - prepend base URL
   if (trimmedUrl.startsWith('/')) {
     return `${getBaseUrl()}${trimmedUrl}`;
   }
-  
+
   // Data URL (base64 embedded images)
   if (trimmedUrl.startsWith('data:image/')) {
     return trimmedUrl;
   }
-  
+
   // Invalid format
   if (throwOnInvalid) {
     throw new Error(`Invalid image URL format: ${trimmedUrl}`);
   }
-  
+
   console.warn('⚠️ Unable to normalize URL:', trimmedUrl);
   return null;
 };
@@ -82,36 +82,132 @@ export const extractHeroData = (trek) => {
   const trekInfo = trek.trek || trek;
 
   // Extract image URL with multiple fallback sources
-  const rawImageUrl = hero.imageUrl || 
-                      hero.image_url || 
-                      hero.image || 
-                      trekInfo.card_image_url ||
-                      trekInfo.hero_image ||
-                      null;
+  const rawImageUrl = hero.imageUrl ||
+    hero.image_url ||
+    hero.image ||
+    trekInfo.card_image_url ||
+    trekInfo.hero_image ||
+    null;
 
   const imageUrl = normalizeImageUrl(rawImageUrl) || '/everest.jpeg';
 
   return {
     // Image
     imageUrl,
-    imageAlt: hero.imageAlt || 
-              hero.image_alt || 
-              `${trekInfo.title || 'Trek'} hero image`,
+    imageAlt: hero.imageAlt ||
+      hero.image_alt ||
+      `${trekInfo.title || 'Trek'} hero image`,
     imageCaption: hero.imageCaption || hero.image_caption || '',
-    
+
     // Text content
     title: hero.title || trekInfo.title || 'Trek Adventure',
     subtitle: hero.subtitle || trekInfo.review_text || trekInfo.subtitle || '',
-    
+
     // Info badges
     season: hero.season || trekInfo.season || '',
     duration: hero.duration || trekInfo.duration || '',
     difficulty: hero.difficulty || trekInfo.trip_grade || trekInfo.trek_grade || '',
     location: hero.location || trekInfo.region_name || trekInfo.region || '',
-    
+
     // CTA
     ctaLabel: hero.cta_label || hero.ctaLabel || 'Book This Trek',
     ctaLink: hero.cta_link || hero.ctaLink || '',
+  };
+};
+
+
+/**
+ * Extract and normalize Tour hero section data
+ * 
+ * @param {Object} tour - Tour data from API
+ * @returns {Object} Normalized hero data
+ */
+export const extractTourHeroData = (tour) => {
+  if (!tour) {
+    console.warn('extractTourHeroData: No tour data provided');
+    return getDefaultHeroData();
+  }
+
+  // Extract image URL from various Tour API fields
+  const rawImageUrl = tour.image_url ||
+    tour.image ||
+    tour.heroImage?.url ||
+    tour.card_image_url ||
+    null;
+
+  const imageUrl = normalizeImageUrl(rawImageUrl) || '/everest.jpeg';
+
+  return {
+    // Image
+    imageUrl,
+    imageAlt: tour.heroImage?.alt ||
+      tour.title + ' hero image' ||
+      'Tour hero image',
+    imageCaption: tour.heroImage?.caption || '',
+
+    // Text content
+    title: tour.title || 'Tour Adventure',
+    subtitle: tour.subtitle || '',
+
+    // Info badges (mapped from Tour fields)
+    season: tour.badge || '', // Using badge as season/tag
+    duration: tour.duration || '',
+    difficulty: '', // Tours might not have difficulty
+    location: tour.location || '',
+    groupSize: tour.group_size || '',
+
+    // CTA
+    ctaLabel: 'Book This Tour',
+    ctaLink: '', // Can be constructed if needed
+  };
+};
+
+/**
+ * Extract and normalize Blog hero section data
+ * 
+ * @param {Object} blog - Blog post data from API
+ * @returns {Object} Normalized hero data
+ */
+export const extractBlogHeroData = (blog) => {
+  if (!blog) {
+    console.warn('extractBlogHeroData: No blog data provided');
+    return getDefaultHeroData();
+  }
+
+  // Priority: Featured Hero > Featured > Main Image > Thumbnail
+  const rawImageUrl = blog.featuredHeroImage?.url ||
+    blog.featuredImage?.url ||
+    blog.image ||
+    blog.thumbnailImage?.url ||
+    null;
+
+  const imageUrl = normalizeImageUrl(rawImageUrl) || '/everest.jpeg';
+
+  return {
+    // Image
+    imageUrl,
+    imageAlt: blog.featuredHeroImage?.alt ||
+      blog.featuredImage?.alt ||
+      blog.title ||
+      'Blog hero image',
+    imageCaption: blog.featuredHeroImage?.caption ||
+      blog.featuredImage?.caption ||
+      blog.featuredHeroImage?.credit ||
+      '',
+
+    // Text content
+    title: blog.title || 'Blog Post',
+    subtitle: blog.subtitle || blog.excerpt || '',
+
+    // Info badges
+    season: blog.category || '',
+    duration: blog.readTime ? `${blog.readTime} min read` : '',
+    difficulty: blog.difficulty || '',
+    location: blog.region || '',
+
+    // CTA
+    ctaLabel: 'Read More', // Or null if strictly for hero banner
+    ctaLink: '',
   };
 };
 
@@ -145,10 +241,10 @@ export const extractGalleryData = (trek) => {
   }
 
   // Try multiple data sources
-  const rawGallery = trek.gallery || 
-                     trek.gallery_images || 
-                     trek.images || 
-                     [];
+  const rawGallery = trek.gallery ||
+    trek.gallery_images ||
+    trek.images ||
+    [];
 
   if (!Array.isArray(rawGallery)) {
     console.warn('extractGalleryData: Gallery data is not an array:', rawGallery);
@@ -161,15 +257,15 @@ export const extractGalleryData = (trek) => {
       if (!img) return null;
 
       // Extract URL from various possible fields
-      const rawUrl = img.image_url || 
-                     img.url || 
-                     img.image || 
-                     img.src || 
-                     img.path || 
-                     (typeof img === 'string' ? img : null);
+      const rawUrl = img.image_url ||
+        img.url ||
+        img.image ||
+        img.src ||
+        img.path ||
+        (typeof img === 'string' ? img : null);
 
       const imageUrl = normalizeImageUrl(rawUrl);
-      
+
       if (!imageUrl) {
         console.warn(`Gallery image ${index} has no valid URL:`, img);
         return null;
@@ -180,11 +276,11 @@ export const extractGalleryData = (trek) => {
         image_url: imageUrl,
         title: img.title || '',
         caption: img.caption || '',
-        altText: img.altText || 
-                 img.alt_text || 
-                 img.alt || 
-                 img.title || 
-                 `Gallery image ${index + 1}`,
+        altText: img.altText ||
+          img.alt_text ||
+          img.alt ||
+          img.title ||
+          `Gallery image ${index + 1}`,
         order: img.order !== undefined ? img.order : index,
       };
     })
@@ -192,6 +288,76 @@ export const extractGalleryData = (trek) => {
 
   console.log(`✅ Extracted ${normalizedImages.length} valid gallery images`);
   return normalizedImages;
+};
+
+/**
+ * Extract and normalize Tour gallery images
+ * 
+ * @param {Object|Array} galleryData - Tour gallery response (keys: results, or array) or Tour object
+ * @returns {Array} Normalized gallery images
+ */
+export const extractTourGalleryData = (galleryData) => {
+  if (!galleryData) return [];
+
+  // Handle if full tour object is passed (check for gallery field if exists, but API implies separate endpoint or results)
+  // Assuming this receives the response from /api/tours/{slug}/gallery/ which has { results: [...] }
+  // OR receives the tour object which might have 'images' or 'gallery'
+
+  let rawGallery = [];
+  if (Array.isArray(galleryData)) {
+    rawGallery = galleryData;
+  } else if (Array.isArray(galleryData.results)) {
+    rawGallery = galleryData.results;
+  } else if (galleryData.gallery || galleryData.images) {
+    // If a tour object is passed
+    rawGallery = galleryData.gallery || galleryData.images || [];
+  }
+
+  return rawGallery.map((img, index) => {
+    const rawUrl = img.url || img.image_url || img.image;
+    const imageUrl = normalizeImageUrl(rawUrl);
+
+    if (!imageUrl) return null;
+
+    return {
+      id: img.id || `tour-gallery-${index}`,
+      url: imageUrl, // Gallery component expects 'url' (though hook might map it) - let's standardise on what extractGalleryData produces?
+      // Wait, extractGalleryData produces { image_url, ... } but Gallery.jsx maps it.
+      // Let's match extractGalleryData output format for consistency
+      image_url: imageUrl,
+      title: '', // Tours gallery items might not have title
+      caption: img.caption || '',
+      altText: img.alt || img.alt_text || `Tour image ${index + 1}`,
+      order: img.order !== undefined ? img.order : index,
+    };
+  }).filter(Boolean);
+};
+
+/**
+ * Extract and normalize Blog gallery/inline images
+ * 
+ * @param {Object} blog - Blog data
+ * @returns {Array} Normalized images
+ */
+export const extractBlogGalleryData = (blog) => {
+  if (!blog || !Array.isArray(blog.images)) return [];
+
+  return blog.images.map((img, index) => {
+    const rawUrl = img.url || img.image;
+    const imageUrl = normalizeImageUrl(rawUrl);
+
+    if (!imageUrl) return null;
+
+    return {
+      id: `blog-img-${index}`,
+      url: imageUrl,
+      image_url: imageUrl,
+      title: '',
+      caption: img.caption || '',
+      altText: img.alt || `Blog image ${index + 1}`,
+      order: index,
+    };
+  }).filter(Boolean);
 };
 
 /**
@@ -246,14 +412,14 @@ export const validateImageUrl = (url, timeout = 5000) => {
  */
 export const validateImageUrls = async (urls) => {
   if (!Array.isArray(urls)) return [];
-  
+
   const results = await Promise.all(
     urls.map(url => validateImageUrl(url))
   );
-  
+
   const validCount = results.filter(r => r.valid).length;
   console.log(`📊 Image validation: ${validCount}/${urls.length} valid`);
-  
+
   return results;
 };
 
@@ -269,28 +435,28 @@ export const debugTrekImages = async (trek) => {
   }
 
   console.group('🖼️ Trek Images Debug');
-  
+
   try {
     // Hero image
     const hero = extractHeroData(trek);
     console.log('Hero Image:', hero?.imageUrl);
-    
+
     if (hero?.imageUrl) {
       const heroResult = await validateImageUrl(hero.imageUrl);
       console.log('Hero validation:', heroResult.valid ? '✅ Valid' : '❌ Invalid');
     }
-    
+
     // Gallery images
     const gallery = extractGalleryData(trek);
     console.log(`Gallery Images: ${gallery.length} total`);
-    
+
     if (gallery.length > 0) {
       console.table(gallery.map((img, idx) => ({
         index: idx,
         url: img.image_url,
         title: img.title || '(no title)',
       })));
-      
+
       // Validate first 3 gallery images
       const galleryUrls = gallery.slice(0, 3).map(img => img.image_url);
       await validateImageUrls(galleryUrls);
@@ -313,7 +479,7 @@ export const getFallbackImage = (type = 'hero') => {
     hero: import.meta.env.VITE_FALLBACK_HERO_IMAGE || '/everest.jpeg',
     gallery: import.meta.env.VITE_FALLBACK_GALLERY_IMAGE || '/fallback.jpg',
   };
-  
+
   return fallbacks[type] || '/fallback.jpg';
 };
 
@@ -327,14 +493,14 @@ export const preloadTrekImages = (trek, maxGalleryImages = 3) => {
   if (!trek) return;
 
   const imagesToPreload = new Set(); // Use Set to avoid duplicates
-  
+
   try {
     // Add hero image
     const hero = extractHeroData(trek);
     if (hero?.imageUrl && !hero.imageUrl.startsWith('data:')) {
       imagesToPreload.add(hero.imageUrl);
     }
-    
+
     // Add gallery images (first N)
     const gallery = extractGalleryData(trek);
     gallery
@@ -344,7 +510,7 @@ export const preloadTrekImages = (trek, maxGalleryImages = 3) => {
           imagesToPreload.add(img.image_url);
         }
       });
-    
+
     // Preload using link tags
     imagesToPreload.forEach(url => {
       const link = document.createElement('link');
@@ -355,7 +521,7 @@ export const preloadTrekImages = (trek, maxGalleryImages = 3) => {
       link.onerror = () => console.warn('⚠️ Preload failed:', url);
       document.head.appendChild(link);
     });
-    
+
     console.log(`🚀 Preloading ${imagesToPreload.size} images`);
   } catch (error) {
     console.error('Error preloading images:', error);
@@ -371,12 +537,12 @@ export const preloadTrekImages = (trek, maxGalleryImages = 3) => {
 export const extractCardImageUrl = (trek) => {
   if (!trek) return getFallbackImage('gallery');
 
-  const rawUrl = trek.card_image_url || 
-                 trek.cardImageUrl ||
-                 trek.image_url ||
-                 trek.imageUrl ||
-                 trek.hero?.imageUrl ||
-                 trek.hero?.image_url;
+  const rawUrl = trek.card_image_url ||
+    trek.cardImageUrl ||
+    trek.image_url ||
+    trek.imageUrl ||
+    trek.hero?.imageUrl ||
+    trek.hero?.image_url;
 
   return normalizeImageUrl(rawUrl) || getFallbackImage('gallery');
 };
@@ -393,7 +559,7 @@ export const createImageErrorHandler = (fallbackUrl = '/fallback.jpg') => {
       console.error('❌ Fallback image also failed to load');
       return;
     }
-    
+
     console.warn('⚠️ Image failed, using fallback:', e.target.src);
     e.target.src = fallbackUrl;
   };
@@ -408,15 +574,15 @@ export const createImageErrorHandler = (fallbackUrl = '/fallback.jpg') => {
 export const getImageDimensions = (url) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    
+
     img.onload = () => {
       resolve({ width: img.width, height: img.height });
     };
-    
+
     img.onerror = () => {
       reject(new Error(`Failed to load image: ${url}`));
     };
-    
+
     img.src = url;
   });
 };
@@ -433,4 +599,9 @@ export default {
   extractCardImageUrl,
   createImageErrorHandler,
   getImageDimensions,
+
+  extractTourHeroData,
+  extractTourGalleryData,
+  extractBlogHeroData,
+  extractBlogGalleryData,
 };

@@ -12,6 +12,7 @@ import CostInclusions from "../../treks/trekkingpage/CostInclusions.jsx";
 import TourAdditionalInfo from "./Tour-Detailed-Pages/tour-additionalinfo.jsx";
 import ReviewsSlider from "../../treks/trekkingpage/ReviewSlider.jsx";
 import { useHideLayoutBreadcrumbs } from "../../components/Breadcrumb/BreadcrumbVisibilityContext.jsx";
+import { extractTourHeroData, extractTourGalleryData } from "../../treks/trekkingpage/trekdatahelper.js";
 
 export default function TourDetail() {
   const { slug } = useParams();
@@ -101,27 +102,27 @@ export default function TourDetail() {
       itinerary:
         Array.isArray(tour?.itineraryDays) && tour.itineraryDays.length > 0
           ? tour.itineraryDays.map((day) => ({
-              "@type": "TouristTrip",
-              name: day.title,
-              description: day.description,
-            }))
+            "@type": "TouristTrip",
+            name: day.title,
+            description: day.description,
+          }))
           : undefined,
       offers: hasPrice
         ? {
-            "@type": "Offer",
-            price,
-            priceCurrency: "USD",
-            availability: "https://schema.org/InStock",
-            url: canonicalUrl || undefined,
-          }
+          "@type": "Offer",
+          price,
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          url: canonicalUrl || undefined,
+        }
         : undefined,
       aggregateRating:
         Number(tour?.reviews_count || tour?.reviews || 0) > 0
           ? {
-              "@type": "AggregateRating",
-              ratingValue: Number(tour?.rating || 0),
-              reviewCount: Number(tour?.reviews_count || tour?.reviews || 0),
-            }
+            "@type": "AggregateRating",
+            ratingValue: Number(tour?.rating || 0),
+            reviewCount: Number(tour?.reviews_count || tour?.reviews || 0),
+          }
           : undefined,
     };
   }, [seo, tour, seoDescription, ogImage, canonicalUrl]);
@@ -176,12 +177,12 @@ export default function TourDetail() {
           setReviews(
             Array.isArray(reviewsData)
               ? reviewsData.map((review, idx) => ({
-                  id: review.id || `${review.author_name}-${idx}`,
-                  name: review.author_name || "Anonymous",
-                  title: review.title || "Review",
-                  text: review.body || "",
-                  rating: Number(review.rating || 0),
-                }))
+                id: review.id || `${review.author_name}-${idx}`,
+                name: review.author_name || "Anonymous",
+                title: review.title || "Review",
+                text: review.body || "",
+                rating: Number(review.rating || 0),
+              }))
               : []
           );
         }
@@ -272,7 +273,7 @@ export default function TourDetail() {
         </script>
       )}
 
-      <TourHero tour={tour} breadcrumbs={heroBreadcrumbs} />
+      <TourHero tour={extractTourHeroData(tour)} breadcrumbs={heroBreadcrumbs} />
 
       <div className="sticky top-[92px] z-30 bg-white/95 backdrop-blur border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4 text-sm font-semibold text-gray-600">
@@ -324,16 +325,16 @@ export default function TourDetail() {
 
           {(tour.cost?.inclusions?.length > 0 ||
             tour.cost?.exclusions?.length > 0) && (
-            <section id="cost-details">
-              <CostInclusions
-                inclusions={tour.cost?.inclusions}
-                exclusions={tour.cost?.exclusions}
-                title="Cost Details"
-                inclusionsTitle="Includes"
-                exclusionsTitle="Excludes"
-              />
-            </section>
-          )}
+              <section id="cost-details">
+                <CostInclusions
+                  inclusions={tour.cost?.inclusions}
+                  exclusions={tour.cost?.exclusions}
+                  title="Cost Details"
+                  inclusionsTitle="Includes"
+                  exclusionsTitle="Excludes"
+                />
+              </section>
+            )}
 
           <TourAdditionalInfo
             sections={
@@ -349,7 +350,7 @@ export default function TourDetail() {
           </div>
 
           <TourGallery
-            images={tour.gallery_images || tour.gallery || []}
+            images={extractTourGalleryData(tour)}
             tourName={tour.title}
           />
           <SimilarTour tour={tour} items={similarTours} />
@@ -382,7 +383,7 @@ export default function TourDetail() {
           </div>
 
           {(Array.isArray(tour.internal_links) && tour.internal_links.length > 0) ||
-          (Array.isArray(tour.backlinks) && tour.backlinks.length > 0) ? (
+            (Array.isArray(tour.backlinks) && tour.backlinks.length > 0) ? (
             <div className="bg-white rounded-2xl border border-gray-200 p-6 text-sm text-gray-700">
               <h3 className="text-base font-semibold text-gray-900">
                 Helpful Resources

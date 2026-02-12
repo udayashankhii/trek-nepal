@@ -9,6 +9,7 @@ import {
   CreditCard,
   ThumbsUp,
   Calendar,
+  Sliders, // Added Sliders icon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -73,6 +74,18 @@ function BookingCard({
   const handleCheckAvailability = () => {
     if (onCheckAvailability) {
       onCheckAvailability();
+    }
+  };
+
+  // Handler for Customize Trek
+  const handleCustomize = () => {
+    if (trekIdentifier) {
+      navigate(`/customize-trek?trek_id=${trekIdentifier}`, {
+        state: {
+          trekId: trekIdentifier,
+          tripName: trekName || "",
+        },
+      });
     }
   };
 
@@ -187,9 +200,20 @@ function BookingCard({
           whileTap={{ scale: 0.98 }}
           onClick={handleBookNowClick}
           disabled={!trekIdentifier}
-          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-lg text-sm font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-lg text-sm font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center gap-2"
         >
           Book Now
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleCustomize}
+          disabled={!trekIdentifier}
+          className="w-full bg-white text-indigo-600 py-3 rounded-lg text-sm font-semibold border border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center gap-2"
+        >
+          <Sliders className="w-4 h-4" />
+          Customize Trip
         </motion.button>
       </div>
 
@@ -222,7 +246,7 @@ function BookingCard({
         {trustedReviews && (
           <div className="flex items-center space-x-1.5 text-slate-600 col-span-2">
             <ThumbsUp className="w-4 h-4 flex-shrink-0" />
-            <span>Trusted by 1000+ Travelers</span>
+            <span>Trusted by Travelers</span>
           </div>
         )}
       </div>

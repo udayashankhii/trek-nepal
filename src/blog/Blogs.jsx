@@ -15,6 +15,7 @@ import {
   fetchBlogPostBySlug,
   fetchBlogPosts,
 } from "../api/service/blogServices.js";
+import { extractBlogHeroData } from "../treks/trekkingpage/trekdatahelper.js";
 
 const DEFAULT_CATEGORIES = [
   { id: "all", name: "All Stories", icon: "📚" },
@@ -188,7 +189,13 @@ const normalizePost = (post = {}) => {
       excerptFromBlocks ||
       post.metaDescription ||
       "",
-    featuredImage: post.featuredImage || post.featured_image || null,
+
+    // Use helper for robust image extraction
+    featuredImage: {
+      url: extractBlogHeroData(post).imageUrl,
+      alt: extractBlogHeroData(post).imageAlt,
+    },
+    image: extractBlogHeroData(post).imageUrl,
     tags,
     views: post.views ?? engagement.views,
     likes: post.likes ?? engagement.likes,

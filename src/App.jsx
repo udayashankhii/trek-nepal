@@ -120,8 +120,7 @@ const RequireAuth = ({ children }) => {
     console.log('🚫 No token, redirecting to login');
     return (
       <Navigate
-        to="/login"
-        state={{ backgroundLocation: location }}
+        to={`/login?next=${encodeURIComponent(location.pathname + location.search)}`}
         replace
       />
     );
@@ -187,7 +186,14 @@ const AppRoutes = () => {
           <Route path="/mustang/:slug" element={<TrekDetailPage />} />
           <Route path="/treks/langtang" element={<LangtangTrek />} />
           <Route path="/langtang/:slug" element={<TrekDetailPage />} />
-          <Route path="/customize-trek" element={<CustomizeTrekPage />} />
+          <Route
+            path="/customize-trek"
+            element={
+              <RequireAuth>
+                <CustomizeTrekPage />
+              </RequireAuth>
+            }
+          />
 
           <Route
             path="/travel-activities/jungle-safari"

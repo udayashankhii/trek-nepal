@@ -19,6 +19,7 @@ import OptimizedImage from "./OptimizedImage";
 import ImageGallery from "./ImageGallery";
 import mockBlogPosts from "./mockPost";
 import SEO from "../components/common/SEO";
+import { extractBlogHeroData, extractBlogGalleryData } from "../treks/trekkingpage/trekdatahelper.js";
 
 // Reading Progress Component
 const ReadingProgress = React.memo(({ progress }) => (
@@ -163,6 +164,12 @@ const BlogDetail = ({
       return null;
     }
 
+
+
+    // Use helpers to extract normalized data
+    const heroData = extractBlogHeroData(blog);
+    const galleryData = extractBlogGalleryData(blog);
+
     const safeBlog = {
       id: blog.id || "unknown",
       title: blog.title || "Untitled Post",
@@ -170,11 +177,15 @@ const BlogDetail = ({
       publishDate: blog.publishDate || blog.date || new Date().toISOString(),
       metaDescription:
         blog.metaDescription || blog.description || "No description available",
-      image: blog.image || blog.featuredImage?.url,
-      featuredImage: blog.featuredImage || {
-        url: blog.image,
-        alt: blog.title || "Blog image",
+
+      // Use normalized hero data
+      image: heroData.imageUrl,
+      featuredImage: {
+        url: heroData.imageUrl,
+        alt: heroData.imageAlt,
+        caption: heroData.imageCaption,
       },
+
       content: blog.content || {
         introduction:
           blog.metaDescription || blog.description || "Welcome to this story.",
@@ -188,7 +199,8 @@ const BlogDetail = ({
           },
         ],
       },
-      images: Array.isArray(blog.images) ? blog.images : [],
+      // Use normalized gallery data
+      images: galleryData,
       tags: Array.isArray(blog.tags) ? blog.tags : [],
       views: blog.views || "1.2k",
       readTime: blog.readTime || 5,

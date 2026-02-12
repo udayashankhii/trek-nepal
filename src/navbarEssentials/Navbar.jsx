@@ -248,7 +248,7 @@ export default function Navbar() {
               onMouseEnter={() => handleMouseEnter("travelstyles")}
               onMouseLeave={handleMouseLeave}
             >
-              <button
+              {/* <button
                 type="button"
                 className={navItemStyles(isTravelStylesSection)}
                 onClick={() => handleDropdownClick("travelstyles")}
@@ -260,7 +260,7 @@ export default function Navbar() {
                   className={`ml-1 transition-transform duration-200 ${activeDropdown === "travelstyles" ? "rotate-180" : ""
                     }`}
                 />
-              </button>
+              </button> */}
 
 
               {getDropdownVisibility("travelstyles").shouldRender && (

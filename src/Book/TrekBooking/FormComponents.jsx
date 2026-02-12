@@ -20,13 +20,11 @@ export function InputField({
   helperText = "",
   className = "",
 }) {
-  const inputClasses = `w-full px-4 py-4 border-2 rounded-xl focus:ring-0 transition-colors ${
-    Icon ? "pl-12" : ""
-  } ${
-    readOnly
+  const inputClasses = `w-full px-4 py-4 border-2 rounded-xl focus:ring-0 transition-colors ${Icon ? "pl-12" : ""
+    } ${readOnly
       ? "border-gray-100 bg-gray-50 text-gray-600 cursor-not-allowed"
       : "border-gray-200 focus:border-indigo-500"
-  }`;
+    }`;
 
   return (
     <div className={`space-y-2 ${className}`}>
@@ -84,9 +82,8 @@ export function SelectField({
           value={value}
           onChange={onChange}
           required={required}
-          className={`w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 ${
-            Icon ? "pl-12 appearance-none" : ""
-          }`}
+          className={`w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 ${Icon ? "pl-12 appearance-none" : ""
+            }`}
         >
           {placeholder && <option value="">{placeholder}</option>}
           {options.map((option, idx) => {
@@ -171,6 +168,8 @@ export function SectionContainer({
  * Traveller Counter Component
  */
 export function TravellerCounter({ travellers, setTravellers }) {
+  const MAX_TRAVELLERS = 30;
+
   return (
     <div className="space-y-4">
       <label className="block text-sm font-semibold text-gray-700">
@@ -180,8 +179,9 @@ export function TravellerCounter({ travellers, setTravellers }) {
         <button
           type="button"
           onClick={() => setTravellers((t) => Math.max(1, t - 1))}
-          className="w-12 h-12 bg-indigo-100 hover:bg-indigo-200 rounded-full flex items-center justify-center transition-colors"
+          className="w-12 h-12 bg-indigo-100 hover:bg-indigo-200 rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Decrease travellers"
+          disabled={travellers <= 1}
         >
           <Minus className="w-5 h-5 text-indigo-600" />
         </button>
@@ -196,13 +196,19 @@ export function TravellerCounter({ travellers, setTravellers }) {
 
         <button
           type="button"
-          onClick={() => setTravellers((t) => t + 1)}
-          className="w-12 h-12 bg-indigo-100 hover:bg-indigo-200 rounded-full flex items-center justify-center transition-colors"
+          onClick={() => setTravellers((t) => Math.min(MAX_TRAVELLERS, t + 1))}
+          className="w-12 h-12 bg-indigo-100 hover:bg-indigo-200 rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Increase travellers"
+          disabled={travellers >= MAX_TRAVELLERS}
         >
           <Plus className="w-5 h-5 text-indigo-600" />
         </button>
       </div>
+      {travellers >= MAX_TRAVELLERS && (
+        <p className="text-sm text-red-500">
+          Maximum limit of {MAX_TRAVELLERS} travelers reached. For larger groups, please contact us directly.
+        </p>
+      )}
     </div>
   );
 }
@@ -210,26 +216,25 @@ export function TravellerCounter({ travellers, setTravellers }) {
 /**
  * Submit Button with Validation States
  */
-export function SubmitButton({ 
-  formValid, 
+export function SubmitButton({
+  formValid,
   submitting = false,
-  text = "Complete Booking & Pay Now" 
+  text = "Complete Booking & Pay Now"
 }) {
   return (
     <button
       type="submit"
       disabled={!formValid || submitting}
-      className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all ${
-        formValid && !submitting
+      className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all ${formValid && !submitting
           ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           : "bg-gray-300 text-gray-500 cursor-not-allowed"
-      }`}
+        }`}
     >
       {submitting
         ? "Creating Booking..."
         : formValid
-        ? text
-        : "Please Complete Required Fields"}
+          ? text
+          : "Please Complete Required Fields"}
     </button>
   );
 }

@@ -3,14 +3,14 @@ import { MapPin, Clock, Users, ArrowRight } from "lucide-react";
 import HeroBreadcrumbs from "../../../components/Breadcrumb/HeroBreadcrumbs.jsx";
 
 export default function TourHero({ tour, breadcrumbs }) {
+  // Tour prop is now the normalized hero data from extractTourHeroData
   const heroTitle = tour.title || "Signature Nepal Experience";
-  const heroSubtitle =
-    tour.overview?.paragraphs?.[0] ||
-    tour.shortDescription ||
-    tour.short_description ||
-    tour.longDescription ||
-    "";
-  const displayImage = tour.image || tour.image_url || "/everest.jpeg";
+  const heroSubtitle = tour.subtitle || "";
+  const displayImage = tour.imageUrl || "/everest.jpeg";
+
+  // Normalized data maps 'badge' to 'season' property
+  const badge = tour.season || tour.badge || "";
+
   return (
     <section className="relative overflow-hidden bg-slate-950">
       <div className="absolute inset-0">
@@ -32,11 +32,11 @@ export default function TourHero({ tour, breadcrumbs }) {
               <HeroBreadcrumbs breadcrumbs={breadcrumbs} className="" />
             </div>
           )}
-          {(tour.location || tour.badge) && (
+          {(tour.location || badge) && (
             <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] backdrop-blur">
               {tour.location || "Nepal Experience"}
-              {tour.location && tour.badge && <span>•</span>}
-              {tour.badge}
+              {tour.location && badge && <span>•</span>}
+              {badge}
             </span>
           )}
 
