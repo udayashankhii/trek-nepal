@@ -29,7 +29,7 @@ const Footer = () => {
             />
             <SocialIcon
               Icon={FaInstagram}
-              link="https://instagram.com/"
+              link="https://www.instagram.com/evertrek_nepal/"
               label="Instagram"
             />
             <SocialIcon

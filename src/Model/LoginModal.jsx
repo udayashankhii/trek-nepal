@@ -1,52 +1,69 @@
+
+
+// src/Model/LoginModal.jsx
 import { X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import LoginForm from "../Profile/Login/LoginForm.jsx";
 import { useAuth } from "../api/auth/AuthContext";
 
+/**
+ * LoginModal Component
+ * 
+ * RESPONSIBILITY: Handle modal display and post-login navigation ONLY
+ * Receives redirect info from location state and passes it through after login
+ */
 export default function LoginModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
+  // ✅ Extract all navigation info from location state
   const backgroundLocation = location.state?.backgroundLocation;
   const nextTarget = location.state?.next;
+  const customizeState = location.state?.customizeState; // ✅ NEW: For customize trek
 
   const handleClose = () => {
-    console.log('❌ Login cancelled');
-    // Always go back to the previous page in history. 
-    // This is the most reliable way to cancel a login modal 
-    // and return to the safe page the user was on.
+    console.log('❌ Login modal closed by user');
+    
+    // Go back to previous page (the page that opened the modal)
     navigate(-1);
   };
 
   const handleSuccess = () => {
-    console.log('✅ Login success');
+    console.log('✅ Login successful in modal');
 
-    // ✅ Determine target path
-    // 1. Check 'next' state (explicit target)
-    // 2. Check 'backgroundLocation' (where the modal is)
-    // 3. Fallback to home
-    const targetPath = nextTarget || backgroundLocation?.pathname || '/';
-    const targetSearch = backgroundLocation?.search || '';
+    // ✅ Determine where to navigate after login
+    let targetPath = '/';
+    let navigationState = null;
 
-    console.log('🔄 LoginModal navigating to:', targetPath);
+    if (nextTarget) {
+      // Priority 1: Explicit 'next' target (from BookingCard, etc.)
+      targetPath = nextTarget;
+      navigationState = customizeState; // Pass through any state (trek info, etc.)
+      console.log('🎯 Redirecting to explicit target:', nextTarget);
+    } else if (backgroundLocation) {
+      // Priority 2: Return to background location (where modal opened)
+      targetPath = backgroundLocation.pathname + (backgroundLocation.search || '');
+      console.log('🔙 Returning to background location:', targetPath);
+    }
 
-    // ⛔ HARD RELOAD FORCE - Fix sticky modal and state synchronization issues
-    const finalUrl = targetPath + targetSearch;
-    window.location.href = finalUrl;
+    // ✅ Navigate using React Router (no hard reload)
+    navigate(targetPath, {
+      state: navigationState,
+      replace: true // Replace login route in history
+    });
   };
 
-  // ✅ AUTO-CLOSE IF ALREADY AUTHENTICATED
-  // This fixes cases where the login overlay pops up for an already logged-in user
+  // ✅ Auto-close if already authenticated (prevents double modal)
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('ℹ️ User already authenticated, closing modal');
+      console.log('ℹ️ User already authenticated, auto-redirecting');
       handleSuccess();
     }
   }, [isAuthenticated]);
 
-
+  // ✅ Prevent body scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -54,6 +71,7 @@ export default function LoginModal() {
     };
   }, []);
 
+  // ✅ Close modal on Escape key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") {
@@ -76,6 +94,7 @@ export default function LoginModal() {
         className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Close button */}
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-gray-100 
@@ -86,6 +105,7 @@ export default function LoginModal() {
           <X className="w-5 h-5 text-gray-500 group-hover:text-gray-700" />
         </button>
 
+        {/* Login form - only responsible for login, not navigation */}
         <LoginForm
           onClose={handleClose}
           onSuccess={handleSuccess}

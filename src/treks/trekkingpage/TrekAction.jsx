@@ -1,8 +1,8 @@
 // src/treks/trekkingpage/TrekAction.jsx
 import React from "react";
-// import { Download, Sliders, CheckCircle, XCircle } from "lucide-react";
 import { Sliders } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getAccessToken } from "../../api/auth/auth.api.js";
 
 export default function TrekActions({
   trekId,
@@ -13,7 +13,7 @@ export default function TrekActions({
   preferredDates = [],
 }) {
   const navigate = useNavigate();
-  // const [downloadStatus, setDownloadStatus] = useState(null); // 'success', 'error', null
+  const location = useLocation();
 
   const handleCustomize = () => {
     const slug = trekSlug || trekId;
@@ -24,79 +24,39 @@ export default function TrekActions({
       return;
     }
 
-    console.log("✅ Customizing trek:", slug);
+    // ✅ Check if user is authenticated
+    const isAuthenticated = !!getAccessToken();
+    
+    // Build the customize trek URL
+    const customizeUrl = `/customize-trek?trek_id=${slug}`;
+    
+    // Prepare state data for customize trek page
+    const customizeState = {
+      trekId: slug,
+      tripName: trekName || "",
+      preferredDates: preferredDates.slice(0, 3),
+    };
 
-    navigate(`/customize-trek?trek_id=${slug}`, {
-      state: {
-        trekId: slug,
-        tripName: trekName || "",
-        preferredDates: preferredDates.slice(0, 3),
-      },
-    });
-  };
-
-  /*
-  const handleDownloadPDF = async () => {
-    if (!pdfUrl) {
-      console.warn("⚠️ No PDF URL available");
-      setDownloadStatus("error");
-      setTimeout(() => setDownloadStatus(null), 3000);
-      return;
-    }
-
-    try {
-      console.log("✅ Downloading PDF from:", pdfUrl);
-      
-      // Method 1: Open in new tab (browser handles download)
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      
-      // Extract filename from URL
-      const urlParts = pdfUrl.split("/");
-      const filename = urlParts[urlParts.length - 1] || `${trekSlug || 'trek'}-itinerary.pdf`;
-      link.download = filename;
-      
-      // Trigger download
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      setDownloadStatus("success");
-      setTimeout(() => setDownloadStatus(null), 3000);
-    } catch (error) {
-      console.error("❌ Error downloading PDF:", error);
-      setDownloadStatus("error");
-      setTimeout(() => setDownloadStatus(null), 3000);
+    if (isAuthenticated) {
+      // ✅ User is logged in - navigate directly to customize trek
+      console.log("✅ User authenticated, navigating to customize trek:", slug);
+      navigate(customizeUrl, { state: customizeState });
+    } else {
+      // ❌ User not logged in - show login modal overlay
+      console.log("🔒 User not authenticated, showing login modal");
+      navigate("/login", {
+        state: {
+          backgroundLocation: location, // ✅ Current page stays in background
+          next: customizeUrl,           // ✅ Where to go after login
+          customizeState: customizeState // ✅ Pass trek info through login
+        }
+      });
     }
   };
-  */
 
   return (
     <div className="relative">
       <div className="flex flex-wrap justify-center gap-4 my-8 px-4">
-        {/* PDF Download Button */}
-        {/* PDF Download Button - Commented Out
-        {pdfUrl ? (
-          <button
-            onClick={handleDownloadPDF}
-            disabled={!pdfUrl}
-            className={`flex items-center gap-2 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
-              downloadStatus === "success" ? "ring-2 ring-green-500" : ""
-            } ${downloadStatus === "error" ? "ring-2 ring-red-500" : ""}`}
-          >
-            <Download size={20} />
-            <span>Download PDF</span>
-          </button>
-        ) : (
-          <div className="flex items-center gap-2 bg-gray-300 text-gray-600 font-semibold px-6 py-3 rounded-xl cursor-not-allowed">
-            <Download size={20} />
-            <span>PDF Not Available</span>
-          </div>
-        )}
-        */}
-
         {/* Customize Trek Button */}
         <button
           onClick={handleCustomize}
@@ -106,31 +66,6 @@ export default function TrekActions({
           <span>Customize This Trek</span>
         </button>
       </div>
-
-      {/* Download Status Notification */}
-      {/* Download Status Notification - Commented Out
-      {downloadStatus && (
-        <div
-          className={`fixed bottom-20 right-4 z-50 flex items-center gap-3 px-6 py-3 rounded-lg shadow-2xl animate-slide-up ${
-            downloadStatus === "success"
-              ? "bg-green-500 text-white"
-              : "bg-red-500 text-white"
-          }`}
-        >
-          {downloadStatus === "success" ? (
-            <>
-              <CheckCircle size={20} />
-              <span className="font-medium">PDF download started!</span>
-            </>
-          ) : (
-            <>
-              <XCircle size={20} />
-              <span className="font-medium">PDF not available</span>
-            </>
-          )}
-        </div>
-      )}
-      */}
     </div>
   );
 }

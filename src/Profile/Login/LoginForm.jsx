@@ -9,10 +9,18 @@ import GoogleLoginButton from "./GoogleLoginButton";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { login } from "../../api/auth/auth.api.js";
 import { useAuth } from "../../api/auth/AuthContext";
-import { register } from "../../api/auth/auth.api.js";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
+/**
+ * LoginForm Component
+ * 
+ * RESPONSIBILITY: Handle login form UI and API call ONLY
+ * DOES NOT handle navigation - delegates to parent via onSuccess callback
+ * 
+ * @param {Function} onClose - Callback to close modal (optional)
+ * @param {Function} onSuccess - Callback after successful login (required)
+ */
 export default function LoginForm({ onClose, onSuccess }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -21,12 +29,6 @@ export default function LoginForm({ onClose, onSuccess }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { login: authLogin } = useAuth();
-
-  const backgroundLocation = location.state?.backgroundLocation;
-  const nextPath = backgroundLocation?.pathname ||
-    new URLSearchParams(location.search).get("next") ||
-    "/";
-  const nextSearch = backgroundLocation?.search || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +58,8 @@ export default function LoginForm({ onClose, onSuccess }) {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  // src/Profile/Login/LoginForm.jsx
+
+  // ✅ CLEAN: Only handles login API call, delegates navigation to parent
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -71,23 +74,30 @@ export default function LoginForm({ onClose, onSuccess }) {
         password: formData.password
       });
 
-      console.log('✅ Login API successful, token saved');
+      console.log('✅ Login API successful');
+      
+      // Update auth context
       authLogin(data.user);
 
-      // ✅ Show success message
+      // Show success message
       toast.success("Welcome to EverTrek Nepal 🌄");
 
-      // ✅ Handle navigation via onSuccess (preferred) or fallback
+      // ✅ Let parent handle navigation
       if (onSuccess) {
         onSuccess();
       } else {
-        // Fallback for standalone usage
-        const returnUrl = nextPath + nextSearch;
-        window.location.href = returnUrl;
+        // ⚠️ Fallback for standalone usage (e.g., /login page)
+        console.warn('No onSuccess callback provided, using fallback navigation');
+        const backgroundLocation = location.state?.backgroundLocation;
+        const nextTarget = location.state?.next;
+        const targetPath = nextTarget || backgroundLocation?.pathname || '/';
+        const targetSearch = backgroundLocation?.search || '';
+        
+        navigate(targetPath + targetSearch, { replace: true });
       }
 
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("❌ Login error:", err);
       const errorMessage = err.message || "Login failed. Please check your credentials.";
       toast.error(errorMessage);
       setErrors({ form: errorMessage });
@@ -95,17 +105,13 @@ export default function LoginForm({ onClose, onSuccess }) {
     }
   };
 
-
   const handleRegisterClick = (e) => {
     e.preventDefault();
-    // Navigate directly without calling onClose (which does navigate(-1) and conflicts)
-    // Don't pass backgroundLocation state — it causes AppRoutes to render the wrong page
     navigate("/register", { replace: true });
   };
 
   const handleForgotPasswordClick = (e) => {
     e.preventDefault();
-    // Navigate directly without calling onClose (which does navigate(-1) and conflicts)
     navigate("/forgot-password", { replace: true });
   };
 

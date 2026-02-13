@@ -2,21 +2,15 @@
 import React, { useState, useMemo, useEffect, forwardRef } from "react";
 import dayjs from "dayjs";
 import { ChevronLeft, ChevronRight, User, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import { getAccessToken } from "../../api/auth/auth.api.js";
 
 // Constants
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
-
-// const DEFAULT_GROUP_PRICES = [
-//   { label: "1 Person", price: 1190, size: 1 },
-//   { label: "2 - 4 Person", price: 1090, size: 4 },
-//   { label: "5 - 7 Person", price: 1020, size: 7 },
-//   { label: "8 - 12 Person", price: 990, size: 12 },
-// ];
 
 const DEFAULT_HIGHLIGHTS = [
   "Top-Tier Safety Measures for Peace of Mind",
@@ -42,6 +36,7 @@ const DatesAndPrice = forwardRef(
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedTab, setSelectedTab] = useState("group");
     const navigate = useNavigate();
+    const location = useLocation();
 
     // ✅ Memoized normalized dates from API
     const normalizedDates = useMemo(() => {
@@ -69,7 +64,7 @@ const DatesAndPrice = forwardRef(
     // ✅ Normalized group prices
     const normalizedGroupPrices = useMemo(() => {
       if (!Array.isArray(groupPrices) || groupPrices.length === 0) {
-        return DEFAULT_GROUP_PRICES;
+        return [];
       }
       return groupPrices
         .map((group) => {
@@ -99,7 +94,6 @@ const DatesAndPrice = forwardRef(
       if (selectedMonth === null && availableMonths.length > 0) {
         setSelectedMonth(availableMonths[0]);
       } else if (selectedMonth !== null && !availableMonths.includes(selectedMonth)) {
-        // If current selection is invalid, switch to first available
         setSelectedMonth(availableMonths[0]);
       }
     }, [availableMonths, selectedMonth]);
@@ -141,6 +135,10 @@ const DatesAndPrice = forwardRef(
         onBookDate(departure);
         return;
       }
+      
+      // ✅ Check authentication for booking
+      const isAuthenticated = !!getAccessToken();
+      
       const bookingData = {
         date: departure.start,
         endDate: departure.end,
@@ -150,19 +148,52 @@ const DatesAndPrice = forwardRef(
         trekName: trekName,
         trekId: trekId,
       };
-      if (trekId) {
-        navigate(`/trek-booking?trek_slug=${trekId}`, { state: bookingData });
+      
+      const bookingUrl = `/trek-booking?trek_slug=${trekId}`;
+
+      if (isAuthenticated) {
+        navigate(bookingUrl, { state: bookingData });
       } else {
-        navigate("/trek-booking", { state: bookingData });
+        // Show login modal overlay
+        navigate("/login", {
+          state: {
+            backgroundLocation: location,
+            next: bookingUrl,
+            bookingData: bookingData
+          }
+        });
       }
     };
 
     const handleCustomizeTrek = () => {
-      if (trekId) {
-        navigate(`/customize-trek?trek_id=${trekId}`);
-      } else {
+      if (!trekId) {
         console.error("Trek ID is missing");
         alert("Trek information is not available. Please select a trek first.");
+        return;
+      }
+
+      // ✅ Check authentication
+      const isAuthenticated = !!getAccessToken();
+      const customizeUrl = `/customize-trek?trek_id=${trekId}`;
+      
+      const customizeState = {
+        trekId: trekId,
+        tripName: trekName,
+        preferredDates: normalizedDates.slice(0, 3),
+      };
+
+      if (isAuthenticated) {
+        // Navigate directly to customize trek
+        navigate(customizeUrl, { state: customizeState });
+      } else {
+        // Show login modal overlay
+        navigate("/login", {
+          state: {
+            backgroundLocation: location,
+            next: customizeUrl,
+            customizeState: customizeState
+          }
+        });
       }
     };
 
@@ -199,20 +230,6 @@ const DatesAndPrice = forwardRef(
                   <Users className="w-4 h-4" aria-hidden="true" />
                   Group Joining
                 </button>
-                {/* <button
-                  role="tab"
-                  aria-selected={selectedTab === "private"}
-                  aria-controls="private-content"
-                  onClick={() => setSelectedTab("private")}
-                  className={`px-6 py-2 rounded font-semibold flex items-center gap-2 transition-colors ${
-                    selectedTab === "private"
-                      ? "bg-blue-900 text-white"
-                      : "bg-white border border-blue-900 text-blue-900 hover:bg-blue-50"
-                  }`}
-                >
-                  <User className="w-4 h-4" aria-hidden="true" />
-                  Private Trip
-                </button> */}
               </div>
             </header>
 
@@ -384,7 +401,6 @@ const DatesAndPrice = forwardRef(
             {/* Highlights */}
             {highlights.length > 0 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
-
                 <ul className="space-y-2">
                   {highlights.map((highlight, index) => (
                     <li
