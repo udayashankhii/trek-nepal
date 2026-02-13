@@ -1,3 +1,6 @@
+
+
+
 // src/treks/TrekDetailPage.jsx
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
@@ -175,27 +178,29 @@ export default function TrekDetailPage() {
 
         console.log("✅ Trek data loaded successfully");
 
-        // Handle elevation chart
-        let elevationChart = apiElevationChart;
-
-        if (
-          !elevationChart ||
-          !elevationChart.points ||
-          elevationChart.points.length === 0
-        ) {
-          const itineraryData =
-            trekResult.itinerary_days || trekResult.itinerary || [];
+        // ✅ FIXED: Handle elevation chart - prioritize complete itinerary data
+        let elevationChart = null;
+        const itineraryData = trekResult.itinerary_days || trekResult.itinerary || [];
+        
+        // Always try to build from itinerary first for complete data
+        if (itineraryData && itineraryData.length > 0) {
           const elevationPoints = transformItineraryToElevation(itineraryData);
-
-          if (elevationPoints.length > 0) {
+          
+          // Use itinerary if we have valid elevation data
+          if (elevationPoints.length > 0 && elevationPoints.some(p => p.elevation > 0)) {
             elevationChart = {
-              title: `${
-                trekResult.title || trekResult.trek?.title || "Trek"
-              } - Elevation Profile`,
+              title: `${trekResult.title || trekResult.trek?.title || "Trek"} - Elevation Profile`,
               subtitle: "Daily altitude changes throughout your trek",
               points: elevationPoints,
             };
+            console.log(`✅ Built elevation chart from itinerary: ${elevationPoints.length} days`);
           }
+        }
+        
+        // Fall back to API elevation chart only if itinerary didn't work
+        if (!elevationChart && apiElevationChart?.points?.length > 0) {
+          elevationChart = apiElevationChart;
+          console.log(`⚠️ Using API elevation chart: ${apiElevationChart.points.length} points`);
         }
 
         // Merge all data into trek object

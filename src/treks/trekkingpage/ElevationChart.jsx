@@ -1,3 +1,5 @@
+
+
 // src/treks/trekkingpage/ElevationChart.jsx
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -164,7 +166,7 @@ export default function ElevationChart({
 }
 
 /**
- * Main SVG Chart Component - FIXED: Shows ALL days on x-axis
+ * Main SVG Chart Component - Shows ALL days with adaptive labeling
  */
 function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRef }) {
   const [dimensions, setDimensions] = useState({ width: 800, height: 450 });
@@ -175,7 +177,6 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
     const handleResize = () => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
-        // Increased height for better label spacing
         setDimensions({ width, height: Math.min(450, Math.max(350, width * 0.5)) });
       }
     };
@@ -186,11 +187,10 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
   }, []);
 
   const { width, height } = dimensions;
-  // Increased bottom padding to accommodate ALL day labels
   const padding = { 
     top: 30, 
     right: 50, 
-    bottom: 80,  // ✅ Increased for day labels
+    bottom: 100, // Increased for day labels
     left: 60 
   };
   const chartWidth = width - padding.left - padding.right;
@@ -204,6 +204,21 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
   const xScale = (index) => (index / (data.length - 1)) * chartWidth + padding.left;
   const yScale = (elevation) => 
     height - padding.bottom - ((elevation - minElevation) / elevationRange) * chartHeight;
+
+  // ✅ Calculate label display strategy based on number of days
+  const totalDays = data.length;
+  let labelInterval = 1; // Show every day by default
+  let shouldAngleLabels = false;
+
+  if (totalDays > 20) {
+    labelInterval = Math.ceil(totalDays / 10); // Show ~10 labels
+    shouldAngleLabels = true;
+  } else if (totalDays > 10) {
+    labelInterval = 2; // Show every 2nd day
+    shouldAngleLabels = true;
+  } else if (totalDays > 7) {
+    shouldAngleLabels = true;
+  }
 
   // Generate path
   const pathData = data.map((point, index) => {
@@ -220,10 +235,6 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
   const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => 
     minElevation + (elevationRange / yTicks) * i
   );
-
-  // ✅ Calculate if labels should be angled based on number of days
-  const shouldAngleLabels = data.length > 7;
-  const labelRotation = shouldAngleLabels ? -45 : 0;
 
   return (
     <div ref={containerRef} className="w-full">
@@ -281,6 +292,7 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
           const y = yScale(point.elevation);
           const isHovered = hoveredPoint?.day === point.day;
           const isMaxPoint = point.elevation === metrics.maxElevation;
+          const shouldShowLabel = index === 0 || index === data.length - 1 || (index + 1) % labelInterval === 0;
 
           return (
             <g key={point.day}>
@@ -312,19 +324,21 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
                 }}
               />
 
-              {/* ✅ FIXED: Day labels - SHOW ALL DAYS */}
-              <text
-                x={x}
-                y={height - padding.bottom + 20}
-                textAnchor={shouldAngleLabels ? "end" : "middle"}
-                dominantBaseline="middle"
-                className="text-[10px] sm:text-xs fill-gray-600 font-medium pointer-events-none"
-                transform={shouldAngleLabels ? `rotate(${labelRotation}, ${x}, ${height - padding.bottom + 20})` : ''}
-              >
-                D{point.day}
-              </text>
+              {/* ✅ Day labels - Show based on interval */}
+              {shouldShowLabel && (
+                <text
+                  x={x}
+                  y={height - padding.bottom + 20}
+                  textAnchor={shouldAngleLabels ? "end" : "middle"}
+                  dominantBaseline="middle"
+                  className="text-[10px] sm:text-xs fill-gray-600 font-medium pointer-events-none select-none"
+                  transform={shouldAngleLabels ? `rotate(-45, ${x}, ${height - padding.bottom + 20})` : ''}
+                >
+                  Day {point.day}
+                </text>
+              )}
 
-              {/* Elevation value below each point (optional, for clarity) */}
+              {/* Elevation value at peak */}
               {(isMaxPoint || isHovered) && (
                 <text
                   x={x}
@@ -419,6 +433,26 @@ function ElevationSVGChart({ data, metrics, hoveredPoint, setHoveredPoint, svgRe
           Elevation (meters)
         </text>
       </svg>
+
+      {/* Legend below chart */}
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+          <span>Regular Point</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-600"></div>
+          <span>Highest Point</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-3 h-3 text-green-600" />
+          <span>Ascent</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <TrendingDown className="w-3 h-3 text-orange-600" />
+          <span>Descent</span>
+        </div>
+      </div>
     </div>
   );
 }
