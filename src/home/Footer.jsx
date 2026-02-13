@@ -6,6 +6,7 @@ import {
   FaInstagram,
   FaYoutube,
   FaTripadvisor,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -22,26 +23,28 @@ const Footer = () => {
             experiences.
           </p>
           <div className="flex space-x-4 mt-4">
-            <SocialIcon
+            {/* <SocialIcon
               Icon={FaFacebookF}
               link="https://facebook.com/"
               label="Facebook"
-            />
+            /> */}
             <SocialIcon
               Icon={FaInstagram}
               link="https://www.instagram.com/evertrek_nepal/"
               label="Instagram"
             />
             <SocialIcon
+              Icon={FaWhatsapp}
+              link="https://wa.me/9779801234567"
+              label="WhatsApp"
+            />
+            {/* 
+            <SocialIcon
               Icon={FaYoutube}
               link="https://youtube.com/"
               label="YouTube"
             />
-            <SocialIcon
-              Icon={FaTripadvisor}
-              link="https://tripadvisor.com/"
-              label="TripAdvisor"
-            />
+             */}
           </div>
         </div>
 
