@@ -33,16 +33,7 @@ export default function SearchResults({
                 "{query}"
               </p>
             </div>
-
-            {totalResults > results.length && (
-              <button
-                onClick={onViewAll}
-                className="group flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-lg transition-all duration-300 font-semibold text-sm shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30"
-              >
-                View all
-                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" strokeWidth={2.5} />
-              </button>
-            )}
+{/*  */}
           </div>
         </div>
       )}

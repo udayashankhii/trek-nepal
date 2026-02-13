@@ -1,4 +1,5 @@
 
+
 import React, { useState } from "react";
 import {
   MapPin,
@@ -15,6 +16,7 @@ import {
  * ✅ Proper state management
  * ✅ Full feature support
  * ✅ JavaScript only (no TypeScript syntax in JSX)
+ * ✅ Action buttons (Share, Export, Google Maps) commented out
  */
 
 export function MapControls({
@@ -241,8 +243,9 @@ export function MapControls({
       </div>
 
       {/* Second Row: Action Buttons */}
+      {/* COMMENTED OUT - Action buttons temporarily disabled */}
+      {/*
       <div className="flex items-center gap-2 flex-wrap">
-        {/* Open in Google Maps */}
         <button
           onClick={handleOpenMaps}
           className="flex items-center gap-1 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
@@ -252,7 +255,6 @@ export function MapControls({
           Open in Google Maps
         </button>
 
-        {/* Share Button */}
         <button
           onClick={() => {
             if (navigator.share && mapsUrl) {
@@ -276,7 +278,6 @@ export function MapControls({
           Share
         </button>
 
-        {/* Export Menu */}
         <div className="relative group">
           <button
             className="flex items-center gap-1 px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors disabled:opacity-50"
@@ -287,7 +288,6 @@ export function MapControls({
             <ChevronDown className="w-4 h-4" />
           </button>
 
-          {/* Export Dropdown */}
           <div className="absolute right-0 mt-0 w-48 bg-white border border-gray-300 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
             <button
               onClick={handleExportGPX}
@@ -306,6 +306,7 @@ export function MapControls({
           </div>
         </div>
       </div>
+      */}
     </div>
   );
 }

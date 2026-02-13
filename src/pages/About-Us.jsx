@@ -56,27 +56,18 @@ const OverviewPage = () => {
           <div className="md:w-1/2 md:pr-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              EverTrekNepal began with a simple idea between two
-              friends, <strong>Rajib Adhikari</strong> and{" "}
-              <strong>Udaya Shankhi</strong>. Both were successful tech
-              developers in Kathmandu, but every chance they got, they escaped
-              the 9-5 grind to trek in the Himalayas. In 2010, fueled by their
-              shared passion for the mountains, they traded keyboards for hiking
-              boots and turned their weekend adventures into a full-time
-              calling.
+             The Peaceful Paths of EverTrek Nepal
+
+High on the winding trails of the Annapurna Circuit, two lifelong trek lovers from the Himalayan foothills met one misty autumn day. Both had wandered Nepal's mountains for years—one chasing the quiet sunrises over Poon Hill, the other finding solace in the still blue lakes of Gokyo. At a simple teahouse pass, sharing warm tea after a long climb, they connected over what the mountains gave them: pure peace, away from the rush of daily life.
+
+"This beauty heals the soul," one said, gazing at the endless peaks. "But planning a trek? It's stress—unreliable bookings, worries about the weather or paths ahead.
+
+From that shared dream, EverTrek Nepal was born. It became the gentle guide for anyone craving the Himalayas' embrace—easy bookings for serene walks through rhododendron forests, heartfelt tips for spotting blue sheep at dawn, and quiet assurances that every step is safe and true. No hassles, just the promise of fresh air filling your lungs and worries melting away.
+
             </p>
             <p className="text-gray-700 leading-relaxed">
-              What started as a dream to share the Himalayas with a few
-              colleagues has grown into a thriving adventure travel company.
-              Rajib and Udaya infused their tech-savvy mindset into the
-              business, making trip planning and logistics seamless for
-              travelers. Their mission from day one was clear: to offer
-              authentic, life-changing experiences in Nepal and the greater
-              Himalayan region, with a focus on innovation, safety, and
-              sustainability. Today, EverTrekNepal has guided
-              thousands of trekkers to their dreams, all while staying true to
-              the founders' original vision of adventure, community, and
-              integrity.
+             Those who want peace of mind should come to EverTrek Nepal. Here, the trails whisper welcome, and every journey feels like coming home.
+
             </p>
           </div>
           {/* Story Image */}
@@ -259,7 +250,7 @@ const OverviewPage = () => {
       </section>
 
       {/* Timeline/Achievements Section */}
-      <section className="bg-white py-16 px-4">
+      {/* <section className="bg-white py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
             Our Journey So Far
@@ -288,7 +279,7 @@ const OverviewPage = () => {
             </li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* Testimonials Section */}
       <section className="bg-gray-100 py-16 px-4">

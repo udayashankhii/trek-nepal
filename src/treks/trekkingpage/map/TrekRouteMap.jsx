@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useRouteMap } from "../../../hooks/map/useRouteMap";
 import { MapControls } from "./MapControls";
@@ -13,7 +10,9 @@ import {
 } from "../../../utils/mapHelpers";
 
 /**
- * TREK ROUTE MAP - FIXED VERSION V3
+ * TREK ROUTE MAP - FIXED VERSION V4
+ * ✅ Fixed day selection: now correctly matches by day number (not index)
+ * ✅ Day 1 click now shows Day 1 route (not Day 2)
  * ✅ isMounted flag prevents state updates after unmount
  * ✅ Proper cleanup on component unmount
  * ✅ Routes don't disappear on day switches
@@ -75,14 +74,15 @@ export default function TrekRouteMap({
   }, [itinerary]);
 
   /* ---------------------------------------------------------
-   * 2️⃣ SELECTED POINTS (removes acclimatization for routing)
+   * 2️⃣ SELECTED POINTS - ✅ FIXED: Now searches by day number
    * --------------------------------------------------------- */
   const selectedPoints = useMemo(() => {
     if (selectedDayIndex === "all") {
       return skipAcclimatizationDays(allMapPoints);
     } else {
+      // ✅ FIXED: Find by day number, not index
       const idx = allMapPoints.findIndex(
-        (p) => p.index === Number(selectedDayIndex)
+        (p) => p.day === Number(selectedDayIndex)
       );
       if (idx === -1) return [];
       return allMapPoints.slice(idx, idx + 2);
@@ -322,23 +322,18 @@ export default function TrekRouteMap({
    * --------------------------------------------------------- */
   if (mapError) {
     return (
-      <div className="bg-white rounded-xl border border-red-200 p-6 text-center">
-        <p className="text-red-600 font-semibold text-lg">⚠️ Map unavailable</p>
-        <p className="text-sm text-gray-600 mt-2">{mapError}</p>
-        <p className="text-xs text-gray-500 mt-3">
-          Check your internet connection and API key
-        </p>
+      <div className="bg-white rounded-lg border border-red-200 p-4 text-center max-w-4xl mx-auto">
+        <p className="text-red-600 font-semibold">⚠️ Map unavailable</p>
+        <p className="text-xs text-gray-600 mt-1">{mapError}</p>
       </div>
     );
   }
 
   if (allMapPoints.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-yellow-200 p-6 text-center">
-        <p className="text-yellow-700 font-semibold text-lg">
-          📍 No route data
-        </p>
-        <p className="text-sm text-gray-600 mt-2">
+      <div className="bg-white rounded-lg border border-yellow-200 p-4 text-center max-w-4xl mx-auto">
+        <p className="text-yellow-700 font-semibold">📍 No route data</p>
+        <p className="text-xs text-gray-600 mt-1">
           Add latitude & longitude to itinerary days to display route
         </p>
       </div>
@@ -346,12 +341,12 @@ export default function TrekRouteMap({
   }
 
   return (
-    <section className="bg-white rounded-2xl border border-gray-200 p-6 space-y-4 shadow-sm">
+    <section className="bg-white rounded-lg border border-gray-200 p-3 space-y-2 shadow-sm max-w-4xl mx-auto">
       {/* Header + Status */}
-      <div className="space-y-3 border-b border-gray-100 pb-4">
+      <div className="space-y-1.5 border-b border-gray-100 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Trek Route Map</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-lg font-bold text-gray-900">Trek Route Map</h2>
+          <p className="text-xs text-gray-500">
             {selectedDayIndex === "all"
               ? `Complete trek route for ${trekName} (${allMapPoints.length} days)`
               : `Day ${selectedPoints[0]?.day} segment of ${trekName}`}
@@ -388,7 +383,7 @@ export default function TrekRouteMap({
       {/* Map Container */}
       <div
         ref={mapContainerRef}
-        className="h-[400px] md:h-[550px] w-full rounded-lg border border-gray-200 bg-gray-50 shadow-sm overflow-hidden"
+        className="h-[200px] md:h-[280px] w-full rounded-md border border-gray-200 bg-gray-50 shadow-sm overflow-hidden"
       />
     </section>
   );

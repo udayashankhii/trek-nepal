@@ -1,111 +1,179 @@
-// src/trekkingpage/SimilarItineraries.jsx
+// src/trekkingpage/SimilarTreks.jsx
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Calendar, TrendingUp } from "lucide-react";
+import { Star, Clock, Mountain, Users, MapPin, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 
-// Trek Card Component
+// Trek Card Component - Styled to match the reference image
 function SimilarTrekCard({ trek }) {
   // Safely handle image error
   const handleImageError = (e) => {
     e.target.src = "/trekking.png"; // Fallback image
   };
 
-  // Badge color logic
-  const getBadgeStyles = (badge) => {
-    const lowerBadge = badge?.toLowerCase() || "";
-
-    if (lowerBadge.includes("best") || lowerBadge.includes("seller")) {
-      return "bg-green-600 text-white";
+  // Parse price
+  const parsePrice = (value) => {
+    if (value === null || value === undefined || value === '') return 0;
+    if (typeof value === 'string') {
+      const cleaned = value.replace(/[^0-9.]/g, '');
+      const num = parseFloat(cleaned);
+      return isNaN(num) ? 0 : num;
     }
-    if (lowerBadge.includes("price") || lowerBadge.includes("deal")) {
-      return "bg-orange-600 text-white";
-    }
-    if (lowerBadge.includes("new") || lowerBadge.includes("featured")) {
-      return "bg-blue-600 text-white";
-    }
-    if (lowerBadge.includes("popular")) {
-      return "bg-purple-600 text-white";
-    }
-    return "bg-gray-700 text-white";
+    const num = Number(value);
+    return isNaN(num) ? 0 : num;
   };
 
+  const basePrice = parsePrice(trek.price);
+  const originalPrice = parsePrice(trek.originalPrice);
+
+  // Difficulty color and text
+  const getDifficultyStyles = (difficulty) => {
+    if (!difficulty) return { bg: "bg-gray-100", text: "text-gray-800", label: "Moderate" };
+    const diffLower = String(difficulty).toLowerCase();
+    
+    if (diffLower === 'easy' || diffLower === 'a') {
+      return { bg: "bg-green-100", text: "text-green-800", label: "Easy" };
+    }
+    if (diffLower === 'moderate' || diffLower === 'b') {
+      return { bg: "bg-blue-100", text: "text-blue-800", label: "Moderate" };
+    }
+    if (diffLower.includes('strenuous') || diffLower.includes('challenging') ||
+      diffLower === 'hard' || diffLower === 'c') {
+      return { bg: "bg-red-100", text: "text-red-800", label: "Challenging" };
+    }
+    return { bg: "bg-gray-100", text: "text-gray-800", label: difficulty };
+  };
+
+  const difficultyStyles = getDifficultyStyles(trek.difficulty);
+
   return (
-    <article className="group bg-white shadow-md rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      {/* Image Section */}
-      <div className="relative overflow-hidden">
-        <img
-          src={trek.image}
-          alt={trek.title}
-          className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
-          onError={handleImageError}
-        />
+    <Link to={trek.link || `/treks/${trek.slug}`} className="block group">
+      <motion.div
+        whileHover={{ y: -4 }}
+        whileTap={{ scale: 0.99 }}
+        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+        className="bg-white rounded-2xl overflow-hidden
+                   border border-slate-200 shadow-md
+                   group-hover:shadow-xl
+                   transition-all duration-300 h-full flex flex-col"
+      >
+        {/* Image Section */}
+        <div className="relative h-52 w-full overflow-hidden">
+          <img
+            src={trek.image}
+            alt={trek.title}
+            loading="lazy"
+            className="object-cover w-full h-full group-hover:scale-105
+                       transition-transform duration-500 ease-out"
+            onError={handleImageError}
+          />
 
-        {/* Badge */}
-        {trek.badge && (
-          <span className={`absolute top-3 left-3 ${getBadgeStyles(trek.badge)} text-xs px-3 py-1 rounded-full font-semibold shadow-lg`}>
-            {trek.badge}
-          </span>
-        )}
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
-
-      {/* Content Section */}
-      <div className="p-5 space-y-3">
-        {/* Meta Info */}
-        <div className="flex items-center gap-3 text-sm text-gray-500">
-          {trek.duration && (
-            <span className="flex items-center gap-1">
-              <Calendar size={14} />
-              {trek.duration}
+          {/* Save Badge - Top Right */}
+          {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
+            <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-md shadow-lg">
+              Save ${(originalPrice - basePrice).toFixed(0)}
             </span>
           )}
 
-          {trek.rating > 0 && (
-            <>
-              <span className="flex items-center gap-1 text-yellow-500">
-                <Star size={14} fill="currentColor" />
-                {trek.rating.toFixed(1)}
-              </span>
-              {trek.reviews > 0 && (
-                <span className="text-gray-400">({trek.reviews})</span>
-              )}
-            </>
+          {/* Other Badge - Top Left */}
+          {trek.badge && (
+            <span className="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-semibold uppercase px-3 py-1.5 rounded-md shadow-lg">
+              {trek.badge}
+            </span>
           )}
         </div>
 
-        {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors line-clamp-2 min-h-[3.5rem]">
-          {trek.title}
-        </h3>
+        {/* Content Section */}
+        <div className="p-5 flex-1 flex flex-col space-y-3">
+          {/* Title */}
+          <h3 className="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-[3.5rem]">
+            {trek.title}
+          </h3>
 
-        {/* Region Badge */}
-        {trek.region && (
-          <div className="text-xs text-gray-500 font-medium">
-            📍 {trek.region}
+          {/* Duration and Price Row */}
+          <div className="flex items-center text-sm text-gray-700 gap-2">
+            <Clock className="w-4 h-4 text-gray-500" />
+            <span className="font-medium">{trek.duration}</span>
+            <span className="text-gray-400">•</span>
+            
+            {(basePrice > 0 || originalPrice > 0) ? (
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-indigo-600 text-base">
+                  ${(basePrice > 0 ? basePrice : originalPrice).toFixed(0)}
+                </span>
+                {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
+                  <span className="text-gray-400 line-through text-sm">
+                    ${originalPrice.toFixed(0)}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className="font-semibold text-gray-500 text-sm">
+                Price on request
+              </span>
+            )}
           </div>
-        )}
 
-        {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-sky-600 text-2xl font-bold">
-            ${trek.price.toLocaleString()}
-          </span>
-          <span className="text-gray-500 text-sm">per person</span>
+          {/* Info Grid - 2 Rows */}
+          <div className="space-y-2">
+            {/* Row 1: Altitude and Group Size */}
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              {trek.maxAltitude && (
+                <div className="flex items-center gap-1.5">
+                  <Mountain className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium">{trek.maxAltitude}</span>
+                </div>
+              )}
+              {trek.groupSize && (
+                <div className="flex items-center gap-1.5">
+                  <Users className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium">Up to {trek.groupSize}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Row 2: Location */}
+            {trek.region && (
+              <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                <MapPin className="w-4 h-4 text-gray-500" />
+                <span className="font-medium capitalize">{trek.region}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Difficulty Badge */}
+          {trek.difficulty && (
+            <div>
+              <span className={`inline-block px-3 py-1.5 rounded-md text-sm font-semibold ${difficultyStyles.bg} ${difficultyStyles.text}`}>
+                Grade {difficultyStyles.label}
+              </span>
+            </div>
+          )}
+
+          {/* Rating - at bottom */}
+          <div className="flex items-center gap-2 mt-auto pt-2">
+            <div className="flex items-center">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-4 h-4 ${
+                    i < Math.round(trek.rating)
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-sm font-semibold text-gray-700">
+              {trek.rating.toFixed(1)}
+            </span>
+            <span className="text-sm text-gray-500">
+              ({trek.reviews})
+            </span>
+          </div>
         </div>
-
-        {/* View Details Link */}
-        <Link
-          to={trek.link || `/treks/${trek.slug}`}
-          className="inline-flex items-center gap-1 text-green-600 text-sm font-semibold hover:gap-2 transition-all group/link"
-        >
-          View Details
-          <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
-        </Link>
-      </div>
-    </article>
+      </motion.div>
+    </Link>
   );
 }
 
@@ -138,29 +206,76 @@ export default function SimilarTreks({
         // Handle different API response formats
         const id = trek.id || trek._id || `trek-${index}`;
         const title = trek.title || trek.name || 'Untitled Trek';
-        const image = trek.image || trek.bannerImage || trek.thumbnail || trek.photo || '/trekking.png';
+        const image = trek.image || trek.card_image_url || trek.bannerImage || trek.thumbnail || trek.photo || '/trekking.png';
         const daysValue = trek.days || trek.durationDays;
         const duration = trek.duration || (daysValue ? `${daysValue} Days` : null);
         const rating = Number(trek.rating || trek.stars || trek.averageRating || 0);
         const reviews = Number(trek.reviews || trek.reviewCount || trek.reviewsCount || 0);
-        const price = Number(trek.price || trek.basePrice || trek.cost || 0);
-        const badge = trek.badge || trek.tag || trek.label || '';
+        
+        // Price handling - same as TrekCard
+        const parsePrice = (value) => {
+          if (value === null || value === undefined || value === '') return 0;
+          if (typeof value === 'string') {
+            const cleaned = value.replace(/[^0-9.]/g, '');
+            const num = parseFloat(cleaned);
+            return isNaN(num) ? 0 : num;
+          }
+          const num = Number(value);
+          return isNaN(num) ? 0 : num;
+        };
+
+        const bookingCard = trek.booking_card || {};
+        const basePrice = parsePrice(
+          trek.price ||
+          bookingCard.base_price ||
+          trek.base_price ||
+          0
+        );
+        const originalPrice = parsePrice(
+          bookingCard.original_price ||
+          trek.original_price ||
+          null
+        );
+
+        const badge = trek.badge || bookingCard.badge_label || trek.tag || trek.label || '';
         const slug = trek.slug || trek.url || '';
-        const link = trek.link || `/treks/${slug}`;
-        const region = trek.region || trek.location || trek.area || '';
+        const region = trek.region || trek.region_name || trek.location || trek.area || '';
+        
+        // Parse duration to get number of days
+        const parseDuration = (durationStr) => {
+          if (!durationStr) return null;
+          const match = String(durationStr).match(/(\d+)/);
+          return match ? `${match[1]} days` : durationStr;
+        };
+
+        const difficulty = trek.difficulty || trek.trek_grade || trek.trip_grade || '';
+        const maxAltitude = trek.max_altitude || trek.maxAltitude || '';
+        const groupSize = trek.group_size || trek.groupSize || '';
+
+        // Construct link based on region and slug
+        let link = trek.link;
+        if (!link && slug && region) {
+          link = `/treks/${region}/${slug}`;
+        } else if (!link && slug) {
+          link = `/treks/${slug}`;
+        }
 
         return {
           id,
           title,
           image,
-          duration,
+          duration: parseDuration(duration),
           rating,
           reviews,
-          price,
+          price: basePrice,
+          originalPrice,
           badge,
           slug,
           link,
-          region
+          region,
+          difficulty,
+          maxAltitude,
+          groupSize
         };
       });
   }, [treks, currentTrekId, maxItems]);
@@ -199,11 +314,10 @@ export default function SimilarTreks({
           <div className="text-center">
             <Link
               to="/trekking-in-nepal"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl"
             >
               <TrendingUp size={20} />
               Explore All Treks
-              <ArrowRight size={20} />
             </Link>
           </div>
         )}
