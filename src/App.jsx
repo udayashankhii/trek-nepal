@@ -1,7 +1,7 @@
 
 
 // src/App.jsx
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,70 +11,63 @@ import {
   useLocation,
 } from "react-router-dom";
 import SEO from "./components/common/SEO";
-import Home from "./home/Home";
-
 import Footer from "./home/Footer";
-import AnnapurnaLuxuryPage from "./treks/regions/Annapurna-Index";
-import TrekkingInNepalPage from "./pages/Trekking-in-Nepal";
-import RegionCard from "./treks/regions/Regions-Card";
-import EverestTrekIndex from "./treks/regions/Everest-Index";
-import ContactUsPage from "./pages/Contact-Us";
-import CostAndDate from "./treks/trekkingpage/Datesandprice";
-import AboutUsPage from "./pages/About-Us";
 import ScrollToTop from "./pages/Scroll-Top";
-import SinglePageBookingForm from "./Book/TrekBooking/TrekBooking";
-
-import CustomizeTripPage from "./Book/Customize-trip/CutomizeTrips";
-
-import TravelIndex from "./travel-info/Travel-items.jsx";
-import VisaInformationPage from "./travel-info/Visa-Info.jsx";
-import HealthSafetyPage from "./travel-info/Health-Safety.jsx";
-import PackingInformationPage from "./travel-info/Packing-List.jsx";
-import TransportationPage from "./travel-info/Trasnportation.jsx";
-import FAQPage from "./travel-info/FAQs.jsx";
-import PaymentGuide from "./About us/How-to-make-a-payment.jsx";
-import PrivacyPolicyPage from "./About us/Policy.jsx";
-import LegalDocumentsPage from "./About us/LegalDocument.jsx";
-import OurTeamPage from "./About us/Ourteam.jsx";
-import OverviewPage from "./pages/About-Us";
-import TrekOverview from "./treks/trekkingpage/TrekOverview.jsx";
-import ImprovedNavbar from "./navbarEssentials/Navbar.jsx";
-import BlogPage from "./blog/Blogs.jsx";
-import BlogDetails from "./blog/BlogDetails.jsx";
 import "./index.css";
 
 import { BreadcrumbVisibilityProvider } from "./components/Breadcrumb/BreadcrumbVisibilityContext";
 import PageBreadcrumbs from "./components/Breadcrumb/PageBreadcrumbs";
 
-import ToursPage from "./Travel-Activities/Tour-Activities/Tours.jsx";
-import JungleSafariPage from "./Travel-Activities/JungleSafari/Jungle.jsx";
-import BikeRentalPage from "./Travel-Activities/BikeRental/Biker.jsx";
-import Tours from "./Travel-Activities/Tour-Activities/Tours.jsx";
-import TourDetail from "./Travel-Activities/Tour-Activities/Tour-Detailed.jsx";
-import TrekDetailPage from "./treks/TreksDetailPage.jsx";
-
-import LangtangTrek from "./treks/regions/Lantang-Index.jsx";
-import ManasluTrek from "./treks/regions/Manaslu-Index.jsx";
-import MustangTrek from "./treks/regions/Mustang-Index.jsx";
 import Navbar from "./navbarEssentials/Navbar.jsx";
 import EverTrekChatbot from "./AI chatbot/EverTrek.Chatbot.jsx";
-import LoginForm from "./Profile/Login/LoginForm";
-import RegisterForm from "./Profile/Login/RegisterForm.jsx";
-import VerifyOtp from "./Profile/Login/VerrifyOTP.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
-import CustomizeTrekPage from "./Book/Customize-trip/CutomizeTrips";
-import BookingDetailPage from "./Profile/ProfileData/BookingDetailPage";
 import { getAccessToken } from "./api/auth/auth.api";
-import Profile from "./Profile/Profile";
-import MyBookingsPage from "./Profile/ProfileData/MyBookingPage";
-import PaymentPage from "./Book/TrekBooking/PaymentPage";
-import PaymentSuccessPage from "./Book/TrekBooking/PaymentSuccessPage";
-import CustomizeTripSuccess from "./Book/Customize-trip/CustomizeTripSuccess";
-import LoginModal from "./Model/LoginModal.jsx";
 import { useAuth } from "./api/auth/AuthContext";
-import TermsAndConditions from "./About us/TermsAndConditions";
-import Register from "./Profile/Login/RegisterForm.jsx";
-import ForgotPassword from "./Profile/Login/ForgetPassword";
+
+const Home = lazy(() => import("./home/Home"));
+const AnnapurnaLuxuryPage = lazy(() => import("./treks/regions/Annapurna-Index"));
+const TrekkingInNepalPage = lazy(() => import("./pages/Trekking-in-Nepal"));
+const EverestTrekIndex = lazy(() => import("./treks/regions/Everest-Index"));
+const ContactUsPage = lazy(() => import("./pages/Contact-Us"));
+const CostAndDate = lazy(() => import("./treks/trekkingpage/Datesandprice"));
+const AboutUsPage = lazy(() => import("./pages/About-Us"));
+const SinglePageBookingForm = lazy(() => import("./Book/TrekBooking/TrekBooking"));
+const CustomizeTripPage = lazy(() => import("./Book/Customize-trip/CutomizeTrips"));
+const TravelIndex = lazy(() => import("./travel-info/Travel-items.jsx"));
+const VisaInformationPage = lazy(() => import("./travel-info/Visa-Info.jsx"));
+const HealthSafetyPage = lazy(() => import("./travel-info/Health-Safety.jsx"));
+const PackingInformationPage = lazy(() => import("./travel-info/Packing-List.jsx"));
+const TransportationPage = lazy(() => import("./travel-info/Trasnportation.jsx"));
+const FAQPage = lazy(() => import("./travel-info/FAQs.jsx"));
+const PaymentGuide = lazy(() => import("./About us/How-to-make-a-payment.jsx"));
+const PrivacyPolicyPage = lazy(() => import("./About us/Policy.jsx"));
+const LegalDocumentsPage = lazy(() => import("./About us/LegalDocument.jsx"));
+const OurTeamPage = lazy(() => import("./About us/Ourteam.jsx"));
+const TrekOverview = lazy(() => import("./treks/trekkingpage/TrekOverview.jsx"));
+const BlogPage = lazy(() => import("./blog/Blogs.jsx"));
+const BlogDetails = lazy(() => import("./blog/BlogDetails.jsx"));
+const ToursPage = lazy(() => import("./Travel-Activities/Tour-Activities/Tours.jsx"));
+const JungleSafariPage = lazy(() => import("./Travel-Activities/JungleSafari/Jungle.jsx"));
+const BikeRentalPage = lazy(() => import("./Travel-Activities/BikeRental/Biker.jsx"));
+const Tours = lazy(() => import("./Travel-Activities/Tour-Activities/Tours.jsx"));
+const TourDetail = lazy(() => import("./Travel-Activities/Tour-Activities/Tour-Detailed.jsx"));
+const TrekDetailPage = lazy(() => import("./treks/TreksDetailPage.jsx"));
+const LangtangTrek = lazy(() => import("./treks/regions/Lantang-Index.jsx"));
+const ManasluTrek = lazy(() => import("./treks/regions/Manaslu-Index.jsx"));
+const MustangTrek = lazy(() => import("./treks/regions/Mustang-Index.jsx"));
+const LoginForm = lazy(() => import("./Profile/Login/LoginForm"));
+const VerifyOtp = lazy(() => import("./Profile/Login/VerrifyOTP.jsx"));
+const CustomizeTrekPage = lazy(() => import("./Book/Customize-trip/CutomizeTrips"));
+const BookingDetailPage = lazy(() => import("./Profile/ProfileData/BookingDetailPage"));
+const Profile = lazy(() => import("./Profile/Profile"));
+const MyBookingsPage = lazy(() => import("./Profile/ProfileData/MyBookingPage"));
+const PaymentPage = lazy(() => import("./Book/TrekBooking/PaymentPage"));
+const PaymentSuccessPage = lazy(() => import("./Book/TrekBooking/PaymentSuccessPage"));
+const CustomizeTripSuccess = lazy(() => import("./Book/Customize-trip/CustomizeTripSuccess"));
+const LoginModal = lazy(() => import("./Model/LoginModal.jsx"));
+const TermsAndConditions = lazy(() => import("./About us/TermsAndConditions"));
+const Register = lazy(() => import("./Profile/Login/RegisterForm.jsx"));
+const ForgotPassword = lazy(() => import("./Profile/Login/ForgetPassword"));
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -135,184 +128,186 @@ const AppRoutes = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
 
-  // ✅ Don't show modal if we're already at the target page
-  const showModal = backgroundLocation && location.pathname === '/login';
-
   return (
     <>
-      <Routes location={backgroundLocation || location}>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
-          <Route path="/travel-styles" element={<Tours />} />
+      <Suspense
+        fallback={
+          <div className="min-h-[60vh] flex items-center justify-center text-gray-600">
+            Loading...
+          </div>
+        }
+      >
+        <Routes location={backgroundLocation || location}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
+            <Route path="/travel-styles" element={<Tours />} />
 
-          <Route path="/treks/everest-treks" element={<EverestTrekIndex />} />
-          <Route path="annapurna-treks" element={<AnnapurnaLuxuryPage />} />
-          <Route path="langtang" element={<LangtangTrek />} />
+            <Route path="/treks/everest-treks" element={<EverestTrekIndex />} />
+            <Route path="annapurna-treks" element={<AnnapurnaLuxuryPage />} />
+            <Route path="langtang" element={<LangtangTrek />} />
 
-          <Route path="trekdetailpage" element={<TrekDetailPage />} />
-          <Route path="trekdetailpage/:id" element={<TrekDetailPage />} />
-          <Route path="trekking-in-nepal" element={<TrekkingInNepalPage />} />
-          <Route path="/trek/:id" element={<TrekDetailPage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="trekdetailpage" element={<TrekDetailPage />} />
+            <Route path="trekdetailpage/:id" element={<TrekDetailPage />} />
+            <Route path="/trek/:id" element={<TrekDetailPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
 
-          <Route path="/travel-info" element={<TravelIndex />} />
-          <Route
-            path="/travel-info/visa-information"
-            element={<VisaInformationPage />}
-          />
-          <Route
-            path="/travel-info/health-safety"
-            element={<HealthSafetyPage />}
-          />
-          <Route
-            path="/travel-info/packing-list"
-            element={<PackingInformationPage />}
-          />
-          <Route
-            path="/travel-info/transportation"
-            element={<TransportationPage />}
-          />
-          <Route path="/travel-info/faqs" element={<FAQPage />} />
+            <Route path="/travel-info" element={<TravelIndex />} />
+            <Route
+              path="/travel-info/visa-information"
+              element={<VisaInformationPage />}
+            />
+            <Route
+              path="/travel-info/health-safety"
+              element={<HealthSafetyPage />}
+            />
+            <Route
+              path="/travel-info/packing-list"
+              element={<PackingInformationPage />}
+            />
+            <Route
+              path="/travel-info/transportation"
+              element={<TransportationPage />}
+            />
+            <Route path="/travel-info/faqs" element={<FAQPage />} />
 
-          <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
-          <Route path="treks/everest" element={<EverestTrekIndex />} />
-          <Route path="/everest/:slug" element={<TrekDetailPage />} />
-          <Route path="/treks/annapurna" element={<AnnapurnaLuxuryPage />} />
-          <Route path="/annapurna/:slug" element={<TrekDetailPage />} />
-          <Route path="/treks/manaslu" element={<ManasluTrek />} />
-          <Route path="/manaslu/:slug" element={<TrekDetailPage />} />
-          <Route path="/treks/mustang" element={<MustangTrek />} />
-          <Route path="/mustang/:slug" element={<TrekDetailPage />} />
-          <Route path="/treks/langtang" element={<LangtangTrek />} />
-          <Route path="/langtang/:slug" element={<TrekDetailPage />} />
-          <Route
-            path="/customize-trek"
-            element={
-              <RequireAuth>
-                <CustomizeTrekPage />
-              </RequireAuth>
-            }
-          />
+            <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
+            <Route path="treks/everest" element={<EverestTrekIndex />} />
+            <Route path="/everest/:slug" element={<TrekDetailPage />} />
+            <Route path="/treks/annapurna" element={<AnnapurnaLuxuryPage />} />
+            <Route path="/annapurna/:slug" element={<TrekDetailPage />} />
+            <Route path="/treks/manaslu" element={<ManasluTrek />} />
+            <Route path="/manaslu/:slug" element={<TrekDetailPage />} />
+            <Route path="/treks/mustang" element={<MustangTrek />} />
+            <Route path="/mustang/:slug" element={<TrekDetailPage />} />
+            <Route path="/treks/langtang" element={<LangtangTrek />} />
+            <Route path="/langtang/:slug" element={<TrekDetailPage />} />
+            <Route
+              path="/customize-trek"
+              element={
+                <RequireAuth>
+                  <CustomizeTrekPage />
+                </RequireAuth>
+              }
+            />
 
-          <Route
-            path="/travel-activities/jungle-safari"
-            element={<JungleSafariPage />}
-          />
-          <Route path="/travel-activities/tours" element={<ToursPage />} />
-          <Route path="/travel-activities/tours/:slug" element={<TourDetail />} />
-          <Route path="/travel-styles/bike-rental" element={<BikeRentalPage />} />
-          <Route path="/trekdetailpage" element={<CostAndDate />} />
-          <Route path="/treks/:slug" element={<TrekDetailPage />} />
+            <Route
+              path="/travel-activities/jungle-safari"
+              element={<JungleSafariPage />}
+            />
+            <Route path="/travel-activities/tours" element={<ToursPage />} />
+            <Route path="/travel-activities/tours/:slug" element={<TourDetail />} />
+            <Route path="/travel-styles/bike-rental" element={<BikeRentalPage />} />
+            <Route path="/trekdetailpage" element={<CostAndDate />} />
+            <Route path="/treks/:slug" element={<TrekDetailPage />} />
+            <Route path="/everest/:trekId" element={<TrekDetailPage />} />
+            <Route path="/about-us/*" element={<AboutUsPage />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
+            <Route
+              path="/customize-trip/success/:requestId"
+              element={<CustomizeTripSuccess />}
+            />
+            <Route path="/trek-overview" element={<TrekOverview />} />
 
-          <Route path="/treks/:region/:slug" element={<TrekDetailPage />} />
-          <Route path="/everest/:trekId" element={<TrekDetailPage />} />
-          <Route path="/about-us/*" element={<AboutUsPage />} />
-          <Route path="/contact-us" element={<ContactUsPage />} />
-          <Route
-            path="/customize-trip/success/:requestId"
-            element={<CustomizeTripSuccess />}
-          />
-          <Route path="/trek-overview" element={<TrekOverview />} />
+            <Route
+              path="/trek-booking"
+              element={
+                <RequireAuth>
+                  <SinglePageBookingForm />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <RequireAuth>
+                  <PaymentPage />
+                </RequireAuth>
+              }
+            />
 
-          <Route
-            path="/trek-booking"
-            element={
-              <RequireAuth>
-                <SinglePageBookingForm />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/payment"
-            element={
-              <RequireAuth>
-                <PaymentPage />
-              </RequireAuth>
-            }
-          />
+            <Route
+              path="/payment/success"
+              element={
+                <RequireAuth>
+                  <PaymentSuccessPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/bookings"
+              element={
+                <RequireAuth>
+                  <MyBookingsPage />
+                </RequireAuth>
+              }
+            />
 
-          <Route
-            path="/payment/success"
-            element={
-              <RequireAuth>
-                <PaymentSuccessPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/bookings"
-            element={
-              <RequireAuth>
-                <MyBookingsPage />
-              </RequireAuth>
-            }
-          />
+            <Route
+              path="/bookings/:bookingRef"
+              element={
+                <RequireAuth>
+                  <BookingDetailPage />
+                </RequireAuth>
+              }
+            />
 
-          <Route
-            path="/bookings/:bookingRef"
-            element={
-              <RequireAuth>
-                <BookingDetailPage />
-              </RequireAuth>
-            }
-          />
+            <Route path="/about-us/our-team" element={<OurTeamPage />} />
+            <Route
+              path="/about-us/how-to-make-a-payment"
+              element={<PaymentGuide />}
+            />
+            <Route
+              path="/about-us/privacy-policy"
+              element={<PrivacyPolicyPage />}
+            />
+            <Route
+              path="/about-us/legal-documents"
+              element={<LegalDocumentsPage />}
+            />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/about-us" element={<OverviewPage />} />
-          <Route path="/about-us/our-team" element={<OurTeamPage />} />
-          <Route
-            path="/about-us/how-to-make-a-payment"
-            element={<PaymentGuide />}
-          />
-          <Route
-            path="/about-us/privacy-policy"
-            element={<PrivacyPolicyPage />}
-          />
-          <Route
-            path="/about-us/legal-documents"
-            element={<LegalDocumentsPage />}
-          />
-          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPage />} />
+            <Route path="/blog/:slug/details" element={<BlogDetails />} />
+            <Route path="/jungle-safari" element={<JungleSafariPage />} />
+            <Route path="/bike-rental" element={<BikeRentalPage />} />
+            <Route path="/trekking-in-nepal/:slug" element={<TrekDetailPage />} />
+            <Route
+              path="/trekking-in-nepal/:region/:slug"
+              element={<TrekDetailPage />}
+            />
+            <Route
+              path="/trekking-in-nepal/:region/:slug/:trekId"
+              element={<TrekDetailPage />}
+            />
 
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogPage />} />
-          <Route path="/blog/:slug/details" element={<BlogDetails />} />
-          <Route path="/jungle-safari" element={<JungleSafariPage />} />
-          <Route path="/bike-rental" element={<BikeRentalPage />} />
-          <Route path="/trekking-in-nepal" element={<TrekkingInNepalPage />} />
-          <Route path="/trekking-in-nepal/:slug" element={<TrekDetailPage />} />
-          <Route
-            path="/trekking-in-nepal/:region/:slug"
-            element={<TrekDetailPage />}
-          />
-          <Route
-            path="/trekking-in-nepal/:region/:slug/:trekId"
-            element={<TrekDetailPage />}
-          />
+            <Route
+              path="/login"
+              element={
+                <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-4">
+                  <div className="w-full max-w-md bg-white rounded-2xl shadow-xl">
+                    <LoginForm />
+                  </div>
+                </div>
+              }
+            />
+            <Route path="/register" element={<Register />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/profile" element={<Profile />} />
 
-          <Route path="/login" element={
-            <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-4">
-              <div className="w-full max-w-md bg-white rounded-2xl shadow-xl">
-                <LoginForm />
-              </div>
-            </div>
-          } />
-          <Route path="/register" element={<Register />} />
-          <Route path="/verify-otp" element={<VerifyOtp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/profile" element={<Profile />} />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-
-      {/* Modal routes - rendered on top of background */}
-      {backgroundLocation && (
-        <Routes>
-          <Route path="/login" element={<LoginModal />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
         </Routes>
-      )}
+
+        {/* Modal routes - rendered on top of background */}
+        {backgroundLocation && (
+          <Routes>
+            <Route path="/login" element={<LoginModal />} />
+          </Routes>
+        )}
+      </Suspense>
     </>
   );
 };

@@ -1,12 +1,19 @@
 import { fetchAllTreks } from "../api/service/trekService";
+import { useLocation } from "react-router-dom";
 import useSWR from "swr";
 
 export default function DataPreloader() {
-  const { isLoading } = useSWR("/treks/", fetchAllTreks, {
+  const location = useLocation();
+  const connection = navigator?.connection;
+  const isSaveData = connection?.saveData === true;
+  const isSlowConnection = ["slow-2g", "2g"].includes(connection?.effectiveType);
+  const shouldPreload = location.pathname === "/" && !isSaveData && !isSlowConnection;
+
+  const { isLoading } = useSWR(shouldPreload ? "/treks/" : null, fetchAllTreks, {
     revalidateOnMount: true,
   });
 
-  if (!isLoading) return null;
+  if (!isLoading || !shouldPreload) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">

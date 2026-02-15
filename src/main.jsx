@@ -21,7 +21,7 @@ root.render(
         value={{
           fetcher,
           dedupingInterval: 2000,
-          revalidateOnFocus: true,
+          revalidateOnFocus: false,
           shouldRetryOnError: false,
         }}
       >

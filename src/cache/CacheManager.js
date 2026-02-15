@@ -3,9 +3,16 @@
  * Implements memory-based caching with automatic expiration
  */
 class CacheManager {
-  constructor() {
+  constructor(options = {}) {
     this.cache = new Map();
     this.defaultTTL = 5 * 60 * 1000; // 5 minutes
+    this.maxEntries = options.maxEntries || 200;
+    this.persistKey = options.persistKey || "etn.cache.v1";
+    this.persistEnabled = options.persistEnabled ?? (import.meta.env.VITE_CACHE_PERSIST === "true");
+
+    if (this.persistEnabled) {
+      this.loadFromStorage();
+    }
   }
 
   /**
@@ -46,6 +53,9 @@ class CacheManager {
       timestamp: Date.now(),
       expiresAt: Date.now() + ttl
     });
+
+    this.pruneIfNeeded();
+    this.persistToStorage();
   }
 
   /**
@@ -60,6 +70,7 @@ class CacheManager {
    */
   clear() {
     this.cache.clear();
+    this.persistToStorage();
   }
 
   /**
@@ -72,6 +83,7 @@ class CacheManager {
         this.cache.delete(key);
       }
     }
+    this.persistToStorage();
   }
 
   /**
@@ -80,8 +92,63 @@ class CacheManager {
   getStats() {
     return {
       size: this.cache.size,
+      maxEntries: this.maxEntries,
+      persistEnabled: this.persistEnabled,
       entries: Array.from(this.cache.keys())
     };
+  }
+
+  pruneIfNeeded() {
+    if (this.cache.size <= this.maxEntries) return;
+
+    const sorted = Array.from(this.cache.entries())
+      .sort((a, b) => a[1].timestamp - b[1].timestamp);
+
+    const overflow = this.cache.size - this.maxEntries;
+    for (let i = 0; i < overflow; i += 1) {
+      this.cache.delete(sorted[i][0]);
+    }
+  }
+
+  loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(this.persistKey);
+      if (!raw) return;
+
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return;
+
+      const now = Date.now();
+      Object.entries(parsed).forEach(([key, value]) => {
+        if (!value || typeof value !== "object") return;
+        if (value.expiresAt && value.expiresAt > now) {
+          this.cache.set(key, value);
+        }
+      });
+
+      this.pruneIfNeeded();
+    } catch (error) {
+      console.warn("CacheManager: failed to load persisted cache", error);
+    }
+  }
+
+  persistToStorage() {
+    if (!this.persistEnabled) return;
+
+    try {
+      const serializable = {};
+      const now = Date.now();
+
+      this.cache.forEach((value, key) => {
+        if (value?.expiresAt && value.expiresAt > now) {
+          serializable[key] = value;
+        }
+      });
+
+      localStorage.setItem(this.persistKey, JSON.stringify(serializable));
+    } catch (error) {
+      console.warn("CacheManager: failed to persist cache", error);
+    }
   }
 }
 

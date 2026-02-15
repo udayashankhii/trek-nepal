@@ -24,21 +24,22 @@ import {
 } from "./trekkingpage/trekdatahelper.js";
 
 import SEO from "../components/common/SEO";
-import TrekAddInfo from "./trekkingpage/AdditionalInfo.jsx";
-import HeroSection from "./trekkingpage/Hero.jsx";
-import TrekHighlights from "./trekkingpage/TrekHighlights.jsx";
-import Itinerary from "./trekkingpage/Itinerary.jsx";
-import CostInclusions from "./trekkingpage/CostInclusions.jsx";
-import FAQSection from "./trekkingpage/FAQSection.jsx";
-import ElevationChart from "./trekkingpage/ElevationChart.jsx";
-import BookingCard from "./trekkingpage/BookingCard.jsx";
-import DatesAndPrice from "./trekkingpage/Datesandprice.jsx";
-import SimilarTreks from "./trekkingpage/SimilarTreks.jsx";
-import TrekActions from "./trekkingpage/TrekAction.jsx";
-import TrekGallery from "./trekkingpage/Gallery.jsx";
-import KeyInfo from "./trekkingpage/KeyInfo.jsx";
-import TrekOverview from "./trekkingpage/TrekOverview.jsx";
-import ReviewsSlider from "./trekkingpage/ReviewSlider.jsx";
+
+const TrekAddInfo = lazy(() => import("./trekkingpage/AdditionalInfo.jsx"));
+const HeroSection = lazy(() => import("./trekkingpage/Hero.jsx"));
+const TrekHighlights = lazy(() => import("./trekkingpage/TrekHighlights.jsx"));
+const Itinerary = lazy(() => import("./trekkingpage/Itinerary.jsx"));
+const CostInclusions = lazy(() => import("./trekkingpage/CostInclusions.jsx"));
+const FAQSection = lazy(() => import("./trekkingpage/FAQSection.jsx"));
+const ElevationChart = lazy(() => import("./trekkingpage/ElevationChart.jsx"));
+const BookingCard = lazy(() => import("./trekkingpage/BookingCard.jsx"));
+const DatesAndPrice = lazy(() => import("./trekkingpage/Datesandprice.jsx"));
+const SimilarTreks = lazy(() => import("./trekkingpage/SimilarTreks.jsx"));
+const TrekActions = lazy(() => import("./trekkingpage/TrekAction.jsx"));
+const TrekGallery = lazy(() => import("./trekkingpage/Gallery.jsx"));
+const KeyInfo = lazy(() => import("./trekkingpage/KeyInfo.jsx"));
+const TrekOverview = lazy(() => import("./trekkingpage/TrekOverview.jsx"));
+const ReviewsSlider = lazy(() => import("./trekkingpage/ReviewSlider.jsx"));
 
 import StickyBox from "react-sticky-box";
 import { Loader2 } from "lucide-react";
@@ -53,6 +54,14 @@ function MapLoadingSpinner() {
       <Loader2 className="h-12 w-12 animate-spin text-blue-600 mb-4" />
       <p className="text-gray-600 font-medium">Loading interactive map...</p>
       <p className="text-sm text-gray-400 mt-2">This may take a few seconds</p>
+    </div>
+  );
+}
+
+function SectionFallback({ label = "Loading section..." }) {
+  return (
+    <div className="py-6 text-sm text-gray-500 flex items-center justify-center">
+      {label}
     </div>
   );
 }
@@ -254,8 +263,6 @@ export default function TrekDetailPage() {
   const scrollToMap = () =>
     mapRef.current?.scrollIntoView({ behavior: "smooth" });
 
-  const scrollToReviews = () =>
-    reviewsRef.current?.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
     if (showMap) {
@@ -263,10 +270,6 @@ export default function TrekDetailPage() {
     }
   }, [showMap]);
 
-  const handleViewMap = () => {
-    setShowMap(true);
-    scrollToMap();
-  };
 
   const handleExportComplete = (result) => {
     setExportNotification({
@@ -357,7 +360,6 @@ export default function TrekDetailPage() {
     max_altitude: maxAltitude = "",
     rating = 4.8,
     reviews = [],
-    itinerary,
     highlights: trekHighlights = [],
     cost,
     booking_card: bookingCard,
@@ -504,160 +506,186 @@ export default function TrekDetailPage() {
       />
 
       {/* ✅ Hero Section with extracted data */}
-      <HeroSection
-        title={heroData.title}
-        subtitle={heroData.subtitle}
-        imageUrl={heroData.imageUrl}
-        imageAlt={heroData.imageAlt}
-        imageCaption={heroData.imageCaption}
-        season={heroData.season}
-        duration={heroData.duration}
-        difficulty={heroData.difficulty}
-        location={heroData.location}
-        ctaLabel={heroData.ctaLabel}
-        onBookNow={
-          heroData.ctaLink
-            ? () => navigate(heroData.ctaLink)
-            : () => handleBookNow()
-        }
-        onInquiry={() => navigate(`/contact-us`)}
-      />
+      <Suspense fallback={<SectionFallback label="Loading hero..." />}>
+        <HeroSection
+          title={heroData.title}
+          subtitle={heroData.subtitle}
+          imageUrl={heroData.imageUrl}
+          imageAlt={heroData.imageAlt}
+          imageCaption={heroData.imageCaption}
+          season={heroData.season}
+          duration={heroData.duration}
+          difficulty={heroData.difficulty}
+          location={heroData.location}
+          ctaLabel={heroData.ctaLabel}
+          onBookNow={
+            heroData.ctaLink
+              ? () => navigate(heroData.ctaLink)
+              : () => handleBookNow()
+          }
+          onInquiry={() => navigate(`/contact-us`)}
+        />
+      </Suspense>
 
       {/* ✅ COMPACT: Reduced padding from py-10 to py-6 */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4 py-6">
         {/* ✅ COMPACT: Changed space-y-8 to space-y-4 for tighter component spacing */}
         <div className="flex-1 space-y-4">
-          <KeyInfo
-            data={keyInfoData}
-            rating={rating}
-            reviews={reviews}
-            reviewText={flat.review_text}
-          />
+          <Suspense fallback={<SectionFallback label="Loading key info..." />}>
+            <KeyInfo
+              data={keyInfoData}
+              rating={rating}
+              reviews={reviews}
+              reviewText={flat.review_text}
+            />
+          </Suspense>
 
           {flat.overview && (
-            <TrekOverview
-              overview={{
-                ...flat.overview,
-                sections: (flat.overview.sections || []).map((s) => ({
-                  ...s,
-                  bullets: trekHighlights.length > 0 ? [] : s.bullets,
-                })),
-              }}
-            />
+            <Suspense fallback={<SectionFallback label="Loading overview..." />}>
+              <TrekOverview
+                overview={{
+                  ...flat.overview,
+                  sections: (flat.overview.sections || []).map((s) => ({
+                    ...s,
+                    bullets: trekHighlights.length > 0 ? [] : s.bullets,
+                  })),
+                }}
+              />
+            </Suspense>
           )}
 
           {trekHighlights.length > 0 && (
-            <TrekHighlights highlights={trekHighlights} variant="card" />
+            <Suspense fallback={<SectionFallback label="Loading highlights..." />}>
+              <TrekHighlights highlights={trekHighlights} variant="card" />
+            </Suspense>
           )}
 
-          <CostInclusions
-            inclusions={cost.inclusions}
-            exclusions={cost.exclusions}
-            title="Cost Details"
-            inclusionsTitle="Includes"
-            exclusionsTitle="Excludes"
-          />
+          <Suspense fallback={<SectionFallback label="Loading cost details..." />}>
+            <CostInclusions
+              inclusions={cost.inclusions}
+              exclusions={cost.exclusions}
+              title="Cost Details"
+              inclusionsTitle="Includes"
+              exclusionsTitle="Excludes"
+            />
+          </Suspense>
 
-          <Itinerary itinerary={flat.itinerary} />
-          <FAQSection faqCategories={trek.faq_categories || []} />
+          <Suspense fallback={<SectionFallback label="Loading itinerary..." />}>
+            <Itinerary itinerary={flat.itinerary} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback label="Loading FAQs..." />}>
+            <FAQSection faqCategories={trek.faq_categories || []} />
+          </Suspense>
         </div>
 
         <aside className="w-full lg:w-96">
           <StickyBox offsetTop={200} offsetBottom={20}>
-            <BookingCard
-              trekSlug={slug}
-              trekName={trekName}
-              basePrice={
-                parseFloat(
-                  bookingCardData?.base_price || bookingCard.base_price
-                ) || 0
-              }
-              original={
-                parseFloat(
-                  bookingCardData?.original_price || bookingCard.original_price
-                ) || 0
-              }
-              groups={
-                bookingCardData?.group_prices ||
-                bookingCard.group_prices ||
-                []
-              }
-              badgeLabel={
-                bookingCardData?.badge_label || bookingCard.badge_label
-              }
-              securePayment={
-                bookingCardData?.secure_payment ?? bookingCard.secure_payment
-              }
-              noHiddenFees={
-                bookingCardData?.no_hidden_fees ?? bookingCard.no_hidden_fees
-              }
-              freeCancellation={
-                bookingCardData?.free_cancellation ??
-                bookingCard.free_cancellation
-              }
-              support247={
-                bookingCardData?.support_24_7 ?? bookingCard.support_24_7
-              }
-              trustedReviews={
-                bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews
-              }
-              onCheckAvailability={scrollToDates}
-              onBookNow={handleBookNow}
-            />
+            <Suspense fallback={<SectionFallback label="Loading booking card..." />}>
+              <BookingCard
+                trekSlug={slug}
+                trekName={trekName}
+                basePrice={
+                  parseFloat(
+                    bookingCardData?.base_price || bookingCard.base_price
+                  ) || 0
+                }
+                original={
+                  parseFloat(
+                    bookingCardData?.original_price || bookingCard.original_price
+                  ) || 0
+                }
+                groups={
+                  bookingCardData?.group_prices ||
+                  bookingCard.group_prices ||
+                  []
+                }
+                badgeLabel={
+                  bookingCardData?.badge_label || bookingCard.badge_label
+                }
+                securePayment={
+                  bookingCardData?.secure_payment ?? bookingCard.secure_payment
+                }
+                noHiddenFees={
+                  bookingCardData?.no_hidden_fees ?? bookingCard.no_hidden_fees
+                }
+                freeCancellation={
+                  bookingCardData?.free_cancellation ??
+                  bookingCard.free_cancellation
+                }
+                support247={
+                  bookingCardData?.support_24_7 ?? bookingCard.support_24_7
+                }
+                trustedReviews={
+                  bookingCardData?.trusted_reviews ?? bookingCard.trusted_reviews
+                }
+                onCheckAvailability={scrollToDates}
+                onBookNow={handleBookNow}
+              />
+            </Suspense>
           </StickyBox>
         </aside>
       </div>
 
       {/* ✅ COMPACT: Additional Info - no extra wrapper padding needed */}
-      <TrekAddInfo sections={infoSections} />
+      <Suspense fallback={<SectionFallback label="Loading details..." />}>
+        <TrekAddInfo sections={infoSections} />
+      </Suspense>
 
       {/* ✅ COMPACT: Gallery with reduced padding from py-8 to py-4 */}
       <div className="py-4">
-        <TrekGallery
-          images={galleryData}
-          trekName={trekName}
-          showTitle
-          minImages={1}
-        />
+        <Suspense fallback={<SectionFallback label="Loading gallery..." />}>
+          <TrekGallery
+            images={galleryData}
+            trekName={trekName}
+            showTitle
+            minImages={1}
+          />
+        </Suspense>
       </div>
 
       {/* ✅ COMPACT: Elevation Chart with reduced padding */}
       {hasElevationData && (
         <div className="py-4">
-          <ElevationChart
-            elevationData={elevationChartData}
-            title={trek.elevation_chart?.title || "Elevation Profile"}
-            subtitle={
-              trek.elevation_chart?.subtitle || "Trek elevation overview"
-            }
-            trekName={trekName}
-            showFullscreen
-          />
+          <Suspense fallback={<SectionFallback label="Loading elevation..." />}>
+            <ElevationChart
+              elevationData={elevationChartData}
+              title={trek.elevation_chart?.title || "Elevation Profile"}
+              subtitle={
+                trek.elevation_chart?.subtitle || "Trek elevation overview"
+              }
+              trekName={trekName}
+              showFullscreen
+            />
+          </Suspense>
         </div>
       )}
 
       {/* ✅ COMPACT: Dates and Price with reduced padding */}
       <div className="py-4" ref={datesRef}>
-        <DatesAndPrice
-          dates={departures}
-          groupPrices={groupPrices}
-          highlights={dateHighlights}
-          trekName={trekName}
-          trekId={slug}
-          onBookDate={(date) => handleBookNow(date)}
-        />
+        <Suspense fallback={<SectionFallback label="Loading dates..." />}>
+          <DatesAndPrice
+            dates={departures}
+            groupPrices={groupPrices}
+            highlights={dateHighlights}
+            trekName={trekName}
+            trekId={slug}
+            onBookDate={(date) => handleBookNow(date)}
+          />
+        </Suspense>
       </div>
 
       {/* ✅ COMPACT: Map section - reduced from py-6 to py-3, removed mt-6 to mt-3 */}
       <div className="py-3 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <TrekActions
-            trekId={flat.public_id}
-            trekSlug={slug}
-            trekName={trekName}
-            mapImage={trekActions?.mapImage}
-            preferredDates={departures.filter((d) => d.status === "Available")}
-          />
+          <Suspense fallback={<SectionFallback label="Loading map tools..." />}>
+            <TrekActions
+              trekId={flat.public_id}
+              trekSlug={slug}
+              trekName={trekName}
+              mapImage={trekActions?.mapImage}
+              preferredDates={departures.filter((d) => d.status === "Available")}
+            />
+          </Suspense>
 
           <div ref={mapRef} className="mt-3">
             <Suspense fallback={<MapLoadingSpinner />}>
@@ -676,29 +704,33 @@ export default function TrekDetailPage() {
 
       {/* ✅ COMPACT: Reviews with reduced padding from py-8 to py-4 */}
       <div className="py-4 bg-gray-100" ref={reviewsRef}>
-        <ReviewsSlider
-          reviews={trekReviews.length > 0 ? trekReviews : reviews}
-          trekName={trekName}
-          averageRating={rating}
-          totalReviews={
-            trekReviews.length > 0 ? trekReviews.length : reviews.length
-          }
-          autoPlay
-          showStats
-        />
+        <Suspense fallback={<SectionFallback label="Loading reviews..." />}>
+          <ReviewsSlider
+            reviews={trekReviews.length > 0 ? trekReviews : reviews}
+            trekName={trekName}
+            averageRating={rating}
+            totalReviews={
+              trekReviews.length > 0 ? trekReviews.length : reviews.length
+            }
+            autoPlay
+            showStats
+          />
+        </Suspense>
       </div>
 
       {/* ✅ COMPACT: Similar Treks with reduced padding from py-8 to py-4 */}
       <div className="py-4">
-        <SimilarTreks
-          treks={similarTreks.length > 0 ? similarTreks : similar}
-          title="Similar Treks You Might Like"
-          subtitle={`Discover more amazing treks in ${region}`}
-          exploreLink="/treks"
-          currentTrekId={flat.public_id}
-          maxItems={3}
-          showHeader
-        />
+        <Suspense fallback={<SectionFallback label="Loading similar treks..." />}>
+          <SimilarTreks
+            treks={similarTreks.length > 0 ? similarTreks : similar}
+            title="Similar Treks You Might Like"
+            subtitle={`Discover more amazing treks in ${region}`}
+            exploreLink="/treks"
+            currentTrekId={flat.public_id}
+            maxItems={3}
+            showHeader
+          />
+        </Suspense>
       </div>
 
       {exportNotification && (

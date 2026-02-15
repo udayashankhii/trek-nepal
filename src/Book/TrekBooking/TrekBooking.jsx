@@ -1,18 +1,45 @@
 // src/pages/BookingPage/SinglePageBookingForm.jsx
-import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
 
-import BookingPageHero from "./BookingPageHero.jsx";
-import {
-  FormHeader,
-  TripDetailsSection,
-  PersonalInfoSection,
-  AdditionalInfoSection,
-  TravelTimesSection,
-  TermsAndSubmitSection,
-} from "./BookingForm.jsx";
-import PricingSidebar from "./PricingSidebar.jsx";
-import WeatherRiskWarning from "./WeatherRiskWarning.jsx";
+const BookingPageHero = lazy(() => import("./BookingPageHero.jsx"));
+const FormHeader = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({ default: mod.FormHeader }))
+);
+const TripDetailsSection = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({
+    default: mod.TripDetailsSection,
+  }))
+);
+const PersonalInfoSection = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({
+    default: mod.PersonalInfoSection,
+  }))
+);
+const AdditionalInfoSection = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({
+    default: mod.AdditionalInfoSection,
+  }))
+);
+const TravelTimesSection = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({
+    default: mod.TravelTimesSection,
+  }))
+);
+const TermsAndSubmitSection = lazy(() =>
+  import("./BookingForm.jsx").then((mod) => ({
+    default: mod.TermsAndSubmitSection,
+  }))
+);
+const PricingSidebar = lazy(() => import("./PricingSidebar.jsx"));
+const WeatherRiskWarning = lazy(() => import("./WeatherRiskWarning.jsx"));
 import { getBookingQuote } from "../../api/service/bookingServices.js";
 import { getTrekRiskByItinerary } from "../../api/service/trekRisk.js";
 
@@ -48,7 +75,6 @@ function checkWeatherForecastAvailability(startDate, durationDays) {
 export default function SinglePageBookingForm() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Get trek slug from URL params
   const trekSlug =
@@ -94,7 +120,7 @@ export default function SinglePageBookingForm() {
     if (s && s !== "null" && s !== "undefined") {
       bookingForm.setStartDate(s);
     }
-  }, [searchParams]);
+  }, [searchParams, bookingForm]);
 
   // Fetch Main Trek Data
   useEffect(() => {
@@ -215,12 +241,6 @@ export default function SinglePageBookingForm() {
           startDate: bookingForm.startDate,
           lastTrekDate: forecastCheck.lastTrekDate,
           daysOutOfRange: forecastCheck.daysOutOfRange,
-        });
-
-        const endDateFormatted = new Date(forecastCheck.lastTrekDate).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
         });
 
         setRiskError(
@@ -362,7 +382,15 @@ export default function SinglePageBookingForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <BookingPageHero hero={hero} trek={trek} />
+      <Suspense
+        fallback={
+          <div className="min-h-[30vh] flex items-center justify-center text-gray-600">
+            Loading booking header...
+          </div>
+        }
+      >
+        <BookingPageHero hero={hero} trek={trek} />
+      </Suspense>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -372,82 +400,141 @@ export default function SinglePageBookingForm() {
               className="bg-white rounded-3xl shadow-2xl overflow-hidden"
             >
               <div className="p-8 space-y-8">
-                <FormHeader
-                  title={`Book ${trek.name || trek.title || "Your Trek"}`}
-                  subtitle="Complete your booking in one simple form"
-                />
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">Loading form...</div>
+                  }
+                >
+                  <FormHeader
+                    title={`Book ${trek.name || trek.title || "Your Trek"}`}
+                    subtitle="Complete your booking in one simple form"
+                  />
+                </Suspense>
 
     
 
 {/* // Pass departures to TripDetailsSection */}
-<TripDetailsSection
-  startDate={bookingForm.startDate}
-  setStartDate={bookingForm.setStartDate}
-  endDate={bookingForm.endDate}
-  setEndDate={bookingForm.setEndDate}
-  travellers={bookingForm.travellers}
-  setTravellers={bookingForm.setTravellers}
-  duration={hero?.duration || trek.duration || "N/A"}
-  departures={trek?.departures || []} // ✅ NEW: Pass departures from API
-  handleDepartureSelect={bookingForm.handleDepartureSelect} // ✅ NEW
-  selectedDeparture={bookingForm.selectedDeparture} // ✅ NEW
-/>
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">
+                      Loading trip details...
+                    </div>
+                  }
+                >
+                  <TripDetailsSection
+                    startDate={bookingForm.startDate}
+                    setStartDate={bookingForm.setStartDate}
+                    endDate={bookingForm.endDate}
+                    setEndDate={bookingForm.setEndDate}
+                    travellers={bookingForm.travellers}
+                    setTravellers={bookingForm.setTravellers}
+                    duration={hero?.duration || trek.duration || "N/A"}
+                    departures={trek?.departures || []} // ✅ NEW: Pass departures from API
+                    handleDepartureSelect={bookingForm.handleDepartureSelect} // ✅ NEW
+                    selectedDeparture={bookingForm.selectedDeparture} // ✅ NEW
+                  />
+                </Suspense>
 
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">Loading alerts...</div>
+                  }
+                >
+                  <WeatherRiskWarning
+                    riskPrediction={riskPrediction}
+                    riskLoading={riskLoading}
+                    riskError={riskError}
+                    itineraryDays={trek?.itinerary_days || trek?.itinerary}
+                    riskAcknowledged={riskAcknowledged}
+                    onAcknowledge={setRiskAcknowledged}
+                    startDate={bookingForm.startDate}
+                    endDate={bookingForm.endDate}
+                  />
+                </Suspense>
 
-                <WeatherRiskWarning
-                  riskPrediction={riskPrediction}
-                  riskLoading={riskLoading}
-                  riskError={riskError}
-                  itineraryDays={trek?.itinerary_days || trek?.itinerary}
-                  riskAcknowledged={riskAcknowledged}
-                  onAcknowledge={setRiskAcknowledged}
-                  startDate={bookingForm.startDate}
-                  endDate={bookingForm.endDate}
-                />
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">
+                      Loading traveler details...
+                    </div>
+                  }
+                >
+                  <PersonalInfoSection
+                    lead={bookingForm.lead}
+                    changeLead={bookingForm.changeLead}
+                    countryList={bookingForm.countryList}
+                    validation={validation}
+                  />
+                </Suspense>
 
-                <PersonalInfoSection
-                  lead={bookingForm.lead}
-                  changeLead={bookingForm.changeLead}
-                  countryList={bookingForm.countryList}
-                  validation={validation}
-                />
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">
+                      Loading preferences...
+                    </div>
+                  }
+                >
+                  <AdditionalInfoSection
+                    preferences={bookingForm.preferences}
+                    changePreferences={bookingForm.changePreferences}
+                  />
+                </Suspense>
 
-                <AdditionalInfoSection
-                  preferences={bookingForm.preferences}
-                  changePreferences={bookingForm.changePreferences}
-                />
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">
+                      Loading travel times...
+                    </div>
+                  }
+                >
+                  <TravelTimesSection
+                    departureTime={bookingForm.departureTime}
+                    setDepartureTime={bookingForm.setDepartureTime}
+                    returnTime={bookingForm.returnTime}
+                    setReturnTime={bookingForm.setReturnTime}
+                  />
+                </Suspense>
 
-           <TravelTimesSection
-  departureTime={bookingForm.departureTime}
-  setDepartureTime={bookingForm.setDepartureTime}
-  returnTime={bookingForm.returnTime}
-  setReturnTime={bookingForm.setReturnTime}
-/>
-
-                <TermsAndSubmitSection
-                  accepted={bookingForm.accepted}
-                  setAccepted={bookingForm.setAccepted}
-                  formValid={validation.formValid}
-                  submitting={bookingForm.submitting}
-                />
+                <Suspense
+                  fallback={
+                    <div className="text-sm text-gray-500">
+                      Loading submit section...
+                    </div>
+                  }
+                >
+                  <TermsAndSubmitSection
+                    accepted={bookingForm.accepted}
+                    setAccepted={bookingForm.setAccepted}
+                    formValid={validation.formValid}
+                    submitting={bookingForm.submitting}
+                  />
+                </Suspense>
               </div>
             </form>
           </div>
 
           <div className="lg:col-span-1">
-            <PricingSidebar
-              trek={trek}
-              travellers={bookingForm.travellers}
-              basePrice={basePrice}
-              baseTotal={baseTotal}
-              totalPrice={totalPrice}
-              initialPayment={initialPayment}
-              dueAmount={dueAmount}
-              formatCurrency={(amt) => bookingForm.formatCurrency(amt, currency)}
-              highlights={highlights}
-              quoteLoading={quoteLoading}
-              quoteError={quoteError}
-            />
+            <Suspense
+              fallback={
+                <div className="text-sm text-gray-500">Loading pricing...</div>
+              }
+            >
+              <PricingSidebar
+                trek={trek}
+                travellers={bookingForm.travellers}
+                basePrice={basePrice}
+                baseTotal={baseTotal}
+                totalPrice={totalPrice}
+                initialPayment={initialPayment}
+                dueAmount={dueAmount}
+                formatCurrency={(amt) =>
+                  bookingForm.formatCurrency(amt, currency)
+                }
+                highlights={highlights}
+                quoteLoading={quoteLoading}
+                quoteError={quoteError}
+              />
+            </Suspense>
           </div>
         </div>
       </div>
