@@ -4,9 +4,9 @@ import axios from "axios";
 const FALLBACK_DEV_URL = "http://127.0.0.1:8000";
 const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? FALLBACK_DEV_URL : "");
 
-if (!BASE_URL) {
-  throw new Error("VITE_API_URL is required for production builds");
-}
+// if (!BASE_URL) {
+//   throw new Error("VITE_API_URL is required for production builds");
+// }
 
 const axiosInstance = axios.create({
   baseURL: `${BASE_URL}/api/`,
