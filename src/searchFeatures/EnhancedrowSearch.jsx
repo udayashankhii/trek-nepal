@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useMouseTracking, useIntersectionObserver } from "./animationUtils";
 import { Mountain, CloudRain, CloudSnow, Cloud, Sun } from "lucide-react";
 import { fetchWeatherData } from "../../api/service/weatherService";
-import SearchBar from "../search/SearchBar";
+import SearchBar from "../searchFeatures/SearchBar";
 
 const heroSlides = [
   {
