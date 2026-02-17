@@ -23,6 +23,7 @@ import EverTrekChatbot from "./AI chatbot/EverTrek.Chatbot.jsx";
 import DataPreloader from "./PreLoader/Loader.jsx";
 import { getAccessToken } from "./api/auth/auth.api";
 import { useAuth } from "./api/auth/AuthContext";
+import TopBar from "./navbarEssentials/Topnavbar";
 
 const Home = lazy(() => import("./home/Home"));
 const AnnapurnaLuxuryPage = lazy(() => import("./treks/regions/Annapurna-Index"));
@@ -74,6 +75,7 @@ const Layout = () => (
   <>
     <BreadcrumbVisibilityProvider>
       <SEO />
+       <TopBar />
       <Navbar />
       <main className="min-h-[calc(100vh-8rem)]">
         <PageBreadcrumbs />
