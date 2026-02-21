@@ -610,7 +610,7 @@ export default function CustomizeTripPage() {
                 {serverError}{" "}
                 <a
                   className="font-semibold underline"
-                  href="https://wa.me/9779801234567"
+                  href="https://wa.me/9779763416898"
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -1335,7 +1335,7 @@ export default function CustomizeTripPage() {
             </p>
             <a
               className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"
-              href="https://wa.me/9779801234567"
+              href="https://wa.me/9779763416898"
               target="_blank"
               rel="noreferrer"
             >

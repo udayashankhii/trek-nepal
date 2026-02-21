@@ -33,7 +33,7 @@ export default function GoogleLoginButton() {
       localStorage.setItem("refreshToken", data.refresh);
       localStorage.setItem("role", data.role);
 
-      toast.success("Logged in with Google ✅");
+      toast.success("Signed in with Google successfully.");
       navigate("/");
       window.location.reload();
     } catch (err) {
@@ -43,7 +43,7 @@ export default function GoogleLoginButton() {
   };
 
   const handleError = () => {
-    toast.error("Google login failed");
+    toast.error("Google sign-in failed. Please try again.");
   };
 
   return (

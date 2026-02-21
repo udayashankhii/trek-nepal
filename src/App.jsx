@@ -56,8 +56,6 @@ const TrekDetailPage = lazy(() => import("./treks/TreksDetailPage.jsx"));
 const LangtangTrek = lazy(() => import("./treks/regions/Lantang-Index.jsx"));
 const ManasluTrek = lazy(() => import("./treks/regions/Manaslu-Index.jsx"));
 const MustangTrek = lazy(() => import("./treks/regions/Mustang-Index.jsx"));
-const LoginForm = lazy(() => import("./Profile/Login/LoginForm"));
-const VerifyOtp = lazy(() => import("./Profile/Login/VerrifyOTP.jsx"));
 const CustomizeTrekPage = lazy(() => import("./Book/Customize-trip/CutomizeTrips"));
 const BookingDetailPage = lazy(() => import("./Profile/ProfileData/BookingDetailPage"));
 const Profile = lazy(() => import("./Profile/Profile"));
@@ -66,9 +64,10 @@ const PaymentPage = lazy(() => import("./Book/TrekBooking/PaymentPage"));
 const PaymentSuccessPage = lazy(() => import("./Book/TrekBooking/PaymentSuccessPage"));
 const CustomizeTripSuccess = lazy(() => import("./Book/Customize-trip/CustomizeTripSuccess"));
 const LoginModal = lazy(() => import("./Model/LoginModal.jsx"));
+const RegisterModal = lazy(() => import("./Model/RegisterModal.jsx"));
+const ForgotPasswordModal = lazy(() => import("./Model/ForgotPasswordModal.jsx"));
+const VerifyOtpModal = lazy(() => import("./Model/VerifyOtpModal.jsx"));
 const TermsAndConditions = lazy(() => import("./About us/TermsAndConditions"));
-const Register = lazy(() => import("./Profile/Login/RegisterForm.jsx"));
-const ForgotPassword = lazy(() => import("./Profile/Login/ForgetPassword"));
 
 // Layout component that shows Navbar/Footer + Chatbot on every page
 const Layout = () => (
@@ -112,10 +111,14 @@ const RequireAuth = ({ children }) => {
   }
 
   if (!token) {
-    console.log('🚫 No token, redirecting to login');
+    console.log('🚫 No token, redirecting to login modal');
     return (
       <Navigate
-        to={`/login?next=${encodeURIComponent(location.pathname + location.search)}`}
+        to="/login"
+        state={{
+          backgroundLocation: location,
+          next: location.pathname + location.search,
+        }}
         replace
       />
     );
@@ -284,31 +287,23 @@ const AppRoutes = () => {
               element={<TrekDetailPage />}
             />
 
-            <Route
-              path="/login"
-              element={
-                <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-4">
-                  <div className="w-full max-w-md bg-white rounded-2xl shadow-xl">
-                    <LoginForm />
-                  </div>
-                </div>
-              }
-            />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verify-otp" element={<VerifyOtp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/register" element={null} /> {/* Handled by modal overlay */}
+            <Route path="/login" element={null} /> {/* Handled by modal overlay */}
+            <Route path="/verify-otp" element={null} /> {/* Handled by modal overlay */}
+            <Route path="/forgot-password" element={null} /> {/* Handled by modal overlay */}
             <Route path="/profile" element={<Profile />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
 
-        {/* Modal routes - rendered on top of background */}
-        {backgroundLocation && (
-          <Routes>
-            <Route path="/login" element={<LoginModal />} />
-          </Routes>
-        )}
+        {/* Modal overlay routes - always rendered on top when path matches */}
+        <Routes>
+          <Route path="/login" element={<LoginModal />} />
+          <Route path="/register" element={<RegisterModal />} />
+          <Route path="/forgot-password" element={<ForgotPasswordModal />} />
+          <Route path="/verify-otp" element={<VerifyOtpModal />} />
+        </Routes>
       </Suspense>
     </>
   );

@@ -1,18 +1,26 @@
 // src/pages/Register.jsx
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   User2,
   Mail,
   Phone,
   Lock,
-  ShieldCheck,
   Loader2,
 } from "lucide-react";
 import { register } from "../../api/auth/auth.api.js";
 
-export default function Register() {
+/**
+ * Register Component
+ *
+ * Compact, professional registration form.
+ * In modal mode: renders without wrapper, two-column layout, no scrollbar.
+ * In standalone mode: renders with full-page wrapper.
+ *
+ * @param {boolean} isModal - When true, renders compact for overlay use
+ */
+export default function Register({ isModal = false }) {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -22,12 +30,12 @@ export default function Register() {
     role: "user",
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear error when user types
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: "" });
     }
@@ -39,19 +47,15 @@ export default function Register() {
     if (!formData.username || formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters";
     }
-
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
-
     if (!formData.phone_number || formData.phone_number.length < 10) {
       newErrors.phone_number = "Please enter a valid phone number";
     }
-
     if (!formData.password || formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-
     if (formData.password !== formData.confirm_password) {
       newErrors.confirm_password = "Passwords do not match";
     }
@@ -62,175 +66,203 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     setLoading(true);
-
     try {
       await register(formData);
-
-      toast.success("OTP sent to your email ✅");
+      toast.success("Verification code sent to your email.");
       navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
     } catch (err) {
       console.error("Registration error:", err);
-      toast.error(err.message || "Registration failed");
+      toast.error(err.message || "Registration failed. Please try again.");
       setErrors({ form: err.message });
     } finally {
       setLoading(false);
     }
   };
 
-  const iconForField = (field) => {
-    if (field === "username") return <User2 className="h-4 w-4 text-slate-400" />;
-    if (field === "email") return <Mail className="h-4 w-4 text-slate-400" />;
-    if (field === "phone_number") return <Phone className="h-4 w-4 text-slate-400" />;
-    if (field === "password" || field === "confirm_password") return <Lock className="h-4 w-4 text-slate-400" />;
-    return <ShieldCheck className="h-4 w-4 text-slate-400" />;
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    if (isModal) {
+      navigate("/login", {
+        state: { backgroundLocation: location.state?.backgroundLocation || location },
+      });
+    } else {
+      navigate("/login", { replace: true });
+    }
   };
 
-  return (
-    <div className="min-h-screen bg-[#F5F7FA] flex justify-center py-10">
-      <div className="w-full max-w-lg px-4">
-        <div className="relative bg-white p-8 rounded-2xl shadow-[0_18px_45px_rgba(15,42,68,0.12)] border border-slate-100 overflow-hidden">
-          {/* Badge */}
-          <div className="absolute inset-x-0 -top-6 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-[10px] font-medium text-slate-100 px-3 py-1 shadow-lg">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Secure Trekker Account
-            </div>
-          </div>
+  /* ───── Reusable field renderer ───── */
+  const renderField = (field, { type = "text", placeholder, icon: Icon, autoComplete }) => (
+    <div key={field}>
+      <label htmlFor={field} className="sr-only">
+        {placeholder}
+      </label>
+      <div className="relative">
+        <Icon
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+          aria-hidden="true"
+        />
+        <input
+          id={field}
+          name={field}
+          type={type}
+          placeholder={placeholder}
+          value={formData[field]}
+          onChange={handleChange}
+          required
+          autoComplete={autoComplete}
+          disabled={loading}
+          aria-invalid={errors[field] ? "true" : "false"}
+          className={`
+            w-full pl-10 pr-3 py-2.5
+            text-sm rounded-xl border
+            transition-all duration-200
+            placeholder:text-gray-400
+            disabled:opacity-50 disabled:cursor-not-allowed
+            ${errors[field]
+              ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
+              : 'border-gray-300 focus:ring-[#1F7A63] focus:border-[#1F7A63]'
+            }
+            focus:ring-2 focus:outline-none
+          `}
+        />
+      </div>
+      {errors[field] && (
+        <p className="mt-0.5 text-[11px] text-red-500">{errors[field]}</p>
+      )}
+    </div>
+  );
 
-          <h2 className="mt-2 text-2xl font-semibold text-center text-[#0F2A44] tracking-tight">
-            Create EverTrek Account
-          </h2>
-          <p className="text-xs text-gray-500 text-center mb-6">
-            Sign up with your email and phone number to get started.
-          </p>
+  /* ───── Modal content ───── */
+  const formContent = (
+    <div className={isModal ? "px-6 py-6 sm:px-8 sm:py-7" : "relative bg-white p-8 rounded-2xl shadow-[0_18px_45px_rgba(15,42,68,0.12)] border border-slate-100 overflow-hidden"}>
 
-          {/* Form Error */}
-          {errors.form && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
-              <p className="text-sm text-red-600 text-center">{errors.form}</p>
-            </div>
-          )}
+      {/* Header */}
+      <div className="text-center mb-5">
+        <img
+          src="/log.webp"
+          className="w-14 h-14 mx-auto mb-2"
+          alt="EverTrek Nepal Logo"
+          loading="lazy"
+        />
+        <h2
+          id="register-modal-title"
+          className="text-2xl font-bold text-[#0F2A44]"
+        >
+          EverTrek Nepal
+        </h2>
+        <p className="text-xs text-gray-500 mt-0.5">
+          Create your trekker account
+        </p>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {["username", "email", "phone_number"].map((field) => (
-              <div key={field} className="space-y-1">
-                <label
-                  htmlFor={field}
-                  className="flex items-center justify-between text-xs font-medium text-gray-600 tracking-wide"
-                >
-                  <span>{field.replace("_", " ").toUpperCase()}</span>
-                </label>
-
-                <div className="relative">
-                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-                    {iconForField(field)}
-                  </span>
-                  <input
-                    id={field}
-                    name={field}
-                    placeholder={field.replace("_", " ").toUpperCase()}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    required
-                    type={
-                      field === "email"
-                        ? "email"
-                        : field === "phone_number"
-                        ? "tel"
-                        : "text"
-                    }
-                    autoComplete={
-                      field === "username"
-                        ? "username"
-                        : field === "email"
-                        ? "email"
-                        : "tel"
-                    }
-                    className={`w-full pl-9 pr-3.5 py-2.5 border rounded-lg text-sm
-                               placeholder:text-slate-400 bg-slate-50/60
-                               focus:bg-white focus:outline-none focus:ring-2 transition-shadow transition-colors
-                               ${errors[field] 
-                                 ? 'border-red-300 focus:ring-red-500' 
-                                 : 'border-slate-200 focus:ring-[#1F7A63] focus:border-transparent'
-                               }`}
-                  />
-                </div>
-                {errors[field] && (
-                  <p className="text-xs text-red-500">{errors[field]}</p>
-                )}
-              </div>
-            ))}
-
-            {["password", "confirm_password"].map((field) => (
-              <div key={field} className="space-y-1">
-                <label
-                  htmlFor={field}
-                  className="flex items-center justify-between text-xs font-medium text-gray-600 tracking-wide"
-                >
-                  <span>{field.replace("_", " ").toUpperCase()}</span>
-                </label>
-
-                <div className="relative">
-                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-                    {iconForField(field)}
-                  </span>
-                  <input
-                    id={field}
-                    type="password"
-                    name={field}
-                    placeholder={field.replace("_", " ").toUpperCase()}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    required
-                    autoComplete="new-password"
-                    className={`w-full pl-9 pr-3.5 py-2.5 border rounded-lg text-sm
-                               placeholder:text-slate-400 bg-slate-50/60
-                               focus:bg-white focus:outline-none focus:ring-2 transition-shadow transition-colors
-                               ${errors[field] 
-                                 ? 'border-red-300 focus:ring-red-500' 
-                                 : 'border-slate-200 focus:ring-[#1F7A63] focus:border-transparent'
-                               }`}
-                  />
-                </div>
-                {errors[field] && (
-                  <p className="text-xs text-red-500">{errors[field]}</p>
-                )}
-              </div>
-            ))}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-3 w-full py-2.5 rounded-full bg-gradient-to-r from-[#1F7A63] to-[#0F2A44]
-                         text-white text-sm font-semibold tracking-wide shadow-md
-                         hover:from-[#1A5F4E] hover:to-[#0B2037]
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                         focus-visible:ring-[#1F7A63] disabled:opacity-60 disabled:cursor-not-allowed
-                         transition-all flex items-center justify-center gap-2"
-            >
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {loading ? "Creating..." : "Register"}
-            </button>
-
-            <p className="text-[11px] text-center text-gray-500 mt-2">
-              Protected by modern encryption & secure OTP verification.
-            </p>
-
-            <p className="text-center mt-4 text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-[#1F7A63] font-semibold hover:underline transition-colors"
-              >
-                Login
-              </Link>
-            </p>
-          </form>
+      {/* Form Error */}
+      {errors.form && (
+        <div className="mb-3 p-2.5 rounded-lg bg-red-50 border border-red-200">
+          <p className="text-xs text-red-600 text-center">{errors.form}</p>
         </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate aria-label="Registration form">
+        {/* Row 1: Username & Email */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {renderField("username", {
+            placeholder: "Username",
+            icon: User2,
+            autoComplete: "username",
+          })}
+          {renderField("email", {
+            type: "email",
+            placeholder: "Email address",
+            icon: Mail,
+            autoComplete: "email",
+          })}
+        </div>
+
+        {/* Row 2: Phone (full width) */}
+        <div className="mt-3">
+          {renderField("phone_number", {
+            type: "tel",
+            placeholder: "Phone number",
+            icon: Phone,
+            autoComplete: "tel",
+          })}
+        </div>
+
+        {/* Row 3: Password & Confirm */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+          {renderField("password", {
+            type: "password",
+            placeholder: "Password",
+            icon: Lock,
+            autoComplete: "new-password",
+          })}
+          {renderField("confirm_password", {
+            type: "password",
+            placeholder: "Confirm password",
+            icon: Lock,
+            autoComplete: "new-password",
+          })}
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="
+            mt-5 w-full
+            min-h-[44px] py-2.5
+            text-sm font-semibold
+            rounded-xl
+            bg-[#0F2A44] text-white
+            hover:bg-[#14385C]
+            focus:ring-4 focus:ring-[#0F2A44]/30
+            focus:outline-none
+            transition-all duration-200
+            disabled:opacity-50 disabled:cursor-not-allowed
+            flex items-center justify-center gap-2
+            transform hover:scale-[1.01] active:scale-[0.99]
+            touch-manipulation
+          "
+        >
+          {loading && <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />}
+          <span>{loading ? "Creating account..." : "Create Account"}</span>
+        </button>
+      </form>
+
+      {/* Divider */}
+      <div className="my-4 flex items-center">
+        <div className="flex-1 border-t border-gray-200" aria-hidden="true" />
+        <span className="px-3 text-xs text-gray-400">OR</span>
+        <div className="flex-1 border-t border-gray-200" aria-hidden="true" />
+      </div>
+
+      {/* Footer */}
+      <p className="text-center text-sm text-gray-600">
+        Already have an account?{" "}
+        <button
+          type="button"
+          onClick={handleLoginClick}
+          disabled={loading}
+          className="text-[#1F7A63] font-semibold hover:underline
+                     focus:underline focus:outline-none transition-colors"
+        >
+          Login
+        </button>
+      </p>
+    </div>
+  );
+
+  if (isModal) {
+    return formContent;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F5F7FA] flex justify-center items-center py-10">
+      <div className="w-full max-w-[520px] px-4">
+        {formContent}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   FaTripadvisor,
   FaWhatsapp,
 } from "react-icons/fa";
+import { SiViber } from "react-icons/si";
 
 const Footer = () => {
   return (
@@ -35,8 +36,13 @@ const Footer = () => {
             />
             <SocialIcon
               Icon={FaWhatsapp}
-              link="https://wa.me/9779801234567"
+              link="https://wa.me/9779763416898"
               label="WhatsApp"
+            />
+            <SocialIcon
+              Icon={SiViber}
+              link="viber://chat?number=%2B9779763416898"
+              label="Viber"
             />
             {/* 
             <SocialIcon
@@ -69,7 +75,7 @@ const Footer = () => {
           </h3>
           <ul className="space-y-3">
             <ContactItem icon={<FiMapPin />} text="Thamel, Kathmandu, Nepal" />
-            <ContactItem icon={<FiPhone />} text="+977 1-1234567" />
+            <ContactItem icon={<FiPhone />} text="+977 9763416898" />
             <ContactItem icon={<FiMail />} text="info@evertreknepal.com" />
             <ContactItem icon={<FiClock />} text="Mon–Sat: 9:00 AM – 6:00 PM" />
           </ul>

@@ -26,8 +26,13 @@ export default function LoginModal() {
   const handleClose = () => {
     console.log('❌ Login modal closed by user');
     
-    // Go back to previous page (the page that opened the modal)
-    navigate(-1);
+    if (backgroundLocation) {
+      // Go back to the background page
+      navigate(-1);
+    } else {
+      // Direct URL access — go home
+      navigate('/', { replace: true });
+    }
   };
 
   const handleSuccess = () => {

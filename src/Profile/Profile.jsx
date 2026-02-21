@@ -167,7 +167,7 @@ export default function Profile() {
       // TODO: Implement your actual API call here
       // const response = await updateUserProfile(formData, avatarFile);
 
-      toast.success("Profile updated successfully! 🎉");
+      toast.success("Profile updated successfully.");
       setIsEditing(false);
 
       // Update local user state

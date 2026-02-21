@@ -80,7 +80,7 @@ export default function LoginForm({ onClose, onSuccess }) {
       authLogin(data.user);
 
       // Show success message
-      toast.success("Welcome to EverTrek Nepal 🌄");
+      toast.success("Welcome back! You're now logged in.");
 
       // ✅ Let parent handle navigation
       if (onSuccess) {
@@ -107,12 +107,18 @@ export default function LoginForm({ onClose, onSuccess }) {
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
-    navigate("/register", { replace: true });
+    navigate("/register", {
+      state: { backgroundLocation: location.state?.backgroundLocation || location },
+      replace: true,
+    });
   };
 
   const handleForgotPasswordClick = (e) => {
     e.preventDefault();
-    navigate("/forgot-password", { replace: true });
+    navigate("/forgot-password", {
+      state: { backgroundLocation: location.state?.backgroundLocation || location },
+      replace: true,
+    });
   };
 
   return (

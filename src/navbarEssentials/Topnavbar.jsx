@@ -1,10 +1,11 @@
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { SiViber } from "react-icons/si";
+import { Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function TopBar() {
-  const phoneNumber = "9779801234567"; // change to your real number
+  const phoneNumber = "9779763416898";
 
   return (
     <div className="bg-[#062c5b] text-white text-sm py-2 px-6 flex justify-between items-center">
@@ -21,7 +22,7 @@ export default function TopBar() {
             href={`tel:+${phoneNumber}`}
             className="underline hover:text-yellow-300 transition"
           >
-            +977 9801234567
+            +977 9763416898
           </a>
 
           {/* WhatsApp */}
@@ -48,6 +49,16 @@ export default function TopBar() {
 
       {/* Right Section */}
       <div className="flex items-center gap-3">
+        <Link
+          to="/customize-trek"
+          className="hidden sm:inline-flex items-center gap-2 border border-white rounded-full px-5 py-1.5 text-white font-semibold text-sm hover:bg-white hover:text-[#062c5b] transition-all duration-300"
+        >
+          <Compass size={16} />
+          Start Planning
+        </Link>
+
+        <div className="hidden md:block w-px h-5 bg-white/30" />
+
         <span className="hidden md:block">
           Best Treks for 2026!
         </span>

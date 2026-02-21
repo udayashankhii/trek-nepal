@@ -26,7 +26,7 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
       // ✅ Call your API - it saves tokens to localStorage
       const data = await googleLogin({ token: googleToken });
 
-      toast.success("Logged in with Google ✅", {
+      toast.success("Signed in with Google successfully.", {
         position: "top-center",
         autoClose: 2000
       });
@@ -51,7 +51,7 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
 
     } catch (err) {
       console.error("Google login error:", err);
-      toast.error(err.message || "Google login failed", {
+      toast.error(err.message || "Google sign-in failed. Please try again.", {
         position: "top-center"
       });
     } finally {
@@ -60,7 +60,7 @@ export default function GoogleLoginButton({ onSuccess, onClose }) {
   };
 
   const handleError = () => {
-    toast.error("Google login failed");
+    toast.error("Google sign-in failed. Please try again.");
   };
 
   return (
