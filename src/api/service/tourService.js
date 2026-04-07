@@ -1,14 +1,11 @@
-import axiosInstance from "./axiosInstance";
+import { apiGet, normalizeArray } from "./helper";
 
 export const fetchTours = async (params = {}) => {
   try {
-    const response = await axiosInstance.get("tours/", { params });
-    const data = response.data;
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data.results)) return data.results;
-    if (Array.isArray(data.data)) return data.data;
-    console.warn("Unexpected tour list response format:", data);
-    return [];
+    const data = await apiGet("tours/", params, true, {
+      cacheTTL: 10 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching tours:", error);
     return [];
@@ -16,19 +13,27 @@ export const fetchTours = async (params = {}) => {
 };
 
 export const fetchTourDetail = async (slug) => {
+  if (!slug) {
+    throw new Error("Tour slug is required");
+  }
+
   try {
-    const response = await axiosInstance.get(`tours/${slug}/detail/`);
-    return response.data;
-  } catch (error) {
+    return await apiGet(`tours/${slug}/detail/`, {}, true, {
+      cacheTTL: 10 * 60 * 1000,
+    });
+  } catch {
     throw new Error("Failed to fetch tour details");
   }
 };
 
 export const fetchTourSimilar = async (slug) => {
+  if (!slug) return [];
+
   try {
-    const response = await axiosInstance.get(`tours/${slug}/similar/`);
-    const data = response.data;
-    return Array.isArray(data) ? data : data.results || [];
+    const data = await apiGet(`tours/${slug}/similar/`, {}, true, {
+      cacheTTL: 10 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching similar tours:", error);
     return [];
@@ -36,10 +41,13 @@ export const fetchTourSimilar = async (slug) => {
 };
 
 export const fetchTourReviews = async (slug) => {
+  if (!slug) return [];
+
   try {
-    const response = await axiosInstance.get(`tours/${slug}/reviews/`);
-    const data = response.data;
-    return Array.isArray(data) ? data : data.results || [];
+    const data = await apiGet(`tours/${slug}/reviews/`, {}, true, {
+      cacheTTL: 3 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching tour reviews:", error);
     return [];

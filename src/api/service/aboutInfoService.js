@@ -1,12 +1,11 @@
-import axiosInstance from "./axiosInstance";
+import { apiGet, normalizeArray } from "./helper";
 
 export const fetchAboutPages = async () => {
   try {
-    const response = await axiosInstance.get("about/pages/");
-    const data = response.data;
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data.results)) return data.results;
-    return [];
+    const data = await apiGet("about/pages/", {}, true, {
+      cacheTTL: 15 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching about pages:", error);
     return [];
@@ -16,8 +15,9 @@ export const fetchAboutPages = async () => {
 export const fetchAboutPage = async (slug) => {
   if (!slug) throw new Error("About page slug is required");
   try {
-    const response = await axiosInstance.get(`about/pages/${slug}/`);
-    return response.data;
+    return await apiGet(`about/pages/${slug}/`, {}, true, {
+      cacheTTL: 15 * 60 * 1000,
+    });
   } catch (error) {
     throw new Error("Failed to fetch about page");
   }
@@ -25,8 +25,10 @@ export const fetchAboutPage = async (slug) => {
 
 export const fetchAboutSitemap = async () => {
   try {
-    const response = await axiosInstance.get("about/sitemap/");
-    return Array.isArray(response.data) ? response.data : [];
+    const data = await apiGet("about/sitemap/", {}, true, {
+      cacheTTL: 30 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching about sitemap:", error);
     return [];

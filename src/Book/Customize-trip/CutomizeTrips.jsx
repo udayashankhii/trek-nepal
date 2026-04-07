@@ -15,6 +15,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { treksData } from "../../data/treksdata";
 import countries from "../../data/countries";
 import axiosInstance from "../../api/service/axiosInstance";
+import { apiGet } from "../../api/service/helper";
 
 const flexOptions = [
   { value: "exact", label: "Exact date" },
@@ -224,14 +225,21 @@ export default function CustomizeTripPage() {
     const loadTreks = async () => {
       try {
         setTreksLoading(true);
-        const response = await axiosInstance.get("treks/", {
-          params: {
+        const payload = await apiGet(
+          "treks/",
+          {
             page_size: 60,
             q: trekSearch.trim() || undefined,
           },
-          signal: controller.signal,
-        });
-        const payload = response.data ?? response;
+          true,
+          {
+            cacheTTL: 10 * 60 * 1000,
+            axiosConfig: {
+              signal: controller.signal,
+            },
+          }
+        );
+
         const list = payload?.results ?? payload?.items ?? payload;
         if (!Array.isArray(list)) {
           throw new Error("Unexpected trek list format");

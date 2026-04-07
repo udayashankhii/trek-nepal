@@ -1,12 +1,11 @@
-import axiosInstance from "./axiosInstance";
+import { apiGet, normalizeArray } from "./helper";
 
 export const fetchTravelInfoPages = async () => {
   try {
-    const response = await axiosInstance.get("travel-info/pages/");
-    const data = response.data;
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data.results)) return data.results;
-    return [];
+    const data = await apiGet("travel-info/pages/", {}, true, {
+      cacheTTL: 15 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching travel info pages:", error);
     return [];
@@ -16,17 +15,20 @@ export const fetchTravelInfoPages = async () => {
 export const fetchTravelInfoPage = async (slug) => {
   if (!slug) throw new Error("Travel info slug is required");
   try {
-    const response = await axiosInstance.get(`travel-info/pages/${slug}/`);
-    return response.data;
-  } catch (error) {
+    return await apiGet(`travel-info/pages/${slug}/`, {}, true, {
+      cacheTTL: 15 * 60 * 1000,
+    });
+  } catch {
     throw new Error("Failed to fetch travel info page");
   }
 };
 
 export const fetchTravelInfoSitemap = async () => {
   try {
-    const response = await axiosInstance.get("travel-info/sitemap/");
-    return Array.isArray(response.data) ? response.data : [];
+    const data = await apiGet("travel-info/sitemap/", {}, true, {
+      cacheTTL: 30 * 60 * 1000,
+    });
+    return normalizeArray(data);
   } catch (error) {
     console.error("Error fetching travel info sitemap:", error);
     return [];

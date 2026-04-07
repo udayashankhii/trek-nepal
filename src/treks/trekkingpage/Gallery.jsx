@@ -234,6 +234,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { X, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import { createImageErrorHandler, getFallbackImage } from "./trekdatahelper";
+import OptimizedImage from "../../components/OptimizedImage";
+import { getThumbnailUrl } from "../../utils/imageUtils";
 
 function TrekGallery({
   images = [],
@@ -244,7 +246,6 @@ function TrekGallery({
   minImages = 1,
 }) {
   const [lightbox, setLightbox] = useState({ open: false, index: 0 });
-  const [imageLoadStates, setImageLoadStates] = useState({});
 
   /**
    * Normalize and validate images
@@ -291,23 +292,6 @@ function TrekGallery({
   }, [images, trekName]);
 
   const displaySubtitle = subtitle || `${validImages.length} photos from ${trekName}`;
-
-  /**
-   * Track image load states
-   */
-  const handleImageLoad = useCallback((imageId) => {
-    setImageLoadStates(prev => ({ ...prev, [imageId]: 'loaded' }));
-  }, []);
-
-  const handleImageError = useCallback((imageId, imgElement) => {
-    console.error(`Gallery image failed: ${imageId}`);
-    setImageLoadStates(prev => ({ ...prev, [imageId]: 'error' }));
-    
-    // Set fallback
-    if (imgElement && imgElement.src !== getFallbackImage('gallery')) {
-      imgElement.src = getFallbackImage('gallery');
-    }
-  }, []);
 
   /**
    * Keyboard navigation in lightbox
@@ -384,17 +368,12 @@ function TrekGallery({
         {/* Image Grid - Responsive layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 min-h-[350px]">
           {validImages.map((img, idx) => {
-            const loadState = imageLoadStates[img.id];
-            const isLoading = !loadState || loadState === 'loading';
-            const hasError = loadState === 'error';
-
             return (
               <div
                 key={img.id}
-                className={`relative rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] ${
-                  idx === 0 ? "md:row-span-2 md:col-span-1 h-[520px]" : "h-64"
-                } ${isLoading ? 'bg-gray-200 animate-pulse' : 'bg-gray-100'}`}
-                style={{ cursor: "pointer" }}
+                className={`relative rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer ${
+                  idx === 0 ? "md:row-span-2 md:col-span-1" : ""
+                }`}
                 onClick={() => openLightbox(idx)}
                 role="button"
                 tabIndex={0}
@@ -406,40 +385,18 @@ function TrekGallery({
                   }
                 }}
               >
-                {/* Loading skeleton */}
-                {isLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-gray-400 text-sm">Loading...</div>
-                  </div>
-                )}
-
-                {/* Image */}
-                <img
-                  src={img.url}
+                <OptimizedImage
+                  src={getThumbnailUrl(img.url)}
                   alt={img.alt}
-                  className={`object-cover w-full h-full transition-opacity duration-300 ${
-                    loadState === 'loaded' ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  loading="lazy"
-                  draggable={false}
-                  onLoad={() => handleImageLoad(img.id)}
-                  onError={(e) => handleImageError(img.id, e.target)}
+                  aspectRatio={idx === 0 ? "1/1" : "1/1"}
+                  className="rounded-xl"
+                  fallbackText="⛰️"
                 />
-                
-                {/* Error indicator */}
-                {hasError && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                    <div className="text-gray-500 text-sm text-center px-4">
-                      <AlertCircle className="h-8 w-8 mx-auto mb-2" />
-                      Image unavailable
-                    </div>
-                  </div>
-                )}
 
                 {/* Image title overlay */}
-                {img.title && loadState === 'loaded' && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                    <p className="text-white text-sm font-medium truncate">
+                {img.title && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                    <p className="text-white text-xs font-medium truncate">
                       {img.title}
                     </p>
                   </div>
@@ -543,7 +500,7 @@ function TrekGallery({
                   }`}
                 >
                   <img
-                    src={img.url}
+                    src={getThumbnailUrl(img.url)}
                     alt={img.alt}
                     className="w-full h-full object-cover"
                     onError={(e) => {

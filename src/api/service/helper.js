@@ -51,11 +51,36 @@ export const normalizeArray = (data, key = null) => {
 };
 
 
+const DEFAULT_CACHE_TTL = 5 * 60 * 1000;
+
+const cleanQueryParams = (params = {}) => {
+  if (!params || typeof params !== "object" || Array.isArray(params)) {
+    return {};
+  }
+
+  return Object.entries(params).reduce((acc, [key, value]) => {
+    if (value === undefined || value === null || value === "") return acc;
+    acc[key] = value;
+    return acc;
+  }, {});
+};
+
+
 /**
  * Generic API GET request with caching and deduplication
  */
-export const apiGet = async (endpoint, params = {}, useCache = true) => {
-  const cacheKey = cacheManager.generateKey(endpoint, params);
+export const apiGet = async (endpoint, params = {}, useCache = true, options = {}) => {
+  if (!endpoint) {
+    throw new Error("apiGet requires an endpoint");
+  }
+
+  const {
+    cacheTTL = DEFAULT_CACHE_TTL,
+    axiosConfig = {},
+  } = options;
+
+  const normalizedParams = cleanQueryParams(params);
+  const cacheKey = cacheManager.generateKey(endpoint, normalizedParams);
 
   if (useCache) {
     const cached = cacheManager.get(cacheKey);
@@ -64,11 +89,14 @@ export const apiGet = async (endpoint, params = {}, useCache = true) => {
 
   return requestDeduplicator.execute(cacheKey, async () => {
     try {
-      const response = await axiosInstance.get(endpoint, { params });
+      const response = await axiosInstance.get(endpoint, {
+        ...axiosConfig,
+        params: normalizedParams,
+      });
       const data = response.data;
 
       if (useCache) {
-        cacheManager.set(cacheKey, data);
+        cacheManager.set(cacheKey, data, cacheTTL);
       }
 
       return data;

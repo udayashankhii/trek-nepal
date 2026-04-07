@@ -1,7 +1,7 @@
 // api/useTreksByRegion.js
 import { useState, useEffect } from "react";
 import { fetchTreksByRegion } from "./regionService";
-import axiosInstance from "./axiosInstance";
+import { apiGet } from "./helper";
 
 export const useTreksByRegion = (regionSlug) => {
   const [treks, setTreks] = useState([]);
@@ -19,16 +19,24 @@ export const useTreksByRegion = (regionSlug) => {
         // Fetch booking_card for each trek
         const treksWithPrices = await Promise.all(
           trekList.map(async (trek) => {
+            if (trek?.booking_card || trek?.price || trek?.base_price) {
+              return trek;
+            }
+
             try {
-              const response = await axiosInstance.get(
-                `treks/${trek.region || regionSlug}/${trek.slug}/booking-card/`
+              const bookingCard = await apiGet(
+                `treks/${trek.region || regionSlug}/${trek.slug}/booking-card/`,
+                {},
+                true,
+                { cacheTTL: 10 * 60 * 1000 }
               );
+
               return {
                 ...trek,
-                booking_card: response.data,
-                price: response.data?.base_price,
+                booking_card: bookingCard,
+                price: bookingCard?.base_price,
               };
-            } catch (err) {
+            } catch {
               console.warn(`No price for ${trek.slug}`);
               return trek;
             }

@@ -24,11 +24,11 @@ const Footer = () => {
             experiences.
           </p>
           <div className="flex space-x-4 mt-4">
-            {/* <SocialIcon
+            <SocialIcon
               Icon={FaFacebookF}
-              link="https://facebook.com/"
+              link="https://www.facebook.com/profile.php?id=61587769901291"
               label="Facebook"
-            /> */}
+            />
             <SocialIcon
               Icon={FaInstagram}
               link="https://www.instagram.com/evertrek_nepal/"
@@ -44,13 +44,6 @@ const Footer = () => {
               link="viber://chat?number=%2B9779763416898"
               label="Viber"
             />
-            {/* 
-            <SocialIcon
-              Icon={FaYoutube}
-              link="https://youtube.com/"
-              label="YouTube"
-            />
-             */}
           </div>
         </div>
 
@@ -110,7 +103,6 @@ const SocialIcon = ({ Icon, link, label }) => (
     aria-label={label}
     className="bg-gray-800 hover:bg-yellow-500 text-white p-2 rounded-full transition-colors"
   >
-    {/* now ESLint sees you *are* using the Icon prop */}
     <Icon className="h-4 w-4" />
   </a>
 );

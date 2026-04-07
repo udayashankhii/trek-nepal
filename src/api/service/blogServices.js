@@ -5,6 +5,7 @@ import axiosInstance from "./axiosInstance";
 // BLOG POST CACHE (Longer TTL for static content)
 // ============================================
 const blogCache = new Map();
+const blogPendingRequests = new Map();
 const BLOG_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
 const getCachedBlog = (key) => {
@@ -20,11 +21,25 @@ const setCachedBlog = (key, data) => {
   blogCache.set(key, { data, timestamp: Date.now() });
 };
 
+const dedupeBlogRequest = async (key, requestFn) => {
+  if (blogPendingRequests.has(key)) {
+    return blogPendingRequests.get(key);
+  }
+
+  const promise = requestFn().finally(() => {
+    blogPendingRequests.delete(key);
+  });
+
+  blogPendingRequests.set(key, promise);
+  return promise;
+};
+
 /**
  * Clear blog cache (call when content is updated)
  */
 export const clearBlogCache = () => {
   blogCache.clear();
+  blogPendingRequests.clear();
 };
 
 // ============================================
@@ -59,10 +74,12 @@ export const fetchBlogPosts = async (
       // Extract path from full URL
       const url = new URL(pageUrl);
       const path = url.pathname.replace("/api/", "") + url.search;
-      
-      const response = await axiosInstance.get(path);
-      setCachedBlog(cacheKey, response.data);
-      return response.data;
+
+      return dedupeBlogRequest(cacheKey, async () => {
+        const response = await axiosInstance.get(path);
+        setCachedBlog(cacheKey, response.data);
+        return response.data;
+      });
     }
 
     // Build cache key from parameters
@@ -79,9 +96,11 @@ export const fetchBlogPosts = async (
     if (page) params.page = page;
     if (search) params.search = search;
 
-    const response = await axiosInstance.get("blog/posts/", { params });
-    setCachedBlog(cacheKey, response.data);
-    return response.data;
+    return dedupeBlogRequest(cacheKey, async () => {
+      const response = await axiosInstance.get("blog/posts/", { params });
+      setCachedBlog(cacheKey, response.data);
+      return response.data;
+    });
   } catch (error) {
     console.error("Error fetching blog posts:", error);
     throw error;
@@ -103,9 +122,11 @@ export const fetchBlogPostBySlug = async (slug, useCache = true) => {
   }
 
   try {
-    const response = await axiosInstance.get(`blog/posts/${slug}/`);
-    setCachedBlog(cacheKey, response.data);
-    return response.data;
+    return dedupeBlogRequest(cacheKey, async () => {
+      const response = await axiosInstance.get(`blog/posts/${slug}/`);
+      setCachedBlog(cacheKey, response.data);
+      return response.data;
+    });
   } catch (error) {
     console.error(`Error fetching blog post ${slug}:`, error);
     throw error;
@@ -126,10 +147,12 @@ export const fetchBlogCategories = async (useCache = true) => {
   }
 
   try {
-    const response = await axiosInstance.get("blog/categories/");
-    const categories = response.data.results || response.data;
-    setCachedBlog(cacheKey, categories);
-    return categories;
+    return dedupeBlogRequest(cacheKey, async () => {
+      const response = await axiosInstance.get("blog/categories/");
+      const categories = response.data.results || response.data;
+      setCachedBlog(cacheKey, categories);
+      return categories;
+    });
   } catch (error) {
     console.error("Error fetching blog categories:", error);
     throw error;
@@ -151,12 +174,14 @@ export const fetchFeaturedPosts = async (limit = 3, useCache = true) => {
   }
 
   try {
-    const response = await axiosInstance.get("blog/posts/featured/", {
-      params: { limit },
+    return dedupeBlogRequest(cacheKey, async () => {
+      const response = await axiosInstance.get("blog/posts/featured/", {
+        params: { limit },
+      });
+      const posts = response.data.results || response.data;
+      setCachedBlog(cacheKey, posts);
+      return posts;
     });
-    const posts = response.data.results || response.data;
-    setCachedBlog(cacheKey, posts);
-    return posts;
   } catch (error) {
     console.error("Error fetching featured posts:", error);
     throw error;
@@ -179,12 +204,14 @@ export const fetchRelatedPosts = async (slug, limit = 3, useCache = true) => {
   }
 
   try {
-    const response = await axiosInstance.get(`blog/posts/${slug}/related/`, {
-      params: { limit },
+    return dedupeBlogRequest(cacheKey, async () => {
+      const response = await axiosInstance.get(`blog/posts/${slug}/related/`, {
+        params: { limit },
+      });
+      const posts = response.data.results || response.data;
+      setCachedBlog(cacheKey, posts);
+      return posts;
     });
-    const posts = response.data.results || response.data;
-    setCachedBlog(cacheKey, posts);
-    return posts;
   } catch (error) {
     console.error("Error fetching related posts:", error);
     return []; // Return empty array on error for related posts

@@ -5,7 +5,7 @@ import { Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function TopBar() {
-  const phoneNumber = "9779763416898";
+  const phoneNumber = "+9779763416898";
 
   return (
     <div className="bg-[#062c5b] text-white text-sm py-2 px-6 flex justify-between items-center">
@@ -30,7 +30,8 @@ export default function TopBar() {
             href={`https://wa.me/${phoneNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg hover:text-green-400 hover:scale-110 transition-transform"
+            className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/10 text-xl hover:bg-green-500/20 hover:text-green-300 hover:scale-110 transition-all duration-200"
+            aria-label="Chat on WhatsApp"
           >
             <FaWhatsapp />
           </a>
@@ -40,7 +41,8 @@ export default function TopBar() {
             href={`viber://chat?number=%2B${phoneNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg hover:text-purple-400 hover:scale-110 transition-transform"
+            className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/10 text-xl hover:bg-purple-500/20 hover:text-purple-300 hover:scale-110 transition-all duration-200"
+            aria-label="Chat on Viber"
           >
             <SiViber />
           </a>
