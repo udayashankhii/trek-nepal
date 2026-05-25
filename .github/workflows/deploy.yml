@@ -14,7 +14,6 @@ jobs:
     name: Build and deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,6 +28,17 @@ jobs:
         run: npm ci
 
       - name: Build production bundle
+        env:
+          VITE_API_URL:                  ${{ secrets.VITE_API_URL }}
+          VITE_GOOGLE_CLIENT_ID:         ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_MAPS_API_KEY:      ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_MAPS_MAP_ID:       ${{ secrets.VITE_GOOGLE_MAPS_MAP_ID }}
+          VITE_CLOUDINARY_CLOUD_NAME:    ${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}
+          VITE_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.VITE_CLOUDINARY_UPLOAD_PRESET }}
+          VITE_STRIPE_PUBLISHABLE_KEY:   ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_OPEN_METEO_API_URL:       ${{ secrets.VITE_OPEN_METEO_API_URL }}
+          VITE_RISK_API_URL:             ${{ secrets.VITE_RISK_API_URL }}
+          VITE_CHATBOT_URL:              ${{ secrets.VITE_CHATBOT_URL }}
         run: npm run build
 
       - name: Show build output
