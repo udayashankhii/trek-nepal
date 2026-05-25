@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Search, MapPin, Calendar, Star, Filter, SlidersHorizontal, X } from "lucide-react";
+import { Search, MapPin, Calendar, Star, SlidersHorizontal, X } from "lucide-react";
 import SearchBar from "./SearchBar";
+import SearchService from "./searchService";
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -10,29 +11,14 @@ export default function SearchPage() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [fallback, setFallback] = useState(null);
 
   const query = searchParams.get("q") || "";
   const scope = searchParams.get("scope") || "both";
   const page = parseInt(searchParams.get("page") || "1", 10);
 
-  // Filters
-  const [filters, setFilters] = useState({
-    minPrice: "",
-    maxPrice: "",
-    duration: "",
-    difficulty: "",
-    region: "",
-  });
-
-  useEffect(() => {
-    if (query) {
-      fetchSearchResults();
-    }
-  }, [query, scope, page]);
+  const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
   const fetchSearchResults = async () => {
     setLoading(true);
@@ -45,20 +31,36 @@ export default function SearchPage() {
         similar: "true"
       });
 
-      const response = await fetch(`/api/search/?${params.toString()}`);
+      const response = await fetch(`${API_BASE}/api/search/?${params.toString()}`);
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok || !contentType.includes("application/json")) {
+        throw new Error("API unavailable");
+      }
       const data = await response.json();
 
       setResults(data.results || []);
       setTotalResults(data.total || 0);
       setSuggestions(data.suggestions || []);
-      setFallback(data.fallback || null);
-    } catch (error) {
-      console.error("Search error:", error);
-      setResults([]);
+    } catch {
+      try {
+        const data = await SearchService.searchLocal(query, scope, page, 12);
+        setResults(data.results || []);
+        setTotalResults(data.total || 0);
+        setSuggestions([]);
+      } catch {
+        setResults([]);
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (query) {
+      fetchSearchResults();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, scope, page]);
 
   const handleScopeChange = (newScope) => {
     setSearchParams({ q: query, scope: newScope, page: "1" });

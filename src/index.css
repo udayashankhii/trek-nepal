@@ -225,3 +225,25 @@ html {
   animation-delay: 2s;
 }
 
+/* Search result animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Search dropdown scrollbar */
+.search-dropdown::-webkit-scrollbar { width: 6px; }
+.search-dropdown::-webkit-scrollbar-track { background: transparent; }
+.search-dropdown::-webkit-scrollbar-thumb { background: rgba(16,185,129,0.1); border-radius: 10px; }
+.search-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(16,185,129,0.2); }
+

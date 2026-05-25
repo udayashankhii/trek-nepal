@@ -3,6 +3,7 @@ import { Search, X, TrendingUp, MapPin, Calendar, Mountain } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import SearchResults from "./SearchResults";
 import { debounce } from "../api/service/Debounce";
+import SearchService from "./searchService";
 
 const TRENDING_SEARCHES = [
   { text: "Everest Base Camp", icon: Mountain, type: "trek" },
@@ -50,6 +51,8 @@ export default function SearchBar({ isHeroVersion = false, onFocus, onBlur }) {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
+  const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   // Fetch search results
   const fetchResults = useCallback(
     debounce(async (searchQuery) => {
@@ -67,12 +70,20 @@ export default function SearchBar({ isHeroVersion = false, onFocus, onBlur }) {
           limit: "8",
         });
 
-        const response = await fetch(`/api/search/?${params.toString()}`);
+        const response = await fetch(`${API_BASE}/api/search/?${params.toString()}`);
+        const contentType = response.headers.get("content-type") || "";
+        if (!response.ok || !contentType.includes("application/json")) {
+          throw new Error("API unavailable");
+        }
         const data = await response.json();
         setResults(data);
-      } catch (error) {
-        console.error("Search error:", error);
-        setResults(null);
+      } catch {
+        try {
+          const data = await SearchService.searchLocal(searchQuery, "both", 1, 8);
+          setResults(data);
+        } catch {
+          setResults(null);
+        }
       } finally {
         setLoading(false);
       }
@@ -233,37 +244,21 @@ export default function SearchBar({ isHeroVersion = false, onFocus, onBlur }) {
         {isOpen && (
           <div
             className={`
+              search-dropdown
               absolute top-full mt-4 w-full
               bg-white/95 backdrop-blur-2xl
               rounded-2xl shadow-2xl shadow-black/10
               border border-gray-100
               overflow-y-auto overflow-x-hidden
               transition-all duration-500 ease-out
-              scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent
               ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}
             `}
             style={{
               maxHeight: "max(400px, calc(100vh - 200px))",
               zIndex: 1000,
               scrollbarWidth: 'thin',
-              msOverflowStyle: 'none'
             }}
           >
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                width: 6px;
-              }
-              div::-webkit-scrollbar-track {
-                background: transparent;
-              }
-              div::-webkit-scrollbar-thumb {
-                background: rgba(16, 185, 129, 0.1);
-                border-radius: 10px;
-              }
-              div::-webkit-scrollbar-thumb:hover {
-                background: rgba(16, 185, 129, 0.2);
-              }
-            `}</style>
             {/* Trending / No Query State */}
             {!query && (
               <div className="p-6">

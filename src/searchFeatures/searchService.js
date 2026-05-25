@@ -215,6 +215,36 @@ class SearchService {
       "Mountain views",
     ];
   }
+
+  // Search local data and return results in the same shape the API returns
+  static async searchLocal(query = "", _scope = "both", page = 1, limit = 8) {
+    const result = await this.searchTreks(query, {}, "relevance", page, limit);
+
+    const results = result.treks.map((trek) => ({
+      id: trek.id,
+      title: trek.name,
+      subtitle: typeof trek.description === "string"
+        ? trek.description.substring(0, 120)
+        : "",
+      location: trek.region,
+      duration: trek.duration ? `${trek.duration} days` : null,
+      rating: trek.rating ?? null,
+      price: trek.price ?? null,
+      image_url: trek.image || null,
+      type: "trek",
+      match_fields: [],
+      region: trek.region,
+      slug: trek.slug,
+      region_slug: trek.region?.toLowerCase() ?? "general",
+    }));
+
+    return {
+      results,
+      total: result.total,
+      suggestions: [],
+      fallback: null,
+    };
+  }
 }
 
 export default SearchService;

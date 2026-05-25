@@ -249,18 +249,6 @@ function SearchResultCard({ result, onClick, index }) {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </button>
   );
 }
@@ -319,18 +307,6 @@ function SuggestionCard({ suggestion, onClick, index }) {
         <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
       </div>
 
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </button>
   );
 }
@@ -389,16 +365,6 @@ function FallbackCard({ item, onClick, index }) {
         <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
       </div>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-      `}</style>
     </button>
   );
 }
