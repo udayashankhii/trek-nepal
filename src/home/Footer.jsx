@@ -24,11 +24,7 @@ const Footer = () => {
             experiences.
           </p>
           <div className="flex space-x-4 mt-4">
-            <SocialIcon
-              Icon={FaFacebookF}
-              link="https://www.facebook.com/profile.php?id=61587769901291"
-              label="Facebook"
-            />
+           
             <SocialIcon
               Icon={FaInstagram}
               link="https://www.instagram.com/evertrek_nepal/"
