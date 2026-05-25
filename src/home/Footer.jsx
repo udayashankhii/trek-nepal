@@ -20,7 +20,7 @@ const Footer = () => {
             EverTrek <span className="text-blue">Nepal</span>
           </h2>
           <p>
-            Trusted by thousands of trekkers since 2025 for immersive Himalayan
+            Trusted by thousands of trekkers since 2026 for immersive Himalayan
             experiences.
           </p>
           <div className="flex space-x-4 mt-4">
