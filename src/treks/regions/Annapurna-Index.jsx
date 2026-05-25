@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, UserCheck, Thermometer, Loader2, AlertCircle, Award } from "lucide-react";
 import { FaHelicopter } from "react-icons/fa";
+import SEO from "../../components/common/SEO";
+import { PAGE_SEO, REGION_META } from "../../seo/keywords";
+import { buildTrekListSchema, buildDestinationSchema, buildBreadcrumbSchema } from "../../seo/schemas";
 import { motion } from "framer-motion";
 import TrekCard from "../TrekCard";
 import ExperienceSelector from "../../components/ExperienceSelector";
@@ -67,8 +70,27 @@ const AnnapurnaLuxuryPage = () => {
     },
   ];
 
+  const meta = REGION_META.annapurna;
+
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      <SEO
+        title={PAGE_SEO.annapurna.title.replace(" | EverTrek Nepal", "")}
+        description={PAGE_SEO.annapurna.description}
+        keywords={PAGE_SEO.annapurna.keywords}
+        url={meta.pageUrl}
+        image={meta.image}
+        schemas={[
+          buildDestinationSchema({ ...meta, regionName: meta.regionName, description: meta.description }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Trekking in Nepal", path: "/trekking-in-nepal" },
+            { name: "Annapurna Treks", path: meta.pageUrl },
+          ]),
+          treks.length ? buildTrekListSchema({ treks, regionName: meta.regionName, pageUrl: meta.pageUrl }) : null,
+        ].filter(Boolean)}
+        geo={{ region: "NP", placename: "Annapurna Region, Nepal", lat: meta.lat, lng: meta.lng }}
+      />
       {/* Hero Section - Enhanced */}
       <section className="relative h-[85vh] overflow-hidden">
         <div className="absolute inset-0">

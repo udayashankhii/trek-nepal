@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import TrekHero from "./Trekhero";
 import RegionsIndex from "../treks/regions/Region-Index";
-import { useState } from "react";
+import SEO from "../components/common/SEO";
+import { PAGE_SEO } from "../seo/keywords";
+import { buildBreadcrumbSchema } from "../seo/schemas";
 
 export default function TrekkingInNepalPage() {
   const [ctaClicked, setCtaClicked] = useState(false);
@@ -14,6 +16,19 @@ export default function TrekkingInNepalPage() {
   };
   return (
     <div className="min-50-screen bg-gray-50">
+      <SEO
+        title="Trekking in Nepal 2025 — All Trek Packages"
+        description={PAGE_SEO.trekkingInNepal.description}
+        keywords={PAGE_SEO.trekkingInNepal.keywords}
+        url="/trekking-in-nepal"
+        schemas={[
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Trekking in Nepal", path: "/trekking-in-nepal" },
+          ]),
+        ]}
+        geo={{ region: "NP", placename: "Nepal" }}
+      />
       {/* Hero Section */}
       <TrekHero
         title="Trekking in Nepal"

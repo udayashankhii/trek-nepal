@@ -24,6 +24,11 @@ import {
 } from "./trekkingpage/trekdatahelper.js";
 
 import SEO from "../components/common/SEO";
+import {
+  buildTrekSchema,
+  buildFAQSchema,
+  buildBreadcrumbSchema,
+} from "../seo/schemas";
 
 const TrekAddInfo = lazy(() => import("./trekkingpage/AdditionalInfo.jsx"));
 const HeroSection = lazy(() => import("./trekkingpage/Hero.jsx"));
@@ -472,37 +477,57 @@ export default function TrekDetailPage() {
     heroData.imageUrl || flat.card_image_url
   );
 
-  const seoSchema = {
-    "@context": "https://schema.org",
-    "@type": "TouristTrip",
-    name: trekName,
-    description: heroData.subtitle || `Enjoy the ${trekName} in Nepal.`,
-    image: cardImageUrl,
-    touristType: [activity || "Trekking"],
-    itinerary: flat.itinerary.map((day) => ({
-      "@type": "ItineraryItem",
-      name: `Day ${day.day}: ${day.title}`,
-      description: day.description,
-    })),
-    offers: {
-      "@type": "Offer",
-      price: bookingCardData?.base_price || bookingCard.base_price,
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-    },
-  };
+  const seoSchemas = [
+    buildTrekSchema({
+      trek: flat,
+      slug,
+      heroData,
+      bookingPrice:
+        parseFloat(bookingCardData?.base_price || bookingCard.base_price) || 0,
+      reviews: trekReviews,
+      departures,
+    }),
+    trek.faq_categories?.length
+      ? buildFAQSchema(trek.faq_categories)
+      : null,
+    buildBreadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Trekking in Nepal", path: "/trekking-in-nepal" },
+      ...(region ? [{ name: region, path: `/treks/${region.toLowerCase().replace(/\s+/g, "-")}` }] : []),
+      { name: trekName, path: `/trek/${slug}` },
+    ]),
+  ].filter(Boolean);
+
+  const seoDescription =
+    heroData.subtitle ||
+    `Book your ${trekName} with EverTrek Nepal. Expert Sherpa guides, ${duration ? duration + "," : ""} ${maxAltitude ? "reaching " + maxAltitude + "," : ""} verified reviews, and best price guarantee. ${region ? "Located in the " + region + " region of Nepal." : ""}`.trim();
+
+  const seoKeywords = [
+    trekName,
+    `${trekName} trek`,
+    `${trekName} cost`,
+    `${trekName} itinerary`,
+    `${trekName} difficulty`,
+    region ? `${region} trekking` : "",
+    region ? `${region} trek nepal` : "",
+    activity || "trekking",
+    "trekking in nepal",
+    "nepal trek packages",
+    "guided trek nepal",
+    "himalayan trekking",
+  ].filter(Boolean).join(", ");
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <SEO
         title={trekName}
-        description={
-          heroData.subtitle ||
-          `Book your ${trekName} with EverTrek Nepal. Verified reviews, best price guarantee, and expert guides.`
-        }
+        description={seoDescription}
         image={cardImageUrl}
-        keywords={`${trekName}, trekking in nepal, ${region}, ${activity}`}
-        schema={seoSchema}
+        keywords={seoKeywords}
+        url={`/trek/${slug}`}
+        type="website"
+        schemas={seoSchemas}
+        geo={{ region: "NP", placename: `${trekName}, Nepal` }}
       />
 
       {/* ✅ Hero Section with extracted data */}

@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, AlertCircle, Mountain, Users, TreePine, Award, Sparkles } from "lucide-react";
+import SEO from "../../components/common/SEO";
+import { PAGE_SEO, REGION_META } from "../../seo/keywords";
+import { buildTrekListSchema, buildDestinationSchema, buildBreadcrumbSchema } from "../../seo/schemas";
 import TrekCard from "../TrekCard";
 import { useTreksByRegion } from "../../api/service/useTreksByRegion";
 import { REGIONS } from "../../api/service/regionService";
@@ -66,8 +69,27 @@ export default function LangtangTrek() {
   const [activeFAQ, setActiveFAQ] = useState(null);
   const { treks, loading, error } = useTreksByRegion(REGIONS.LANGTANG);
 
+  const meta = REGION_META.langtang;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      <SEO
+        title={PAGE_SEO.langtang.title.replace(" | EverTrek Nepal", "")}
+        description={PAGE_SEO.langtang.description}
+        keywords={PAGE_SEO.langtang.keywords}
+        url={meta.pageUrl}
+        image={meta.image}
+        schemas={[
+          buildDestinationSchema({ ...meta, regionName: meta.regionName, description: meta.description }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Trekking in Nepal", path: "/trekking-in-nepal" },
+            { name: "Langtang Treks", path: meta.pageUrl },
+          ]),
+          treks.length ? buildTrekListSchema({ treks, regionName: meta.regionName, pageUrl: meta.pageUrl }) : null,
+        ].filter(Boolean)}
+        geo={{ region: "NP", placename: "Langtang Region, Nepal", lat: meta.lat, lng: meta.lng }}
+      />
       {/* Hero Section - Enhanced with Parallax Effect */}
       <section className="relative h-[100vh] overflow-hidden">
         <div className="absolute inset-0">

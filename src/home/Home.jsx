@@ -10,11 +10,20 @@ import ImprovedNavbar from "../navbarEssentials/Navbar";
 import HomeFeaturedTreks from "./FeaturedTreks";
 import { useNavigate } from "react-router-dom";
 import SEO from "../components/common/SEO";
+import { PAGE_SEO } from "../seo/keywords";
+import { buildOrganizationSchema, buildWebSiteSchema } from "../seo/schemas";
 
 export default function Home() {
   return (
     <>
-      <SEO />
+      <SEO
+        title={PAGE_SEO.home.title.replace(" | EverTrek Nepal", "")}
+        description={PAGE_SEO.home.description}
+        keywords={PAGE_SEO.home.keywords}
+        url="/"
+        schemas={[buildOrganizationSchema(), buildWebSiteSchema()]}
+        geo={{ region: "NP-BA", placename: "Kathmandu, Nepal", lat: 27.7172, lng: 85.324 }}
+      />
       {/* Advanced Mountain Home Page without search props */}
       <MountainHomePage />
 

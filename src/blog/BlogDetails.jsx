@@ -20,6 +20,8 @@ import ImageGallery from "./ImageGallery";
 import mockBlogPosts from "./mockPost";
 import SEO from "../components/common/SEO";
 import { extractBlogHeroData, extractBlogGalleryData } from "../treks/trekkingpage/trekdatahelper.js";
+import { buildBlogSchema, buildBreadcrumbSchema } from "../seo/schemas";
+import { PAGE_SEO } from "../seo/keywords";
 
 // Reading Progress Component
 const ReadingProgress = React.memo(({ progress }) => (
@@ -282,29 +284,40 @@ const BlogDetail = ({
     );
   }
 
-  const seoSchema = enhancedBlog ? {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": enhancedBlog.title,
-    "image": [enhancedBlog.featuredImage?.url || enhancedBlog.image],
-    "datePublished": enhancedBlog.publishDate,
-    "author": {
-      "@type": "Organization",
-      "name": "EverTrek Nepal"
-    },
-    "description": enhancedBlog.metaDescription
-  } : null;
+  const blogUrl = enhancedBlog ? `/blog/${enhancedBlog.slug}/details` : "/blog";
+  const blogSchemas = enhancedBlog
+    ? [
+        buildBlogSchema({ post: enhancedBlog, url: blogUrl }),
+        buildBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: enhancedBlog.title, path: blogUrl },
+        ]),
+      ].filter(Boolean)
+    : [];
 
   return (
     <div className="min-h-screen bg-white">
       {enhancedBlog && (
         <SEO
           title={enhancedBlog.title}
-          description={enhancedBlog.metaDescription || enhancedBlog.description}
+          description={enhancedBlog.metaDescription || enhancedBlog.excerpt || enhancedBlog.description}
           image={enhancedBlog.featuredImage?.url || enhancedBlog.image}
-          keywords={`blog, nepal, ${enhancedBlog.category}, ${enhancedBlog.tags?.join(', ')}`}
+          keywords={[
+            PAGE_SEO.blog.keywords,
+            enhancedBlog.category || "",
+            ...(enhancedBlog.tags || []),
+          ].filter(Boolean).join(", ")}
+          url={blogUrl}
           type="article"
-          schema={seoSchema}
+          schemas={blogSchemas}
+          article={{
+            publishedTime: enhancedBlog.publishDate || enhancedBlog.published_at,
+            modifiedTime: enhancedBlog.updated_at,
+            author: enhancedBlog.author || "EverTrek Nepal",
+            section: enhancedBlog.category || "Nepal Trekking",
+            tags: enhancedBlog.tags || [],
+          }}
         />
       )}
       <ReadingProgress progress={state.readingProgress} />

@@ -2,24 +2,143 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="/logo4" href="/logo4.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EverTrek Nepal</title>
 
-    <!-- Fonts -->
+    <!-- Primary meta (overridden per-page by react-helmet-async) -->
+    <title>EverTrek Nepal | #1 Trekking Agency — Everest, Annapurna, Manaslu</title>
+    <meta name="description" content="Book expert-guided treks in Nepal with EverTrek Nepal. Everest Base Camp, Annapurna Circuit, Manaslu, Langtang &amp; Upper Mustang. Best price guarantee. 4.9★ rated by 312 trekkers." />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="author" content="EverTrek Nepal" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://evertreknepal.com/" />
+
+    <!-- Geo -->
+    <meta name="geo.region" content="NP-BA" />
+    <meta name="geo.placename" content="Kathmandu, Nepal" />
+    <meta name="geo.position" content="27.7172;85.3240" />
+    <meta name="ICBM" content="27.7172, 85.3240" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EverTrek Nepal" />
+    <meta property="og:title" content="EverTrek Nepal | #1 Trekking Agency in Nepal" />
+    <meta property="og:description" content="Expert-guided treks to Everest Base Camp, Annapurna Circuit, Manaslu &amp; more. Book with Nepal's trusted trekking company." />
+    <meta property="og:image" content="https://evertreknepal.com/moutainimage.avif" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://evertreknepal.com/" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@evertreknepal" />
+    <meta name="twitter:title" content="EverTrek Nepal | #1 Trekking Agency in Nepal" />
+    <meta name="twitter:description" content="Expert-guided treks to Everest Base Camp, Annapurna, Manaslu &amp; more. Best price guarantee." />
+    <meta name="twitter:image" content="https://evertreknepal.com/moutainimage.avif" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/logo4.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo4.ico" />
+
+    <!-- Preconnect to critical third-party origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+    <link rel="preconnect" href="https://maps.googleapis.com" />
+    <link rel="preconnect" href="https://api.stripe.com" />
+
+    <!-- Google Fonts (display=swap for performance) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- DNS prefetch for analytics / external APIs -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+
+    <!-- Organization + WebSite JSON-LD (static, always present) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["TravelAgency", "LocalBusiness"],
+          "@id": "https://evertreknepal.com/#organization",
+          "name": "EverTrek Nepal",
+          "url": "https://evertreknepal.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://evertreknepal.com/evertreknepallogo.webp",
+            "width": 300,
+            "height": 60
+          },
+          "image": "https://evertreknepal.com/moutainimage.avif",
+          "description": "Licensed Nepal trekking agency offering guided treks to Everest Base Camp, Annapurna Circuit, Manaslu, Langtang, and Upper Mustang. Government-registered, TAAN member.",
+          "email": "infoevertreknepal@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Thamel",
+            "addressLocality": "Kathmandu",
+            "addressRegion": "Bagmati Province",
+            "postalCode": "44600",
+            "addressCountry": "NP"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 27.7172,
+            "longitude": 85.3240
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+              "opens": "09:00",
+              "closes": "18:00"
+            }
+          ],
+          "priceRange": "$$$",
+          "currenciesAccepted": "USD, EUR, GBP, AUD",
+          "paymentAccepted": "Credit Card, Bank Transfer",
+          "areaServed": { "@type": "Country", "name": "Nepal" },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "312",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "sameAs": [
+            "https://www.facebook.com/evertreknepal",
+            "https://www.instagram.com/evertreknepal"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://evertreknepal.com/#website",
+          "url": "https://evertreknepal.com",
+          "name": "EverTrek Nepal",
+          "description": "Book guided trekking packages in Nepal — Everest, Annapurna, Manaslu, Langtang, Mustang",
+          "publisher": { "@id": "https://evertreknepal.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://evertreknepal.com/trekking-in-nepal?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
 
   <body>
-    <!-- Main app -->
     <div id="root"></div>
-
-    <!-- ✅ Chatbot Portal Mount (IMPORTANT) -->
     <div id="chatbot-root"></div>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

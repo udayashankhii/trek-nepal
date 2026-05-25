@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, AlertCircle, Mountain, Sparkles, Award, FlagTriangleRight, Users, Heart } from "lucide-react";
+import SEO from "../../components/common/SEO";
+import { PAGE_SEO, REGION_META } from "../../seo/keywords";
+import { buildTrekListSchema, buildDestinationSchema, buildBreadcrumbSchema } from "../../seo/schemas";
 import { FaHelicopter } from "react-icons/fa";
 import TrekCard from "../TrekCard";
 import { useTreksByRegion } from "../../api/service/useTreksByRegion";
@@ -67,8 +70,27 @@ export default function EverestTrekIndex() {
   const [activeFAQ, setActiveFAQ] = useState(null);
   const { treks, loading, error } = useTreksByRegion(REGIONS.EVEREST);
 
+  const meta = REGION_META.everest;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      <SEO
+        title={PAGE_SEO.everest.title.replace(" | EverTrek Nepal", "")}
+        description={PAGE_SEO.everest.description}
+        keywords={PAGE_SEO.everest.keywords}
+        url={meta.pageUrl}
+        image={meta.image}
+        schemas={[
+          buildDestinationSchema({ ...meta, regionName: meta.regionName, description: meta.description }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Trekking in Nepal", path: "/trekking-in-nepal" },
+            { name: "Everest Treks", path: meta.pageUrl },
+          ]),
+          treks.length ? buildTrekListSchema({ treks, regionName: meta.regionName, pageUrl: meta.pageUrl }) : null,
+        ].filter(Boolean)}
+        geo={{ region: "NP", placename: "Everest Region, Nepal", lat: meta.lat, lng: meta.lng }}
+      />
       {/* Hero Section - Enhanced */}
       <section className="relative h-[85vh] overflow-hidden">
         <div className="absolute inset-0">

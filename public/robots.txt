@@ -1,3 +1,39 @@
+# EverTrek Nepal — robots.txt
+# https://evertreknepal.com
+
 User-agent: *
 Allow: /
+
+# Block private / auth routes from being indexed
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /verify-otp
+Disallow: /trek-booking
+Disallow: /payment
+Disallow: /payment/success
+Disallow: /bookings
+Disallow: /bookings/
+Disallow: /profile
+Disallow: /customize-trek
+
+# Block build artifacts and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /dist/
+
+# Allow all high-value crawlable paths
+Allow: /trekking-in-nepal
+Allow: /trek/
+Allow: /treks/
+Allow: /blog/
+Allow: /travel-info/
+Allow: /about-us/
+Allow: /contact-us
+Allow: /travel-activities/
+
+# Sitemap
 Sitemap: https://evertreknepal.com/sitemap.xml
+
+# Crawl-delay for polite crawling (optional — remove if you want faster indexing)
+# Crawl-delay: 1
