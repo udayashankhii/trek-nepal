@@ -120,55 +120,58 @@ export default function TrekCard({
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.99 }}
         transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="bg-white/80 backdrop-blur-md rounded-2xl overflow-hidden
-                   border border-slate-200/70 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)]
-                   group-hover:shadow-[0_18px_50px_-22px_rgba(15,23,42,0.50)]
-                   transition-shadow"
+        className="bg-white rounded-2xl overflow-hidden
+                   border border-gray-100
+                   shadow-[0_2px_16px_rgba(0,0,0,0.06)]
+                   group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]
+                   group-hover:border-gray-200
+                   transition-all duration-300"
       >
-        <div className="relative h-48 w-full">
+        <div className="relative h-56 w-full">
           <img
             src={trekImage}
             alt={trekTitle}
             loading="lazy"
-            className="object-cover w-full h-full scale-[1.01] group-hover:scale-105
+            className="object-cover w-full h-full group-hover:scale-105
                        transition-transform duration-500 ease-out"
             onError={(e) => {
               e.currentTarget.src = "/fallback.jpg";
             }}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
           {badge && (
-            <span className="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+            <span className="absolute top-3 left-3 bg-[#062c5b] text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
               {badge}
             </span>
           )}
 
           {featured && !badge && (
-            <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+            <span className="absolute top-3 left-3 bg-amber-500 text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
               Featured
             </span>
           )}
 
           {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
-            <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
+            <span className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-medium px-2.5 py-1 rounded-full">
               Save ${(originalPrice - basePrice).toFixed(0)}
             </span>
           )}
         </div>
 
-        <div className="p-4 space-y-3">
-          <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors line-clamp-2">
+        <div className="p-5 space-y-3">
+          <h3 className="text-base font-semibold text-gray-900 group-hover:text-[#062c5b] transition-colors duration-200 line-clamp-2 leading-snug">
             {trekTitle}
           </h3>
 
-          <div className="flex items-center text-sm text-gray-600 space-x-2">
-            <Clock className="w-4 h-4" />
+          <div className="flex items-center text-sm text-gray-500 space-x-2">
+            <Clock className="w-3.5 h-3.5 flex-shrink-0" />
             <span>{trekDays} days</span>
-            <span>•</span>
+            <span className="text-gray-300">·</span>
 
             {(basePrice > 0 || (originalPrice > 0)) ? (
               <>
-                <span className="font-semibold text-indigo-600">
+                <span className="font-semibold text-amber-600">
                   ${(basePrice > 0 ? basePrice : originalPrice).toFixed(0)}
                 </span>
                 {basePrice > 0 && originalPrice > 0 && originalPrice > basePrice && (
@@ -178,7 +181,7 @@ export default function TrekCard({
                 )}
               </>
             ) : (
-              <span className="font-semibold text-gray-500 text-xs">
+              <span className="font-medium text-gray-400 text-xs">
                 Contact for Price
               </span>
             )}
@@ -223,27 +226,31 @@ export default function TrekCard({
             </>
           )}
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="flex items-center">
+          <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${i < Math.round(trekRating)
-                      ? "text-yellow-400 fill-current"
-                      : "text-gray-300"
+                    className={`w-3.5 h-3.5 fill-current ${i < Math.round(trekRating)
+                      ? "text-amber-400"
+                      : "text-gray-200"
                       }`}
                   />
                 ))}
               </div>
-              <span className="ml-2 text-sm text-gray-600">
-                {trekRating.toFixed(1)} ({reviewCount})
+              <span className="text-xs text-gray-500 font-medium">
+                {trekRating.toFixed(1)} <span className="text-gray-400">({reviewCount})</span>
               </span>
             </div>
 
             {trek.availability !== undefined && (
-              <div className={`w-2 h-2 rounded-full ${trek.availability ? 'bg-green-400' : 'bg-red-400'
-                }`} title={trek.availability ? 'Available' : 'Not Available'} />
+              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${trek.availability
+                ? 'bg-green-50 text-green-600'
+                : 'bg-red-50 text-red-500'
+              }`}>
+                {trek.availability ? 'Available' : 'Unavailable'}
+              </span>
             )}
           </div>
         </div>
