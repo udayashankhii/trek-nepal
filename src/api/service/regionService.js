@@ -3,11 +3,11 @@
 
 // PUT THIS AT THE VERY TOP - BEFORE IMPORTS
 export const REGIONS = {
-  EVEREST: "everest",
-  ANNAPURNA: "annapurna",
-  LANGTANG: "langtang",
-  MANASLU: "manaslu",
-  MUSTANG: "mustang",
+  EVEREST: "everest-region",
+  ANNAPURNA: "annapurna-region",
+  LANGTANG: "langtang-region",
+  MANASLU: "manaslu-region",
+  MUSTANG: "mustang-region",
 };
 
 import { apiGet, normalizeArray } from "./helper";
