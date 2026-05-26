@@ -7,7 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,12 +22,16 @@ jobs:
 
       - name: Build project
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
-          VITE_GOOGLE_MAPS_MAP_ID: ${{ secrets.VITE_GOOGLE_MAPS_MAP_ID }}
-          VITE_OPEN_METEO_API_URL: ${{ secrets.VITE_OPEN_METEO_API_URL }}
-          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_API_URL:                  ${{ secrets.VITE_API_URL }}
+          VITE_GOOGLE_CLIENT_ID:         ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_MAPS_API_KEY:      ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_MAPS_MAP_ID:       ${{ secrets.VITE_GOOGLE_MAPS_MAP_ID }}
+          VITE_OPEN_METEO_API_URL:       ${{ secrets.VITE_OPEN_METEO_API_URL }}
+          VITE_STRIPE_PUBLISHABLE_KEY:   ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_CLOUDINARY_CLOUD_NAME:    ${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}
+          VITE_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.VITE_CLOUDINARY_UPLOAD_PRESET }}
+          VITE_RISK_API_URL:             ${{ secrets.VITE_RISK_API_URL }}
+          VITE_CHATBOT_URL:              ${{ secrets.VITE_CHATBOT_URL }}
         run: npm run build
 
       - name: Setup SSH key
@@ -40,7 +43,10 @@ jobs:
 
       - name: Deploy dist to cPanel via rsync
         run: |
-          rsync -avz --delete \
+          rsync -avz \
+            --exclude='.well-known/' \
+            --exclude='cgi-bin/' \
+            --exclude='googlec*.html' \
             -e "ssh -p ${{ secrets.CPANEL_PORT }} -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
             dist/ \
             ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_HOST }}:${{ secrets.CPANEL_DEPLOY_PATH }}/
