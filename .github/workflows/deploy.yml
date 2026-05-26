@@ -1,24 +1,18 @@
-name: Build & Deploy Frontend to cPanel
+name: Build and Deploy to cPanel
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-
-concurrency:
-  group: deploy-production
-  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Build and deploy
+  deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -27,44 +21,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build production bundle
+      - name: Build project
         env:
-          VITE_API_URL:                  ${{ secrets.VITE_API_URL }}
-          VITE_GOOGLE_CLIENT_ID:         ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-          VITE_GOOGLE_MAPS_API_KEY:      ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
-          VITE_GOOGLE_MAPS_MAP_ID:       ${{ secrets.VITE_GOOGLE_MAPS_MAP_ID }}
-          VITE_CLOUDINARY_CLOUD_NAME:    ${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}
-          VITE_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.VITE_CLOUDINARY_UPLOAD_PRESET }}
-          VITE_STRIPE_PUBLISHABLE_KEY:   ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
-          VITE_OPEN_METEO_API_URL:       ${{ secrets.VITE_OPEN_METEO_API_URL }}
-          VITE_RISK_API_URL:             ${{ secrets.VITE_RISK_API_URL }}
-          VITE_CHATBOT_URL:              ${{ secrets.VITE_CHATBOT_URL }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_MAPS_MAP_ID: ${{ secrets.VITE_GOOGLE_MAPS_MAP_ID }}
+          VITE_OPEN_METEO_API_URL: ${{ secrets.VITE_OPEN_METEO_API_URL }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
         run: npm run build
 
-      - name: Show build output
+      - name: Setup SSH key
         run: |
-          ls -la dist/
-          du -sh dist/
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CPANEL_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.CPANEL_PORT }} -H ${{ secrets.CPANEL_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy dist/ to cPanel via rsync
-        uses: easingthemes/ssh-deploy@v6.0.3
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
-          REMOTE_HOST:     ${{ secrets.CPANEL_HOST }}
-          REMOTE_USER:     ${{ secrets.CPANEL_USERNAME }}
-          REMOTE_PORT:     ${{ secrets.CPANEL_PORT }}
-          SOURCE:          "dist/"
-          TARGET:          ${{ secrets.CPANEL_DEPLOY_PATH }}
-          ARGS: >-
-            -rltDzvO
-            --exclude=.env.production
-            --exclude=.htaccess
-            --exclude=.well-known/
-            --exclude=cgi-bin/
-            --exclude=googlec*.html
-            --exclude=dist.zip
-
-      - name: Verify site is live
+      - name: Deploy dist to cPanel via rsync
         run: |
-          sleep 5
-          curl -sSf -o /dev/null -w "Site responded: HTTP %{http_code}\n" https://evertreknepal.com/
+          rsync -avz --delete \
+            -e "ssh -p ${{ secrets.CPANEL_PORT }} -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
+            dist/ \
+            ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_HOST }}:${{ secrets.CPANEL_DEPLOY_PATH }}/
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_rsa

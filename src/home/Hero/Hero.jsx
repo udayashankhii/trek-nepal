@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FiMapPin, FiStar, FiCalendar, FiAlertCircle } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { FiStar, FiCalendar, FiAlertCircle } from "react-icons/fi";
 import { useMouseTracking, useIntersectionObserver } from "./animationUtils";
 import { Mountain, CloudRain, CloudSnow, Cloud, Sun } from "lucide-react";
 import { fetchWeatherData } from "../../api/service/weatherService";
@@ -235,8 +234,6 @@ export default function EnhancedHeroSection() {
   const [mouseRef, mousePosition] = useMouseTracking();
   const [heroRef, isVisible] = useIntersectionObserver();
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const currentSlideData = heroSlides[currentSlide];
     const locationKey = currentSlideData.locationKey;
@@ -288,16 +285,6 @@ export default function EnhancedHeroSection() {
   const currentLocationKey = currentSlideData.locationKey;
   const currentWeather = weatherData[currentLocationKey];
   const isWeatherLoading = weatherLoading[currentLocationKey];
-
-  const handleDiscover = () => {
-    if (!currentSlideData?.trekUrl) return;
-    navigate(currentSlideData.trekUrl);
-  };
-
-  const handleViewMap = () => {
-    if (!currentSlideData?.trekUrl) return;
-    navigate(currentSlideData.trekUrl, { state: { openMap: true } });
-  };
 
   return (
     <section
@@ -425,37 +412,6 @@ export default function EnhancedHeroSection() {
             </p>
           </div>
 
-          {/* Buttons - Below title and description */}
-          <div
-            className={`flex flex-col sm:flex-row gap-3 sm:gap-4 px-4 lg:px-0 transition-all duration-300 ${
-              isLoaded
-                ? "animate-[fadeInUp_0.8s_ease-out_forwards]"
-                : "opacity-0"
-            } ${searchFocused ? 'pointer-events-none opacity-30' : 'opacity-100'}`}
-            style={{ animationDelay: "0.5s" }}
-          >
-            <button
-              onClick={handleDiscover}
-              disabled={searchFocused}
-              className="group px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-white/20 backdrop-blur-md border border-white/30 text-white font-bold rounded-lg sm:rounded-xl hover:bg-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base disabled:cursor-not-allowed"
-            >
-              <span className="flex items-center justify-center space-x-2">
-                <Mountain className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
-                <span>Discover Treks</span>
-              </span>
-            </button>
-
-            <button
-              onClick={handleViewMap}
-              disabled={searchFocused}
-              className="group px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-transparent border-2 border-amber-400 text-amber-400 font-bold rounded-lg sm:rounded-xl hover:bg-amber-400 hover:text-black transition-all duration-300 transform hover:scale-105 text-sm sm:text-base disabled:cursor-not-allowed"
-            >
-              <span className="flex items-center justify-center space-x-2">
-                <FiMapPin className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
-                <span>View Map</span>
-              </span>
-            </button>
-          </div>
         </div>
 
         {/* Right - Weather and Stats - STAYS FULLY VISIBLE */}
